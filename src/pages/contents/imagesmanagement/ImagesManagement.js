@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+/* eslint-disable */
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import {
     Col,
@@ -22,24 +22,26 @@ import {
 import { Typography } from '@mui/material';
 import './index.css';
 import { PlusOutlined, EditFilled, DeleteFilled, UploadOutlined, MinusCircleOutlined } from '@ant-design/icons';
-import { useGetUnitListMutation } from '../../../hooks/api/ContentsManagement/ContentsManagement';
-
+import { useGetUnitListMutation, useSaveUnitImgMutation} from '../../../hooks/api/ContentsManagement/ContentsManagement';
+import MenuItem from '@mui/material/MenuItem';
 // project import
 import MainCard from 'components/MainCard';
 
 export const ImagesManagement = () => {
+
     const { confirm } = Modal;
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false); // 로딩 초기값
     const [getUnitList] = useGetUnitListMutation(); // hooks api호출
+    const [saveUnitImg] = useSaveUnitImgMutation(); // hooks api호출
     const [unitList, setUnitList] = useState(); // 리스트 값
     const [dataSource, setDataSource] = useState([]); // Table 데이터 값
     const [open, setOpen] = useState(false); // Drawer 추가 우측폼 상태
     const [dataEdit, setDataEdit] = useState(false); // Drawer 수정 우측폼 상태
-    const [fileListR, setFileListR] = useState([]); // 파일 업로드 실물 이미지
+    const [fileListR, setFileListR] = useState(null); // 파일 업로드 실물 이미지
     const [fileListF, setFileListF] = useState([]); // 파일 업로드 정면 이미지
     const [fileListS, setFileListS] = useState([]); // 파일 업로드 측면 이미지
-    const [uploading, setUploading] = useState(false);//이미지업로드
+    const [uploading, setUploading] = useState(false); // 이미지업로드
 
     const [unitLanguageModalOpen, setUnitLanguageModalOpen] = useState(false); // 물품명칭 언어추가 Modal
 
@@ -218,36 +220,30 @@ export const ImagesManagement = () => {
 
     // 물품명칭 언어 추가 End
 
+
+        
+    const fileInput = React.createRef();
+    const handleButtonClick = e => {
+        //fileInput.current.click();
+    };
+    const handleChange = e => {
+        console.log('파일변경 : ', e.target.files[0]);
+        setFileListR(e.target.files[0]);
+    };
+
     // 실물 이미지 업로드 처리
-    const handleUpload = () => {
-        const formData = new FormData();
-        //fileListR.forEach((file) => formData.append('files', file));
-        formData.append('files', fileListR);
+    const handleUpload = async () => {
+        
+        let formData = new FormData();
+        
+        const params = { unitScanId: 9999 };
+        formData.append('params', new Blob([JSON.stringify(params)], { type: 'application/json' }));
 
-        // formData.append('fileR', fileListR);
+        formData.append('file', fileListR);
+        console.log('실제파일: ', fileListR);
 
-        //formData.append('files[]', fileListF);
-        //formData.append('files[]', fileListS);
-
-        console.log(fileListR);
-        //console.log(fileListS);
-
-        // setUploading(true);
-        // fetch('https://www.mocky.io/v2/5cc8019d300000980a055e76', {
-        //     method: 'POST',
-        //     body: formData
-        // })
-        //     .then((res) => res.json())
-        //     .then(() => {
-        //         setFileListR([]);
-        //         message.success('upload successfully.');
-        //     })
-        //     .catch(() => {
-        //         message.error('upload failed.');
-        //     })
-        //     .finally(() => {
-        //         setUploading(false);
-        //     });
+        const response = await saveUnitImg(formData);
+        console.log('결과:', response);
     };
 
     // 정면 이미지 업로드 처리
@@ -377,7 +373,7 @@ export const ImagesManagement = () => {
                                             <Tooltip title="업로드">
                                                 <Button
                                                     type="success"
-                                                    // onClick={handleUpload}
+                                                    onClick={handleUpload}
                                                     htmlType="submit"
                                                     loding={uploading}
                                                     style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
@@ -401,13 +397,17 @@ export const ImagesManagement = () => {
                                                     }}
                                                 >
                                                     <Upload {...propsR} listType="picture">
-                                                        <Button
+                                                        <Button 
                                                             icon={<UploadOutlined />}
                                                             style={{ height: '40px', padding: '0 120px', backgroundColor: '#f0f0f0' }}
                                                         >
                                                             실물 이미지
                                                         </Button>
                                                     </Upload>
+                                                    <input type="file"
+                                                            ref={fileInput}
+                                                            onChange={handleChange}
+                                                            style={{ display: "none" }} />                                                     
                                                 </Card>
                                             </Space>
                                             <Space direction="vertical">
@@ -588,60 +588,56 @@ export const ImagesManagement = () => {
                                         }}
                                         options={[
                                             {
-                                                value: 'Item01',
+                                                value: 'G000001',
                                                 label: '총기류'
                                             },
                                             {
-                                                value: 'Item02',
+                                                value: 'G000002',
                                                 label: '폭발물류'
                                             },
                                             {
-                                                value: 'Item03',
+                                                value: 'G000003',
                                                 label: '실탄류'
                                             },
                                             {
-                                                value: 'Item04',
+                                                value: 'G000004',
                                                 label: '도검류'
                                             },
                                             {
-                                                value: 'Item05',
+                                                value: 'G000005',
                                                 label: '일반무기류'
                                             },
                                             {
-                                                value: 'Item06',
+                                                value: 'G000006',
                                                 label: '위장무기류'
                                             },
                                             {
-                                                value: 'Item07',
+                                                value: 'G000007',
                                                 label: '공구/생활용품류'
                                             },
                                             {
-                                                value: 'Item08',
+                                                value: 'G000008',
                                                 label: '인화성물질류'
                                             },
                                             {
-                                                value: 'Item09',
+                                                value: 'G000009',
                                                 label: '위험물질류'
                                             },
                                             {
-                                                value: 'Item10',
+                                                value: 'G000010',
                                                 label: '액체, 겔 물품류'
                                             },
                                             {
-                                                value: 'Item11',
+                                                value: 'G000011',
                                                 label: '주류'
                                             },
                                             {
-                                                value: 'Item12',
+                                                value: 'G000012',
                                                 label: '전기/전자제품류'
                                             },
                                             {
-                                                value: 'Item13',
+                                                value: 'G000013',
                                                 label: '확인물품류'
-                                            },
-                                            {
-                                                value: 'Item14',
-                                                label: '통과류'
                                             }
                                         ]}
                                     />
@@ -739,7 +735,7 @@ export const ImagesManagement = () => {
                                                     </Form.Item>
 
                                                     <MinusCircleOutlined onClick={() => remove(name)} />
-                                                </Space>
+                                                </Space>    
                                             ))}
                                             <Form.Item>
                                                 <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>

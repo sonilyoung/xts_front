@@ -67,6 +67,25 @@ export const contentsManagement = createApi({
                 method: 'POST',
                 body: body
             })
+        }),
+
+        //단품저장
+        insertUnit: builder.mutation({
+            query: (body) => ({
+                url: 'contents/insertUnit.do',
+                method: 'POST',
+                body: body
+            })
+        }),
+
+        // 단품이미지저장
+        saveUnitImg: builder.mutation({
+            query: (body) => ({
+                url: 'contents/saveUnitImg.do',
+                method: 'POST',
+                body: body,
+                contentType: 'multipart/form-data'
+            })
         })
     })
 });
@@ -77,5 +96,7 @@ export const {
     useGetUnitListMutation,
     useGetInformationListMutation,
     useGetXrayinformationListMutation,
-    useGetXrayinformationSubListMutation
+    useGetXrayinformationSubListMutation,
+    useInsertUnitMutation,
+    useSaveUnitImgMutation
 } = contentsManagement;
