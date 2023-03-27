@@ -1,0 +1,1 @@
+export { Xrayinformation } from './Xrayinformation';

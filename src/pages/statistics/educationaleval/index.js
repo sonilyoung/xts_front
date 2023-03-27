@@ -1,0 +1,1 @@
+export { Educationaleval } from './Educationaleval';

@@ -1,0 +1,1 @@
+export { EduType } from './EduType';

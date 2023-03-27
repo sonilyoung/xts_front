@@ -1,0 +1,1 @@
+export { InforMation } from './Information';

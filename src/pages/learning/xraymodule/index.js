@@ -1,0 +1,1 @@
+export { XrayModule } from './XrayModule';

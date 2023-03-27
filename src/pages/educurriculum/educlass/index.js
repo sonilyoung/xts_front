@@ -1,0 +1,1 @@
+export { EduClass } from './EduClass';

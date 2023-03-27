@@ -1,0 +1,1 @@
+export { XrayPoint } from './XrayPoint';

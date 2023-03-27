@@ -1,0 +1,1 @@
+export { Evaluationscore } from './Evaluationscore';

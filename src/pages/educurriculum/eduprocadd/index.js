@@ -1,0 +1,1 @@
+export { EduProcAdd } from './EduProcAdd';
