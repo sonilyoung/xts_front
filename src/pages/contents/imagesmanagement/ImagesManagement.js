@@ -30,7 +30,7 @@ import noImage from 'assets/images/no_imgae.png';
 import loadingImg from 'assets/images/loading.gif';
 
 //데모시연을위한이미지
-import dimg1 from 'assets/images/demo/1.jpg';
+import dimg1 from 'assets/images/demo/1.gif';
 import dimg2 from 'assets/images/demo/1.jpg';
 import dimg3 from 'assets/images/demo/1.jpg';
 import dimg4 from 'assets/images/demo/1.jpg';
