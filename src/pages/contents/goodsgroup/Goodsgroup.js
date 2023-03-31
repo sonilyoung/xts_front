@@ -1,30 +1,62 @@
-/* eslint-disable no-unused-vars */
+/* eslint-disable*/
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Typography } from '@mui/material';
-import { Col, Row, Button, Form, Input, Table, Select, Space, Tooltip, Tag, Badge, Modal } from 'antd';
-import { useGetGroupListMutation, useGetLanguageListMutation } from '../../../hooks/api/ContentsManagement/ContentsManagement';
-import { EditFilled, DeleteFilled } from '@ant-design/icons';
+import { Col, Row, Button, Form, Input, Table, Select, Space, Tooltip, Tag, Badge, Divider, Card, Modal ,Drawer } from 'antd';
+import { PlusOutlined, EditFilled, DeleteFilled, UploadOutlined, MinusCircleOutlined } from '@ant-design/icons';
+import {
+    useGetLanguageListMutation,
+    useGetGroupListMutation,
+    useGetGroupMutation,
+    useInsertUnitGroupMutation,//그룹등록
+    useUpdateUnitGroupMutation,//그룹수정
+    useDeleteUnitGroupMutation,//그룹삭제
+    useInsertUnitGroupImgMutation//이미지등록    
+} from '../../../hooks/api/ContentsManagement/ContentsManagement';
 
 // project import
 import MainCard from 'components/MainCard';
-
+import noImage from 'assets/images/no_imgae.png';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 const { confirm } = Modal;
 
 export const Goodsgroup = () => {
-    const [getGroupList] = useGetGroupListMutation(); // 콘텐츠 그룹 hooks api호출
-    const [groupBodyList, setGroupBodyList] = useState(); // 콘텐츠 그룹 리스트 값
+    
     const [getLanguageList] = useGetLanguageListMutation(); // 언어 hooks api호출
+
+    const [getGroupList] = useGetGroupListMutation(); // 목록 콘텐츠 그룹 hooks api호출
+    const [getGroup] = useGetGroupMutation(); // 상세 콘텐츠 그룹 hooks api호출
+    const [insertGroup] = useInsertUnitGroupMutation(); // 등록 콘텐츠 그룹 hooks api호출
+    const [updateGroup] = useUpdateUnitGroupMutation(); // 수정 콘텐츠 그룹 hooks api호출
+    const [deleteGroup] = useDeleteUnitGroupMutation(); // 삭제 콘텐츠 그룹 hooks api호출
+    const [saveImg] = useInsertUnitGroupImgMutation(); // 이미지등록 콘텐츠 그룹 hooks api호출
+
+    const [groupBodyList, setGroupBodyList] = useState(); // 콘텐츠 그룹 리스트 값
     const [languageSelect, setLanguageSelect] = useState([]); //셀렉트 박스 option Default 값
     const [selectedRowKeys, setSelectedRowKeys] = useState([]); //셀렉트 박스 option Selected 값
     const [dataSource, setDataSource] = useState([]); // Table 데이터 값
-    const [defaultLanguage, setDefaultLanguage] = useState('kor');
+    const [languageCode, setLanguageCode] = useState('kor');
     const [loading, setLoading] = useState(false);
+    const [open, setOpen] = useState(false); // Drawer 추가 우측폼 상태
+    const [dataEdit, setDataEdit] = useState(false); // Drawer 수정 우측폼 상태
+    const [imgEdit, setImgEdit] = useState(false); // 이미지업로드를 위한 상태값
+    const [refresh, setRefresh] = useState(false); //리프레쉬
+    const [form] = Form.useForm();
+    const [imgFile1, setImgFile1] = useState("");
+    const [imgFile, setImgFile] = useState(null); // 파일 업로드 실물 이미지
+    const [unitParams, setUnitParams] = useState({
+        "parentUnitGroupCd" : "",
+        "openYn" : "",
+        "passYn" : "", 
+        "languageCode" : "",
+        "groupName" : "",
+        "groupDesc" : "",
+        "useYn" : "" 
+    });
 
     // 그룹 데이터 값 선언
     const handleGroup = async () => {
         const Groupresponse = await getGroupList({
-            languageCode: defaultLanguage
+            languageCode: languageCode
         });
         setGroupBodyList(Groupresponse?.data?.RET_DATA);
         setDataSource([
@@ -153,21 +185,25 @@ export const Goodsgroup = () => {
         //     editable: true
         // },
         {
-            width: '90px',
+            width: '120px',
             title: '개봉여부',
             dataIndex: 'rowdata5',
             align: 'center',
             render: (_, { rowdata5 }) => (
-                <>{rowdata5 === 'CLOSE' ? <Badge count={rowdata5} color="#bfbfbf" /> : <Badge count={rowdata5} color="#52c41a" />}</>
+                <>
+                    {rowdata5 === 'CLOSE' ? <Badge count={rowdata5} color="#bfbfbf" /> : <Badge count={rowdata5} color="#52c41a" />}
+                </>
             )
         },
         {
-            width: '100px',
+            width: '150px',
             title: '통과여부',
             dataIndex: 'rowdata6',
             align: 'center',
             render: (_, { rowdata6 }) => (
-                <>{rowdata6 === 'PASS' ? <Badge count={rowdata6} color="#2db7f5" /> : <Badge count={rowdata6} color="#faad14" />}</>
+                <>
+                    {rowdata6 === 'PASS' ? <Badge count={rowdata6} color="#2db7f5" /> : <Badge count={rowdata6} color="#faad14" />}
+                </>
             )
         },
         {
@@ -203,10 +239,24 @@ export const Goodsgroup = () => {
         },
         {
             width: '110px',
-            title: '하위물품분류',
-            dataIndex: 'rowdata11',
-            align: 'center'
-        }
+            title: '수정',
+            align: 'center',
+            render: (rowdata1) => (
+                <>
+                    <Tooltip title="수정" color="#108ee9">
+                        <Button  onClick={()=>handleUnitMod({rowdata1})} type="primary" style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }} icon={<EditFilled />}>
+                            수정
+                        </Button>
+                    </Tooltip>
+                </>
+            ),            
+        }        
+        //{
+            //width: '110px',
+            //title: '하위물품분류',
+            //dataIndex: 'rowdata11',
+            //align: 'center'
+        //}
         // {
         //     width: '100px',
         //     title: '등록일자',
@@ -262,6 +312,39 @@ export const Goodsgroup = () => {
         onChange: onSelectChange
     };
 
+    const fileInput1 = React.createRef();
+    const handleButtonClick1 = e => {
+        imgRef1.current.click();
+    };    
+
+
+    // 이미지 업로드 input의 onChange
+    const imgRef1 = useRef();
+    const saveImgFile1 = () => {
+        const file = imgRef1.current.files[0];
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = () => {
+            setImgFile1(reader.result);
+        };
+        setImgFile(file);
+        setImgEdit(false);
+    };       
+
+    // 실물 이미지 업로드 처리
+    /*const handleUpload = async () => {
+        let formData = new FormData();
+        
+        formData.append('params', new Blob([JSON.stringify(params)], { type: 'application/json' }));
+
+        formData.append('imgFile', imgFile);
+        console.log('imgFile: ', imgFile);
+
+        const response = await saveImg(formData);
+        console.log('결과:', response);
+        setRefresh(response);
+    };*/    
+
     // 수정
     const handleEdit = () => {
         if (selectedRowKeys == '') {
@@ -305,7 +388,7 @@ export const Goodsgroup = () => {
 
     const onChange = (value) => {
         console.log(`selected ${value}`);
-        setDefaultLanguage(value);
+        setLanguageCode(value);
     };
 
     const onSearch = (value) => {
@@ -316,15 +399,136 @@ export const Goodsgroup = () => {
         console.log(e, '사용여부');
     };
 
+
+    // 물품 추가 버튼
+    const handleAdd = () => {
+        setDataEdit(false);
+        setOpen(true);
+        setUnitParams(null);
+        form.resetFields();
+    };
+
+
+    // 물품 수정 버튼
+    const handleUnitMod = async (e) => {
+        console.log('상세:', e);
+        const response = await getGroup({
+            "languageCode" : languageCode,
+            "unitGroupCd" : e?.rowdata1?.key
+        });
+        
+        //console.log('unitName2:',response.data.RET_DATA.unitName);
+        setUnitParams(response.data.RET_DATA);
+        //params = response.data.RET_DATA;
+        form.resetFields();
+        setDataEdit(true);        
+        setImgEdit(true);
+        setOpen(true);
+        
+    };    
+
+    // 추가 취소
+    const onAddClose = () => {
+        setOpen(false);
+        setDataEdit(false);
+        form.resetFields();
+    };    
+
+    //단품저장
+    const onSaveSubmit = async () => {
+        console.log('저장:',unitParams);
+        
+        const response = await insertGroup({
+            "parentUnitGroupCd" : unitParams?.parentUnitGroupCd,
+            "openYn" : unitParams?.openYn,
+            "passYn" : unitParams?.passYn, 
+            "useYn" : unitParams?.useYn, 
+            "languageCode" : unitParams?.languageCode,
+            "groupName" : unitParams?.groupName,
+            "groupDesc" : unitParams?.groupDesc             
+        });
+
+        let formData = new FormData();
+        const params = { unitGroupCd: unitParams?.unitGroupCd };
+        formData.append('params', new Blob([JSON.stringify(params)], { type: 'application/json' }));
+        formData.append('imgFile', imgFile);
+        console.log('imgFile: ', imgFile);
+        const responseFile = await saveImg(formData);
+
+        setRefresh(response);
+        Modal.success({
+            content: '추가 완료',
+            onOk() {
+                setOpen(false);
+                setDataEdit(false);
+                form.resetFields();
+            }
+        });
+    };
+
+    //단품수정
+    const onUpdateSubmit = async () => {
+        
+        console.log('수정:',unitParams);
+        
+        const response = await updateGroup({
+            "unitGroupCd" : unitParams?.unitGroupCd,
+            "parentUnitGroupCd" : unitParams?.parentUnitGroupCd,
+            "openYn" : unitParams?.openYn,
+            "passYn" : unitParams?.passYn, 
+            "useYn" : unitParams?.useYn, 
+            "languageCode" : unitParams?.languageCode,
+            "groupName" : unitParams?.groupName,
+            "groupDesc" : unitParams?.groupDesc  
+        });
+
+        let formData = new FormData();
+        const params = { unitGroupCd: unitParams?.unitGroupCd };
+        formData.append('params', new Blob([JSON.stringify(params)], { type: 'application/json' }));
+        formData.append('imgFile', imgFile);
+        console.log('imgFile: ', imgFile);
+        const responseFile = await saveImg(formData);
+        setImgFile(null);
+
+        setRefresh(response);
+        Modal.success({
+            content: '수정 완료',
+            onOk() {
+                setOpen(false);
+                setDataEdit(false);
+                form.resetFields();
+            }
+        });
+    };    
+
+    
+
+    //단품삭제
+    const onDelete = async () => {
+        const response = await deleteGroup({
+            "unitGroupCd" : unitParams?.unitGroupCd,
+            "languageCode" : unitParams?.languageCode
+        });
+        setRefresh(response);
+        Modal.success({
+            content: '삭제 완료',
+            onOk() {
+                setOpen(false);
+                setDataEdit(false);
+                form.resetFields();
+            }
+        });        
+    }        
+
     useEffect(() => {
         setLoading(true); // 로딩 호출
         handleGroup(); // 그룹 api 호출
         handleLanguage(); // api 호출
-    }, [defaultLanguage]);
+    }, [languageCode, refresh]);
 
     return (
         <>
-            <MainCard title="그룹 관리">
+            <MainCard title="반입금지물품 관리">
                 <Typography variant="body1">
                     <Row style={{ marginBottom: 16 }}>
                         <Col span={8}>
@@ -339,24 +543,14 @@ export const Goodsgroup = () => {
                         </Col>
                         <Col span={8} offset={8} style={{ textAlign: 'right' }}>
                             <Space>
-                                <Tooltip title="수정">
+                                <Tooltip title="추가">
                                     <Button
                                         type="primary"
-                                        onClick={handleEdit}
+                                        onClick={handleAdd}
                                         style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
                                         icon={<EditFilled />}
                                     >
-                                        수정
-                                    </Button>
-                                </Tooltip>
-                                <Tooltip title="삭제">
-                                    <Button
-                                        type="danger"
-                                        onClick={handleDel}
-                                        style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
-                                        icon={<DeleteFilled />}
-                                    >
-                                        삭제
+                                        추가
                                     </Button>
                                 </Tooltip>
                             </Space>
@@ -364,15 +558,295 @@ export const Goodsgroup = () => {
                     </Row>
                     <Table
                         components={components}
-                        rowClassName={() => 'editable-row'}
+                        //rowClassName={() => 'editable-row'}
                         bordered={true}
                         dataSource={dataSource}
                         loading={loading}
                         columns={columns}
-                        rowSelection={rowSelection}
+                        //rowSelection={rowSelection}
                     />
                 </Typography>
             </MainCard>
+
+            {/* 반입금지물품 추가 폼 Start */}
+            <Drawer
+                maskClosable={false}
+                title={`반입금지물품 ${dataEdit === true ? '수정' : '추가'}`}
+                onClose={onAddClose}
+                open={open}
+                width={500}
+                style={{ top: '60px', zIndex: 888 }}
+                extra={
+                    <>
+                        <Space>
+                            <Tooltip title="취소" placement="bottom">
+                                <Button onClick={onAddClose} style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}>
+                                    취소
+                                </Button>
+                            </Tooltip>
+                            {dataEdit === true ? (
+                                <Tooltip title="수정" placement="bottom" color="#108ee9">
+                                    <Button
+                                        onClick={onUpdateSubmit}
+                                        style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                        type="primary"
+                                    >
+                                        수정
+                                    </Button>
+                                </Tooltip>
+                            ) : (
+                                <Tooltip title="추가" placement="bottom" color="#108ee9">
+                                    <Button
+                                        onClick={onSaveSubmit}
+                                        style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                        type="primary"
+                                    >
+                                        저장
+                                    </Button>
+                                </Tooltip>
+                            )}
+                            <Tooltip title="삭제">
+                                <Button type="danger" onClick={onDelete} style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}>
+                                    삭제
+                                </Button>
+                            </Tooltip>
+                        </Space>
+                    </>
+                }
+            >
+                <MainCard>
+                    <Form name="Unit_Add" layout="vertical" form={form}>
+
+                        <Row gutter={24}>
+                            <Col span={24}>
+                                <Form.Item
+                                    name="groupName"
+                                    label="물품명"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Please Enter groupName Name'
+                                        }
+                                    ]}
+                                >
+                                    <Input
+                                        type="text"
+                                        name="groupName"                                    
+                                        value={unitParams?.groupName}
+                                        defaultValue={unitParams?.groupName}
+                                        onChange={(e) => setUnitParams({ ...unitParams, "groupName": e.target.value })}
+                                        style={{
+                                            width: '100%'
+                                        }}
+                                        placeholder="Please Enter groupName Name"
+                                    />
+                                </Form.Item>
+                            </Col>
+                        </Row>                        
+                        <Divider style={{ margin: '10px 0' }} />
+
+                        <Row gutter={24}>
+                            <Col span={24}>
+                                <Form.Item
+                                    name="groupDesc"
+                                    label="물품설명"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Please Enter groupDesc Name'
+                                        }
+                                    ]}
+                                >
+                                    <Input
+                                        type="text"
+                                        name="groupDesc"                                    
+                                        value={unitParams?.groupDesc}
+                                        defaultValue={unitParams?.groupDesc}
+                                        onChange={(e) => setUnitParams({ ...unitParams, "groupDesc": e.target.value })}
+                                        style={{
+                                            width: '100%'
+                                        }}
+                                        placeholder="Please Enter groupDesc Name"
+                                    />
+                                </Form.Item>
+                            </Col>
+                        </Row>
+
+                        <Row gutter={24}>
+                            <Col span={24}>
+                                <Form.Item
+                                    name="openYn"
+                                    label="개봉여부"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Please Enter openYn Name'
+                                        }
+                                    ]}
+                                >
+                                <Select
+                                    defaultValue = {()=>unitParams?.openYn}
+                                    onChange={(e) =>  setUnitParams({ ...unitParams, "openYn": e })}
+                                    style={{
+                                        width: '100%'
+                                    }}
+                                    options={[
+                                        {
+                                            value: 'OPEN',
+                                            label: '개봉'
+                                        },
+                                        {
+                                            value: 'CLOSE',
+                                            label: '미개봉'
+                                        },
+                                    ]}	
+                                />    
+                                </Form.Item>                            
+                            </Col>
+                        </Row>
+
+                        <Row gutter={24}>
+                            <Col span={24}>
+                                <Form.Item
+                                    name="passYn"
+                                    label="통과여부"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Please Enter passYn Name'
+                                        }
+                                    ]}
+                                >
+                                <Select
+                                    defaultValue = {()=>unitParams?.passYn}
+                                    onChange={(e) => setUnitParams({ ...unitParams, "passYn": e })}
+                                    style={{
+                                        width: '100%'
+                                    }}
+                                    options={[
+                                        {
+                                            value: 'Prohibited',
+                                            label: '금지'
+                                        },
+                                        {
+                                            value: 'Restricted',
+                                            label: '제한'
+                                        },
+                                        {
+                                            value: 'PASS',
+                                            label: '통과'
+                                        },
+                                    ]}			
+                                />    
+                                </Form.Item>                            
+                            </Col>
+                        </Row>                        
+
+                        <Row gutter={24}>
+                            <Col span={24}>
+                                <Form.Item
+                                    name="useYn"
+                                    label="사용유무"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Please Enter useYn'
+                                        }
+                                    ]}
+                                >
+                                <Select
+                                    defaultValue={unitParams?.useYn}
+                                    onChange={(e) => setUnitParams({ ...unitParams, "useYn": e })}
+                                    style={{
+                                        width: '100%'
+                                    }}
+                                    options={[
+                                        {
+                                            value: 'Y',
+                                            label: '사용'
+                                        },
+                                        {
+                                            value: 'N',
+                                            label: '미사용'
+                                        },
+                                    ]}
+                                />
+                                </Form.Item>
+                            </Col>
+                        </Row>
+
+                        <Row gutter={24}>
+                            <Col span={24}>
+                                <Form.Item
+                                    name="languageCode"
+                                    label="언어 선택"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Please Enter languageCode'
+                                        }
+                                    ]}
+                                >
+                                <Select
+                                    defaultValue={unitParams?.languageCode}
+                                    onChange={(e) => setUnitParams({ ...unitParams, "languageCode": e })}
+                                    style={{
+                                        width: '100%'
+                                    }}
+                                    options={[
+                                        {
+                                            value: 'kor',
+                                            label: '한국어'
+                                        },
+                                        {
+                                            value: 'eng',
+                                            label: '영어'
+                                        },
+                                    ]}
+                                />
+                                </Form.Item>
+                            </Col>
+                        </Row>
+
+                        <Row gutter={24}>
+                            <Col span={24}>
+                                <Form.Item name="FileR">
+                                    <Space direction="vertical">
+                                        <Card
+                                            size="small"
+                                            style={{
+                                                width: 200
+                                            }}
+                                        >
+                                                <Button 
+                                                    onClick={handleButtonClick1}
+                                                    icon={<UploadOutlined />}
+                                                    style={{ height: '40px', width: '170px', padding: '0 10px', backgroundColor: '#f0f0f0' }}
+                                                >
+                                                   반입금지물품 이미지
+                                                </Button>                                                        
+                                                <input type="file"
+                                                        //ref={fileInput1}
+                                                        /*onChange={handleChange} */
+                                                        onChange={saveImgFile1}
+                                                        ref={imgRef1}
+                                                        style={{ display: "none" }} />                                                     
+                                        </Card>
+                                    </Space>
+                                    <Space direction="vertical">
+                                        {imgEdit === true ?  
+                                            <img src={unitParams.imgFile!==null ? 'data:image/png;base64,' + unitParams.imgFile : noImage} width={280} height={280} alt="real image" />
+                                            : 
+                                            <img src={imgFile1 ? imgFile1 :noImage} width={200} height={200} alt="real image"/>                                            
+                                        }
+                                    </Space>
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                    </Form>
+                </MainCard>
+            </Drawer>
+            {/* 이미지 관리 추가 폼 End */}            
         </>
     );
 };

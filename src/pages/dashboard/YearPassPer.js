@@ -18,7 +18,7 @@ const areaChartOptions = {
             opacity: 0.1
         }
     },
-    colors: ['#faad14', '#52c41a'],
+    colors: ['#faad14', '#52c41a', '#FF0000'],
     dataLabels: {
         enabled: true
     },
@@ -84,6 +84,10 @@ const IncomeAreaChart = () => {
         {
             name: '합격자',
             data: [5, 9, 12, 18, 23, 10, 16]
+        },
+        {
+            name: '평균',
+            data: [7, 9, 18, 20, 25, 20, 15]
         }
     ]);
 

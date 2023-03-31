@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+/* eslint-disable*/
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 // import { Link as RouterLink } from 'react-router-dom';
@@ -14,65 +14,57 @@ import ReactApexChart from 'react-apexcharts';
 // project import
 import Dot from 'components/@extended/Dot';
 
-function createData(trackingNo, name, totalcnt, bcnt, cper) {
-    return { trackingNo, name, totalcnt, bcnt, cper };
+function createData(userName, name, totalcnt, bcnt, cper) {
+    return { userName, name, totalcnt, bcnt, cper };
 }
 
 const rows = [
     createData(
-        84564564,
+        '김상철',
         <span>
-            Aerosol
-            <br />
-            [에어로졸]
+            x-ray 판독 초급2023 - 1차
         </span>,
-        119,
-        82,
-        69
+        30,
+        20,
+        80
     ),
     createData(
-        84564565,
+        '서세원',
         <span>
-            Alcohol
-            <br />
-            [알콜]
+            x-ray 판독 초급2023 - 1차
         </span>,
-        249,
-        136,
-        55
+        30,
+        10,
+        33
     ),
     createData(
-        84564566,
+        '홍서방',
         <span>
-            Ax <br /> [도끼]
+            x-ray 판독 중급2023 - 1차
         </span>,
-        244,
-        133,
-        55
+        30,
+        30,
+        100
     ),
     createData(
-        84564567,
+        '강민',
         <span>
-            Bat
-            <br />
-            [배트]
+            x-ray 판독 중급2023 - 1차
         </span>,
-        25,
+        30,
         1,
-        4
+        93
     ),
     createData(
-        84564568,
+        '김갑분',
         <span>
-            Battery
-            <br />
-            [배터리]
+            x-ray 판독 고급2023 - 1차
         </span>,
-        104,
-        66,
-        63
+        30,
+        2,
+        90
     ),
-    createData(
+    /*createData(
         84564569,
         <span>
             Bullet
@@ -423,7 +415,7 @@ const rows = [
         34,
         20,
         59
-    )
+    )*/
 ];
 
 const areaChartOptions = {
@@ -511,22 +503,22 @@ function stableSort(array, comparator) {
 
 const headCells = [
     {
-        id: 'trackingNo',
+        id: 'userName',
         align: 'center',
         disablePadding: false,
-        label: '제품번호'
+        label: '교육생'
     },
     {
         id: 'name',
         align: 'center',
         disablePadding: true,
-        label: '상품명'
+        label: '교육명'
     },
     {
         id: 'totalcnt',
         align: 'center',
         disablePadding: false,
-        label: '총건수'
+        label: '문제 출제수'
         // },
         // {
         //     id: 'aper',
@@ -615,10 +607,10 @@ OrderStatus.propTypes = {
 
 export default function OrderTable() {
     const [order] = useState('asc');
-    const [orderBy] = useState('trackingNo');
+    const [orderBy] = useState('userName');
     const [selected] = useState([]);
 
-    const isSelected = (trackingNo) => selected.indexOf(trackingNo) !== -1;
+    const isSelected = (userName) => selected.indexOf(userName) !== -1;
 
     return (
         <Box>
@@ -646,7 +638,7 @@ export default function OrderTable() {
                     <OrderTableHead order={order} orderBy={orderBy} />
                     <TableBody>
                         {stableSort(rows, getComparator(order, orderBy)).map((row, index) => {
-                            const isItemSelected = isSelected(row.trackingNo);
+                            const isItemSelected = isSelected(row.userName);
                             const labelId = `enhanced-table-checkbox-${index}`;
 
                             return (
@@ -656,11 +648,11 @@ export default function OrderTable() {
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                     aria-checked={isItemSelected}
                                     tabIndex={-1}
-                                    key={row.trackingNo}
+                                    key={row.userName}
                                     selected={isItemSelected}
                                 >
                                     <TableCell align="center" style={{ width: '20%', fontSize: '14px' }}>
-                                        {row.trackingNo}
+                                        {row.userName}
                                     </TableCell>
                                     <TableCell align="center" style={{ width: '25%', fontSize: '14px' }}>
                                         {row.name}

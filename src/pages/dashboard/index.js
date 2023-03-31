@@ -29,7 +29,7 @@ export const DashboardDefault = () => {
             {stateShow === true ? (
                 <Grid container>
                     {/* row 1 */}
-                    <Grid item xs={12} mb={7} lg={12}>
+                    {/* <Grid item xs={12} mb={7} lg={12}>
                         <Grid container alignItems="center" justifyContent="space-between">
                             <Grid item>
                                 <Typography variant="h5">문제별 오답건</Typography>
@@ -40,13 +40,13 @@ export const DashboardDefault = () => {
                                 <IncomeAreaChart />
                             </Box>
                         </MainCard>
-                    </Grid>
+                    </Grid>*/}
 
                     {/* row 2 */}
                     <Grid item xs={12} mb={15} lg={12}>
                         <Grid container alignItems="center" justifyContent="space-between">
                             <Grid item>
-                                <Typography variant="h5">문제별 오답률</Typography>
+                                <Typography variant="h5">교육생 오답률</Typography>
                             </Grid>
                             <Grid item />
                         </Grid>
@@ -69,7 +69,7 @@ export const DashboardDefault = () => {
                         </MainCard>
                     </Grid>
 
-                    {/* row 4 */}
+                    {/* row 4 
                     <Grid item xs={12} lg={12}>
                         <Grid container alignItems="center" justifyContent="space-between">
                             <Grid item>
@@ -80,7 +80,7 @@ export const DashboardDefault = () => {
                         <MainCard sx={{ mt: 2 }} content={false}>
                             <YearOrder />
                         </MainCard>
-                    </Grid>
+                    </Grid>*/}
                 </Grid>
             ) : null}
         </>
