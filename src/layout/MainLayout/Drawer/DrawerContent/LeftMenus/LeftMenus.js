@@ -30,8 +30,8 @@ const items = [
             getItem(<Link to="/contents/imagesmanagement">이미지 관리</Link>, '3', <FileTextOutlined />)
         ]),
         getItem('X-ray 콘텐츠 관리', 'g2', <BlockOutlined />, [
-            getItem(<Link to="/contents/imagesmanagement">정보 관리</Link>, '4', <FileTextOutlined />),
-            getItem('이미지 관리', '5', <FileTextOutlined />)
+            getItem(<Link to="/contents/xrayinformation">정보 관리</Link>, '4', <FileTextOutlined />),
+            getItem(<Link to="/contents/xrayimagesmanagement">이미지 관리</Link>, '5', <FileTextOutlined />)
         ])
          , getItem('실제사례 콘텐츠 관리', 'g4', <BlockOutlined />, [getItem('실제사례 관리', '8', <FileTextOutlined />)])
     ]),

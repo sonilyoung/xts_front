@@ -1,13 +1,20 @@
-/* eslint-disable no-unused-vars */
+/* eslint-disable*/
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Typography } from '@mui/material';
-import { Col, Row, Button, Form, Input, Table, Select, Space, Tooltip, Skeleton, Modal } from 'antd';
+import { Col, Row, Space, Card, Table, Tooltip, Tag, Button, Upload, Drawer, Divider, Input, Select, Switch, Form, Modal, Dragger, Skeleton } from 'antd';
+
 import {
     useGetXrayinformationListMutation,
-    useGetXrayinformationSubListMutation
+    useGetXrayinformationSubListMutation,
+    useInsertXrayContentsMutation,//xray컨텐츠등록
+    useUpdateXrayContentsMutation,//xray컨텐츠삭제
+    useDeleteXrayContentsMutation,//xray컨텐츠수정
+    useInsertXrayUnitMutation,//xray컨텐츠 물품등록
+    useDeleteXrayUnitMutation,//xray컨텐츠 물품삭제    
+    useSelectUnitPopupListMutation//물품팝업리스트
 } from '../../../hooks/api/ContentsManagement/ContentsManagement';
 
-import { EditFilled, DeleteFilled, ExclamationCircleFilled } from '@ant-design/icons';
+import { PlusOutlined, EditFilled, DeleteFilled, UploadOutlined, MinusCircleOutlined , ExclamationCircleFilled} from '@ant-design/icons';
 
 // project import
 import MainCard from 'components/MainCard';
@@ -19,14 +26,32 @@ export const Xrayinformation = () => {
     const [getXrayinformationSubList] = useGetXrayinformationSubListMutation(); // 콘텐츠 정보 관리 hooks api호출
     const [xrayinformationList, setXrayinformationList] = useState(); // 콘텐츠 정보관리 리스트 상단 값
     const [xrayinformationSubList, setXrayinformationSubList] = useState(); // 콘텐츠 정보관리 리스트 하단 값
+
+    const [insertXrayContents] = useInsertXrayContentsMutation(); // xray컨텐츠등록 hooks api호출
+    const [updateXrayContents] = useUpdateXrayContentsMutation(); // xray컨텐츠수정 hooks api호출
+    const [deleteXrayContents] = useDeleteXrayContentsMutation(); // xray컨텐츠삭제 hooks api호출
+    const [insertXrayUnit] = useInsertXrayUnitMutation(); // xray컨텐츠 물품등록 hooks api호출
+    const [deleteXrayUnit] = useDeleteXrayUnitMutation(); // xray컨텐츠 물품삭제 hooks api호출
+    const [selectUnitPopupList] = useSelectUnitPopupListMutation(); // xray컨텐츠 물품삭제 hooks api호출
+
+    const [unitPopupList, setUnitPopupList] = useState([]);
+    const [targetUnitPopupList, setTargetUnitPopupList] = useState([]);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]); //셀렉트 박스 option Selected 값(상단)
     const [selectedRowKeysSub, setSelectedRowKeysSub] = useState([]); //셀렉트 박스 option Selected 값(하단)
+    const [selectedKeyPop, setSelectedKeyPop] = useState([]); //셀렉트 박스 option Selected 값(하단)
     const [dataSource, setDataSource] = useState([]); // 상단 Table 데이터 값
     const [dataSourceSub, setDataSourceSub] = useState([]); // 하단 Table 데이터 값
+    const [dataSourcePop, setDataSourcePop] = useState([]); // 단품팝업목록
     const [bagScanId, setBagScanId] = useState('');
 
     const [loading, setLoading] = useState(false);
     const [loadingSub, setLoadingSub] = useState(false);
+    const [loadingPop, setLoadingPop] = useState(false);
+    const [params, setParams] = useState({});
+    const [form] = Form.useForm();
+    const [dataEdit, setDataEdit] = useState(false); // Drawer 수정 우측폼 상태
+    const [open, setOpen] = useState(false); // Drawer 추가 우측폼 상태
+    const [onSearchItem, setOnSearchItem] = useState(false); // 물품명칭 언어추가 Modal
 
     // 데이터 값 선언
     const handleXrayinformation = async () => {
@@ -34,7 +59,7 @@ export const Xrayinformation = () => {
         setXrayinformationList(Xrayinformationresponse?.data?.RET_DATA);
         setDataSource([
             ...Xrayinformationresponse?.data?.RET_DATA.map((d, i) => ({
-                key: d.unitId,
+                key: d.bagScanId,
                 rowdata0: i + 1,
                 rowdata1: d.bagScanId /*가방촬영id*/,
                 rowdata2: d.unitId /*물품id*/,
@@ -42,7 +67,7 @@ export const Xrayinformation = () => {
                 rowdata4: d.openYn /*개봉여부*/,
                 rowdata5: d.passYn /*통과여부*/,
                 rowdata6: d.actionDiv /*action구분*/,
-                rowdata7: d.studyLvl /*학습레벨*/,
+                rowdata7: d.studyLvl /*학습Level*/,
                 rowdata8: d.useYn /*사용여부*/,
                 rowdata9: d.frontUseYn /*정면사용여부*/,
                 rowdata10: d.sideUseYn /*측면사용여부*/,
@@ -65,7 +90,7 @@ export const Xrayinformation = () => {
         setXrayinformationSubList(XrayinformationresponseSub?.data?.RET_DATA);
         setDataSourceSub([
             ...XrayinformationresponseSub?.data?.RET_DATA.map((s, i) => ({
-                key: s.unitId,
+                key: s.bagScanId,
                 rowdata0: i + 1,
                 rowdata1: s.bagScanId /*가방촬영id*/,
                 rowdata2: s.unitId /*물품id*/,
@@ -73,22 +98,18 @@ export const Xrayinformation = () => {
                 rowdata4: s.openYn /*개봉여부*/,
                 rowdata5: s.passYn /*통과여부*/,
                 rowdata6: s.actionDiv /*action구분*/,
-                rowdata7: s.studyLvl /*학습레벨*/,
+                rowdata7: s.studyLvl /*학습Level*/,
                 rowdata8: s.useYn /*사용여부*/,
-                rowdata9: s.frontUseYn /*정면사용여부*/,
-                rowdata10: s.sideUseYn /*측면사용여부*/,
-                rowdata11: s.decipMachineCd /*판독기기코드*/,
-                rowdata12: s.duplexYn /*양방향여부*/,
                 rowdata13: s.seq /*순번*/,
                 rowdata14: s.insertDate /*등록일시*/,
                 rowdata15: s.insertId /*등록자*/,
-                rowdata16: s.updateDate /*수정일시*/,
-                rowdata17: s.updateId /*수정자*/,
+                rowdata16: s.answerItem /*정답물품*/,
                 rowdata18: s.unitDesc /*물품설명*/
             }))
         ]);
         setLoadingSub(false);
     };
+
 
     const EditableContext = React.createContext(null);
     const EditableRow = ({ ...props }) => {
@@ -162,7 +183,7 @@ export const Xrayinformation = () => {
             )
         },
         {
-            width: '100px',
+            width: '200px',
             title: '가방촬영ID',
             dataIndex: 'rowdata1',
             align: 'center',
@@ -175,7 +196,7 @@ export const Xrayinformation = () => {
             )
         },
         {
-            width: '100px',
+            width: '200px',
             title: '물품ID',
             dataIndex: 'rowdata2',
             align: 'center',
@@ -226,7 +247,7 @@ export const Xrayinformation = () => {
             )
         },
         {
-            width: '100px',
+            width: '200px',
             title: 'Action구분',
             dataIndex: 'rowdata6',
             align: 'center',
@@ -239,8 +260,8 @@ export const Xrayinformation = () => {
             )
         },
         {
-            width: '120px',
-            title: '학습레벨',
+            width: '100px',
+            title: '학습Level',
             dataIndex: 'rowdata7',
             align: 'center',
             render: (_, { rowdata7 }) =>
@@ -257,26 +278,30 @@ export const Xrayinformation = () => {
                         options={[
                             {
                                 value: '1',
-                                label: '1레벨'
+                                label: '1Level'
                             },
                             {
                                 value: '2',
-                                label: '2레벨'
+                                label: '2Level'
                             },
                             {
                                 value: '3',
-                                label: '3레벨'
+                                label: '3Level'
                             },
                             {
                                 value: '4',
-                                label: '4레벨'
-                            }
+                                label: '4Level'
+                            },
+                            {
+                                value: '5',
+                                label: '5Level'
+                            }                            
                         ]}
                     />
                 ) : null
         },
         {
-            width: '120px',
+            width: '100px',
             title: '사용여부',
             dataIndex: 'rowdata8',
             align: 'center',
@@ -293,11 +318,11 @@ export const Xrayinformation = () => {
                         onChange={handleChange}
                         options={[
                             {
-                                value: '0',
+                                value: 'N',
                                 label: '미사용'
                             },
                             {
-                                value: '1',
+                                value: 'Y',
                                 label: '사용'
                             }
                         ]}
@@ -315,15 +340,109 @@ export const Xrayinformation = () => {
             align: 'center'
         },
         {
-            width: '100px',
+            width: '200px',
             title: '가방촬영ID',
             dataIndex: 'rowdata1',
             align: 'center'
         },
         {
-            width: '90px',
-            title: '순번',
-            dataIndex: 'rowdata13',
+            width: '200px',
+            title: '물품ID',
+            dataIndex: 'rowdata2',
+            align: 'center'
+        },
+        {
+            width: '200px',
+            title: '물품명칭',
+            dataIndex: 'rowdata3',
+            align: 'center'
+        },
+        {
+            title: '물품설명',
+            dataIndex: 'rowdata18',
+            align: 'center'
+        },
+        {
+            width: '200px',
+            title: '개봉여부',
+            dataIndex: 'rowdata4',
+            align: 'center'
+        },
+        {
+            width: '200px',
+            title: '통과여부',
+            dataIndex: 'rowdata5',
+            align: 'center'
+        },
+        {
+            width: '200px',
+            title: 'Action구분',
+            dataIndex: 'rowdata6',
+            align: 'center'
+        },
+        {
+            width: '200px',
+            title: '정답물품',
+            dataIndex: 'rowdata16',
+            align: 'center',
+            render: (_, { rowdata1, rowdata2, rowdata16 }) =>
+                 (
+                    <Select
+                        labelInValue
+                        defaultValue={{
+                            //value: `${rowdata16}`
+                        }}
+                        style={{
+                            width: '100%'
+                        }}
+                        //onChange={handleChange}
+                        onChange={(selectedAnswerItem) => {
+                            console.log("rowdata1:", rowdata1);
+                            console.log("rowdata2:", rowdata2);
+
+                            console.log("정답:", selectedAnswerItem.value);
+                            console.log("setBagScanId:", bagScanId);
+                            var arrTemp = [];
+                            var tempTarget = targetUnitPopupList.find(v => v.unitScanId === rowdata1);
+                            //object copy
+                            const tempTargetAdd = {
+                                ...tempTarget,
+                                answerItem: selectedAnswerItem.value
+                            };
+                            //Object.preventExtensions(tempTarget);
+
+                            arrTemp.push(tempTargetAdd);
+
+                            setTargetUnitPopupList(arrTemp);                            
+                            console.log("arrTemp:", arrTemp);
+                        }}
+                        options={[
+                            {
+                                value: 'N',
+                                label: '미정답'
+                            },
+                            {
+                                value: 'Y',
+                                label: '정답'
+                            }
+                        ]}
+                    />
+                ) 
+        }                
+    ];
+
+    // 팝업 테이블 title
+    const defaultColumnsPop = [
+        {
+            width: '50px',
+            title: 'No',
+            dataIndex: 'rowdata0',
+            align: 'center'
+        },
+        {
+            width: '100px',
+            title: '가방촬영ID',
+            dataIndex: 'rowdata1',
             align: 'center'
         },
         {
@@ -333,7 +452,7 @@ export const Xrayinformation = () => {
             align: 'center'
         },
         {
-            width: '180px',
+            width: '100px',
             title: '물품명칭',
             dataIndex: 'rowdata3',
             align: 'center'
@@ -356,13 +475,14 @@ export const Xrayinformation = () => {
             align: 'center'
         },
         {
-            width: '100px',
+            width: '200px',
             title: 'Action구분',
             dataIndex: 'rowdata6',
             align: 'center'
         }
-    ];
+    ];    
 
+    //정답물품선택
     const handleChange = (value) => {
         console.log(`selected ${value}`);
     };
@@ -418,6 +538,24 @@ export const Xrayinformation = () => {
         };
     });
 
+
+    const columnsPop = defaultColumnsPop.map((col) => {
+        if (!col.editable) {
+            return col;
+        }
+        return {
+            ...col,
+            onCell: (record) => ({
+                record,
+                editable: col.editable,
+                dataIndex: col.dataIndex,
+                title: col.title,
+                handleSave
+            })
+        };
+    });
+
+
     //체크 박스 이벤트 (상단)
     const onSelectChange = (newSelectedRowKeys) => {
         console.log('selectedRowKeys changed: ', newSelectedRowKeys);
@@ -429,6 +567,12 @@ export const Xrayinformation = () => {
         console.log('selectedRowKeysSub changed: ', newSelectedRowKeysSub);
         setSelectedRowKeysSub(newSelectedRowKeysSub);
     };
+
+    //체크 박스 이벤트 (하단)
+    const onSelectChangePop = (selectedKeyPop) => {
+        console.log('selectedKeyPop changed: ', selectedKeyPop);
+        setSelectedKeyPop(selectedKeyPop);
+    };    
 
     //체크 박스 선택 (상단)
     const rowSelection = {
@@ -442,8 +586,17 @@ export const Xrayinformation = () => {
         onChange: onSelectChangeSub
     };
 
+
+    //체크 박스 선택 (팝업)
+    const rowSelectionPop = {
+        selectedKeyPop,
+        onChange: onSelectChangePop
+    };    
+
     // 수정 (상단)
     const handleEdit = () => {
+
+
         if (selectedRowKeys == '') {
             Modal.error({
                 content: '수정할 항목을 선택해주세요.'
@@ -470,30 +623,129 @@ export const Xrayinformation = () => {
                 okType: 'danger',
                 cancelText: '아니오',
                 onOk() {
-                    Modal.success({
-                        content: '삭제완료'
-                    });
+                    onDeleteSubmit();
                 },
                 onCancel() {
-                    Modal.error({
-                        content: '삭제취소'
-                    });
+                    //Modal.error({
+                        //content: '삭제취소'
+                    //});
                 }
             });
         }
     };
 
-    // 수정 (하단)
-    const handleEditSub = () => {
-        if (selectedRowKeysSub == '') {
-            Modal.error({
-                content: '수정할 항목을 선택해주세요.'
-            });
+
+    const onSaveSubmit = async () => {
+        setLoading(true);
+        params.unitScanId = targetUnitPopupList[0].unitScanId;
+        params.unitId = targetUnitPopupList[0].unitId;
+        params.unitGroupCd = targetUnitPopupList[0].unitGroupCd;
+        console.log('저장:', params)
+        const response = await insertXrayContents({     
+            "studyLvl" : params?.studyLvl,
+            //"unitId" : params?.unitId,
+            //"unitScanId" : params?.unitScanId,
+            "useYn" : params?.useYn,
+            //"unitGroupCd" : params?.unitGroupCd   
+        });
+        setLoading(false);
+        if ((response?.data?.RET_CODE === "0000") ||(response?.data?.RET_CODE === "0100")) {
+            Modal.success({
+                content: response?.data?.RET_DESC
+            });            
         } else {
             Modal.success({
-                content: '수정완료'
-            });
+                content: response?.data?.RET_DESC
+            });             
         }
+        handleXrayinformation(); // 그룹 api 호출
+        //handleXrayinformationSub(params?.unitScanId);
+    };
+
+    const onDeleteSubmit = async () => {
+        setLoading(true);
+        console.log('삭제:', selectedRowKeys)
+
+        const response = await deleteXrayContents({     
+            "bagScanIds" : selectedRowKeys,
+        });
+        setLoading(false);
+
+        if ((response?.data?.RET_CODE === "0000") ||(response?.data?.RET_CODE === "0100")) {
+            Modal.success({
+                content: response?.data?.RET_DESC
+            });            
+        } else {
+            Modal.success({
+                content: response?.data?.RET_DESC
+            });             
+        }
+        handleXrayinformation(); // 그룹 api 호출
+    };
+
+
+
+    const onDelete = async () => {
+        setLoading(true);
+        params.unitScanId = targetUnitPopupList.unitScanId;
+        params.unitId = targetUnitPopupList.unitId;
+        params.unitGroupCd = targetUnitPopupList.unitGroupCd;
+        console.log('저장:', params)
+        const response = await insertXrayContents({     
+            "studyLvl" : params?.studyLvl,
+            "unitId" : params?.unitId,
+            "unitScanId" : params?.unitScanId,
+            "useYn" : params?.useYn,
+            "unitGroupCd" : params?.unitGroupCd   
+        });
+        setLoading(false);
+        if ((response?.data?.RET_CODE === "0000") ||(response?.data?.RET_CODE === "0100")) {
+            Modal.success({
+                content: response?.data?.RET_DESC
+            });            
+        } else {
+            Modal.success({
+                content: response?.data?.RET_DESC
+            });             
+        }
+        handleXrayinformation(); // 그룹 api 호출
+        //handleXrayinformationSub(params?.unitScanId); 
+    } 
+
+
+    
+    // 하단 저장
+    const handleSaveSub = async () => {    
+        setLoading(true);
+
+        console.log('하단저장:', params)
+        const response = await insertXrayUnit({     
+            "bagScanId" : params?.studyLvl,
+            "seq" : params?.unitId,
+            "unitId" : params?.unitScanId,
+            "answerItem" : params?.useYn,
+        });
+        setLoading(false);
+        if ((response?.data?.RET_CODE === "0000") ||(response?.data?.RET_CODE === "0100")) {
+            Modal.success({
+                content: response?.data?.RET_DESC
+            });            
+        } else {
+            Modal.success({
+                content: response?.data?.RET_DESC
+            });             
+        }
+        handleXrayinformation(); // 그룹 api 호출
+        //handleXrayinformationSub(params?.unitScanId);         
+    }
+
+
+    // 수정 (하단)
+    const handleEditSub = () => {
+
+        Modal.success({
+            content: '저장완료'
+        });
     };
 
     // 삭제 (하단)
@@ -524,6 +776,103 @@ export const Xrayinformation = () => {
         }
     };
 
+    // 추가버튼(상단)
+    const handleAdd = () => {
+        setDataEdit(false);
+        setOpen(true);
+        setParams(null);
+        form.resetFields();   
+    };
+
+    // 추가 취소(상단)
+    const onAddClose = () => {
+        console.log('취소');
+        setOpen(false);
+        setDataEdit(false);
+        form.resetFields();
+    };
+
+
+    // 물품명칭 언어 추가 Start
+    const Unit_Language = () => {
+        setOnSearchItem(true);
+    };
+    const Unit_LanguageOk = () => {
+        setOnSearchItem(false);
+        form.resetFields();
+    };
+    const Unit_LanguageCancel = () => {
+        setOnSearchItem(false);
+        form.resetFields();
+    };
+    const Unit_LanguageAdd = (values) => {
+        console.log('Received values of form:', values);
+    };
+
+    //물품팝업리스트호출
+    const handleUnitPoupList = () =>{
+        setOnSearchItem(true);
+        handleSelectUnitPopupList();
+    }
+
+    //물품팝업리스트
+    const handleSelectUnitPopupList = async () => {
+        const popupList = await selectUnitPopupList({"languageCode" : 'kor'});
+        setUnitPopupList(popupList?.data?.RET_DATA);
+        setDataSourcePop([
+            ...popupList?.data?.RET_DATA.map((s, i) => ({
+                key: s.unitScanId,
+                rowdata0: i + 1,
+                rowdata1: s.unitScanId /*가방촬영id*/,
+                rowdata2: s.unitId /*물품id*/,
+                rowdata3: s.unitName /*물품명*/,
+                rowdata4: s.openYn /*개봉여부*/,
+                rowdata5: s.passYn /*통과여부*/,
+                rowdata6: s.actionDiv /*action구분*/,
+                rowdata7: s.studyLvl /*학습Level*/,
+                rowdata8: s.useYn /*사용여부*/,
+                rowdata13: s.seq /*순번*/,
+                rowdata14: s.insertDate /*등록일시*/,
+                rowdata15: s.insertId /*등록자*/,
+                rowdata18: s.unitDesc /*물품설명*/
+            }))
+        ]);
+        setLoadingSub(false);        
+    }
+
+    //물품선택팝업 -> 선택버튼클릭
+    const handleSelectPop = () =>{
+        let arrTemp = [];
+        selectedKeyPop.forEach(function(e) {
+            arrTemp.push(unitPopupList.find(v => v.unitScanId === e));
+        });
+
+        console.log('선택버튼 arrTemp:', arrTemp)
+        setTargetUnitPopupList(arrTemp);
+        //form.resetFields();
+        console.log('선택버튼 targetUnitPopupList:', targetUnitPopupList)
+
+        setDataSourceSub(
+            arrTemp.map((s, i) => ({
+                key: s.unitScanId,
+                rowdata0: i + 1,
+                rowdata1: s.unitScanId /*가방촬영id*/,
+                rowdata2: s.unitId /*물품id*/,
+                rowdata3: s.unitName /*물품명*/,
+                rowdata4: s.openYn /*개봉여부*/,
+                rowdata5: s.passYn /*통과여부*/,
+                rowdata6: s.actionDiv /*action구분*/,
+                rowdata7: s.studyLvl /*학습Level*/,
+                rowdata8: s.useYn /*사용여부*/,
+                rowdata13: s.seq /*순번*/,
+                rowdata14: s.insertDate /*등록일시*/,
+                rowdata15: s.insertId /*등록자*/,
+                rowdata18: s.unitDesc /*물품설명*/
+            }))
+        );//하단리스트목록초기화
+        setOnSearchItem(false); //팝업창닫기
+    }
+
     useEffect(() => {
         setLoading(true); // 로딩 호출
         handleXrayinformation(); // 그룹 api 호출
@@ -537,6 +886,16 @@ export const Xrayinformation = () => {
                         <Col span={8}></Col>
                         <Col span={8} offset={8} style={{ textAlign: 'right' }}>
                             <Space>
+                                <Tooltip title="추가">
+                                    <Button
+                                        type="success"
+                                        onClick={handleAdd}
+                                        style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                        icon={<PlusOutlined />}
+                                    >
+                                        추가
+                                    </Button>
+                                </Tooltip>                                 
                                 <Tooltip title="수정">
                                     <Button
                                         type="primary"
@@ -573,12 +932,22 @@ export const Xrayinformation = () => {
                         }}
                         onRow={(record) => {
                             return {
+                                /*이벤트
                                 onDoubleClick: () => {
                                     if (record.rowdata0 !== bagScanId) {
                                         setLoadingSub(true);
                                         setBagScanId(record.rowdata0);
                                         handleXrayinformationSub(record.rowdata0);
                                     }
+                                }*/
+
+                                onDoubleClick: () => {
+                                    console.log("click:", record.rowdata1);
+                                    if (record.rowdata0 !== bagScanId) {
+                                        setLoadingSub(true);
+                                        setBagScanId(record.rowdata1);
+                                        handleXrayinformationSub(record.rowdata1);     
+                                    }                               
                                 }
                             };
                         }}
@@ -586,29 +955,40 @@ export const Xrayinformation = () => {
                             y: 245
                         }}
                     />
-                    <Skeleton loading={loadingSub} active>
+                    {/*<Skeleton loading={loadingSub} active>*/}
                         <Row style={{ marginTop: '20px', marginBottom: '5px' }}>
                             <Col span={8}></Col>
                             <Col span={8} offset={8} style={{ textAlign: 'right' }}>
                                 <Space>
-                                    <Tooltip title="수정">
+                                    <Tooltip title="물품추가">
+                                        <Button
+                                            type="success"
+                                            onClick={()=>handleUnitPoupList()}
+                                            style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                            icon={<PlusOutlined />}
+                                        >
+                                            물품추가
+                                        </Button>
+                                    </Tooltip>
+
+                                    <Tooltip title="물품저장">
                                         <Button
                                             type="primary"
-                                            onClick={handleEditSub}
+                                            onClick={handleSaveSub}
                                             style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
                                             icon={<EditFilled />}
                                         >
-                                            수정
+                                            물품저장
                                         </Button>
                                     </Tooltip>
-                                    <Tooltip title="삭제">
+                                    <Tooltip title="물품삭제">
                                         <Button
                                             type="danger"
                                             onClick={handleDelSub}
                                             style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
                                             icon={<DeleteFilled />}
                                         >
-                                            삭제
+                                            물품삭제
                                         </Button>
                                     </Tooltip>
                                 </Space>
@@ -628,9 +1008,258 @@ export const Xrayinformation = () => {
                                 y: 300
                             }}
                         />
-                    </Skeleton>
+                    {/*</Skeleton>*/}
                 </Typography>
             </MainCard>
+
+
+            {/* Xray 가방 추가 폼 Start */}
+            <Drawer
+                maskClosable={false}
+                title={`Xray 가방 ${dataEdit === true ? '수정' : '추가'}`}
+                onClose={onAddClose}
+                open={open}
+                width={500}
+                style={{ top: '60px', zIndex: 888 }}
+                extra={
+                    <>
+                        <Space>
+                            <Tooltip title="취소" placement="bottom">
+                                <Button onClick={onAddClose} style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}>
+                                    취소
+                                </Button>
+                            </Tooltip>
+                            {dataEdit === true ? (
+                                <Tooltip title="수정" placement="bottom" color="#108ee9">
+                                    <Button
+                                        onClick={onUpdateSubmit}
+                                        style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                        type="primary"
+                                    >
+                                        수정
+                                    </Button>
+                                </Tooltip>
+                            ) : (
+                                <Tooltip title="추가" placement="bottom" color="#108ee9">
+                                    <Button
+                                        onClick={onSaveSubmit}
+                                        style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                        type="primary"
+                                    >
+                                        저장
+                                    </Button>
+                                </Tooltip>
+                            )}
+                            <Tooltip title="삭제">
+                                <Button type="danger" onClick={onDelete} style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}>
+                                    삭제
+                                </Button>
+                            </Tooltip>
+                        </Space>
+                    </>
+                }
+            >
+                <MainCard>
+                    <Form name="Unit_Add" layout="vertical" form={form}>
+                        <Divider style={{ margin: '10px 0' }} />
+
+                        {/* 일단 주석처리
+                        <Row gutter={24}>
+                            <Col span={24}>
+                                <Form.Item
+                                    name="unitId"
+                                    label="물품Id"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Please Enter unitId Name'
+                                        }
+                                    ]}
+                                >
+                                    <Space>
+                                        <Input
+                                            type="text"
+                                            name="unitId"                                    
+                                            value={targetUnitPopupList?.unitId}
+                                            defaultValue={targetUnitPopupList?.unitId}
+                                            onChange={(e) => setParams({ ...params, "unitId": e.target.value })}
+                                            style={{
+                                                width: '100%'
+                                            }}
+                                            placeholder="Please Enter unitId"
+                                        />
+                                        <Tooltip title="물품선택" placement="bottom">
+                                            <Button onClick={()=>handleUnitPoupList()} style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}>
+                                            물품선택
+                                            </Button>
+                                        </Tooltip>   
+                                    </Space>                                 
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                        <Row gutter={24}>
+                            <Col span={24}>
+                                <Form.Item
+                                    name="unitScanId"
+                                    label="물품ScanId"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Please Enter unitScanId'
+                                        }
+                                    ]}
+                                >
+                                    <Input
+                                        type="text"
+                                        name="unitScanId"                                       
+                                        value={targetUnitPopupList?.unitScanId}
+                                        defaultValue={targetUnitPopupList?.unitScanId}
+                                        onChange={(e) => setParams({ ...params, "unitScanId": e.target.value })}
+                                        style={{
+                                            width: '100%'
+                                        }}
+                                        placeholder="Please Enter unitScanId"
+                                    />
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                        */}
+
+                        <Row gutter={24}>
+                            <Col span={24}>
+                                <Form.Item
+                                    name="studyLvl"
+                                    label="학습Level"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Please Enter 학습Level Name'
+                                        }
+                                    ]}
+                                >
+                                <Select
+                                    defaultValue = {()=>params?.studyLvl}
+                                    onChange={(e) => setParams({ ...params, "studyLvl": e })}
+                                    style={{
+                                        width: '100%'
+                                    }}
+                                    options={[
+                                        {
+                                            value: '1',
+                                            label: '1 Level'
+                                        },
+                                        {
+                                            value: '2',
+                                            label: '2 Level'
+                                        },
+                                        {
+                                            value: '3',
+                                            label: '3 Level'
+                                        },
+                                        {
+                                            value: '4',
+                                            label: '4 Level'
+                                        },
+                                        {
+                                            value: '5',
+                                            label: '5 Level'
+                                        },                                        
+                                    ]}
+                                />    
+                                </Form.Item>                            
+                            </Col>
+                        </Row>
+
+                        <Row gutter={24}>
+                            <Col span={24}>
+                                <Form.Item
+                                    name="useYn"
+                                    label="사용 유무"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Please Enter useYn Name'
+                                        }
+                                    ]}
+                                >
+                                <Select
+                                    defaultValue = {()=>params?.useYn}
+                                    onChange={(e) => setParams({ ...params, "useYn": e })}
+                                    style={{
+                                        width: '100%'
+                                    }}
+                                    options={[
+                                        {
+                                            value: 'Y',
+                                            label: '사용'
+                                        },
+                                        {
+                                            value: 'N',
+                                            label: '미사용'
+                                        },
+                                    ]}
+                                />    
+                                </Form.Item>                            
+                            </Col>
+                        </Row>
+
+                    </Form>
+                </MainCard>
+            </Drawer>
+            {/* 추가 폼 End */}
+
+            {/* 물품추가 Modal Start */}
+            <Modal
+                open={onSearchItem}
+                onOk={Unit_LanguageOk}
+                onCancel={Unit_LanguageCancel}
+                title="물품추가"
+                width={1200}
+                style={{
+                    left: 130,
+                    zIndex: 999
+                }}
+                footer={[
+                    <Button
+                        type="default"
+                        onClick={handleSelectPop}
+                        style={{ width: '100px', borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                    >
+                        select
+                    </Button>,                    
+                    <Button
+                        type="primary"
+                        onClick={Unit_LanguageCancel}
+                        style={{ width: '100px', borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                    >
+                        close
+                    </Button>
+                ]}
+            >
+                <MainCard>
+                    <Form layout="vertical" name="Unit_Language_Add" form={form} onFinish={Unit_LanguageAdd}>
+                        <Form.Item>
+                            <Table
+                                size="small"
+                                components={components}
+                                rowClassName={() => 'editable-row'}
+                                bordered={true}
+                                dataSource={dataSourcePop}
+                                columns={columnsPop}
+                                loading={loadingPop}
+                                rowSelection={rowSelectionPop}
+                                pagination={false}
+                                scroll={{
+                                    y: 300
+                                }}
+                            />
+                        </Form.Item>
+                    </Form>
+                </MainCard>
+            </Modal>
+            
+            {/* 물품추가 Modal End */}            
+
         </>
     );
 };

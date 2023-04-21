@@ -1,0 +1,1 @@
+export { XrayInfoManagement } from './XrayInfoManagement';

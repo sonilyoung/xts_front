@@ -202,7 +202,7 @@ export const ImagesManagement = () => {
             "unitScanId" : e
         });
         
-        //console.log('unitName2:',response.data.RET_DATA.unitName);
+        console.log('이미지가져오기:',response.data.RET_DATA);
         setUnitParams(response.data.RET_DATA);
         //params = response.data.RET_DATA;
 
@@ -219,7 +219,6 @@ export const ImagesManagement = () => {
             "unitScanId" : e?.rowdata1?.key
         });
         
-        //console.log('unitName2:',response.data.RET_DATA.unitName);
         setUnitParams(response.data.RET_DATA);
         //params = response.data.RET_DATA;
         form.resetFields();

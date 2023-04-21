@@ -147,7 +147,7 @@ export const contentsManagement = createApi({
         // X-ray 콘텐츠 관리 > 정보 관리(상단)
         getXrayinformationList: builder.mutation({
             query: (body) => ({
-                url: 'contents/selectXrayInformationList.do',
+                url: 'contents/selectXrayContentsList.do',
                 method: 'POST',
                 body: body
             })
@@ -156,7 +156,7 @@ export const contentsManagement = createApi({
         // X-ray 콘텐츠 관리 > 정보 관리(하단)
         getXrayinformationSubList: builder.mutation({
             query: (body) => ({
-                url: 'contents/selectXrayDetailList.do',
+                url: 'contents/selectXrayUnitList.do',
                 method: 'POST',
                 body: body
             })
@@ -207,6 +207,61 @@ export const contentsManagement = createApi({
                 contentType: 'multipart/form-data'
             })
         }),
+
+        //xray컨텐츠등록
+        insertXrayContents: builder.mutation({
+            query: (body) => ({
+                url: 'contents/insertXrayContents.do',
+                method: 'POST',
+                body: body
+            })
+        }),
+
+        //xray컨텐츠수정
+        updateXrayContents: builder.mutation({
+            query: (body) => ({
+                url: 'contents/updateXrayContents.do',
+                method: 'POST',
+                body: body
+            })
+        }),   
+
+        //xray컨텐츠삭제
+        deleteXrayContents: builder.mutation({
+            query: (body) => ({
+                url: 'contents/deleteXrayContents.do',
+                method: 'POST',
+                body: body
+            })
+        }),        
+
+        //xray컨텐츠 물품등록
+        insertXrayUnit: builder.mutation({
+            query: (body) => ({
+                url: 'contents/insertXrayUnit.do',
+                method: 'POST',
+                body: body
+            })
+        }),
+
+        //xray컨텐츠 물품삭제
+        deleteXrayUnit: builder.mutation({
+            query: (body) => ({
+                url: 'contents/deleteXrayUnit.do',
+                method: 'POST',
+                body: body
+            })
+        }),
+
+        //xray컨텐츠 물품팝업리스트
+        selectUnitPopupList: builder.mutation({
+            query: (body) => ({
+                url: 'contents/selectUnitPopupList.do',
+                method: 'POST',
+                body: body
+            })
+        }),
+
     })
 });
 
@@ -230,5 +285,11 @@ export const {
     useInsertUnitMutation,
     useUpdateUnitMutation,
     useDeleteUnitMutation,
-    useSaveUnitImgMutation//단품이미지등록
+    useSaveUnitImgMutation,//단품이미지등록
+    useInsertXrayContentsMutation,//xray컨텐츠등록
+    useUpdateXrayContentsMutation,//xray컨텐츠수정
+    useDeleteXrayContentsMutation,//xray컨텐츠삭제
+    useInsertXrayUnitMutation,//xray컨텐츠 물품등록
+    useDeleteXrayUnitMutation,//xray컨텐츠 물품삭제
+    useSelectUnitPopupListMutation//물품팝업리스트
 } = contentsManagement;
