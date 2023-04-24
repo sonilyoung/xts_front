@@ -1,0 +1,1 @@
+export { XrayinfoWrite } from './XrayinfoWrite';

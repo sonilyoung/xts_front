@@ -11,6 +11,7 @@ import { Goodsgroup } from 'pages/contents/goodsgroup'; // 콘텐츠 관리 / �
 import { InforMation } from 'pages/contents/information'; // 콘텐츠 관리 / 물품 콘텐츠 관리 / 정보 관리
 import { ImagesManagement } from 'pages/contents/imagesmanagement'; // 콘텐츠 관리 / 물품 콘텐츠 관리 / 이미지 관리
 import { Xrayinformation } from 'pages/contents/xrayinformation'; // 콘텐츠 관리 / X-ray 콘텐츠 관리 / 정보 관리
+import { XrayinfoWrite } from 'pages/contents/xrayinformationimage'; // 콘텐츠 관리 / X-ray 콘텐츠 관리 / 정보 관리 등록
 
 // 학습 관리
 import { XrayModule } from 'pages/learning/xraymodule'; // 학습관리 / 교육 모듈 구성 / X-ray 판독모듈 구성
@@ -86,6 +87,11 @@ const MainRoutes = {
             // 콘텐츠 관리 > X-ray 콘텐츠 관리 > 정보 관리
             path: '/contents/xrayinformation',
             element: <Xrayinformation />
+        },
+        {
+            // 콘텐츠 관리 > X-ray 콘텐츠 관리 > 이미지 관리
+            path: '/contents/xrayinformationimage',
+            element: <XrayinfoWrite />
         },
         {
             // 학습관리 > 교육 모듈 구성 > X-ray 판독모듈 구성

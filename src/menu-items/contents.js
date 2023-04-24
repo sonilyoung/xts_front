@@ -91,6 +91,23 @@ export const xrayinformation = {
     ]
 };
 
+export const XrayinfoWrite = {
+    id: '5',
+    title: 'Navigation',
+    type: 'group',
+    children: [
+        {
+            id: '/contents/xrayinformationimage',
+            title: '콘텐츠 관리 > X-ray 콘텐츠 관리 > 이미지 관리',
+            subtitle: '이미지 관리',
+            type: 'item',
+            url: '/contents/xrayinformationimage',
+            icon: icons.ProjectOutlined,
+            breadcrumbs: true
+        }
+    ]
+};
+
 export const xrayModule = {
     id: '9',
     title: 'Navigation',

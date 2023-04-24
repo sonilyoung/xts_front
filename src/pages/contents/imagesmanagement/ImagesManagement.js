@@ -68,9 +68,9 @@ export const ImagesManagement = () => {
     const [frontImg, setFrontImg] = useState(null);
     const [sideImg, setSideImg] = useState(null);
 
-    const [realImgEdit, setRealImgEdit] = useState(null);
-    const [frontImgEdit, setFrontImgEdit] = useState(null);
-    const [sideImgEdit, setSideImgEdit] = useState(null);
+    const [realImgEdit, setRealImgEdit] = useState(true);
+    const [frontImgEdit, setFrontImgEdit] = useState(true);
+    const [sideImgEdit, setSideImgEdit] = useState(true);
 
     
     const [threedImg, setThreedImg] = useState(null);
@@ -88,6 +88,7 @@ export const ImagesManagement = () => {
     const [useYn, setUseYn] = useState(); // 사용유무
 
     const [unitScanId, setUnitScanId] = useState(); // 수정키
+    const [unitId, setUnitId] = useState(); // unitId
     const [unitScanThreed, setUnitScanThreed] = useState(); // 데모용을 위한 3d이미지구분키
 
     //const params = useRef(); // 수정화면
@@ -193,8 +194,9 @@ export const ImagesManagement = () => {
     };
 
     // 이미지가져오기
-    const getUnitImgList = async (e, g) => {
+    const getUnitImgList = async (e, u, g) => {
         setUnitScanId(e);
+        setUnitId(u);
         setUnitScanThreed(g);
         setFileThreed(null);
         const response = await unitDetail({
@@ -475,7 +477,11 @@ export const ImagesManagement = () => {
         }
 
         let formData = new FormData();
-        const params = { unitScanId: unitScanId};
+        const params = { 
+            unitScanId: unitScanId,
+            unitId: unitId,
+            unitGroupCd: unitScanThreed
+        };
         formData.append("params", new Blob([JSON.stringify(params)], { type: 'application/json' }));
         formData.append("realImg", realImg);
         formData.append("frontImg", frontImg);
@@ -540,7 +546,7 @@ export const ImagesManagement = () => {
                                       onClick: event => { 
                                          console.log(record);
                                          setDataEdit(true);
-                                         getUnitImgList(record.key, record.rowdata2);
+                                         getUnitImgList(record.key, record.rowdata1, record.rowdata2);
                                       }, // click row
                                       onDoubleClick: event => {}, // double click row
                                       onContextMenu: event => {}, // right button click row

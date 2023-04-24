@@ -381,6 +381,77 @@ export const Xrayinformation = () => {
             align: 'center'
         },
         {
+            width: '100px',
+            title: 'Seq',
+            dataIndex: 'rowdata13',
+            align: 'center',
+            render: (_, { rowdata1, rowdata2, rowdata13 }) =>
+                 (
+                    <Select
+                        labelInValue
+                        defaultValue={{
+                            value: rowdata13
+                        }}
+                        style={{
+                            width: '100%'
+                        }}
+                        //onChange={handleChange}
+                        onChange={(seq) => {
+                            console.log("rowdata1:", rowdata1);
+                            console.log("rowdata2:", rowdata2);
+                            console.log("rowdata13:", rowdata13);
+
+                            console.log("정답:", seq.value);
+                            console.log("setBagScanId:", bagScanId);
+                            var arrTemp = [];
+                            //var tempTarget = targetUnitPopupList.find(v => v.unitScanId === rowdata1);
+                            //Object.preventExtensions(tempTarget);
+                            targetUnitPopupList.forEach(function(t) {
+                                console.log("타겟:", t);
+                                if(t.unitScanId === rowdata1){
+                                    //object copy
+                                    console.log('확인1');
+                                    const tempTargetAdd = {...t ,seq: seq.value};
+                                    arrTemp.push(tempTargetAdd);
+                                }else{
+                                    console.log('확인2');
+                                    arrTemp.push(t);
+                                }
+                            });
+
+
+                            //arrTemp.push(tempTargetAdd);
+                            //setTargetUnitPopupList([...targetUnitPopupList, arrTemp]);
+
+                            setTargetUnitPopupList(arrTemp);
+                            console.log("targetUnitPopupList:", targetUnitPopupList);
+                        }}
+                        options={[
+                            {
+                                value: '1',
+                                label: '1'
+                            },
+                            {
+                                value: '2',
+                                label: '2'
+                            },
+                            {
+                                value: '3',
+                                label: '3'
+                            },
+                            {
+                                value: '4',
+                                label: '4'
+                            },
+                            {
+                                value: '5',
+                                label: '5'
+                            }                                                                                    
+                        ]}
+                    />
+                ) 
+        },                  
+        {
             width: '200px',
             title: '정답물품',
             dataIndex: 'rowdata16',
@@ -390,7 +461,7 @@ export const Xrayinformation = () => {
                     <Select
                         labelInValue
                         defaultValue={{
-                            //value: `${rowdata16}`
+                            value: rowdata16
                         }}
                         style={{
                             width: '100%'
@@ -399,22 +470,32 @@ export const Xrayinformation = () => {
                         onChange={(selectedAnswerItem) => {
                             console.log("rowdata1:", rowdata1);
                             console.log("rowdata2:", rowdata2);
+                            console.log("rowdata16:", rowdata16);
 
                             console.log("정답:", selectedAnswerItem.value);
                             console.log("setBagScanId:", bagScanId);
                             var arrTemp = [];
-                            var tempTarget = targetUnitPopupList.find(v => v.unitScanId === rowdata1);
-                            //object copy
-                            const tempTargetAdd = {
-                                ...tempTarget,
-                                answerItem: selectedAnswerItem.value
-                            };
+                            //var tempTarget = targetUnitPopupList.find(v => v.unitScanId === rowdata1);
                             //Object.preventExtensions(tempTarget);
+                            targetUnitPopupList.forEach(function(t) {
+                                console.log("타겟:", t);
+                                if(t.unitScanId === rowdata1){
+                                    //object copy
+                                    console.log('확인1');
+                                    const tempTargetAdd = {...t ,answerItem: selectedAnswerItem.value};
+                                    arrTemp.push(tempTargetAdd);
+                                }else{
+                                    console.log('확인2');
+                                    arrTemp.push(t);
+                                }
+                            });
 
-                            arrTemp.push(tempTargetAdd);
 
-                            setTargetUnitPopupList(arrTemp);                            
-                            console.log("arrTemp:", arrTemp);
+                            //arrTemp.push(tempTargetAdd);
+                            //setTargetUnitPopupList([...targetUnitPopupList, arrTemp]);
+
+                            setTargetUnitPopupList(arrTemp);
+                            console.log("targetUnitPopupList:", targetUnitPopupList);
                         }}
                         options={[
                             {
@@ -718,12 +799,12 @@ export const Xrayinformation = () => {
     const handleSaveSub = async () => {    
         setLoading(true);
 
-        console.log('하단저장:', params)
+        console.log('하단저장');
+        console.log('bagScanId:', bagScanId);
+
         const response = await insertXrayUnit({     
-            "bagScanId" : params?.studyLvl,
-            "seq" : params?.unitId,
-            "unitId" : params?.unitScanId,
-            "answerItem" : params?.useYn,
+            "bagScanId" : bagScanId,
+            "paramList" : targetUnitPopupList
         });
         setLoading(false);
         if ((response?.data?.RET_CODE === "0000") ||(response?.data?.RET_CODE === "0100")) {
@@ -818,7 +899,8 @@ export const Xrayinformation = () => {
     //물품팝업리스트
     const handleSelectUnitPopupList = async () => {
         const popupList = await selectUnitPopupList({"languageCode" : 'kor'});
-        setUnitPopupList(popupList?.data?.RET_DATA);
+        //setUnitPopupList(popupList?.data?.RET_DATA);
+        setTargetUnitPopupList(popupList?.data?.RET_DATA);
         setDataSourcePop([
             ...popupList?.data?.RET_DATA.map((s, i) => ({
                 key: s.unitScanId,
