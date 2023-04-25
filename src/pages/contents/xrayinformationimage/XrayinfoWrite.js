@@ -326,6 +326,50 @@ export const XrayinfoWrite = () => {
     const [imgSideBwBwRate5,	setImgSideBwBwRate5	]	=	useState('');
     const [imgSideBwBwRate6,	setImgSideBwBwRate6	]	=	useState('');
     
+    //화면에표시될이미지
+    const [pImgReal,	setpImgReal	]	=	useState('');
+    const [pImgSide,	setpImgSide	]	=	useState('');
+    const [pImgFront,	setpImgFront	]	=	useState('');
+    const [pImgFrontCollar,	setpImgFrontCollar	]	=	useState('');
+    const [pImgFrontOrganism,	setpImgFrontOrganism	]	=	useState('');
+    const [pImgFrontCollarOutline,	setpImgFrontCollarOutline	]	=	useState('');
+    const [pImgFrontCollarReversal,	setpImgFrontCollarReversal	]	=	useState('');
+    const [pImgFrontCollarBwRate1,	setpImgFrontCollarBwRate1	]	=	useState('');
+    const [pImgFrontCollarBwRate2,	setpImgFrontCollarBwRate2	]	=	useState('');
+    const [pImgFrontCollarBwRate3,	setpImgFrontCollarBwRate3	]	=	useState('');
+    const [pImgFrontCollarBwRate4,	setpImgFrontCollarBwRate4	]	=	useState('');
+    const [pImgFrontCollarBwRate5,	setpImgFrontCollarBwRate5	]	=	useState('');
+    const [pImgFrontCollarBwRate6,	setpImgFrontCollarBwRate6	]	=	useState('');
+    const [pImgFrontBw,	setpImgFrontBw	]	=	useState('');
+    const [pImgFrontMinerals,	setpImgFrontMinerals	]	=	useState('');
+    const [pImgFrontBwOutline,	setpImgFrontBwOutline	]	=	useState('');
+    const [pImgFrontBwReversal,	setpImgFrontBwReversal	]	=	useState('');
+    const [pImgFrontBwBwRate1,	setpImgFrontBwBwRate1	]	=	useState('');
+    const [pImgFrontBwBwRate2,	setpImgFrontBwBwRate2	]	=	useState('');
+    const [pImgFrontBwBwRate3,	setpImgFrontBwBwRate3	]	=	useState('');
+    const [pImgFrontBwBwRate4,	setpImgFrontBwBwRate4	]	=	useState('');
+    const [pImgFrontBwBwRate5,	setpImgFrontBwBwRate5	]	=	useState('');
+    const [pImgFrontBwBwRate6,	setpImgFrontBwBwRate6	]	=	useState('');
+    const [pImgSideCollar,	setpImgSideCollar	]	=	useState('');
+    const [pImgSideOrganism,	setpImgSideOrganism	]	=	useState('');
+    const [pImgSideCollarOutline,	setpImgSideCollarOutline	]	=	useState('');
+    const [pImgSideCollarReversal,	setpImgSideCollarReversal	]	=	useState('');
+    const [pImgSideCollarBwRate1,	setpImgSideCollarBwRate1	]	=	useState('');
+    const [pImgSideCollarBwRate2,	setpImgSideCollarBwRate2	]	=	useState('');
+    const [pImgSideCollarBwRate3,	setpImgSideCollarBwRate3	]	=	useState('');
+    const [pImgSideCollarBwRate4,	setpImgSideCollarBwRate4	]	=	useState('');
+    const [pImgSideCollarBwRate5,	setpImgSideCollarBwRate5	]	=	useState('');
+    const [pImgSideCollarBwRate6,	setpImgSideCollarBwRate6	]	=	useState('');
+    const [pImgSideBw,	setpImgSideBw	]	=	useState('');
+    const [pImgSideMinerals,	setpImgSideMinerals	]	=	useState('');
+    const [pImgSideBwOutline,	setpImgSideBwOutline	]	=	useState('');
+    const [pImgSideBwReversal,	setpImgSideBwReversal	]	=	useState('');
+    const [pImgSideBwBwRate1,	setpImgSideBwBwRate1	]	=	useState('');
+    const [pImgSideBwBwRate2,	setpImgSideBwBwRate2	]	=	useState('');
+    const [pImgSideBwBwRate3,	setpImgSideBwBwRate3	]	=	useState('');
+    const [pImgSideBwBwRate4,	setpImgSideBwBwRate4	]	=	useState('');
+    const [pImgSideBwBwRate5,	setpImgSideBwBwRate5	]	=	useState('');
+    const [pImgSideBwBwRate6,	setpImgSideBwBwRate6	]	=	useState('');    
 
 
     // 이미지 업로드 input의 onChange
@@ -384,9 +428,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setFileReal(reader.result);
+            setpImgFrontCollar(reader.result);
         };
-        setImgReal(file);
+        setImgFrontCollar(file);
         //setImgRealEdit(false);
     };    
 
@@ -401,9 +445,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setFileReal(reader.result);
+            setpImgFrontOrganism(reader.result);
         };
-        setImgReal(file);
+        setImgFrontOrganism(file);
         //setImgRealEdit(false);
     };    
 
@@ -418,9 +462,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setFileReal(reader.result);
+            setpImgFrontCollarOutline(reader.result);
         };
-        setImgReal(file);
+        setImgFrontCollarOutline(file);
         //setImgRealEdit(false);
     };    
 
@@ -436,9 +480,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setFileReal(reader.result);
+            setpImgFrontCollarReversal(reader.result);
         };
-        setImgReal(file);
+        setImgFrontCollarReversal(file);
         //setImgRealEdit(false);
     };    
 
@@ -452,9 +496,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setFileReal(reader.result);
+            setpImgFrontCollarBwRate1(reader.result);
         };
-        setImgReal(file);
+        setImgFrontCollarBwRate1(file);
         //setImgRealEdit(false);
     };    
 
@@ -468,9 +512,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setFileReal(reader.result);
+            setpImgFrontCollarBwRate2(reader.result);
         };
-        setImgReal(file);
+        setImgFrontCollarBwRate2(file);
         //setImgRealEdit(false);
     };   
     
@@ -484,9 +528,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setFileReal(reader.result);
+            setpImgFrontCollarBwRate3(reader.result);
         };
-        setImgReal(file);
+        setImgFrontCollarBwRate3(file);
         //setImgRealEdit(false);
     };   
     
@@ -500,9 +544,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setFileReal(reader.result);
+            setpImgFrontCollarBwRate4(reader.result);
         };
-        setImgReal(file);
+        setImgFrontCollarBwRate4(file);
         //setImgRealEdit(false);
     };   
     
@@ -516,9 +560,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setFileReal(reader.result);
+            setpImgFrontCollarBwRate5(reader.result);
         };
-        setImgReal(file);
+        setImgFrontCollarBwRate5(file);
         //setImgRealEdit(false);
     };   
     
@@ -532,9 +576,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setFileReal(reader.result);
+            setpImgFrontCollarBwRate6(reader.result);
         };
-        setImgReal(file);
+        setImgFrontCollarBwRate6(file);
         //setImgRealEdit(false);
     };       
 
@@ -548,9 +592,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setFileReal(reader.result);
+            setpImgFrontBw(reader.result);
         };
-        setImgReal(file);
+        setImgFrontBw(file);
         //setImgRealEdit(false);
     };    
 
@@ -565,9 +609,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setFileReal(reader.result);
+            setpFisetImgFrontMineralsleReal(reader.result);
         };
-        setImgReal(file);
+        setImgFrontMinerals(file);
         //setImgRealEdit(false);
     };    
 
@@ -582,9 +626,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setFileReal(reader.result);
+            setpImgFrontBwOutline(reader.result);
         };
-        setImgReal(file);
+        setImgFrontBwOutline(file);
         //setImgRealEdit(false);
     };    
 
@@ -598,9 +642,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setFileReal(reader.result);
+            setpImgFrontBwReversal(reader.result);
         };
-        setImgReal(file);
+        setImgFrontBwReversal(file);
         //setImgRealEdit(false);
     };    
 
@@ -614,9 +658,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setFileReal(reader.result);
+            setpImgFrontBwBwRate1(reader.result);
         };
-        setImgReal(file);
+        setImgFrontBwBwRate1(file);
         //setImgRealEdit(false);
     };    
 
@@ -630,9 +674,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setFileReal(reader.result);
+            setpImgFrontBwBwRate2(reader.result);
         };
-        setImgReal(file);
+        setImgFrontBwBwRate2(file);
         //setImgRealEdit(false);
     };  
     
@@ -646,9 +690,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setFileReal(reader.result);
+            setpImgFrontBwBwRate3(reader.result);
         };
-        setImgReal(file);
+        setImgFrontBwBwRate3(file);
         //setImgRealEdit(false);
     };  
 
@@ -662,9 +706,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setFileReal(reader.result);
+            setpImgFrontBwBwRate4(reader.result);
         };
-        setImgReal(file);
+        setImgFrontBwBwRate4(file);
         //setImgRealEdit(false);
     };  
     const clickSaveImgRefBwColor9 = e =>  {
@@ -677,9 +721,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setFileReal(reader.result);
+            setpImgFrontBwBwRate5(reader.result);
         };
-        setImgReal(file);
+        setImgFrontBwBwRate5(file);
         //setImgRealEdit(false);
     };  
 
@@ -693,9 +737,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setFileReal(reader.result);
+            setpImgFrontBwBwRate6(reader.result);
         };
-        setImgReal(file);
+        setImgFrontBwBwRate6(file);
         //setImgRealEdit(false);
     }; 
 
@@ -710,9 +754,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setFileReal(reader.result);
+            setpImgSideCollar(reader.result);
         };
-        setImgReal(file);
+        setImgSideCollar(file);
         //setImgRealEdit(false);
     };    
 
@@ -726,9 +770,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setFileReal(reader.result);
+            setpImgSideOrganism(reader.result);
         };
-        setImgReal(file);
+        setImgSideOrganism(file);
         //setImgRealEdit(false);
     };    
 
@@ -742,9 +786,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setFileReal(reader.result);
+            setpImgSideCollarOutline(reader.result);
         };
-        setImgReal(file);
+        setImgSideCollarOutline(file);
         //setImgRealEdit(false);
     };    
 
@@ -758,9 +802,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setFileReal(reader.result);
+            setpImgSideCollarReversal(reader.result);
         };
-        setImgReal(file);
+        setImgSideCollarReversal(file);
         //setImgRealEdit(false);
     };    
 
@@ -774,9 +818,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setFileReal(reader.result);
+            setpImgSideCollarBwRate1(reader.result);
         };
-        setImgReal(file);
+        setImgSideCollarBwRate1(file);
         //setImgRealEdit(false);
     };    
 
@@ -790,9 +834,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setFileReal(reader.result);
+            setpImgSideCollarBwRate2(reader.result);
         };
-        setImgReal(file);
+        setImgSideCollarBwRate2(file);
         //setImgRealEdit(false);
     };    
 
@@ -806,9 +850,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setFileReal(reader.result);
+            setpImgSideCollarBwRate3(reader.result);
         };
-        setImgReal(file);
+        setImgSideCollarBwRate3(file);
         //setImgRealEdit(false);
     };    
 
@@ -822,9 +866,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setFileReal(reader.result);
+            setpImgSideCollarBwRate4(reader.result);
         };
-        setImgReal(file);
+        setImgSideCollarBwRate4(file);
         //setImgRealEdit(false);
     };    
 
@@ -838,9 +882,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setFileReal(reader.result);
+            setpImgSideCollarBwRate5(reader.result);
         };
-        setImgReal(file);
+        setImgSideCollarBwRate5(file);
         //setImgRealEdit(false);
     };    
 
@@ -854,9 +898,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setFileReal(reader.result);
+            setpImgSideCollarBwRate6(reader.result);
         };
-        setImgReal(file);
+        setImgSideCollarBwRate6(file);
         //setImgRealEdit(false);
     };    
 
@@ -871,9 +915,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setFileReal(reader.result);
+            setpImgSideBw(reader.result);
         };
-        setImgReal(file);
+        setImgSideBw(file);
         //setImgRealEdit(false);
     };    
 
@@ -887,9 +931,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setFileReal(reader.result);
+            setpImgSideMinerals(reader.result);
         };
-        setImgReal(file);
+        setImgSideMinerals(file);
         //setImgRealEdit(false);
     };   
 
@@ -903,9 +947,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setFileReal(reader.result);
+            setpImgSideBwOutline(reader.result);
         };
-        setImgReal(file);
+        setImgSideBwOutline(file);
         //setImgRealEdit(false);
     };
 
@@ -919,9 +963,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setFileReal(reader.result);
+            setpImgSideBwReversal(reader.result);
         };
-        setImgReal(file);
+        setImgSideBwReversal(file);
         //setImgRealEdit(false);
     };   
     
@@ -935,9 +979,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setFileReal(reader.result);
+            setpImgSideBwBwRate1(reader.result);
         };
-        setImgReal(file);
+        setImgSideBwBwRate1(file);
         //setImgRealEdit(false);
     };     
 
@@ -952,9 +996,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setFileReal(reader.result);
+            setpImgSideBwBwRate2(reader.result);
         };
-        setImgReal(file);
+        setImgSideBwBwRate2(file);
         //setImgRealEdit(false);
     };  
     
@@ -969,9 +1013,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setFileReal(reader.result);
+            setpImgSideBwBwRate3(reader.result);
         };
-        setImgReal(file);
+        setImgSideBwBwRate3(file);
         //setImgRealEdit(false);
     };  
     
@@ -986,9 +1030,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setFileReal(reader.result);
+            setpImgSideBwBwRate4(reader.result);
         };
-        setImgReal(file);
+        setImgSideBwBwRate4(file);
         //setImgRealEdit(false);
     };  
         
@@ -1003,9 +1047,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setFileReal(reader.result);
+            setpImgSideBwBwRate5(reader.result);
         };
-        setImgReal(file);
+        setImgSideBwBwRate5(file);
         //setImgRealEdit(false);
     };  
     
@@ -1020,9 +1064,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setFileReal(reader.result);
+            setpImgSideBwBwRate6(reader.result);
         };
-        setImgReal(file);
+        setImgSideBwBwRate6(file);
         //setImgRealEdit(false);
     };  
 
@@ -1036,7 +1080,7 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setFileReal(reader.result);
+            setpImgReal(reader.result);
         };
         setImgReal(file);
         //setImgRealEdit(false);
@@ -1052,9 +1096,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setFileReal(reader.result);
+            setpImgFront(reader.result);
         };
-        setImgReal(file);
+        setImgFront(file);
         //setImgRealEdit(false);
     }; 
 
@@ -1069,9 +1113,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setFileReal(reader.result);
+            setpImgSide(reader.result);
         };
-        setImgReal(file);
+        setImgSide(file);
         //setImgRealEdit(false);
     }; 
 
@@ -1086,10 +1130,11 @@ export const XrayinfoWrite = () => {
 
     // 실물 이미지 업로드 처리
     const handleUpload = async () => {
-        
+        console.log('bagScanId: ', bagScanId);
+
         if(bagScanId===undefined){
             Modal.error({
-                content: '이미지 업로드 할 대상을 선택해주세요.',
+                content: '이미지 업로드 할 xray가방을 선택해주세요.',
                 onOk() {
                     setOpen(false);
                     setDataEdit(false);
@@ -1103,17 +1148,56 @@ export const XrayinfoWrite = () => {
         const params = { bagScanId: bagScanId};
         formData.append("params", new Blob([JSON.stringify(params)], { type: 'application/json' }));
         formData.append("imgReal", imgReal);
+        formData.append("imgSide", imgSide);
         formData.append("imgFront", imgFront);
-        formData.append("imgSide", imgSide);     
+        formData.append("imgFrontCollar", imgFrontCollar);
+        formData.append("imgFrontOrganism", imgFrontOrganism);
+        formData.append("imgFrontCollarOutline", imgFrontCollarOutline);
+        formData.append("imgFrontCollarReversal", imgFrontCollarReversal);
+        formData.append("imgFrontCollarBwRate1", imgFrontCollarBwRate1);
+        formData.append("imgFrontCollarBwRate2", imgFrontCollarBwRate2);
+        formData.append("imgFrontCollarBwRate3", imgFrontCollarBwRate3);
+        formData.append("imgFrontCollarBwRate4", imgFrontCollarBwRate4);
+        formData.append("imgFrontCollarBwRate5", imgFrontCollarBwRate5);
+        formData.append("imgFrontCollarBwRate6", imgFrontCollarBwRate6);
+        formData.append("imgFrontBw", imgFrontBw);
+        formData.append("imgFrontMinerals", imgFrontMinerals);
+        formData.append("imgFrontBwOutline", imgFrontBwOutline);
+        formData.append("imgFrontBwReversal", imgFrontBwReversal);
+        formData.append("imgFrontBwBwRate1", imgFrontBwBwRate1);
+        formData.append("imgFrontBwBwRate2", imgFrontBwBwRate2);
+        formData.append("imgFrontBwBwRate3", imgFrontBwBwRate3);
+        formData.append("imgFrontBwBwRate4", imgFrontBwBwRate4);
+        formData.append("imgFrontBwBwRate5", imgFrontBwBwRate5);
+        formData.append("imgFrontBwBwRate6", imgFrontBwBwRate6);
+        formData.append("imgSideCollar", imgSideCollar);
+        formData.append("imgSideOrganism", imgSideOrganism);
+        formData.append("imgSideCollarOutline", imgSideCollarOutline);
+        formData.append("imgSideCollarReversal", imgSideCollarReversal);
+        formData.append("imgSideCollarBwRate1", imgSideCollarBwRate1);
+        formData.append("imgSideCollarBwRate2", imgSideCollarBwRate2);
+        formData.append("imgSideCollarBwRate3", imgSideCollarBwRate3);
+        formData.append("imgSideCollarBwRate4", imgSideCollarBwRate4);
+        formData.append("imgSideCollarBwRate5", imgSideCollarBwRate5);
+        formData.append("imgSideCollarBwRate6", imgSideCollarBwRate6);
+        formData.append("imgSideBw", imgSideBw);
+        formData.append("imgSideMinerals", imgSideMinerals);
+        formData.append("imgSideBwOutline", imgSideBwOutline);
+        formData.append("imgSideBwReversal", imgSideBwReversal);
+        formData.append("imgSideBwBwRate1", imgSideBwBwRate1);
+        formData.append("imgSideBwBwRate2", imgSideBwBwRate2);
+        formData.append("imgSideBwBwRate3", imgSideBwBwRate3);
+        formData.append("imgSideBwBwRate4", imgSideBwBwRate4);
+        formData.append("imgSideBwBwRate5", imgSideBwBwRate5);
+        formData.append("imgSideBwBwRate6", imgSideBwBwRate6);
        
-        console.log('imgReal: ', imgReal);
         const response = await saveXrayImg(formData);
         console.log('결과:', response);
         setRefresh(response);
 
-        setImgRealEdit(false);
-        setImgFrontEdit(false);
-        setImgSideEdit(false);
+        //setImgRealEdit(false);
+        //setImgFrontEdit(false);
+        //setImgSideEdit(false);
 
         Modal.success({
             content: '추가 완료',
@@ -1159,7 +1243,7 @@ export const XrayinfoWrite = () => {
                                     return {
                                       onClick: event => { 
                                          console.log(record);
-                                         //setDataEdit(true);
+                                         setImgRealEdit(true);
                                          getUnitImgList(record.key);
                                       }, // click row
                                       onDoubleClick: event => {}, // double click row
@@ -1223,9 +1307,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams.imgReal!==null ? 'data:image/png;base64,' + unitParams.imgReal : noImage} width={100} height={100} alt="real image" />
+                                                <img src={unitParams?.imgFrontCollar!==null && unitParams?.imgFrontCollar!==undefined ? 'data:image/png;base64,' + unitParams?.imgFrontCollar : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={fileReal ? fileReal :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pImgFrontCollar ? pImgFrontCollar :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -1258,9 +1342,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams.imgReal!==null ? 'data:image/png;base64,' + unitParams.imgReal : noImage} width={100} height={100} alt="real image" />
+                                                <img src={unitParams?.imgFrontOrganism!==null && unitParams?.imgFrontOrganism!==undefined ? 'data:image/png;base64,' + unitParams?.imgFrontOrganism : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={fileReal ? fileReal :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pImgFrontOrganism ? pImgFrontOrganism :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -1293,9 +1377,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams.imgReal!==null ? 'data:image/png;base64,' + unitParams.imgReal : noImage} width={100} height={100} alt="real image" />
+                                                <img src={unitParams?.imgFrontCollarOutline!==null && unitParams?.imgFrontCollarOutline!==undefined ? 'data:image/png;base64,' + unitParams?.imgFrontCollarOutline : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={fileReal ? fileReal :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pImgFrontCollarOutline ? pImgFrontCollarOutline :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -1328,9 +1412,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams.imgReal!==null ? 'data:image/png;base64,' + unitParams.imgReal : noImage} width={100} height={100} alt="real image" />
+                                                <img src={unitParams?.imgFrontCollarReversal!==null && unitParams?.imgFrontCollarReversal!==undefined ? 'data:image/png;base64,' + unitParams?.imgFrontCollarReversal: noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={fileReal ? fileReal :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pImgFrontCollarReversal ? pImgFrontCollarReversal :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -1363,9 +1447,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams.imgReal!==null ? 'data:image/png;base64,' + unitParams.imgReal : noImage} width={100} height={100} alt="real image" />
+                                                <img src={unitParams?.imgFrontCollarBwRate1!==null && unitParams?.imgFrontCollarBwRate1!==undefined ? 'data:image/png;base64,' + unitParams?.imgFrontCollarBwRate1 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={fileReal ? fileReal :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pImgFrontCollarBwRate1 ? pImgFrontCollarBwRate1 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -1402,9 +1486,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams.imgReal!==null ? 'data:image/png;base64,' + unitParams.imgReal : noImage} width={100} height={100} alt="real image" />
+                                                <img src={unitParams?.imgFrontCollarBwRate2!==null && unitParams?.imgFrontCollarBwRate2!==undefined ? 'data:image/png;base64,' + unitParams?.imgFrontCollarBwRate2 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={fileReal ? fileReal :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pImgFrontCollarBwRate2 ? pImgFrontCollarBwRate2 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -1437,9 +1521,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams.imgReal!==null ? 'data:image/png;base64,' + unitParams.imgReal : noImage} width={100} height={100} alt="real image" />
+                                                <img src={unitParams?.imgFrontCollarBwRate3!==null && unitParams?.imgFrontCollarBwRate3!==undefined ? 'data:image/png;base64,' + unitParams?.imgFrontCollarBwRate3 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={fileReal ? fileReal :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pImgFrontCollarBwRate3 ? pImgFrontCollarBwRate3 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -1472,9 +1556,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams.imgReal!==null ? 'data:image/png;base64,' + unitParams.imgReal : noImage} width={100} height={100} alt="real image" />
+                                                <img src={unitParams?.imgFrontCollarBwRate4!==null && unitParams?.imgFrontCollarBwRate4!==undefined ? 'data:image/png;base64,' + unitParams?.imgFrontCollarBwRate4 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={fileReal ? fileReal :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pImgFrontCollarBwRate4 ? pImgFrontCollarBwRate4 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -1507,9 +1591,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams.imgReal!==null ? 'data:image/png;base64,' + unitParams.imgReal : noImage} width={100} height={100} alt="real image" />
+                                                <img src={unitParams?.imgFrontCollarBwRate5!==null && unitParams?.imgFrontCollarBwRate5!==undefined? 'data:image/png;base64,' + unitParams?.imgFrontCollarBwRate5 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={fileReal ? fileReal :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pImgFrontCollarBwRate5 ? pImgFrontCollarBwRate5 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -1542,9 +1626,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams.imgReal!==null ? 'data:image/png;base64,' + unitParams.imgReal : noImage} width={100} height={100} alt="real image" />
+                                                <img src={unitParams?.imgFrontCollarBwRate6!==null && unitParams?.imgFrontCollarBwRate6!==undefined ? 'data:image/png;base64,' + unitParams?.imgFrontCollarBwRate6 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={fileReal ? fileReal :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pImgFrontCollarBwRate6 ? pImgFrontCollarBwRate6 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -1575,16 +1659,16 @@ export const XrayinfoWrite = () => {
                                                                 //ref={fileInput1}
                                                                 /*onChange={handleChange} */
                                                                 onChange={saveImgRefBwColor1}
-                                                                ref={imgRef1}
+                                                                ref={imgRefBwColor1 }
                                                                 style={{ display: "none" }} />                                                     
                                                 </Card>
                                             </Space>
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams.imgReal!==null ? 'data:image/png;base64,' + unitParams.imgReal : noImage} width={100} height={100} alt="real image" />
+                                                <img src={unitParams?.imgFrontBw!==null && unitParams?.imgFrontBw!==undefined ? 'data:image/png;base64,' + unitParams?.imgFrontBw : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={fileReal ? fileReal :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pImgFrontBw ? pImgFrontBw :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -1610,16 +1694,16 @@ export const XrayinfoWrite = () => {
                                                                 //ref={fileInput1}
                                                                 /*onChange={handleChange} */
                                                                 onChange={saveImgRefBwColor2}
-                                                                ref={imgRef1}
+                                                                ref={imgRefBwColor2 }
                                                                 style={{ display: "none" }} />                                                     
                                                 </Card>
                                             </Space>
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams.imgReal!==null ? 'data:image/png;base64,' + unitParams.imgReal : noImage} width={100} height={100} alt="real image" />
+                                                <img src={unitParams?.imgFrontMinerals!==null && unitParams?.imgFrontMinerals!==undefined ? 'data:image/png;base64,' + unitParams?.imgFrontMinerals : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={fileReal ? fileReal :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pImgFrontMinerals ? pImgFrontMinerals :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -1645,16 +1729,16 @@ export const XrayinfoWrite = () => {
                                                                 //ref={fileInput1}
                                                                 /*onChange={handleChange} */
                                                                 onChange={saveImgRefBwColor3}
-                                                                ref={imgRef1}
+                                                                ref={imgRefBwColor3 }
                                                                 style={{ display: "none" }} />                                                     
                                                 </Card>
                                             </Space>
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams.imgReal!==null ? 'data:image/png;base64,' + unitParams.imgReal : noImage} width={100} height={100} alt="real image" />
+                                                <img src={unitParams?.imgFrontBwOutline!==null && unitParams?.imgFrontBwOutline!==undefined ? 'data:image/png;base64,' + unitParams?.imgFrontBwOutline : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={fileReal ? fileReal :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pImgFrontBwOutline ? pImgFrontBwOutline :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -1680,16 +1764,16 @@ export const XrayinfoWrite = () => {
                                                                 //ref={fileInput1}
                                                                 /*onChange={handleChange} */
                                                                 onChange={saveImgRefBwColor4}
-                                                                ref={imgRef1}
+                                                                ref={imgRefBwColor4}
                                                                 style={{ display: "none" }} />                                                     
                                                 </Card>
                                             </Space>
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams.imgReal!==null ? 'data:image/png;base64,' + unitParams.imgReal : noImage} width={100} height={100} alt="real image" />
+                                                <img src={unitParams?.imgFrontBwReversal!==null && unitParams?.imgFrontBwReversal!==undefined ? 'data:image/png;base64,' + unitParams?.imgFrontBwReversal : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={fileReal ? fileReal :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pImgFrontBwReversal ? pImgFrontBwReversal :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -1715,16 +1799,16 @@ export const XrayinfoWrite = () => {
                                                                 //ref={fileInput1}
                                                                 /*onChange={handleChange} */
                                                                 onChange={saveImgRefBwColor5}
-                                                                ref={imgRef1}
+                                                                ref={imgRefBwColor5}
                                                                 style={{ display: "none" }} />                                                     
                                                 </Card>
                                             </Space>
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams.imgReal!==null ? 'data:image/png;base64,' + unitParams.imgReal : noImage} width={100} height={100} alt="real image" />
+                                                <img src={unitParams?.imgFrontBwBwRate1!==null && unitParams?.imgFrontBwBwRate1!==undefined ? 'data:image/png;base64,' + unitParams?.imgFrontBwBwRate1 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={fileReal ? fileReal :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pImgFrontBwBwRate1 ? pImgFrontBwBwRate1 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -1754,16 +1838,16 @@ export const XrayinfoWrite = () => {
                                                                 //ref={fileInput1}
                                                                 /*onChange={handleChange} */
                                                                 onChange={saveImgRefBwColor6}
-                                                                ref={imgRef1}
+                                                                ref={imgRefBwColor6}
                                                                 style={{ display: "none" }} />                                                     
                                                 </Card>
                                             </Space>
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams.imgReal!==null ? 'data:image/png;base64,' + unitParams.imgReal : noImage} width={100} height={100} alt="real image" />
+                                                <img src={unitParams?.imgFrontBwBwRate2!==null && unitParams?.imgFrontBwBwRate2!==undefined ? 'data:image/png;base64,' + unitParams?.imgFrontBwBwRate2 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={fileReal ? fileReal :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pImgFrontBwBwRate2 ? pImgFrontBwBwRate2 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -1789,16 +1873,16 @@ export const XrayinfoWrite = () => {
                                                                 //ref={fileInput1}
                                                                 /*onChange={handleChange} */
                                                                 onChange={saveImgRefBwColor7}
-                                                                ref={imgRef1}
+                                                                ref={imgRefBwColor7}
                                                                 style={{ display: "none" }} />                                                     
                                                 </Card>
                                             </Space>
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams.imgReal!==null ? 'data:image/png;base64,' + unitParams.imgReal : noImage} width={100} height={100} alt="real image" />
+                                                <img src={unitParams?.imgFrontBwBwRate3!==null && unitParams?.imgFrontBwBwRate3!==undefined ? 'data:image/png;base64,' + unitParams?.imgFrontBwBwRate3 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={fileReal ? fileReal :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pImgFrontBwBwRate3 ? pImgFrontBwBwRate3 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -1824,16 +1908,16 @@ export const XrayinfoWrite = () => {
                                                                 //ref={fileInput1}
                                                                 /*onChange={handleChange} */
                                                                 onChange={saveImgRefBwColor8}
-                                                                ref={imgRef1}
+                                                                ref={imgRefBwColor8}
                                                                 style={{ display: "none" }} />                                                     
                                                 </Card>
                                             </Space>
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams.imgReal!==null ? 'data:image/png;base64,' + unitParams.imgReal : noImage} width={100} height={100} alt="real image" />
+                                                <img src={unitParams?.imgFrontBwBwRate4!==null && unitParams?.imgFrontBwBwRate4!==undefined? 'data:image/png;base64,' + unitParams?.imgFrontBwBwRate4 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={fileReal ? fileReal :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pImgFrontBwBwRate4 ? pImgFrontBwBwRate4 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -1859,16 +1943,16 @@ export const XrayinfoWrite = () => {
                                                                 //ref={fileInput1}
                                                                 /*onChange={handleChange} */
                                                                 onChange={saveImgRefBwColor9}
-                                                                ref={imgRef1}
+                                                                ref={imgRefBwColor9}
                                                                 style={{ display: "none" }} />                                                     
                                                 </Card>
                                             </Space>
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams.imgReal!==null ? 'data:image/png;base64,' + unitParams.imgReal : noImage} width={100} height={100} alt="real image" />
+                                                <img src={unitParams?.imgFrontBwBwRate5!==null && unitParams?.imgFrontBwBwRate5!==undefined ? 'data:image/png;base64,' + unitParams?.imgFrontBwBwRate5 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={fileReal ? fileReal :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pImgFrontBwBwRate5 ? pImgFrontBwBwRate5 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -1894,16 +1978,16 @@ export const XrayinfoWrite = () => {
                                                                 //ref={fileInput1}
                                                                 /*onChange={handleChange} */
                                                                 onChange={saveImgRefBwColor10}
-                                                                ref={imgRef1}
+                                                                ref={imgRefBwColor10}
                                                                 style={{ display: "none" }} />                                                     
                                                 </Card>
                                             </Space>
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams.imgReal!==null ? 'data:image/png;base64,' + unitParams.imgReal : noImage} width={100} height={100} alt="real image" />
+                                                <img src={unitParams?.imgFrontBwBwRate6!==null && unitParams?.imgFrontBwBwRate6!==undefined ? 'data:image/png;base64,' + unitParams?.imgFrontBwBwRate6 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={fileReal ? fileReal :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pImgFrontBwBwRate6 ? pImgFrontBwBwRate6 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -1934,16 +2018,16 @@ export const XrayinfoWrite = () => {
                                                         //ref={fileInput1}
                                                         /*onChange={handleChange} */
                                                         onChange={saveImgRefFront}
-                                                        ref={imgRef1}
+                                                        ref={imgRefReal }
                                                         style={{ display: "none" }} />                                                     
                                         </Card>
                                     </Space>
 
                                     <Space direction="vertical">
                                         {imgRealEdit === true ?  
-                                        <img src={unitParams.imgReal!==null ? 'data:image/png;base64,' + unitParams.imgReal : noImage} width={100} height={100} alt="real image" />
+                                        <img src={unitParams?.imgFront!==null && unitParams?.imgFront!==undefined ? 'data:image/png;base64,' + unitParams?.imgFront : noImage} width={100} height={100} alt="real image" />
                                         : 
-                                        <img src={fileReal ? fileReal :noImage} width={100} height={100} alt="real image"/>
+                                        <img src={pImgFront ? pImgFront :noImage} width={100} height={100} alt="real image"/>
                                         }                                                
                                     </Space>
                                     </Form.Item>
@@ -1971,16 +2055,16 @@ export const XrayinfoWrite = () => {
                                                         //ref={fileInput1}
                                                         /*onChange={handleChange} */
                                                         onChange={saveImgRefSide}
-                                                        ref={imgRef1}
+                                                        ref={imgRefFront }
                                                         style={{ display: "none" }} />                                                     
                                         </Card>
                                     </Space>
 
                                     <Space direction="vertical">
                                         {imgRealEdit === true ?  
-                                        <img src={unitParams.imgReal!==null ? 'data:image/png;base64,' + unitParams.imgReal : noImage} width={100} height={100} alt="real image" />
+                                        <img src={unitParams?.imgSide!==null && unitParams?.imgSide!==undefined? 'data:image/png;base64,' + unitParams?.imgSide : noImage} width={100} height={100} alt="real image" />
                                         : 
-                                        <img src={fileReal ? fileReal :noImage} width={100} height={100} alt="real image"/>
+                                        <img src={pImgSide ? pImgSide :noImage} width={100} height={100} alt="real image"/>
                                         }                                                
                                     </Space>
                                     </Form.Item>
@@ -2008,16 +2092,16 @@ export const XrayinfoWrite = () => {
                                                         //ref={fileInput1}
                                                         /*onChange={handleChange} */
                                                         onChange={saveImgRefReal}
-                                                        ref={imgRef1}
+                                                        ref={imgRefSide }
                                                         style={{ display: "none" }} />                                                     
                                         </Card>
                                     </Space>
 
                                     <Space direction="vertical">
                                         {imgRealEdit === true ?  
-                                        <img src={unitParams.imgReal!==null ? 'data:image/png;base64,' + unitParams.imgReal : noImage} width={100} height={100} alt="real image" />
+                                        <img src={unitParams?.imgReal!==null && unitParams?.imgReal!==undefined ? 'data:image/png;base64,' + unitParams?.imgReal : noImage} width={100} height={100} alt="real image" />
                                         : 
-                                        <img src={fileReal ? fileReal :noImage} width={100} height={100} alt="real image"/>
+                                        <img src={pImgReal ? pImgReal :noImage} width={100} height={100} alt="real image"/>
                                         }                                                
                                     </Space>
                                     </Form.Item>
@@ -2088,16 +2172,16 @@ export const XrayinfoWrite = () => {
                                                                 //ref={fileInput1}
                                                                 /*onChange={handleChange} */
                                                                 onChange={saveImgRefSideColor1 }
-                                                                ref={imgRef1}
+                                                                ref={imgRefSideColor1 }
                                                                 style={{ display: "none" }} />                                                     
                                                 </Card>
                                             </Space>
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams.imgReal!==null ? 'data:image/png;base64,' + unitParams.imgReal : noImage} width={100} height={100} alt="real image" />
+                                                <img src={unitParams?.imgSideCollar!==null && unitParams?.imgSideCollar!==undefined ? 'data:image/png;base64,' + unitParams?.imgSideCollar : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={fileReal ? fileReal :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pImgSideCollar ? pImgSideCollar :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -2123,16 +2207,16 @@ export const XrayinfoWrite = () => {
                                                                 //ref={fileInput1}
                                                                 /*onChange={handleChange} */
                                                                 onChange={saveImgRefSideColor2}
-                                                                ref={imgRef1}
+                                                                ref={imgRefSideColor2}
                                                                 style={{ display: "none" }} />                                                     
                                                 </Card>
                                             </Space>
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams.imgReal!==null ? 'data:image/png;base64,' + unitParams.imgReal : noImage} width={100} height={100} alt="real image" />
+                                                <img src={unitParams?.imgSideOrganism!==null && unitParams?.imgSideOrganism!==undefined ? 'data:image/png;base64,' + unitParams?.imgSideOrganism : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={fileReal ? fileReal :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pImgSideOrganism ? pImgSideOrganism :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -2158,16 +2242,16 @@ export const XrayinfoWrite = () => {
                                                                 //ref={fileInput1}
                                                                 /*onChange={handleChange} */
                                                                 onChange={saveImgRefSideColor3}
-                                                                ref={imgRef1}
+                                                                ref={imgRefSideColor3}
                                                                 style={{ display: "none" }} />                                                     
                                                 </Card>
                                             </Space>
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams.imgReal!==null ? 'data:image/png;base64,' + unitParams.imgReal : noImage} width={100} height={100} alt="real image" />
+                                                <img src={unitParams?.imgSideCollarOutline!==null && unitParams?.imgSideCollarOutline!==undefined ? 'data:image/png;base64,' + unitParams?.imgSideCollarOutline : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={fileReal ? fileReal :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pImgSideCollarOutline ? pImgSideCollarOutline :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -2193,16 +2277,16 @@ export const XrayinfoWrite = () => {
                                                                 //ref={fileInput1}
                                                                 /*onChange={handleChange} */
                                                                 onChange={saveImgRefSideColor4}
-                                                                ref={imgRef1}
+                                                                ref={imgRefSideColor4}
                                                                 style={{ display: "none" }} />                                                     
                                                 </Card>
                                             </Space>
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams.imgReal!==null ? 'data:image/png;base64,' + unitParams.imgReal : noImage} width={100} height={100} alt="real image" />
+                                                <img src={unitParams?.imgSideCollarReversal!==null && unitParams?.imgSideCollarReversal!==undefined ? 'data:image/png;base64,' + unitParams?.imgSideCollarReversal : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={fileReal ? fileReal :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pImgSideCollarReversal ? pImgSideCollarReversal :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -2228,16 +2312,16 @@ export const XrayinfoWrite = () => {
                                                                 //ref={fileInput1}
                                                                 /*onChange={handleChange} */
                                                                 onChange={saveImgRefSideColor5}
-                                                                ref={imgRef1}
+                                                                ref={imgRefSideColor5}
                                                                 style={{ display: "none" }} />                                                     
                                                 </Card>
                                             </Space>
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams.imgReal!==null ? 'data:image/png;base64,' + unitParams.imgReal : noImage} width={100} height={100} alt="real image" />
+                                                <img src={unitParams?.imgSideCollarBwRate1!==null && unitParams?.imgSideCollarBwRate1!==undefined ? 'data:image/png;base64,' + unitParams?.imgSideCollarBwRate1 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={fileReal ? fileReal :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pImgSideCollarBwRate1 ? pImgSideCollarBwRate1 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -2267,16 +2351,16 @@ export const XrayinfoWrite = () => {
                                                                 //ref={fileInput1}
                                                                 /*onChange={handleChange} */
                                                                 onChange={saveImgRefSideColor6}
-                                                                ref={imgRef1}
+                                                                ref={imgRefSideColor6}
                                                                 style={{ display: "none" }} />                                                     
                                                 </Card>
                                             </Space>
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams.imgReal!==null ? 'data:image/png;base64,' + unitParams.imgReal : noImage} width={100} height={100} alt="real image" />
+                                                <img src={unitParams?.imgSideCollarBwRate2!==null && unitParams?.imgSideCollarBwRate2!==undefined ? 'data:image/png;base64,' + unitParams?.imgSideCollarBwRate2 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={fileReal ? fileReal :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pImgSideCollarBwRate2 ? pImgSideCollarBwRate2 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -2302,16 +2386,16 @@ export const XrayinfoWrite = () => {
                                                                 //ref={fileInput1}
                                                                 /*onChange={handleChange} */
                                                                 onChange={saveImgRefSideColor7}
-                                                                ref={imgRef1}
+                                                                ref={imgRefSideColor7}
                                                                 style={{ display: "none" }} />                                                     
                                                 </Card>
                                             </Space>
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams.imgReal!==null ? 'data:image/png;base64,' + unitParams.imgReal : noImage} width={100} height={100} alt="real image" />
+                                                <img src={unitParams?.imgSideCollarBwRate3!==null && unitParams?.imgSideCollarBwRate3!==undefined ? 'data:image/png;base64,' + unitParams?.imgSideCollarBwRate3 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={fileReal ? fileReal :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pImgSideCollarBwRate3 ? pImgSideCollarBwRate3 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -2337,16 +2421,16 @@ export const XrayinfoWrite = () => {
                                                                 //ref={fileInput1}
                                                                 /*onChange={handleChange} */
                                                                 onChange={saveImgRefSideColor8}
-                                                                ref={imgRef1}
+                                                                ref={imgRefSideColor8}
                                                                 style={{ display: "none" }} />                                                     
                                                 </Card>
                                             </Space>
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams.imgReal!==null ? 'data:image/png;base64,' + unitParams.imgReal : noImage} width={100} height={100} alt="real image" />
+                                                <img src={unitParams?.imgSideCollarBwRate4!==null &&unitParams?.imgSideCollarBwRate4!==undefined ? 'data:image/png;base64,' + unitParams?.imgSideCollarBwRate4 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={fileReal ? fileReal :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pImgSideCollarBwRate4 ? pImgSideCollarBwRate4 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -2372,16 +2456,16 @@ export const XrayinfoWrite = () => {
                                                                 //ref={fileInput1}
                                                                 /*onChange={handleChange} */
                                                                 onChange={saveImgRefSideColor9}
-                                                                ref={imgRef1}
+                                                                ref={imgRefSideColor9}
                                                                 style={{ display: "none" }} />                                                     
                                                 </Card>
                                             </Space>
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams.imgReal!==null ? 'data:image/png;base64,' + unitParams.imgReal : noImage} width={100} height={100} alt="real image" />
+                                                <img src={unitParams?.imgSideCollarBwRate5!==null && unitParams?.imgSideCollarBwRate5!==undefined? 'data:image/png;base64,' + unitParams?.imgSideCollarBwRate5 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={fileReal ? fileReal :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pImgSideCollarBwRate5 ? pImgSideCollarBwRate5 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -2407,16 +2491,16 @@ export const XrayinfoWrite = () => {
                                                                 //ref={fileInput1}
                                                                 /*onChange={handleChange} */
                                                                 onChange={saveImgRefSideColor10}
-                                                                ref={imgRef1}
+                                                                ref={imgRefSideColor10}
                                                                 style={{ display: "none" }} />                                                     
                                                 </Card>
                                             </Space>
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams.imgReal!==null ? 'data:image/png;base64,' + unitParams.imgReal : noImage} width={100} height={100} alt="real image" />
+                                                <img src={unitParams?.imgSideCollarBwRate6!==null&&unitParams?.imgSideCollarBwRate6!==undefined ? 'data:image/png;base64,' + unitParams?.imgSideCollarBwRate6 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={fileReal ? fileReal :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pImgSideCollarBwRate6 ? pImgSideCollarBwRate6 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -2446,16 +2530,16 @@ export const XrayinfoWrite = () => {
                                                                 //ref={fileInput1}
                                                                 /*onChange={handleChange} */
                                                                 onChange={saveImgRefSideBw1}
-                                                                ref={imgRef1}
+                                                                ref={imgRefSideBw1 }
                                                                 style={{ display: "none" }} />                                                     
                                                 </Card>
                                             </Space>
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams.imgReal!==null ? 'data:image/png;base64,' + unitParams.imgReal : noImage} width={100} height={100} alt="real image" />
+                                                <img src={unitParams?.imgSideBw!==null && unitParams?.imgSideBw!==undefined ? 'data:image/png;base64,' + unitParams?.imgSideBw : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={fileReal ? fileReal :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pImgSideBw ? pImgSideBw :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -2481,16 +2565,16 @@ export const XrayinfoWrite = () => {
                                                                 //ref={fileInput1}
                                                                 /*onChange={handleChange} */
                                                                 onChange={saveImgRefSideBw2}
-                                                                ref={imgRef1}
+                                                                ref={imgRefSideBw2}
                                                                 style={{ display: "none" }} />                                                     
                                                 </Card>
                                             </Space>
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams.imgReal!==null ? 'data:image/png;base64,' + unitParams.imgReal : noImage} width={100} height={100} alt="real image" />
+                                                <img src={unitParams?.imgSideMinerals!==null && unitParams?.imgSideMinerals!==undefined? 'data:image/png;base64,' + unitParams?.imgSideMinerals : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={fileReal ? fileReal :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pImgSideMinerals ? pImgSideMinerals :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -2516,16 +2600,16 @@ export const XrayinfoWrite = () => {
                                                                 //ref={fileInput1}
                                                                 /*onChange={handleChange} */
                                                                 onChange={saveImgRefSideBw3}
-                                                                ref={imgRef1}
+                                                                ref={imgRefSideBw3}
                                                                 style={{ display: "none" }} />                                                     
                                                 </Card>
                                             </Space>
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams.imgReal!==null ? 'data:image/png;base64,' + unitParams.imgReal : noImage} width={100} height={100} alt="real image" />
+                                                <img src={unitParams?.imgSideBwOutline!==null && unitParams?.imgSideBwOutline!==undefined? 'data:image/png;base64,' + unitParams?.imgSideBwOutline : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={fileReal ? fileReal :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pImgSideBwOutline ? pImgSideBwOutline :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -2551,16 +2635,16 @@ export const XrayinfoWrite = () => {
                                                                 //ref={fileInput1}
                                                                 /*onChange={handleChange} */
                                                                 onChange={saveImgRefSideBw4}
-                                                                ref={imgRef1}
+                                                                ref={imgRefSideBw4}
                                                                 style={{ display: "none" }} />                                                     
                                                 </Card>
                                             </Space>
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams.imgReal!==null ? 'data:image/png;base64,' + unitParams.imgReal : noImage} width={100} height={100} alt="real image" />
+                                                <img src={unitParams?.imgSideBwReversal!==null&&unitParams?.imgSideBwReversal!==undefined ? 'data:image/png;base64,' + unitParams?.imgSideBwReversal : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={fileReal ? fileReal :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pImgSideBwReversal ? pImgSideBwReversal :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -2586,16 +2670,16 @@ export const XrayinfoWrite = () => {
                                                                 //ref={fileInput1}
                                                                 /*onChange={handleChange} */
                                                                 onChange={saveImgRefSideBw5}
-                                                                ref={imgRef1}
+                                                                ref={imgRefSideBw5}
                                                                 style={{ display: "none" }} />                                                     
                                                 </Card>
                                             </Space>
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams.imgReal!==null ? 'data:image/png;base64,' + unitParams.imgReal : noImage} width={100} height={100} alt="real image" />
+                                                <img src={unitParams?.imgSideBwBwRate1!==null && unitParams?.imgSideBwBwRate1!==undefined? 'data:image/png;base64,' + unitParams?.imgSideBwBwRate1 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={fileReal ? fileReal :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pImgSideBwBwRate1 ? pImgSideBwBwRate1 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -2625,16 +2709,16 @@ export const XrayinfoWrite = () => {
                                                                 //ref={fileInput1}
                                                                 /*onChange={handleChange} */
                                                                 onChange={saveImgRefSideBw6}
-                                                                ref={imgRef1}
+                                                                ref={imgRefSideBw6}
                                                                 style={{ display: "none" }} />                                                     
                                                 </Card>
                                             </Space>
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams.imgReal!==null ? 'data:image/png;base64,' + unitParams.imgReal : noImage} width={100} height={100} alt="real image" />
+                                                <img src={unitParams?.imgSideBwBwRate2!==null && unitParams?.imgSideBwBwRate2!==undefined ? 'data:image/png;base64,' + unitParams?.imgSideBwBwRate2 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={fileReal ? fileReal :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pImgSideBwBwRate2 ? pImgSideBwBwRate2 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -2660,16 +2744,16 @@ export const XrayinfoWrite = () => {
                                                                 //ref={fileInput1}
                                                                 /*onChange={handleChange} */
                                                                 onChange={saveImgRefSideBw7}
-                                                                ref={imgRef1}
+                                                                ref={imgRefSideBw7}
                                                                 style={{ display: "none" }} />                                                     
                                                 </Card>
                                             </Space>
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams.imgReal!==null ? 'data:image/png;base64,' + unitParams.imgReal : noImage} width={100} height={100} alt="real image" />
+                                                <img src={unitParams?.imgSideBwBwRate3!==null &&unitParams?.imgSideBwBwRate3!==undefined ? 'data:image/png;base64,' + unitParams?.imgSideBwBwRate3 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={fileReal ? fileReal :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pImgSideBwBwRate3 ? pImgSideBwBwRate3 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -2695,16 +2779,16 @@ export const XrayinfoWrite = () => {
                                                                 //ref={fileInput1}
                                                                 /*onChange={handleChange} */
                                                                 onChange={saveImgRefSideBw8}
-                                                                ref={imgRef1}
+                                                                ref={imgRefSideBw8}
                                                                 style={{ display: "none" }} />                                                     
                                                 </Card>
                                             </Space>
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams.imgReal!==null ? 'data:image/png;base64,' + unitParams.imgReal : noImage} width={100} height={100} alt="real image" />
+                                                <img src={unitParams?.imgSideBwBwRate4!==null && unitParams?.imgSideBwBwRate4!==undefined? 'data:image/png;base64,' + unitParams?.imgSideBwBwRate4 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={fileReal ? fileReal :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pImgSideBwBwRate4 ? pImgSideBwBwRate4 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -2730,16 +2814,16 @@ export const XrayinfoWrite = () => {
                                                                 //ref={fileInput1}
                                                                 /*onChange={handleChange} */
                                                                 onChange={saveImgRefSideBw9}
-                                                                ref={imgRef1}
+                                                                ref={imgRefSideBw9}
                                                                 style={{ display: "none" }} />                                                     
                                                 </Card>
                                             </Space>
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams.imgReal!==null ? 'data:image/png;base64,' + unitParams.imgReal : noImage} width={100} height={100} alt="real image" />
+                                                <img src={unitParams?.imgSideBwBwRate5!==null && unitParams?.imgSideBwBwRate5!==undefined? 'data:image/png;base64,' + unitParams?.imgSideBwBwRate5 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={fileReal ? fileReal :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pImgSideBwBwRate5 ? pImgSideBwBwRate5 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -2765,16 +2849,16 @@ export const XrayinfoWrite = () => {
                                                                 //ref={fileInput1}
                                                                 /*onChange={handleChange} */
                                                                 onChange={saveImgRefSideBw10}
-                                                                ref={imgRef1}
+                                                                ref={imgRefSideBw10}
                                                                 style={{ display: "none" }} />                                                     
                                                 </Card>
                                             </Space>
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams.imgReal!==null ? 'data:image/png;base64,' + unitParams.imgReal : noImage} width={100} height={100} alt="real image" />
+                                                <img src={unitParams?.imgSideBwBwRate6!==null && unitParams?.imgSideBwBwRate6!==undefined? 'data:image/png;base64,' + unitParams?.imgSideBwBwRate6 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={fileReal ? fileReal :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pImgSideBwBwRate6 ? pImgSideBwBwRate6 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>

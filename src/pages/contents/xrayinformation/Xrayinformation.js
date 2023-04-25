@@ -7,8 +7,8 @@ import {
     useGetXrayinformationListMutation,
     useGetXrayinformationSubListMutation,
     useInsertXrayContentsMutation,//xray컨텐츠등록
-    useUpdateXrayContentsMutation,//xray컨텐츠삭제
-    useDeleteXrayContentsMutation,//xray컨텐츠수정
+    useUpdateXrayContentsMutation,//xray컨텐츠수정
+    useDeleteXrayContentsMutation,//xray컨텐츠삭제
     useInsertXrayUnitMutation,//xray컨텐츠 물품등록
     useDeleteXrayUnitMutation,//xray컨텐츠 물품삭제    
     useSelectUnitPopupListMutation//물품팝업리스트
@@ -60,6 +60,7 @@ export const Xrayinformation = () => {
         setDataSource([
             ...Xrayinformationresponse?.data?.RET_DATA.map((d, i) => ({
                 key: d.bagScanId,
+                rowdataNo: i,
                 rowdata0: i + 1,
                 rowdata1: d.bagScanId /*가방촬영id*/,
                 rowdata2: d.unitId /*물품id*/,
@@ -91,6 +92,7 @@ export const Xrayinformation = () => {
         setDataSourceSub([
             ...XrayinformationresponseSub?.data?.RET_DATA.map((s, i) => ({
                 key: s.bagScanId,
+                rowdataNo: i,
                 rowdata0: i + 1,
                 rowdata1: s.bagScanId /*가방촬영id*/,
                 rowdata2: s.unitId /*물품id*/,
@@ -264,17 +266,28 @@ export const Xrayinformation = () => {
             title: '학습Level',
             dataIndex: 'rowdata7',
             align: 'center',
-            render: (_, { rowdata7 }) =>
+            render: (_, { rowdata1, rowdataNo, rowdata7 }) =>
                 dataSource.length >= 1 ? (
                     <Select
                         labelInValue
-                        defaultValue={{
-                            value: `${rowdata7}`
-                        }}
                         style={{
                             width: '100%'
                         }}
-                        onChange={handleChange}
+                        //onChange={handleChange}
+                        defaultValue={xrayinformationList[rowdataNo]?.studyLvl}
+                        onChange={(e) => {
+                            var arrTemp = [];
+                            xrayinformationList.forEach(function(t) {
+                                if(t.bagScanId === rowdata1){
+                                    //object copy
+                                    const tempTargetAdd = {...t , "studyLvl": e.value};
+                                    arrTemp.push(tempTargetAdd);
+                                }else{
+                                    arrTemp.push(t);
+                                }
+                            });
+                            setXrayinformationList(arrTemp);
+                        }}                           
                         options={[
                             {
                                 value: '1',
@@ -305,17 +318,29 @@ export const Xrayinformation = () => {
             title: '사용여부',
             dataIndex: 'rowdata8',
             align: 'center',
-            render: (_, { rowdata8 }) =>
+            render: (_, { rowdata1, rowdataNo, rowdata8 }) =>
                 dataSource.length >= 1 ? (
                     <Select
                         labelInValue
-                        defaultValue={{
-                            value: `${rowdata8}`
-                        }}
                         style={{
                             width: '100%'
                         }}
-                        onChange={handleChange}
+                        //onChange={handleChange}
+                        defaultValue={xrayinformationList[rowdataNo]?.useYn}
+                        onChange={(e) => {
+                            var arrTemp = [];
+                            xrayinformationList.forEach(function(t) {
+                                if(t.bagScanId === rowdata1){
+                                    //object copy
+                                    const tempTargetAdd = {...t , "useYn": e.value};
+                                    arrTemp.push(tempTargetAdd);
+                                }else{
+                                    arrTemp.push(t);
+                                }
+                            });
+                            setXrayinformationList(arrTemp);
+                        }}    
+
                         options={[
                             {
                                 value: 'N',
@@ -675,17 +700,31 @@ export const Xrayinformation = () => {
     };    
 
     // 수정 (상단)
-    const handleEdit = () => {
-
-
+    const handleEdit = async() => {
+        setLoading(true);
         if (selectedRowKeys == '') {
             Modal.error({
                 content: '수정할 항목을 선택해주세요.'
             });
         } else {
-            Modal.success({
-                content: '수정완료'
+            console.log('수정 xrayinformationList:', xrayinformationList)
+
+            const response = await updateXrayContents({     
+                "paramList" : xrayinformationList          
             });
+            setLoading(false);
+
+    
+            if ((response?.data?.RET_CODE === "0000") ||(response?.data?.RET_CODE === "0100")) {
+                Modal.success({
+                    content: response?.data?.RET_DESC
+                });            
+            } else {
+                Modal.success({
+                    content: response?.data?.RET_DESC
+                });             
+            }
+            handleXrayinformation(); // 그룹 api 호출
         }
     };
 
