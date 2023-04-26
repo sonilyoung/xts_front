@@ -77,6 +77,7 @@ export const XrayinfoWrite = () => {
     //const params = useRef(); // 수정화면
     const [refresh, setRefresh] = useState(false); //리프레쉬
     const [unitParams, setUnitParams] = useState({imgReal : ''});
+    const [onSearchItem, setOnSearchItem] = useState(false); // 물품명칭 언어추가 Modal
 
     const handleinformationList = async () => {
         const getXrayinforResponse = await getXrayinformationList({ });
@@ -264,14 +265,14 @@ export const XrayinfoWrite = () => {
 
     // 물품명칭 언어 추가 Start
     const Unit_Language = () => {
-        setUnitLanguageModalOpen(true);
+        setOnSearchItem(true);
     };
-    const Unit_LanguageOk = () => {
-        setUnitLanguageModalOpen(false);
+    const Unit_ModalOk = () => {
+        setOnSearchItem(false);
         form.resetFields();
     };
-    const Unit_LanguageCancel = () => {
-        setUnitLanguageModalOpen(false);
+    const Unit_ModalCancel = () => {
+        setOnSearchItem(false);
         form.resetFields();
     };
     const Unit_LanguageAdd = (values) => {
@@ -1214,6 +1215,13 @@ export const XrayinfoWrite = () => {
         // console.log(...fileListR);
     };
 
+    const [popupImg, setPopupImg] = useState('');
+
+    const handleImgPop = (e) => {
+        setOnSearchItem(true);
+        setPopupImg(e);	
+    }
+    
     useEffect(() => {
         setLoading(true); // 로딩 호출
         //console.log('useEffect2');
@@ -1307,7 +1315,7 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams?.imgFrontCollar!==null && unitParams?.imgFrontCollar!==undefined ? 'data:image/png;base64,' + unitParams?.imgFrontCollar : noImage} width={100} height={100} alt="real image" />
+                                                <img onClick={()=>handleImgPop(unitParams?.imgFrontCollar)} src={unitParams?.imgFrontCollar!==null && unitParams?.imgFrontCollar!==undefined ? 'data:image/png;base64,' + unitParams?.imgFrontCollar : noImage} width={100} height={100} alt="real image" />
                                                 : 
                                                 <img src={pImgFrontCollar ? pImgFrontCollar :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
@@ -2875,265 +2883,15 @@ export const XrayinfoWrite = () => {
                 </Typography>
             </MainCard>
             </Form>
-            {/* 물품 이미지 추가 폼 Start */}
-            <Drawer
-                maskClosable={false}
-                title={`물품 이미지 ${dataEdit === true ? '수정' : '추가'}`}
-                onClose={onAddClose}
-                open={open}
-                width={500}
-                style={{ top: '60px', zIndex: 888 }}
-                extra={
-                    <>
-                        <Space>
-                            <Tooltip title="취소" placement="bottom">
-                                <Button onClick={onAddClose} style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}>
-                                    취소
-                                </Button>
-                            </Tooltip>
-                            {dataEdit === true ? (
-                                <Tooltip title="수정" placement="bottom" color="#108ee9">
-                                    <Button
-                                        onClick={onUpdateSubmit}
-                                        style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
-                                        type="primary"
-                                    >
-                                        수정
-                                    </Button>
-                                </Tooltip>
-                            ) : (
-                                <Tooltip title="추가" placement="bottom" color="#108ee9">
-                                    <Button
-                                        onClick={onSaveSubmit}
-                                        style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
-                                        type="primary"
-                                    >
-                                        저장
-                                    </Button>
-                                </Tooltip>
-                            )}
-                            <Tooltip title="삭제">
-                                <Button type="danger" onClick={onDelete} style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}>
-                                    삭제
-                                </Button>
-                            </Tooltip>
-                        </Space>
-                    </>
-                }
-            >
-                <MainCard>
-                    <Form name="Unit_Add" layout="vertical" form={form}>
-                        <Row gutter={16}>
-                            <Col span={24}>
 
-                                <Form.Item
-                                    name="unitId"
-                                    label="물품분류"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: 'Please Enter Items Type'
-                                        }
-                                    ]}
-                                >
-                                    <Select
-                                        //onChange={(e) => setUnitGroupCd(e.target.value)}
-                                        //onChange={handleGroupUnit}
-                                        onChange={(e) => setUnitParams({ ...unitParams, "unitGroupCd": e })}
-                                        defaultValue = {()=>unitParams?.unitGroupCd}
-                                        style={{
-                                            width: '100%'
-                                        }}
-                                        options={[
-                                            {
-                                                value: 'G000001',
-                                                label: '총기류'
-                                            },
-                                            {
-                                                value: 'G000002',
-                                                label: '폭발물류'
-                                            },
-                                            {
-                                                value: 'G000003',
-                                                label: '실탄류'
-                                            },
-                                            {
-                                                value: 'G000004',
-                                                label: '도검류'
-                                            },
-                                            {
-                                                value: 'G000005',
-                                                label: '일반무기류'
-                                            },
-                                            {
-                                                value: 'G000006',
-                                                label: '위장무기류'
-                                            },
-                                            {
-                                                value: 'G000007',
-                                                label: '공구/생활용품류'
-                                            },
-                                            {
-                                                value: 'G000008',
-                                                label: '인화성물질류'
-                                            },
-                                            {
-                                                value: 'G000009',
-                                                label: '위험물질류'
-                                            },
-                                            {
-                                                value: 'G000010',
-                                                label: '액체, 겔 물품류'
-                                            },
-                                            {
-                                                value: 'G000011',
-                                                label: '주류'
-                                            },
-                                            {
-                                                value: 'G000012',
-                                                label: '전기/전자제품류'
-                                            },
-                                            {
-                                                value: 'G000013',
-                                                label: '확인물품류'
-                                            }
-                                        ]}
-                                    />
-                                </Form.Item>
-                            </Col>
-                        </Row>
-                        <Divider style={{ margin: '10px 0' }} />
 
-                        <Row gutter={24}>
-                            <Col span={24}>
-                                <Form.Item
-                                    name="unitName"
-                                    label="물품명칭"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: 'Please Enter unitName Name'
-                                        }
-                                    ]}
-                                >
-                                    <Input
-                                        type="text"
-                                        name="unitName"                                    
-                                        value={unitParams?.unitName}
-                                        defaultValue={unitParams?.unitName}
-                                        onChange={(e) => setUnitParams({ ...unitParams, "unitName": e.target.value })}
-                                        style={{
-                                            width: '100%'
-                                        }}
-                                        placeholder="Please Enter unitName Name"
-                                    />
-                                </Form.Item>
-                            </Col>
-                        </Row>
-                        <Row gutter={24}>
-                            <Col span={24}>
-                                <Form.Item
-                                    name="unitDesc"
-                                    label="물품설명"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: 'Please Enter unitDesc Name'
-                                        }
-                                    ]}
-                                >
-                                    <Input
-                                        type="text"
-                                        name="unitDesc"                                       
-                                        value={unitParams?.unitDesc}
-                                        defaultValue={unitParams?.unitDesc}
-                                        onChange={(e) => setUnitParams({ ...unitParams, "unitDesc": e.target.value })}
-                                        style={{
-                                            width: '100%'
-                                        }}
-                                        placeholder="Please Enter unitDesc Name"
-                                    />
-                                </Form.Item>
-                            </Col>
-                        </Row>
-
-                        <Row gutter={24}>
-                            <Col span={24}>
-                                <Form.Item
-                                    name="useYn"
-                                    label="사용 유무"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: 'Please Enter useYn Name'
-                                        }
-                                    ]}
-                                >
-                                <Select
-                                    defaultValue = {()=>unitParams?.useYn}
-                                    onChange={(e) => setUnitParams({ ...unitParams, "useYn": e })}
-                                    style={{
-                                        width: '100%'
-                                    }}
-                                    options={[
-                                        {
-                                            value: 'Y',
-                                            label: '사용'
-                                        },
-                                        {
-                                            value: 'N',
-                                            label: '미사용'
-                                        },
-                                    ]}
-                                />    
-                                </Form.Item>                            
-                            </Col>
-                        </Row>
-
-                        <Row gutter={24}>
-                            <Col span={24}>
-                                <Form.Item
-                                    name="languageCode"
-                                    label="언어 선택"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: 'Please Enter languageCode'
-                                        }
-                                    ]}
-                                >
-                                <Select
-                                    defaultValue={unitParams?.languageCode}
-                                    onChange={(e) => setUnitParams({ ...unitParams, "languageCode": e })}
-                                    style={{
-                                        width: '100%'
-                                    }}
-                                    options={[
-                                        {
-                                            value: 'kor',
-                                            label: '한국어'
-                                        },
-                                        {
-                                            value: 'eng',
-                                            label: '영어'
-                                        },
-                                    ]}
-                                />
-                                </Form.Item>
-                            </Col>
-                        </Row>
-                    </Form>
-                </MainCard>
-            </Drawer>
-            {/* 이미지 관리 추가 폼 End */}
-
-            {/* 물품명칭 언어 추가 Modal Start */}
+            {/* 이미지 Modal Start */}
             <Modal
-                open={unitLanguageModalOpen}
-                onOk={Unit_LanguageOk}
-                onCancel={Unit_LanguageCancel}
-                title="물품명칭 언어 추가"
-                width={450}
+                open={onSearchItem}
+                onOk={Unit_ModalOk}
+                onCancel={Unit_ModalCancel}
+                title="물품추가"
+                width={500}
                 style={{
                     left: 130,
                     zIndex: 999
@@ -3141,37 +2899,25 @@ export const XrayinfoWrite = () => {
                 footer={[
                     <Button
                         type="primary"
-                        onClick={Unit_LanguageCancel}
+                        onClick={Unit_ModalCancel}
                         style={{ width: '100px', borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
                     >
-                        Close
+                        close
                     </Button>
                 ]}
             >
                 <MainCard>
                     <Form layout="vertical" name="Unit_Language_Add" form={form} onFinish={Unit_LanguageAdd}>
                         <Form.Item>
-                            <Row gutter={24} style={{ marginBottom: 10 }}>
-                                <Col offset={19}>
-                                    <Space>
-                                        <Tooltip title="저장" placement="bottom" color="#108ee9">
-                                            <Button
-                                                style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
-                                                type="primary"
-                                                htmlType="submit"
-                                            >
-                                                저장
-                                            </Button>
-                                        </Tooltip>
-                                    </Space>
+                            <Row >
+                                <Col style={{ textAlign: 'center', padding: '0 10px' }}>
+                                    <img src={'data:image/png;base64,'+ popupImg} />
                                 </Col>
                             </Row>
                         </Form.Item>
                     </Form>
                 </MainCard>
             </Modal>
-            
-            {/* 물품명칭 언어 추가 Modal End */}
             
         </>
     );
