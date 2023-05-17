@@ -49,6 +49,14 @@ export const systemManagement = createApi({
                 method: 'POST',
                 body: body
             })
+        }),
+        // 다국어수정
+        updateLanguageApply: builder.mutation({
+            query: (body) => ({
+                url: 'common/updateLanguageApply.do',
+                method: 'POST',
+                body: body
+            })
         })
     })
 });
@@ -57,5 +65,6 @@ export const {
     useGetLanguageApplyListMutation,
     useInsertLanguageApplyMutation,
     useGetLanguageApplyMutation,
-    useDeleteLanguageApplyMutation
+    useDeleteLanguageApplyMutation,
+    useUpdateLanguageApplyMutation
 } = systemManagement;
