@@ -54,9 +54,9 @@ export const ImagesManagement = () => {
     const [saveUnitImg] = useSaveUnitImgMutation(); // 단품이미지 저장 api
     const [insertUnit] = useInsertUnitMutation(); // 단품저장 api
     const [unitList, setUnitList] = useState(); // 리스트 값
-    const [unitDetail] = useGetUnitMutation(); // 단품저장 api
+    const [unitDetail] = useGetUnitMutation(); // 단품상세 api
     const [unitUpdate] = useUpdateUnitMutation(); // 단품수정 api
-    const [unitDelete] = useDeleteUnitMutation(); // 단품수정 api
+    const [unitDelete] = useDeleteUnitMutation(); // 단품삭제 api
 
     const [dataSource, setDataSource] = useState([]); // Table 데이터 값
     const [open, setOpen] = useState(false); // Drawer 추가 우측폼 상태
@@ -100,7 +100,7 @@ export const ImagesManagement = () => {
         setUnitList(getUnitListResponse?.data?.RET_DATA);
         setDataSource([
             ...getUnitListResponse?.data?.RET_DATA.map((d, i) => ({
-                key: d.unitScanId,
+                key: d.unitId,
                 rowdata0: i + 1,
                 rowdata1: d.unitId,
                 rowdata2: d.unitGroupCd,
@@ -201,7 +201,7 @@ export const ImagesManagement = () => {
         setFileThreed(null);
         const response = await unitDetail({
             "languageCode" : languageCode,
-            "unitScanId" : e
+            "unitId" : e
         });
         
         console.log('이미지가져오기:',response.data.RET_DATA);
@@ -218,7 +218,7 @@ export const ImagesManagement = () => {
 
         const response = await unitDetail({
             "languageCode" : languageCode,
-            "unitScanId" : e?.rowdata1?.key
+            "unitId" : e?.rowdata1?.key
         });
         
         setUnitParams(response.data.RET_DATA);
@@ -294,7 +294,7 @@ export const ImagesManagement = () => {
         console.log('수정:',unitParams);
 
         const response = await unitUpdate({
-            "unitScanId" : unitParams?.unitScanId,
+            "unitId" : unitParams?.unitId,
             "unitGroupCd" : unitParams?.unitGroupCd,
             "languageCode" : unitParams?.languageCode,
             "studyLvl" : unitParams?.studyLvl,
@@ -316,7 +316,7 @@ export const ImagesManagement = () => {
     //단품삭제
     const onDelete = async () => {
         const response = await unitDelete({
-            "unitScanId" : unitParams?.unitScanId,
+            "unitId" : unitParams?.unitId,
             "languageCode" : unitParams?.languageCode
         });
         setRefresh(response);
@@ -478,7 +478,7 @@ export const ImagesManagement = () => {
 
         let formData = new FormData();
         const params = { 
-            unitScanId: unitScanId,
+            //unitScanId: unitScanId,
             unitId: unitId,
             unitGroupCd: unitScanThreed
         };

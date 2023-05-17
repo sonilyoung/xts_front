@@ -11,7 +11,7 @@ export const loginManagement = createApi({
         //로그인
         login: builder.mutation({
             query: (body) => ({
-                url: 'login.do',
+                url: 'adm/login.do',
                 method: 'POST',
                 body: body
             })
@@ -19,7 +19,7 @@ export const loginManagement = createApi({
         //비밀번호 변경
         passwordConfirm: builder.mutation({
             query: (body) => ({
-                url: 'login/passwd/change',
+                url: 'adm/login/passwd/change',
                 method: 'POST',
                 body: body
             })
@@ -27,7 +27,7 @@ export const loginManagement = createApi({
         //비밀번호 초기화
         passwordReset: builder.mutation({
             query: (body) => ({
-                url: 'login/passwd/reset',
+                url: 'adm/login/passwd/reset',
                 method: 'POST',
                 body: body
             })
@@ -35,7 +35,7 @@ export const loginManagement = createApi({
         //비밀번호 정보
         getPwdInfo: builder.mutation({
             query: (body) => ({
-                url: 'main/getPwdInfo',
+                url: 'adm/main/getPwdInfo',
                 method: 'POST',
                 body: body
             })

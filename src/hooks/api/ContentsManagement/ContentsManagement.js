@@ -19,7 +19,7 @@ export const contentsManagement = createApi({
         // 콘텐츠 관리 > 언어 관리 > 목록
         getLanguageList: builder.mutation({
             query: (body) => ({
-                url: 'contents/selectLanguageList.do',
+                url: 'adm/contents/selectLanguageList.do',
                 method: 'POST',
                 body: body
             })
@@ -27,7 +27,7 @@ export const contentsManagement = createApi({
         // 콘텐츠 관리 > 언어 관리 > 상세
         getLanguage: builder.mutation({
             query: (body) => ({
-                url: 'contents/selectLanguage.do',
+                url: 'adm/contents/selectLanguage.do',
                 method: 'POST',
                 body: body
             })
@@ -35,7 +35,7 @@ export const contentsManagement = createApi({
         // 콘텐츠 관리 > 언어 관리 > 등록
         insertLanguage: builder.mutation({
             query: (body) => ({
-                url: 'contents/insertLanguage.do',
+                url: 'adm/contents/insertLanguage.do',
                 method: 'POST',
                 body: body
             })
@@ -43,7 +43,7 @@ export const contentsManagement = createApi({
         // 콘텐츠 관리 > 언어 관리 > 수정
         updateLanguage: builder.mutation({
             query: (body) => ({
-                url: 'contents/updateLanguage.do',
+                url: 'adm/contents/updateLanguage.do',
                 method: 'POST',
                 body: body
             })
@@ -51,7 +51,7 @@ export const contentsManagement = createApi({
         // 콘텐츠 관리 > 언어 관리 > 삭제
         deleteLanguage: builder.mutation({
             query: (body) => ({
-                url: 'contents/deleteLanguage.do',
+                url: 'adm/contents/deleteLanguage.do',
                 method: 'POST',
                 body: body
             })
@@ -63,7 +63,7 @@ export const contentsManagement = createApi({
         // 콘텐츠 관리 > 그룹 관리 > 목록
         getGroupList: builder.mutation({
             query: (body) => ({
-                url: 'contents/selectUnitGroupList.do',
+                url: 'adm/contents/selectUnitGroupList.do',
                 method: 'POST',
                 body: body
             })
@@ -72,7 +72,7 @@ export const contentsManagement = createApi({
         // 콘텐츠 관리 > 그룹 관리 > 상세
         getGroup: builder.mutation({
             query: (body) => ({
-                url: 'contents/selectUnitGroup.do',
+                url: 'adm/contents/selectUnitGroup.do',
                 method: 'POST',
                 body: body
             })
@@ -82,7 +82,7 @@ export const contentsManagement = createApi({
         // 콘텐츠 관리 > 그룹 관리 > 등록
         insertUnitGroup: builder.mutation({
             query: (body) => ({
-                url: 'contents/insertUnitGroup.do',
+                url: 'adm/contents/insertUnitGroup.do',
                 method: 'POST',
                 body: body
             })
@@ -92,7 +92,7 @@ export const contentsManagement = createApi({
         // 콘텐츠 관리 > 그룹 관리 > 수정
         updateUnitGroup: builder.mutation({
             query: (body) => ({
-                url: 'contents/updateUnitGroup.do',
+                url: 'adm/contents/updateUnitGroup.do',
                 method: 'POST',
                 body: body
             })
@@ -102,7 +102,7 @@ export const contentsManagement = createApi({
         // 콘텐츠 관리 > 그룹 관리 > 삭제
         deleteUnitGroup: builder.mutation({
             query: (body) => ({
-                url: 'contents/deleteUnitGroup.do',
+                url: 'adm/contents/deleteUnitGroup.do',
                 method: 'POST',
                 body: body
             })
@@ -112,7 +112,7 @@ export const contentsManagement = createApi({
         // 콘텐츠 관리 > 그룹 관리 > 이미지업로드
         insertUnitGroupImg: builder.mutation({
             query: (body) => ({
-                url: 'contents/insertUnitGroupImg.do',
+                url: 'adm/contents/insertUnitGroupImg.do',
                 method: 'POST',
                 body: body,
                 contentType: 'multipart/form-data'
@@ -129,7 +129,7 @@ export const contentsManagement = createApi({
         // 콘텐츠 관리 > 단품목록
         getUnitList: builder.mutation({
             query: (body) => ({
-                url: 'contents/selectUnitList.do',
+                url: 'adm/contents/selectUnitList.do',
                 method: 'POST',
                 body: body
             })
@@ -138,7 +138,7 @@ export const contentsManagement = createApi({
         // 콘텐츠 관리 > 정보 관리
         getInformationList: builder.mutation({
             query: (body) => ({
-                url: 'contents/selectInformationList.do',
+                url: 'adm/contents/selectInformationList.do',
                 method: 'POST',
                 body: body
             })
@@ -147,7 +147,7 @@ export const contentsManagement = createApi({
         // X-ray 콘텐츠 관리 > 정보 관리(상단)
         getXrayinformationList: builder.mutation({
             query: (body) => ({
-                url: 'contents/selectXrayContentsList.do',
+                url: 'adm/contents/selectXrayContentsList.do',
                 method: 'POST',
                 body: body
             })
@@ -156,7 +156,7 @@ export const contentsManagement = createApi({
         // X-ray 콘텐츠 관리 > 정보 관리(하단)
         getXrayinformationSubList: builder.mutation({
             query: (body) => ({
-                url: 'contents/selectXrayUnitList.do',
+                url: 'adm/contents/selectXrayUnitList.do',
                 method: 'POST',
                 body: body
             })
@@ -165,7 +165,7 @@ export const contentsManagement = createApi({
         //단품상세
         getUnit: builder.mutation({
             query: (body) => ({
-                url: 'contents/selectUnit.do',
+                url: 'adm/contents/selectUnit.do',
                 method: 'POST',
                 body: body
             })
@@ -174,7 +174,7 @@ export const contentsManagement = createApi({
         //단품저장
         insertUnit: builder.mutation({
             query: (body) => ({
-                url: 'contents/insertUnit.do',
+                url: 'adm/contents/insertUnit.do',
                 method: 'POST',
                 body: body
             })
@@ -183,7 +183,7 @@ export const contentsManagement = createApi({
         // 단품수정
         updateUnit: builder.mutation({
             query: (body) => ({
-                url: 'contents/updateUnit.do',
+                url: 'adm/contents/updateUnit.do',
                 method: 'POST',
                 body: body
             })
@@ -192,7 +192,7 @@ export const contentsManagement = createApi({
         // 단품삭제
         deleteUnit: builder.mutation({
             query: (body) => ({
-                url: 'contents/deleteUnit.do',
+                url: 'adm/contents/deleteUnit.do',
                 method: 'POST',
                 body: body
             })
@@ -201,7 +201,7 @@ export const contentsManagement = createApi({
         // 단품이미지저장
         saveUnitImg: builder.mutation({
             query: (body) => ({
-                url: 'contents/saveUnitImg.do',
+                url: 'adm/contents/saveUnitImg.do',
                 method: 'POST',
                 body: body,
                 contentType: 'multipart/form-data'
@@ -211,7 +211,7 @@ export const contentsManagement = createApi({
         //xray컨텐츠등록
         insertXrayContents: builder.mutation({
             query: (body) => ({
-                url: 'contents/insertXrayContents.do',
+                url: 'adm/contents/insertXrayContents.do',
                 method: 'POST',
                 body: body
             })
@@ -220,7 +220,7 @@ export const contentsManagement = createApi({
         //xray컨텐츠수정
         updateXrayContents: builder.mutation({
             query: (body) => ({
-                url: 'contents/updateXrayContents.do',
+                url: 'adm/contents/updateXrayContents.do',
                 method: 'POST',
                 body: body
             })
@@ -229,7 +229,7 @@ export const contentsManagement = createApi({
         //xray컨텐츠삭제
         deleteXrayContents: builder.mutation({
             query: (body) => ({
-                url: 'contents/deleteXrayContents.do',
+                url: 'adm/contents/deleteXrayContents.do',
                 method: 'POST',
                 body: body
             })
@@ -238,7 +238,7 @@ export const contentsManagement = createApi({
         //xray컨텐츠 물품등록
         insertXrayUnit: builder.mutation({
             query: (body) => ({
-                url: 'contents/insertXrayUnit.do',
+                url: 'adm/contents/insertXrayUnit.do',
                 method: 'POST',
                 body: body
             })
@@ -247,7 +247,7 @@ export const contentsManagement = createApi({
         //xray컨텐츠 물품삭제
         deleteXrayUnit: builder.mutation({
             query: (body) => ({
-                url: 'contents/deleteXrayUnit.do',
+                url: 'adm/contents/deleteXrayUnit.do',
                 method: 'POST',
                 body: body
             })
@@ -256,7 +256,7 @@ export const contentsManagement = createApi({
         //xray컨텐츠 물품팝업리스트
         selectUnitPopupList: builder.mutation({
             query: (body) => ({
-                url: 'contents/selectUnitPopupList.do',
+                url: 'adm/contents/selectUnitPopupList.do',
                 method: 'POST',
                 body: body
             })
@@ -265,7 +265,7 @@ export const contentsManagement = createApi({
         //xray컨텐츠 이미지상세정보가져오기
         selectXrayImgContents: builder.mutation({
             query: (body) => ({
-                url: 'contents/selectXrayImgContents.do',
+                url: 'adm/contents/selectXrayImgContents.do',
                 method: 'POST',
                 body: body
             })
@@ -275,7 +275,7 @@ export const contentsManagement = createApi({
         //xray컨텐츠 이미지업로드
         updateXrayContentsImg: builder.mutation({
             query: (body) => ({
-                url: 'contents/updateXrayContentsImg.do',
+                url: 'adm/contents/updateXrayContentsImg.do',
                 method: 'POST',
                 body: body,
                 contentType: 'multipart/form-data'

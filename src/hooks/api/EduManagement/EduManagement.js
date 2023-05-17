@@ -18,7 +18,7 @@ export const eduManagement = createApi({
         // 교육 관리 > 교육과정 관리 > 그룹 관리
         getEduGroupList: builder.mutation({
             query: (body) => ({
-                url: 'eduMgr/getEduGroupList.do',
+                url: 'adm/eduMgr/getEduGroupList.do',
                 method: 'POST',
                 body: body
             })
@@ -27,7 +27,7 @@ export const eduManagement = createApi({
         // 교육 관리 > 교육과정 관리 > 과정 분류
         getEduClassList: builder.mutation({
             query: (body) => ({
-                url: 'eduMgr/getEduClassList.do',
+                url: 'adm/eduMgr/getEduClassList.do',
                 method: 'POST',
                 body: body
             })
@@ -36,7 +36,7 @@ export const eduManagement = createApi({
         // 교육 관리 > 교육과정 관리 > 과정 등록
         getEduProcList: builder.mutation({
             query: (body) => ({
-                url: 'eduMgr/getEduProcList.do',
+                url: 'adm/eduMgr/getEduProcList.do',
                 method: 'POST',
                 body: body
             })
@@ -45,7 +45,7 @@ export const eduManagement = createApi({
         // 교육 관리 > 교육과정 관리 > 과정 등록 (상세정보)
         getEduProcDetail: builder.mutation({
             query: (body) => ({
-                url: 'eduMgr/getEduProcDetail.do',
+                url: 'adm/eduMgr/getEduProcDetail.do',
                 method: 'POST',
                 body: body
             })
@@ -54,7 +54,7 @@ export const eduManagement = createApi({
         // 교육 관리 > 교육차수 관리 > 차수 등록(상단)
         getEduBaselineList: builder.mutation({
             query: (body) => ({
-                url: 'eduMgr/getEduBaselineList.do',
+                url: 'adm/eduMgr/getEduBaselineList.do',
                 method: 'POST',
                 body: body
             })
@@ -63,7 +63,7 @@ export const eduManagement = createApi({
         // 교육 관리 > 교육차수 관리 > 차수 등록(중간)
         getEduBaselineDetail: builder.mutation({
             query: (body) => ({
-                url: 'eduMgr/getEduBaselineDetail.do',
+                url: 'adm/eduMgr/getEduBaselineDetail.do',
                 method: 'POST',
                 body: body
             })
@@ -72,7 +72,7 @@ export const eduManagement = createApi({
         // 교육 관리 > 교육차수 관리 > 차수 등록(하단)
         getEduBaselineSubList: builder.mutation({
             query: (body) => ({
-                url: 'eduMgr/getEduBaselineSubList.do',
+                url: 'adm/eduMgr/getEduBaselineSubList.do',
                 method: 'POST',
                 body: body
             })
@@ -81,7 +81,7 @@ export const eduManagement = createApi({
         // 교육 관리 > 교육차수 관리 > 차수별 메뉴관리(상단)
         getEduBaselineMenuList: builder.mutation({
             query: (body) => ({
-                url: 'eduMgr/getEduBaselineMenuList.do',
+                url: 'adm/eduMgr/getEduBaselineMenuList.do',
                 method: 'POST',
                 body: body
             })
@@ -90,7 +90,7 @@ export const eduManagement = createApi({
         // 교육 관리 > 교육차수 관리 > 차수별 메뉴관리(하단)
         getEduBaselineMenuSubList: builder.mutation({
             query: (body) => ({
-                url: 'eduMgr/getEduBaselineMenuSubList.do',
+                url: 'adm/eduMgr/getEduBaselineMenuSubList.do',
                 method: 'POST',
                 body: body
             })

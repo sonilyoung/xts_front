@@ -18,7 +18,7 @@ export const preferencesManagement = createApi({
         // 환경 설정 > 공통코드 관리
         getCommonList: builder.mutation({
             query: (body) => ({
-                url: 'common/getCommonList.do',
+                url: 'adm/common/getCommonList.do',
                 method: 'POST',
                 body: body
             })

@@ -2,8 +2,8 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
-export const learningMaqnagement = createApi({
-    reducerPath: 'learningMaqnagement',
+export const systemManagement = createApi({
+    reducerPath: 'systemManagement',
     baseQuery: fetchBaseQuery({
         baseUrl: `${BASE_URL}`,
         prepareHeaders: (headers) => {
@@ -15,37 +15,37 @@ export const learningMaqnagement = createApi({
         }
     }),
     endpoints: (builder) => ({
-        // 학습 관리 > 교육 모듈구성 > X-ray 판독모듈 구성
-        getXrayModuleList: builder.mutation({
+        // 다국어목록회
+        getLanguageApplyList: builder.mutation({
             query: (body) => ({
-                url: 'adm/learningMgr/getXrayModuleList.do',
+                url: 'common/selectLanguageApplyList.do',
                 method: 'POST',
                 body: body
             })
         }),
 
-        // 학습 관리 > X-ray 판독 배점관리 (상단)
-        getXrayPointList: builder.mutation({
+        // 다국어등록
+        insertLanguageApply: builder.mutation({
             query: (body) => ({
-                url: 'adm/learningMgr/getXrayPointList.do',
+                url: 'common/insertLanguageApply.do',
                 method: 'POST',
                 body: body
             })
         }),
 
-        // 학습 관리 > X-ray 판독 배점관리 (하단)
-        getXrayPointSubList: builder.mutation({
+        // 다국어상세
+        getLanguageApply: builder.mutation({
             query: (body) => ({
-                url: 'adm/learningMgr/getXrayPointDetailList.do',
+                url: 'common/selectLanguageApply.do',
                 method: 'POST',
                 body: body
             })
         }),
 
-        // 학습 관리 > 교육 타입관리
-        getEduTypeList: builder.mutation({
+        // 다국어삭제
+        deleteLanguageApply: builder.mutation({
             query: (body) => ({
-                url: 'adm/learningMgr/getEduTypeList.do',
+                url: 'common/deleteLanguageApply.do',
                 method: 'POST',
                 body: body
             })
@@ -53,5 +53,9 @@ export const learningMaqnagement = createApi({
     })
 });
 
-export const { useGetXrayModuleListMutation, useGetXrayPointListMutation, useGetXrayPointSubListMutation, useGetEduTypeListMutation } =
-    learningMaqnagement;
+export const {
+    useGetLanguageApplyListMutation,
+    useInsertLanguageApplyMutation,
+    useGetLanguageApplyMutation,
+    useDeleteLanguageApplyMutation
+} = systemManagement;

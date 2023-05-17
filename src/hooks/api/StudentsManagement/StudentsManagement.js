@@ -18,7 +18,7 @@ export const studentsManagement = createApi({
         // 교육생 관리 > 교육생 정보조회
         getStudentInformationList: builder.mutation({
             query: (body) => ({
-                url: 'userMgr/getUserList.do',
+                url: 'adm/userMgr/getUserList.do',
                 method: 'POST',
                 body: body
             })
@@ -27,7 +27,7 @@ export const studentsManagement = createApi({
         // 교육생 관리 > 교육생 차수관리(상단 - 목록)
         getUserBaselineList: builder.mutation({
             query: (body) => ({
-                url: 'userMgr/getUserBaselineList.do',
+                url: 'adm/userMgr/getUserBaselineList.do',
                 method: 'POST',
                 body: body
             })
@@ -36,7 +36,7 @@ export const studentsManagement = createApi({
         // 교육생 관리 > 교육생 차수관리(중앙좌측 - 목록)
         getUserBaselineSubList: builder.mutation({
             query: (body) => ({
-                url: 'userMgr/getUserBaselineSubList.do',
+                url: 'adm/userMgr/getUserBaselineSubList.do',
                 method: 'POST',
                 body: body
             })
@@ -45,7 +45,7 @@ export const studentsManagement = createApi({
         // 교육생 관리 > 교육생 차수관리(중앙우측 - 정보상세)
         getUserBaselineSubDetail: builder.mutation({
             query: (body) => ({
-                url: 'userMgr/getUserBaselineSubDetail.do',
+                url: 'adm/userMgr/getUserBaselineSubDetail.do',
                 method: 'POST',
                 body: body
             })
@@ -54,7 +54,7 @@ export const studentsManagement = createApi({
         // 교육생 관리 > 교육생 차수관리(하단 - 목록)
         getUserBaselineSubDetailList: builder.mutation({
             query: (body) => ({
-                url: 'userMgr/getUserBaselineSubDetailList.do',
+                url: 'adm/userMgr/getUserBaselineSubDetailList.do',
                 method: 'POST',
                 body: body
             })

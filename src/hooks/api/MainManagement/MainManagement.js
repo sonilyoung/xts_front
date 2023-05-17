@@ -17,7 +17,7 @@ export const mainManagement = createApi({
     endpoints: (builder) => ({
         getLoginInfo: builder.mutation({
             query: (body) => ({
-                url: 'getLoginInfo.do',
+                url: 'adm/getLoginInfo.do',
                 method: 'POST',
                 body: body
             })

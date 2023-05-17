@@ -19,21 +19,21 @@ export const userManagement = createApi({
     endpoints: (builder) => ({
         userView: builder.mutation({
             query: (body) => ({
-                url: 'users/view',
+                url: 'adm/users/view',
                 method: 'POST',
                 body: body
             })
         }),
         userUpdate: builder.mutation({
             query: (body) => ({
-                url: 'users/update',
+                url: 'adm/users/update',
                 method: 'POST',
                 body: body
             })
         }),
         userPasswordUpdate: builder.mutation({
             query: (body) => ({
-                url: 'users/passwd/update',
+                url: 'adm/users/passwd/update',
                 method: 'POST',
                 body: body
             })

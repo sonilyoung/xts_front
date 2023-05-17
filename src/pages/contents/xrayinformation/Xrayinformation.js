@@ -757,9 +757,9 @@ export const Xrayinformation = () => {
 
     const onSaveSubmit = async () => {
         setLoading(true);
-        params.unitScanId = targetUnitPopupList[0].unitScanId;
-        params.unitId = targetUnitPopupList[0].unitId;
-        params.unitGroupCd = targetUnitPopupList[0].unitGroupCd;
+        //params.unitScanId = targetUnitPopupList[0].unitScanId;
+        //params.unitId = targetUnitPopupList[0].unitId;
+        //params.unitGroupCd = targetUnitPopupList[0].unitGroupCd;
         console.log('저장:', params)
         const response = await insertXrayContents({     
             "studyLvl" : params?.studyLvl,

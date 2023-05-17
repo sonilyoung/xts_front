@@ -46,6 +46,7 @@ import { Annualtraining } from 'pages/statistics/annualtraining'; // 통계 / �
 
 import { Notices } from 'pages/preferences/notices'; // 환경설정 / 공지사항 관리
 import { CommonCode } from 'pages/preferences/commoncode'; // 환경설정 / 공통코드 관리
+import { SystemMessage } from 'pages/system'; // 환경설정 / 시스템메세지
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -197,6 +198,11 @@ const MainRoutes = {
             // 환경설정 > 공통코드 관리
             path: '/preferences/commoncode',
             element: <CommonCode />
+        },
+        {
+            // 환경설정 > 시스템메세지
+            path: '/system/systemmessage',
+            element: <SystemMessage />
         }
     ]
 };

@@ -19,21 +19,21 @@ export const fileManagement = createApi({
     endpoints: (builder) => ({
         attachDetailList: builder.mutation({
             query: (atchFileId) => ({
-                url: `file/attachDetailList/${atchFileId}`,
+                url: `adm/file/attachDetailList/${atchFileId}`,
                 method: 'GET',
                 contentType: 'multipart/form-data'
             })
         }),
         deleteFile: builder.mutation({
             query: (body) => ({
-                url: 'file/deleteFile',
+                url: 'adm/file/deleteFile',
                 method: 'POST',
                 body: body
             })
         }),
         fileDown: builder.mutation({
             query: ({ atchFileId, fileSn }) => ({
-                url: `file/fileDown?atchFileId=${atchFileId}&fileSn=${fileSn}`,
+                url: `adm/file/fileDown?atchFileId=${atchFileId}&fileSn=${fileSn}`,
                 method: 'GET',
                 contentType: 'multipart/form-data',
                 responseType: 'blob'
@@ -41,7 +41,7 @@ export const fileManagement = createApi({
         }),
         fileUpload: builder.mutation({
             query: (body) => ({
-                url: 'file/fileUpload',
+                url: 'adm/file/fileUpload',
                 method: 'POST',
                 body: body,
                 contentType: 'multipart/form-data'
@@ -49,7 +49,7 @@ export const fileManagement = createApi({
         }),
         getImg: builder.mutation({
             query: (imagePath) => ({
-                url: `file/getImg?imgPath=${imagePath}`,
+                url: `adm/file/getImg?imgPath=${imagePath}`,
                 method: 'GET'
             })
         }),

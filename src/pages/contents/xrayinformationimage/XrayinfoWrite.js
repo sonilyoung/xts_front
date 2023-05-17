@@ -286,19 +286,19 @@ export const XrayinfoWrite = () => {
     const [imgReal,	setImgReal	]	=	useState('');
     const [imgSide,	setImgSide	]	=	useState('');
     const [imgFront,	setImgFront	]	=	useState('');
-    const [imgFrontCollar,	setImgFrontCollar	]	=	useState('');
-    const [imgFrontOrganism,	setImgFrontOrganism	]	=	useState('');
-    const [imgFrontCollarOutline,	setImgFrontCollarOutline	]	=	useState('');
-    const [imgFrontCollarReversal,	setImgFrontCollarReversal	]	=	useState('');
-    const [imgFrontCollarBwRate1,	setImgFrontCollarBwRate1	]	=	useState('');
-    const [imgFrontCollarBwRate2,	setImgFrontCollarBwRate2	]	=	useState('');
-    const [imgFrontCollarBwRate3,	setImgFrontCollarBwRate3	]	=	useState('');
-    const [imgFrontCollarBwRate4,	setImgFrontCollarBwRate4	]	=	useState('');
-    const [imgFrontCollarBwRate5,	setImgFrontCollarBwRate5	]	=	useState('');
-    const [imgFrontCollarBwRate6,	setImgFrontCollarBwRate6	]	=	useState('');
+    const [imgFrontColor,	setImgFrontColor	]	=	useState('');
+    const [imgFrontColorOrganism,	setimgFrontColorOrganism	]	=	useState('');
+    const [ImgFrontColorMineral,	setImgFrontColorMineral	]	=	useState('');
+    const [ImgFrontColorReversal,	setImgFrontColorReversal	]	=	useState('');
+    const [imgFrontColorBwRate1,	setImgFrontColorBwRate1	]	=	useState('');
+    const [imgFrontColorBwRate2,	setImgFrontColorBwRate2	]	=	useState('');
+    const [imgFrontColorBwRate3,	setImgFrontColorBwRate3	]	=	useState('');
+    const [imgFrontColorBwRate4,	setImgFrontColorBwRate4	]	=	useState('');
+    const [imgFrontColorBwRate5,	setImgFrontColorBwRate5	]	=	useState('');
+    const [imgFrontColorBwRate6,	setImgFrontColorBwRate6	]	=	useState('');
     const [imgFrontBw,	setImgFrontBw	]	=	useState('');
-    const [imgFrontMinerals,	setImgFrontMinerals	]	=	useState('');
-    const [imgFrontBwOutline,	setImgFrontBwOutline	]	=	useState('');
+    const [imgFrontBwMineral,	setimgFrontBwMineral	]	=	useState('');
+    const [imgFrontBwOrganism,	setimgFrontBwOrganism	]	=	useState('');
     const [imgFrontBwReversal,	setImgFrontBwReversal	]	=	useState('');
     const [imgFrontBwBwRate1,	setImgFrontBwBwRate1	]	=	useState('');
     const [imgFrontBwBwRate2,	setImgFrontBwBwRate2	]	=	useState('');
@@ -306,19 +306,19 @@ export const XrayinfoWrite = () => {
     const [imgFrontBwBwRate4,	setImgFrontBwBwRate4	]	=	useState('');
     const [imgFrontBwBwRate5,	setImgFrontBwBwRate5	]	=	useState('');
     const [imgFrontBwBwRate6,	setImgFrontBwBwRate6	]	=	useState('');
-    const [imgSideCollar,	setImgSideCollar	]	=	useState('');
-    const [imgSideOrganism,	setImgSideOrganism	]	=	useState('');
-    const [imgSideCollarOutline,	setImgSideCollarOutline	]	=	useState('');
-    const [imgSideCollarReversal,	setImgSideCollarReversal	]	=	useState('');
-    const [imgSideCollarBwRate1,	setImgSideCollarBwRate1	]	=	useState('');
-    const [imgSideCollarBwRate2,	setImgSideCollarBwRate2	]	=	useState('');
-    const [imgSideCollarBwRate3,	setImgSideCollarBwRate3	]	=	useState('');
-    const [imgSideCollarBwRate4,	setImgSideCollarBwRate4	]	=	useState('');
-    const [imgSideCollarBwRate5,	setImgSideCollarBwRate5	]	=	useState('');
-    const [imgSideCollarBwRate6,	setImgSideCollarBwRate6	]	=	useState('');
+    const [imgSideColor,	setImgSideColor	]	=	useState('');
+    const [imgSideColorMineral,	setimgSideColorMineral	]	=	useState('');
+    const [imgSideColorOrganism,	setimgSideColorOrganism	]	=	useState('');
+    const [imgSideColorReversal,	setimgSideColorReversal	]	=	useState('');
+    const [imgSideColorBwRate1,	setImgSideColorBwRate1	]	=	useState('');
+    const [imgSideColorBwRate2,	setImgSideColorBwRate2	]	=	useState('');
+    const [imgSideColorBwRate3,	setImgSideColorBwRate3	]	=	useState('');
+    const [imgSideColorBwRate4,	setImgSideColorBwRate4	]	=	useState('');
+    const [imgSideColorBwRate5,	setImgSideColorBwRate5	]	=	useState('');
+    const [imgSideColorBwRate6,	setImgSideColorBwRate6	]	=	useState('');
     const [imgSideBw,	setImgSideBw	]	=	useState('');
-    const [imgSideMinerals,	setImgSideMinerals	]	=	useState('');
-    const [imgSideBwOutline,	setImgSideBwOutline	]	=	useState('');
+    const [imgSideBwMinerals,	setimgSideBwMinerals	]	=	useState('');
+    const [imgSideBwOrganism,	setimgSideBwOrganism	]	=	useState('');
     const [imgSideBwReversal,	setImgSideBwReversal	]	=	useState('');
     const [imgSideBwBwRate1,	setImgSideBwBwRate1	]	=	useState('');
     const [imgSideBwBwRate2,	setImgSideBwBwRate2	]	=	useState('');
@@ -328,49 +328,49 @@ export const XrayinfoWrite = () => {
     const [imgSideBwBwRate6,	setImgSideBwBwRate6	]	=	useState('');
     
     //화면에표시될이미지
-    const [pImgReal,	setpImgReal	]	=	useState('');
-    const [pImgSide,	setpImgSide	]	=	useState('');
-    const [pImgFront,	setpImgFront	]	=	useState('');
-    const [pImgFrontCollar,	setpImgFrontCollar	]	=	useState('');
-    const [pImgFrontOrganism,	setpImgFrontOrganism	]	=	useState('');
-    const [pImgFrontCollarOutline,	setpImgFrontCollarOutline	]	=	useState('');
-    const [pImgFrontCollarReversal,	setpImgFrontCollarReversal	]	=	useState('');
-    const [pImgFrontCollarBwRate1,	setpImgFrontCollarBwRate1	]	=	useState('');
-    const [pImgFrontCollarBwRate2,	setpImgFrontCollarBwRate2	]	=	useState('');
-    const [pImgFrontCollarBwRate3,	setpImgFrontCollarBwRate3	]	=	useState('');
-    const [pImgFrontCollarBwRate4,	setpImgFrontCollarBwRate4	]	=	useState('');
-    const [pImgFrontCollarBwRate5,	setpImgFrontCollarBwRate5	]	=	useState('');
-    const [pImgFrontCollarBwRate6,	setpImgFrontCollarBwRate6	]	=	useState('');
-    const [pImgFrontBw,	setpImgFrontBw	]	=	useState('');
-    const [pImgFrontMinerals,	setpImgFrontMinerals	]	=	useState('');
-    const [pImgFrontBwOutline,	setpImgFrontBwOutline	]	=	useState('');
-    const [pImgFrontBwReversal,	setpImgFrontBwReversal	]	=	useState('');
-    const [pImgFrontBwBwRate1,	setpImgFrontBwBwRate1	]	=	useState('');
-    const [pImgFrontBwBwRate2,	setpImgFrontBwBwRate2	]	=	useState('');
-    const [pImgFrontBwBwRate3,	setpImgFrontBwBwRate3	]	=	useState('');
-    const [pImgFrontBwBwRate4,	setpImgFrontBwBwRate4	]	=	useState('');
-    const [pImgFrontBwBwRate5,	setpImgFrontBwBwRate5	]	=	useState('');
-    const [pImgFrontBwBwRate6,	setpImgFrontBwBwRate6	]	=	useState('');
-    const [pImgSideCollar,	setpImgSideCollar	]	=	useState('');
-    const [pImgSideOrganism,	setpImgSideOrganism	]	=	useState('');
-    const [pImgSideCollarOutline,	setpImgSideCollarOutline	]	=	useState('');
-    const [pImgSideCollarReversal,	setpImgSideCollarReversal	]	=	useState('');
-    const [pImgSideCollarBwRate1,	setpImgSideCollarBwRate1	]	=	useState('');
-    const [pImgSideCollarBwRate2,	setpImgSideCollarBwRate2	]	=	useState('');
-    const [pImgSideCollarBwRate3,	setpImgSideCollarBwRate3	]	=	useState('');
-    const [pImgSideCollarBwRate4,	setpImgSideCollarBwRate4	]	=	useState('');
-    const [pImgSideCollarBwRate5,	setpImgSideCollarBwRate5	]	=	useState('');
-    const [pImgSideCollarBwRate6,	setpImgSideCollarBwRate6	]	=	useState('');
-    const [pImgSideBw,	setpImgSideBw	]	=	useState('');
-    const [pImgSideMinerals,	setpImgSideMinerals	]	=	useState('');
-    const [pImgSideBwOutline,	setpImgSideBwOutline	]	=	useState('');
-    const [pImgSideBwReversal,	setpImgSideBwReversal	]	=	useState('');
-    const [pImgSideBwBwRate1,	setpImgSideBwBwRate1	]	=	useState('');
-    const [pImgSideBwBwRate2,	setpImgSideBwBwRate2	]	=	useState('');
-    const [pImgSideBwBwRate3,	setpImgSideBwBwRate3	]	=	useState('');
-    const [pImgSideBwBwRate4,	setpImgSideBwBwRate4	]	=	useState('');
-    const [pImgSideBwBwRate5,	setpImgSideBwBwRate5	]	=	useState('');
-    const [pImgSideBwBwRate6,	setpImgSideBwBwRate6	]	=	useState('');    
+    const [pimgReal,	setpimgReal	]	=	useState('');
+    const [pimgSide,	setpimgSide	]	=	useState('');
+    const [pimgFront,	setpimgFront	]	=	useState('');
+    const [pimgFrontColor,	setpimgFrontColor	]	=	useState('');
+    const [pimgFrontColorMineral,	setpimgFrontColorMineral	]	=	useState('');
+    const [pimgFrontColorOrganism,	setpimgFrontColorOrganism	]	=	useState('');
+    const [pimgFrontColorReversal,	setpimgFrontColorReversal	]	=	useState('');
+    const [pimgFrontColorBwRate1,	setpimgFrontColorBwRate1	]	=	useState('');
+    const [pimgFrontColorBwRate2,	setpimgFrontColorBwRate2	]	=	useState('');
+    const [pimgFrontColorBwRate3,	setpimgFrontColorBwRate3	]	=	useState('');
+    const [pimgFrontColorBwRate4,	setpimgFrontColorBwRate4	]	=	useState('');
+    const [pimgFrontColorBwRate5,	setpimgFrontColorBwRate5	]	=	useState('');
+    const [pimgFrontColorBwRate6,	setpimgFrontColorBwRate6	]	=	useState('');
+    const [pimgFrontBw,	setpimgFrontBw	]	=	useState('');
+    const [pimgFrontBwMineral,	setpimgFrontBwMineral	]	=	useState('');
+    const [pimgFrontBwOrganism,	setpimgFrontBwOrganism	]	=	useState('');
+    const [pimgFrontBwReversal,	setpimgFrontBwReversal	]	=	useState('');
+    const [pimgFrontBwBwRate1,	setpimgFrontBwBwRate1	]	=	useState('');
+    const [pimgFrontBwBwRate2,	setpimgFrontBwBwRate2	]	=	useState('');
+    const [pimgFrontBwBwRate3,	setpimgFrontBwBwRate3	]	=	useState('');
+    const [pimgFrontBwBwRate4,	setpimgFrontBwBwRate4	]	=	useState('');
+    const [pimgFrontBwBwRate5,	setpimgFrontBwBwRate5	]	=	useState('');
+    const [pimgFrontBwBwRate6,	setpimgFrontBwBwRate6	]	=	useState('');
+    const [pimgSideColor,	setpimgSideColor	]	=	useState('');
+    const [pimgSideColorMineral,	setpimgSideColorMineral	]	=	useState('');
+    const [pimgSideColorOrganism,	setpimgSideColorOrganism	]	=	useState('');
+    const [pimgSideColorReversal,	setpimgSideColorReversal	]	=	useState('');
+    const [pimgSideColorBwRate1,	setpimgSideColorBwRate1	]	=	useState('');
+    const [pimgSideColorBwRate2,	setpimgSideColorBwRate2	]	=	useState('');
+    const [pimgSideColorBwRate3,	setpimgSideColorBwRate3	]	=	useState('');
+    const [pimgSideColorBwRate4,	setpimgSideColorBwRate4	]	=	useState('');
+    const [pimgSideColorBwRate5,	setpimgSideColorBwRate5	]	=	useState('');
+    const [pimgSideColorBwRate6,	setpimgSideColorBwRate6	]	=	useState('');
+    const [pimgSideBw,	setpimgSideBw	]	=	useState('');
+    const [pimgSideBwMinerals,	setpimgSideBwMinerals	]	=	useState('');
+    const [pimgSideBwOrganism,	setpimgSideBwOrganism	]	=	useState('');
+    const [pimgSideBwReversal,	setpimgSideBwReversal	]	=	useState('');
+    const [pimgSideBwBwRate1,	setpimgSideBwBwRate1	]	=	useState('');
+    const [pimgSideBwBwRate2,	setpimgSideBwBwRate2	]	=	useState('');
+    const [pimgSideBwBwRate3,	setpimgSideBwBwRate3	]	=	useState('');
+    const [pimgSideBwBwRate4,	setpimgSideBwBwRate4	]	=	useState('');
+    const [pimgSideBwBwRate5,	setpimgSideBwBwRate5	]	=	useState('');
+    const [pimgSideBwBwRate6,	setpimgSideBwBwRate6	]	=	useState('');    
 
 
     // 이미지 업로드 input의 onChange
@@ -429,9 +429,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setpImgFrontCollar(reader.result);
+            setpimgFrontColor(reader.result);
         };
-        setImgFrontCollar(file);
+        setImgFrontColor(file);
         //setImgRealEdit(false);
     };    
 
@@ -446,9 +446,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setpImgFrontOrganism(reader.result);
+            setpimgFrontColorOrganism(reader.result);
         };
-        setImgFrontOrganism(file);
+        setimgFrontColorOrganism(file);
         //setImgRealEdit(false);
     };    
 
@@ -463,9 +463,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setpImgFrontCollarOutline(reader.result);
+            setpimgFrontColorMineral(reader.result);
         };
-        setImgFrontCollarOutline(file);
+        setImgFrontColorMineral(file);
         //setImgRealEdit(false);
     };    
 
@@ -481,9 +481,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setpImgFrontCollarReversal(reader.result);
+            setpimgFrontColorReversal(reader.result);
         };
-        setImgFrontCollarReversal(file);
+        setImgFrontColorReversal(file);
         //setImgRealEdit(false);
     };    
 
@@ -497,9 +497,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setpImgFrontCollarBwRate1(reader.result);
+            setpimgFrontColorBwRate1(reader.result);
         };
-        setImgFrontCollarBwRate1(file);
+        setImgFrontColorBwRate1(file);
         //setImgRealEdit(false);
     };    
 
@@ -513,9 +513,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setpImgFrontCollarBwRate2(reader.result);
+            setpimgFrontColorBwRate2(reader.result);
         };
-        setImgFrontCollarBwRate2(file);
+        setImgFrontColorBwRate2(file);
         //setImgRealEdit(false);
     };   
     
@@ -529,9 +529,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setpImgFrontCollarBwRate3(reader.result);
+            setpimgFrontColorBwRate3(reader.result);
         };
-        setImgFrontCollarBwRate3(file);
+        setImgFrontColorBwRate3(file);
         //setImgRealEdit(false);
     };   
     
@@ -545,9 +545,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setpImgFrontCollarBwRate4(reader.result);
+            setpimgFrontColorBwRate4(reader.result);
         };
-        setImgFrontCollarBwRate4(file);
+        setImgFrontColorBwRate4(file);
         //setImgRealEdit(false);
     };   
     
@@ -561,9 +561,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setpImgFrontCollarBwRate5(reader.result);
+            setpimgFrontColorBwRate5(reader.result);
         };
-        setImgFrontCollarBwRate5(file);
+        setImgFrontColorBwRate5(file);
         //setImgRealEdit(false);
     };   
     
@@ -577,9 +577,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setpImgFrontCollarBwRate6(reader.result);
+            setpimgFrontColorBwRate6(reader.result);
         };
-        setImgFrontCollarBwRate6(file);
+        setImgFrontColorBwRate6(file);
         //setImgRealEdit(false);
     };       
 
@@ -593,7 +593,7 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setpImgFrontBw(reader.result);
+            setpimgFrontBw(reader.result);
         };
         setImgFrontBw(file);
         //setImgRealEdit(false);
@@ -610,9 +610,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setpFisetImgFrontMineralsleReal(reader.result);
+            setpFisetimgFrontBwMineralleReal(reader.result);
         };
-        setImgFrontMinerals(file);
+        setimgFrontBwMineral(file);
         //setImgRealEdit(false);
     };    
 
@@ -627,9 +627,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setpImgFrontBwOutline(reader.result);
+            setpimgFrontBwOrganism(reader.result);
         };
-        setImgFrontBwOutline(file);
+        setimgFrontBwOrganism(file);
         //setImgRealEdit(false);
     };    
 
@@ -643,7 +643,7 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setpImgFrontBwReversal(reader.result);
+            setpimgFrontBwReversal(reader.result);
         };
         setImgFrontBwReversal(file);
         //setImgRealEdit(false);
@@ -659,7 +659,7 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setpImgFrontBwBwRate1(reader.result);
+            setpimgFrontBwBwRate1(reader.result);
         };
         setImgFrontBwBwRate1(file);
         //setImgRealEdit(false);
@@ -675,7 +675,7 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setpImgFrontBwBwRate2(reader.result);
+            setpimgFrontBwBwRate2(reader.result);
         };
         setImgFrontBwBwRate2(file);
         //setImgRealEdit(false);
@@ -691,7 +691,7 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setpImgFrontBwBwRate3(reader.result);
+            setpimgFrontBwBwRate3(reader.result);
         };
         setImgFrontBwBwRate3(file);
         //setImgRealEdit(false);
@@ -707,7 +707,7 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setpImgFrontBwBwRate4(reader.result);
+            setpimgFrontBwBwRate4(reader.result);
         };
         setImgFrontBwBwRate4(file);
         //setImgRealEdit(false);
@@ -722,7 +722,7 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setpImgFrontBwBwRate5(reader.result);
+            setpimgFrontBwBwRate5(reader.result);
         };
         setImgFrontBwBwRate5(file);
         //setImgRealEdit(false);
@@ -738,7 +738,7 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setpImgFrontBwBwRate6(reader.result);
+            setpimgFrontBwBwRate6(reader.result);
         };
         setImgFrontBwBwRate6(file);
         //setImgRealEdit(false);
@@ -755,9 +755,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setpImgSideCollar(reader.result);
+            setpimgSideColor(reader.result);
         };
-        setImgSideCollar(file);
+        setImgSideColor(file);
         //setImgRealEdit(false);
     };    
 
@@ -771,9 +771,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setpImgSideOrganism(reader.result);
+            setpimgSideColorMineral(reader.result);
         };
-        setImgSideOrganism(file);
+        setimgSideColorMineral(file);
         //setImgRealEdit(false);
     };    
 
@@ -787,9 +787,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setpImgSideCollarOutline(reader.result);
+            setpimgSideColorOrganism(reader.result);
         };
-        setImgSideCollarOutline(file);
+        setimgSideColorOrganism(file);
         //setImgRealEdit(false);
     };    
 
@@ -803,9 +803,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setpImgSideCollarReversal(reader.result);
+            setpimgSideColorReversal(reader.result);
         };
-        setImgSideCollarReversal(file);
+        setimgSideColorReversal(file);
         //setImgRealEdit(false);
     };    
 
@@ -819,9 +819,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setpImgSideCollarBwRate1(reader.result);
+            setpimgSideColorBwRate1(reader.result);
         };
-        setImgSideCollarBwRate1(file);
+        setImgSideColorBwRate1(file);
         //setImgRealEdit(false);
     };    
 
@@ -835,9 +835,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setpImgSideCollarBwRate2(reader.result);
+            setpimgSideColorBwRate2(reader.result);
         };
-        setImgSideCollarBwRate2(file);
+        setImgSideColorBwRate2(file);
         //setImgRealEdit(false);
     };    
 
@@ -851,9 +851,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setpImgSideCollarBwRate3(reader.result);
+            setpimgSideColorBwRate3(reader.result);
         };
-        setImgSideCollarBwRate3(file);
+        setImgSideColorBwRate3(file);
         //setImgRealEdit(false);
     };    
 
@@ -867,9 +867,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setpImgSideCollarBwRate4(reader.result);
+            setpimgSideColorBwRate4(reader.result);
         };
-        setImgSideCollarBwRate4(file);
+        setImgSideColorBwRate4(file);
         //setImgRealEdit(false);
     };    
 
@@ -883,9 +883,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setpImgSideCollarBwRate5(reader.result);
+            setpimgSideColorBwRate5(reader.result);
         };
-        setImgSideCollarBwRate5(file);
+        setImgSideColorBwRate5(file);
         //setImgRealEdit(false);
     };    
 
@@ -899,9 +899,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setpImgSideCollarBwRate6(reader.result);
+            setpimgSideColorBwRate6(reader.result);
         };
-        setImgSideCollarBwRate6(file);
+        setImgSideColorBwRate6(file);
         //setImgRealEdit(false);
     };    
 
@@ -916,7 +916,7 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setpImgSideBw(reader.result);
+            setpimgSideBw(reader.result);
         };
         setImgSideBw(file);
         //setImgRealEdit(false);
@@ -932,9 +932,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setpImgSideMinerals(reader.result);
+            setpimgSideBwMinerals(reader.result);
         };
-        setImgSideMinerals(file);
+        setimgSideBwMinerals(file);
         //setImgRealEdit(false);
     };   
 
@@ -948,9 +948,9 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setpImgSideBwOutline(reader.result);
+            setpimgSideBwOrganism(reader.result);
         };
-        setImgSideBwOutline(file);
+        setimgSideBwOrganism(file);
         //setImgRealEdit(false);
     };
 
@@ -964,7 +964,7 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setpImgSideBwReversal(reader.result);
+            setpimgSideBwReversal(reader.result);
         };
         setImgSideBwReversal(file);
         //setImgRealEdit(false);
@@ -980,7 +980,7 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setpImgSideBwBwRate1(reader.result);
+            setpimgSideBwBwRate1(reader.result);
         };
         setImgSideBwBwRate1(file);
         //setImgRealEdit(false);
@@ -997,7 +997,7 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setpImgSideBwBwRate2(reader.result);
+            setpimgSideBwBwRate2(reader.result);
         };
         setImgSideBwBwRate2(file);
         //setImgRealEdit(false);
@@ -1014,7 +1014,7 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setpImgSideBwBwRate3(reader.result);
+            setpimgSideBwBwRate3(reader.result);
         };
         setImgSideBwBwRate3(file);
         //setImgRealEdit(false);
@@ -1031,7 +1031,7 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setpImgSideBwBwRate4(reader.result);
+            setpimgSideBwBwRate4(reader.result);
         };
         setImgSideBwBwRate4(file);
         //setImgRealEdit(false);
@@ -1048,7 +1048,7 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setpImgSideBwBwRate5(reader.result);
+            setpimgSideBwBwRate5(reader.result);
         };
         setImgSideBwBwRate5(file);
         //setImgRealEdit(false);
@@ -1065,7 +1065,7 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setpImgSideBwBwRate6(reader.result);
+            setpimgSideBwBwRate6(reader.result);
         };
         setImgSideBwBwRate6(file);
         //setImgRealEdit(false);
@@ -1081,7 +1081,7 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setpImgReal(reader.result);
+            setpimgReal(reader.result);
         };
         setImgReal(file);
         //setImgRealEdit(false);
@@ -1097,7 +1097,7 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setpImgFront(reader.result);
+            setpimgFront(reader.result);
         };
         setImgFront(file);
         //setImgRealEdit(false);
@@ -1114,7 +1114,7 @@ export const XrayinfoWrite = () => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            setpImgSide(reader.result);
+            setpimgSide(reader.result);
         };
         setImgSide(file);
         //setImgRealEdit(false);
@@ -1151,19 +1151,19 @@ export const XrayinfoWrite = () => {
         formData.append("imgReal", imgReal);
         formData.append("imgSide", imgSide);
         formData.append("imgFront", imgFront);
-        formData.append("imgFrontCollar", imgFrontCollar);
-        formData.append("imgFrontOrganism", imgFrontOrganism);
-        formData.append("imgFrontCollarOutline", imgFrontCollarOutline);
-        formData.append("imgFrontCollarReversal", imgFrontCollarReversal);
-        formData.append("imgFrontCollarBwRate1", imgFrontCollarBwRate1);
-        formData.append("imgFrontCollarBwRate2", imgFrontCollarBwRate2);
-        formData.append("imgFrontCollarBwRate3", imgFrontCollarBwRate3);
-        formData.append("imgFrontCollarBwRate4", imgFrontCollarBwRate4);
-        formData.append("imgFrontCollarBwRate5", imgFrontCollarBwRate5);
-        formData.append("imgFrontCollarBwRate6", imgFrontCollarBwRate6);
+        formData.append("imgFrontColor", imgFrontColor);
+        formData.append("imgFrontColorOrganism", imgFrontColorOrganism);
+        formData.append("ImgFrontColorMineral", ImgFrontColorMineral);
+        formData.append("ImgFrontColorReversal", ImgFrontColorReversal);
+        formData.append("imgFrontColorBwRate1", imgFrontColorBwRate1);
+        formData.append("imgFrontColorBwRate2", imgFrontColorBwRate2);
+        formData.append("imgFrontColorBwRate3", imgFrontColorBwRate3);
+        formData.append("imgFrontColorBwRate4", imgFrontColorBwRate4);
+        formData.append("imgFrontColorBwRate5", imgFrontColorBwRate5);
+        formData.append("imgFrontColorBwRate6", imgFrontColorBwRate6);
         formData.append("imgFrontBw", imgFrontBw);
-        formData.append("imgFrontMinerals", imgFrontMinerals);
-        formData.append("imgFrontBwOutline", imgFrontBwOutline);
+        formData.append("imgFrontBwMineral", imgFrontBwMineral);
+        formData.append("imgFrontBwOrganism", imgFrontBwOrganism);
         formData.append("imgFrontBwReversal", imgFrontBwReversal);
         formData.append("imgFrontBwBwRate1", imgFrontBwBwRate1);
         formData.append("imgFrontBwBwRate2", imgFrontBwBwRate2);
@@ -1171,19 +1171,19 @@ export const XrayinfoWrite = () => {
         formData.append("imgFrontBwBwRate4", imgFrontBwBwRate4);
         formData.append("imgFrontBwBwRate5", imgFrontBwBwRate5);
         formData.append("imgFrontBwBwRate6", imgFrontBwBwRate6);
-        formData.append("imgSideCollar", imgSideCollar);
-        formData.append("imgSideOrganism", imgSideOrganism);
-        formData.append("imgSideCollarOutline", imgSideCollarOutline);
-        formData.append("imgSideCollarReversal", imgSideCollarReversal);
-        formData.append("imgSideCollarBwRate1", imgSideCollarBwRate1);
-        formData.append("imgSideCollarBwRate2", imgSideCollarBwRate2);
-        formData.append("imgSideCollarBwRate3", imgSideCollarBwRate3);
-        formData.append("imgSideCollarBwRate4", imgSideCollarBwRate4);
-        formData.append("imgSideCollarBwRate5", imgSideCollarBwRate5);
-        formData.append("imgSideCollarBwRate6", imgSideCollarBwRate6);
+        formData.append("imgSideColor", imgSideColor);
+        formData.append("imgSideColorMineral", imgSideColorMineral);
+        formData.append("imgSideColorOrganism", imgSideColorOrganism);
+        formData.append("imgSideColorReversal", imgSideColorReversal);
+        formData.append("imgSideColorBwRate1", imgSideColorBwRate1);
+        formData.append("imgSideColorBwRate2", imgSideColorBwRate2);
+        formData.append("imgSideColorBwRate3", imgSideColorBwRate3);
+        formData.append("imgSideColorBwRate4", imgSideColorBwRate4);
+        formData.append("imgSideColorBwRate5", imgSideColorBwRate5);
+        formData.append("imgSideColorBwRate6", imgSideColorBwRate6);
         formData.append("imgSideBw", imgSideBw);
-        formData.append("imgSideMinerals", imgSideMinerals);
-        formData.append("imgSideBwOutline", imgSideBwOutline);
+        formData.append("imgSideBwMinerals", imgSideBwMinerals);
+        formData.append("imgSideBwOrganism", imgSideBwOrganism);
         formData.append("imgSideBwReversal", imgSideBwReversal);
         formData.append("imgSideBwBwRate1", imgSideBwBwRate1);
         formData.append("imgSideBwBwRate2", imgSideBwBwRate2);
@@ -1215,11 +1215,11 @@ export const XrayinfoWrite = () => {
         // console.log(...fileListR);
     };
 
-    const [popupImg, setPopupImg] = useState('');
+    const [popupimg, setPopupimg] = useState('');
 
     const handleImgPop = (e) => {
         setOnSearchItem(true);
-        setPopupImg(e);	
+        setPopupimg(e);	
     }
     
     useEffect(() => {
@@ -1315,9 +1315,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img onClick={()=>handleImgPop(unitParams?.imgFrontCollar)} src={unitParams?.imgFrontCollar!==null && unitParams?.imgFrontCollar!==undefined ? 'data:image/png;base64,' + unitParams?.imgFrontCollar : noImage} width={100} height={100} alt="real image" />
+                                                <img onClick={()=>handleImgPop(unitParams?.resultImg?.imgFrontColor)} src={unitParams?.resultImg?.imgFrontColor!==null && unitParams?.resultImg?.imgFrontColor!==undefined ? 'data:image/png;base64,' + unitParams?.resultImg?.imgFrontColor : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={pImgFrontCollar ? pImgFrontCollar :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pimgFrontColor ? pimgFrontColor :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -1350,9 +1350,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams?.imgFrontOrganism!==null && unitParams?.imgFrontOrganism!==undefined ? 'data:image/png;base64,' + unitParams?.imgFrontOrganism : noImage} width={100} height={100} alt="real image" />
+                                                <img onClick={()=>handleImgPop(unitParams?.resultImg?.imgFrontColorMineral)} src={unitParams?.resultImg?.imgFrontColorMineral!==null && unitParams?.resultImg?.imgFrontColorMineral!==undefined ? 'data:image/png;base64,' + unitParams?.resultImg?.imgFrontColorMineral : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={pImgFrontOrganism ? pImgFrontOrganism :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pimgFrontColorMineral ? pimgFrontColorMineral :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -1385,9 +1385,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams?.imgFrontCollarOutline!==null && unitParams?.imgFrontCollarOutline!==undefined ? 'data:image/png;base64,' + unitParams?.imgFrontCollarOutline : noImage} width={100} height={100} alt="real image" />
+                                                <img onClick={()=>handleImgPop(unitParams?.resultImg?.imgFrontColorOrganism)} src={unitParams?.resultImg?.imgFrontColorOrganism!==null && unitParams?.resultImg?.imgFrontColorOrganism!==undefined ? 'data:image/png;base64,' + unitParams?.resultImg?.imgFrontColorOrganism : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={pImgFrontCollarOutline ? pImgFrontCollarOutline :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pimgFrontColorOrganism ? pimgFrontColorOrganism :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -1420,9 +1420,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams?.imgFrontCollarReversal!==null && unitParams?.imgFrontCollarReversal!==undefined ? 'data:image/png;base64,' + unitParams?.imgFrontCollarReversal: noImage} width={100} height={100} alt="real image" />
+                                                <img onClick={()=>handleImgPop(unitParams?.resultImg?.imgFrontColorReversal)} src={unitParams?.resultImg?.imgFrontColorReversal!==null && unitParams?.resultImg?.imgFrontColorReversal!==undefined ? 'data:image/png;base64,' + unitParams?.resultImg?.imgFrontColorReversal: noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={pImgFrontCollarReversal ? pImgFrontCollarReversal :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pimgFrontColorReversal ? pimgFrontColorReversal :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -1455,9 +1455,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams?.imgFrontCollarBwRate1!==null && unitParams?.imgFrontCollarBwRate1!==undefined ? 'data:image/png;base64,' + unitParams?.imgFrontCollarBwRate1 : noImage} width={100} height={100} alt="real image" />
+                                                <img onClick={()=>handleImgPop(unitParams?.resultImg?.imgFrontColorBwRate1)} src={unitParams?.resultImg?.imgFrontColorBwRate1!==null && unitParams?.resultImg?.imgFrontColorBwRate1!==undefined ? 'data:image/png;base64,' + unitParams?.resultImg?.imgFrontColorBwRate1 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={pImgFrontCollarBwRate1 ? pImgFrontCollarBwRate1 :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pimgFrontColorBwRate1 ? pimgFrontColorBwRate1 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -1494,9 +1494,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams?.imgFrontCollarBwRate2!==null && unitParams?.imgFrontCollarBwRate2!==undefined ? 'data:image/png;base64,' + unitParams?.imgFrontCollarBwRate2 : noImage} width={100} height={100} alt="real image" />
+                                                <img onClick={()=>handleImgPop(unitParams?.resultImg?.imgFrontColorBwRate2)} src={unitParams?.resultImg?.imgFrontColorBwRate2!==null && unitParams?.resultImg?.imgFrontColorBwRate2!==undefined ? 'data:image/png;base64,' + unitParams?.resultImg?.imgFrontColorBwRate2 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={pImgFrontCollarBwRate2 ? pImgFrontCollarBwRate2 :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pimgFrontColorBwRate2 ? pimgFrontColorBwRate2 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -1529,9 +1529,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams?.imgFrontCollarBwRate3!==null && unitParams?.imgFrontCollarBwRate3!==undefined ? 'data:image/png;base64,' + unitParams?.imgFrontCollarBwRate3 : noImage} width={100} height={100} alt="real image" />
+                                                <img onClick={()=>handleImgPop(unitParams?.resultImg?.imgFrontColorBwRate3)} src={unitParams?.resultImg?.imgFrontColorBwRate3!==null && unitParams?.resultImg?.imgFrontColorBwRate3!==undefined ? 'data:image/png;base64,' + unitParams?.resultImg?.imgFrontColorBwRate3 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={pImgFrontCollarBwRate3 ? pImgFrontCollarBwRate3 :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pimgFrontColorBwRate3 ? pimgFrontColorBwRate3 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -1564,9 +1564,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams?.imgFrontCollarBwRate4!==null && unitParams?.imgFrontCollarBwRate4!==undefined ? 'data:image/png;base64,' + unitParams?.imgFrontCollarBwRate4 : noImage} width={100} height={100} alt="real image" />
+                                                <img onClick={()=>handleImgPop(unitParams?.resultImg?.imgFrontColorBwRate4)} src={unitParams?.resultImg?.imgFrontColorBwRate4!==null && unitParams?.resultImg?.imgFrontColorBwRate4!==undefined ? 'data:image/png;base64,' + unitParams?.resultImg?.imgFrontColorBwRate4 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={pImgFrontCollarBwRate4 ? pImgFrontCollarBwRate4 :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pimgFrontColorBwRate4 ? pimgFrontColorBwRate4 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -1599,9 +1599,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams?.imgFrontCollarBwRate5!==null && unitParams?.imgFrontCollarBwRate5!==undefined? 'data:image/png;base64,' + unitParams?.imgFrontCollarBwRate5 : noImage} width={100} height={100} alt="real image" />
+                                                <img onClick={()=>handleImgPop(unitParams?.resultImg?.imgFrontColorBwRate5)} src={unitParams?.resultImg?.imgFrontColorBwRate5!==null && unitParams?.resultImg?.imgFrontColorBwRate5!==undefined? 'data:image/png;base64,' + unitParams?.resultImg?.imgFrontColorBwRate5 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={pImgFrontCollarBwRate5 ? pImgFrontCollarBwRate5 :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pimgFrontColorBwRate5 ? pimgFrontColorBwRate5 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -1634,9 +1634,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams?.imgFrontCollarBwRate6!==null && unitParams?.imgFrontCollarBwRate6!==undefined ? 'data:image/png;base64,' + unitParams?.imgFrontCollarBwRate6 : noImage} width={100} height={100} alt="real image" />
+                                                <img onClick={()=>handleImgPop(unitParams?.resultImg?.imgFrontColorBwRate6)} src={unitParams?.resultImg?.imgFrontColorBwRate6!==null && unitParams?.resultImg?.imgFrontColorBwRate6!==undefined ? 'data:image/png;base64,' + unitParams?.resultImg?.imgFrontColorBwRate6 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={pImgFrontCollarBwRate6 ? pImgFrontCollarBwRate6 :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pimgFrontColorBwRate6 ? pimgFrontColorBwRate6 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -1674,9 +1674,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams?.imgFrontBw!==null && unitParams?.imgFrontBw!==undefined ? 'data:image/png;base64,' + unitParams?.imgFrontBw : noImage} width={100} height={100} alt="real image" />
+                                                <img onClick={()=>handleImgPop(unitParams?.resultImg?.imgFrontBw)} src={unitParams?.resultImg?.imgFrontBw!==null && unitParams?.resultImg?.imgFrontBw!==undefined ? 'data:image/png;base64,' + unitParams?.resultImg?.imgFrontBw : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={pImgFrontBw ? pImgFrontBw :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pimgFrontBw ? pimgFrontBw :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -1709,9 +1709,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams?.imgFrontMinerals!==null && unitParams?.imgFrontMinerals!==undefined ? 'data:image/png;base64,' + unitParams?.imgFrontMinerals : noImage} width={100} height={100} alt="real image" />
+                                                <img onClick={()=>handleImgPop(unitParams?.resultImg?.imgFrontBwMineral)} src={unitParams?.resultImg?.imgFrontBwMineral!==null && unitParams?.resultImg?.imgFrontBwMineral!==undefined ? 'data:image/png;base64,' + unitParams?.resultImg?.imgFrontBwMineral : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={pImgFrontMinerals ? pImgFrontMinerals :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pimgFrontBwMineral ? pimgFrontBwMineral :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -1744,9 +1744,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams?.imgFrontBwOutline!==null && unitParams?.imgFrontBwOutline!==undefined ? 'data:image/png;base64,' + unitParams?.imgFrontBwOutline : noImage} width={100} height={100} alt="real image" />
+                                                <img onClick={()=>handleImgPop(unitParams?.resultImg?.imgFrontBwOrganism)} src={unitParams?.resultImg?.imgFrontBwOrganism!==null && unitParams?.resultImg?.imgFrontBwOrganism!==undefined ? 'data:image/png;base64,' + unitParams?.resultImg?.imgFrontBwOrganism : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={pImgFrontBwOutline ? pImgFrontBwOutline :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pimgFrontBwOrganism ? pimgFrontBwOrganism :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -1779,9 +1779,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams?.imgFrontBwReversal!==null && unitParams?.imgFrontBwReversal!==undefined ? 'data:image/png;base64,' + unitParams?.imgFrontBwReversal : noImage} width={100} height={100} alt="real image" />
+                                                <img onClick={()=>handleImgPop(unitParams?.resultImg?.imgFrontBwReversal)} src={unitParams?.resultImg?.imgFrontBwReversal!==null && unitParams?.resultImg?.imgFrontBwReversal!==undefined ? 'data:image/png;base64,' + unitParams?.resultImg?.imgFrontBwReversal : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={pImgFrontBwReversal ? pImgFrontBwReversal :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pimgFrontBwReversal ? pimgFrontBwReversal :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -1814,9 +1814,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams?.imgFrontBwBwRate1!==null && unitParams?.imgFrontBwBwRate1!==undefined ? 'data:image/png;base64,' + unitParams?.imgFrontBwBwRate1 : noImage} width={100} height={100} alt="real image" />
+                                                <img onClick={()=>handleImgPop(unitParams?.resultImg?.imgFrontBwBwRate1)} src={unitParams?.resultImg?.imgFrontBwBwRate1!==null && unitParams?.resultImg?.imgFrontBwBwRate1!==undefined ? 'data:image/png;base64,' + unitParams?.resultImg?.imgFrontBwBwRate1 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={pImgFrontBwBwRate1 ? pImgFrontBwBwRate1 :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pimgFrontBwBwRate1 ? pimgFrontBwBwRate1 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -1853,9 +1853,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams?.imgFrontBwBwRate2!==null && unitParams?.imgFrontBwBwRate2!==undefined ? 'data:image/png;base64,' + unitParams?.imgFrontBwBwRate2 : noImage} width={100} height={100} alt="real image" />
+                                                <img onClick={()=>handleImgPop(unitParams?.resultImg?.imgFrontBwBwRate2)} src={unitParams?.resultImg?.imgFrontBwBwRate2!==null && unitParams?.resultImg?.imgFrontBwBwRate2!==undefined ? 'data:image/png;base64,' + unitParams?.resultImg?.imgFrontBwBwRate2 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={pImgFrontBwBwRate2 ? pImgFrontBwBwRate2 :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pimgFrontBwBwRate2 ? pimgFrontBwBwRate2 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -1888,9 +1888,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams?.imgFrontBwBwRate3!==null && unitParams?.imgFrontBwBwRate3!==undefined ? 'data:image/png;base64,' + unitParams?.imgFrontBwBwRate3 : noImage} width={100} height={100} alt="real image" />
+                                                <img onClick={()=>handleImgPop(unitParams?.resultImg?.imgFrontBwBwRate3)} src={unitParams?.resultImg?.imgFrontBwBwRate3!==null && unitParams?.resultImg?.imgFrontBwBwRate3!==undefined ? 'data:image/png;base64,' + unitParams?.resultImg?.imgFrontBwBwRate3 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={pImgFrontBwBwRate3 ? pImgFrontBwBwRate3 :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pimgFrontBwBwRate3 ? pimgFrontBwBwRate3 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -1923,9 +1923,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams?.imgFrontBwBwRate4!==null && unitParams?.imgFrontBwBwRate4!==undefined? 'data:image/png;base64,' + unitParams?.imgFrontBwBwRate4 : noImage} width={100} height={100} alt="real image" />
+                                                <img onClick={()=>handleImgPop(unitParams?.resultImg?.imgFrontBwBwRate4)} src={unitParams?.resultImg?.imgFrontBwBwRate4!==null && unitParams?.resultImg?.imgFrontBwBwRate4!==undefined? 'data:image/png;base64,' + unitParams?.resultImg?.imgFrontBwBwRate4 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={pImgFrontBwBwRate4 ? pImgFrontBwBwRate4 :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pimgFrontBwBwRate4 ? pimgFrontBwBwRate4 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -1958,9 +1958,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams?.imgFrontBwBwRate5!==null && unitParams?.imgFrontBwBwRate5!==undefined ? 'data:image/png;base64,' + unitParams?.imgFrontBwBwRate5 : noImage} width={100} height={100} alt="real image" />
+                                                <img onClick={()=>handleImgPop(unitParams?.resultImg?.imgFrontBwBwRate5)} src={unitParams?.resultImg?.imgFrontBwBwRate5!==null && unitParams?.resultImg?.imgFrontBwBwRate5!==undefined ? 'data:image/png;base64,' + unitParams?.resultImg?.imgFrontBwBwRate5 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={pImgFrontBwBwRate5 ? pImgFrontBwBwRate5 :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pimgFrontBwBwRate5 ? pimgFrontBwBwRate5 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -1993,9 +1993,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams?.imgFrontBwBwRate6!==null && unitParams?.imgFrontBwBwRate6!==undefined ? 'data:image/png;base64,' + unitParams?.imgFrontBwBwRate6 : noImage} width={100} height={100} alt="real image" />
+                                                <img onClick={()=>handleImgPop(unitParams?.resultImg?.imgFrontBwBwRate6)} src={unitParams?.resultImg?.imgFrontBwBwRate6!==null && unitParams?.resultImg?.imgFrontBwBwRate6!==undefined ? 'data:image/png;base64,' + unitParams?.resultImg?.imgFrontBwBwRate6 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={pImgFrontBwBwRate6 ? pImgFrontBwBwRate6 :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pimgFrontBwBwRate6 ? pimgFrontBwBwRate6 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -2033,9 +2033,9 @@ export const XrayinfoWrite = () => {
 
                                     <Space direction="vertical">
                                         {imgRealEdit === true ?  
-                                        <img src={unitParams?.imgFront!==null && unitParams?.imgFront!==undefined ? 'data:image/png;base64,' + unitParams?.imgFront : noImage} width={100} height={100} alt="real image" />
+                                        <img onClick={()=>handleImgPop(unitParams?.resultImg?.imgFront)} src={unitParams?.resultImg?.imgFront!==null && unitParams?.resultImg?.imgFront!==undefined ? 'data:image/png;base64,' + unitParams?.resultImg?.imgFront : noImage} width={100} height={100} alt="real image" />
                                         : 
-                                        <img src={pImgFront ? pImgFront :noImage} width={100} height={100} alt="real image"/>
+                                        <img src={pimgFront ? pimgFront :noImage} width={100} height={100} alt="real image"/>
                                         }                                                
                                     </Space>
                                     </Form.Item>
@@ -2070,9 +2070,9 @@ export const XrayinfoWrite = () => {
 
                                     <Space direction="vertical">
                                         {imgRealEdit === true ?  
-                                        <img src={unitParams?.imgSide!==null && unitParams?.imgSide!==undefined? 'data:image/png;base64,' + unitParams?.imgSide : noImage} width={100} height={100} alt="real image" />
+                                        <img onClick={()=>handleImgPop(unitParams?.resultImg?.imgSide)} src={unitParams?.resultImg?.imgSide!==null && unitParams?.resultImg?.imgSide!==undefined? 'data:image/png;base64,' + unitParams?.resultImg?.imgSide : noImage} width={100} height={100} alt="real image" />
                                         : 
-                                        <img src={pImgSide ? pImgSide :noImage} width={100} height={100} alt="real image"/>
+                                        <img src={pimgSide ? pimgSide :noImage} width={100} height={100} alt="real image"/>
                                         }                                                
                                     </Space>
                                     </Form.Item>
@@ -2107,9 +2107,9 @@ export const XrayinfoWrite = () => {
 
                                     <Space direction="vertical">
                                         {imgRealEdit === true ?  
-                                        <img src={unitParams?.imgReal!==null && unitParams?.imgReal!==undefined ? 'data:image/png;base64,' + unitParams?.imgReal : noImage} width={100} height={100} alt="real image" />
+                                        <img onClick={()=>handleImgPop(unitParams?.resultImg?.imgReal)} src={unitParams?.resultImg?.imgReal!==null && unitParams?.resultImg?.imgReal!==undefined ? 'data:image/png;base64,' + unitParams?.resultImg?.imgReal : noImage} width={100} height={100} alt="real image" />
                                         : 
-                                        <img src={pImgReal ? pImgReal :noImage} width={100} height={100} alt="real image"/>
+                                        <img src={pimgReal ? pimgReal :noImage} width={100} height={100} alt="real image"/>
                                         }                                                
                                     </Space>
                                     </Form.Item>
@@ -2140,21 +2140,6 @@ export const XrayinfoWrite = () => {
                                             </Tooltip>
                                         </Space>
 
-
-                                        <Space direction="right">
-                                            <Tooltip title="3D생성">
-                                                    <Button
-                                                        type="success"
-                                                        onClick={handleThreed}
-                                                        htmlType="submit"
-                                                        loading={uploading}
-                                                        style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
-                                                        icon={<PlusOutlined />}
-                                                    >
-                                                        3D이미지생성
-                                                    </Button>
-                                            </Tooltip>
-                                        </Space>                                         
                                     </Col>
                                 </Row>
 
@@ -2187,9 +2172,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams?.imgSideCollar!==null && unitParams?.imgSideCollar!==undefined ? 'data:image/png;base64,' + unitParams?.imgSideCollar : noImage} width={100} height={100} alt="real image" />
+                                                <img onClick={()=>handleImgPop(unitParams?.resultImg?.imgSideColor)} src={unitParams?.resultImg?.imgSideColor!==null && unitParams?.resultImg?.imgSideColor!==undefined ? 'data:image/png;base64,' + unitParams?.resultImg?.imgSideColor : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={pImgSideCollar ? pImgSideCollar :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pimgSideColor ? pimgSideColor :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -2222,9 +2207,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams?.imgSideOrganism!==null && unitParams?.imgSideOrganism!==undefined ? 'data:image/png;base64,' + unitParams?.imgSideOrganism : noImage} width={100} height={100} alt="real image" />
+                                                <img onClick={()=>handleImgPop(unitParams?.resultImg?.imgSideColorMineral)} src={unitParams?.resultImg?.imgSideColorMineral!==null && unitParams?.resultImg?.imgSideColorMineral!==undefined ? 'data:image/png;base64,' + unitParams?.resultImg?.imgSideColorMineral : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={pImgSideOrganism ? pImgSideOrganism :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pimgSideColorMineral ? pimgSideColorMineral :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -2257,9 +2242,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams?.imgSideCollarOutline!==null && unitParams?.imgSideCollarOutline!==undefined ? 'data:image/png;base64,' + unitParams?.imgSideCollarOutline : noImage} width={100} height={100} alt="real image" />
+                                                <img onClick={()=>handleImgPop(unitParams?.resultImg?.imgSideColorOrganism)} src={unitParams?.resultImg?.imgSideColorOrganism!==null && unitParams?.resultImg?.imgSideColorOrganism!==undefined ? 'data:image/png;base64,' + unitParams?.resultImg?.imgSideColorOrganism : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={pImgSideCollarOutline ? pImgSideCollarOutline :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pimgSideColorOrganism ? pimgSideColorOrganism :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -2292,9 +2277,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams?.imgSideCollarReversal!==null && unitParams?.imgSideCollarReversal!==undefined ? 'data:image/png;base64,' + unitParams?.imgSideCollarReversal : noImage} width={100} height={100} alt="real image" />
+                                                <img onClick={()=>handleImgPop(unitParams?.resultImg?.imgSideColorReversal)} src={unitParams?.resultImg?.imgSideColorReversal!==null && unitParams?.resultImg?.imgSideColorReversal!==undefined ? 'data:image/png;base64,' + unitParams?.resultImg?.imgSideColorReversal : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={pImgSideCollarReversal ? pImgSideCollarReversal :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pimgSideColorReversal ? pimgSideColorReversal :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -2327,9 +2312,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams?.imgSideCollarBwRate1!==null && unitParams?.imgSideCollarBwRate1!==undefined ? 'data:image/png;base64,' + unitParams?.imgSideCollarBwRate1 : noImage} width={100} height={100} alt="real image" />
+                                                <img onClick={()=>handleImgPop(unitParams?.resultImg?.imgSideColorBwRate1)} src={unitParams?.resultImg?.imgSideColorBwRate1!==null && unitParams?.resultImg?.imgSideColorBwRate1!==undefined ? 'data:image/png;base64,' + unitParams?.resultImg?.imgSideColorBwRate1 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={pImgSideCollarBwRate1 ? pImgSideCollarBwRate1 :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pimgSideColorBwRate1 ? pimgSideColorBwRate1 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -2366,9 +2351,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams?.imgSideCollarBwRate2!==null && unitParams?.imgSideCollarBwRate2!==undefined ? 'data:image/png;base64,' + unitParams?.imgSideCollarBwRate2 : noImage} width={100} height={100} alt="real image" />
+                                                <img onClick={()=>handleImgPop(unitParams?.resultImg?.imgSideColorBwRate2)} src={unitParams?.resultImg?.imgSideColorBwRate2!==null && unitParams?.resultImg?.imgSideColorBwRate2!==undefined ? 'data:image/png;base64,' + unitParams?.resultImg?.imgSideColorBwRate2 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={pImgSideCollarBwRate2 ? pImgSideCollarBwRate2 :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pimgSideColorBwRate2 ? pimgSideColorBwRate2 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -2401,9 +2386,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams?.imgSideCollarBwRate3!==null && unitParams?.imgSideCollarBwRate3!==undefined ? 'data:image/png;base64,' + unitParams?.imgSideCollarBwRate3 : noImage} width={100} height={100} alt="real image" />
+                                                <img onClick={()=>handleImgPop(unitParams?.resultImg?.imgSideColorBwRate3)} src={unitParams?.resultImg?.imgSideColorBwRate3!==null && unitParams?.resultImg?.imgSideColorBwRate3!==undefined ? 'data:image/png;base64,' + unitParams?.resultImg?.imgSideColorBwRate3 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={pImgSideCollarBwRate3 ? pImgSideCollarBwRate3 :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pimgSideColorBwRate3 ? pimgSideColorBwRate3 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -2436,9 +2421,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams?.imgSideCollarBwRate4!==null &&unitParams?.imgSideCollarBwRate4!==undefined ? 'data:image/png;base64,' + unitParams?.imgSideCollarBwRate4 : noImage} width={100} height={100} alt="real image" />
+                                                <img onClick={()=>handleImgPop(unitParams?.resultImg?.imgSideColorBwRate4)} src={unitParams?.resultImg?.imgSideColorBwRate4!==null &&unitParams?.resultImg?.imgSideColorBwRate4!==undefined ? 'data:image/png;base64,' + unitParams?.resultImg?.imgSideColorBwRate4 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={pImgSideCollarBwRate4 ? pImgSideCollarBwRate4 :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pimgSideColorBwRate4 ? pimgSideColorBwRate4 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -2471,9 +2456,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams?.imgSideCollarBwRate5!==null && unitParams?.imgSideCollarBwRate5!==undefined? 'data:image/png;base64,' + unitParams?.imgSideCollarBwRate5 : noImage} width={100} height={100} alt="real image" />
+                                                <img onClick={()=>handleImgPop(unitParams?.resultImg?.imgSideColorBwRate5)} src={unitParams?.resultImg?.imgSideColorBwRate5!==null && unitParams?.resultImg?.imgSideColorBwRate5!==undefined? 'data:image/png;base64,' + unitParams?.resultImg?.imgSideColorBwRate5 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={pImgSideCollarBwRate5 ? pImgSideCollarBwRate5 :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pimgSideColorBwRate5 ? pimgSideColorBwRate5 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -2506,9 +2491,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams?.imgSideCollarBwRate6!==null&&unitParams?.imgSideCollarBwRate6!==undefined ? 'data:image/png;base64,' + unitParams?.imgSideCollarBwRate6 : noImage} width={100} height={100} alt="real image" />
+                                                <img onClick={()=>handleImgPop(unitParams?.resultImg?.imgSideColorBwRate6)} src={unitParams?.resultImg?.imgSideColorBwRate6!==null&&unitParams?.resultImg?.imgSideColorBwRate6!==undefined ? 'data:image/png;base64,' + unitParams?.resultImg?.imgSideColorBwRate6 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={pImgSideCollarBwRate6 ? pImgSideCollarBwRate6 :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pimgSideColorBwRate6 ? pimgSideColorBwRate6 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -2545,9 +2530,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams?.imgSideBw!==null && unitParams?.imgSideBw!==undefined ? 'data:image/png;base64,' + unitParams?.imgSideBw : noImage} width={100} height={100} alt="real image" />
+                                                <img onClick={()=>handleImgPop(unitParams?.resultImg?.imgSideBw)} src={unitParams?.resultImg?.imgSideBw!==null && unitParams?.resultImg?.imgSideBw!==undefined ? 'data:image/png;base64,' + unitParams?.resultImg?.imgSideBw : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={pImgSideBw ? pImgSideBw :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pimgSideBw ? pimgSideBw :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -2580,9 +2565,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams?.imgSideMinerals!==null && unitParams?.imgSideMinerals!==undefined? 'data:image/png;base64,' + unitParams?.imgSideMinerals : noImage} width={100} height={100} alt="real image" />
+                                                <img onClick={()=>handleImgPop(unitParams?.resultImg?.imgSideBwMinerals)} src={unitParams?.resultImg?.imgSideBwMinerals!==null && unitParams?.resultImg?.imgSideBwMinerals!==undefined? 'data:image/png;base64,' + unitParams?.resultImg?.imgSideBwMinerals : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={pImgSideMinerals ? pImgSideMinerals :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pimgSideBwMinerals ? pimgSideBwMinerals :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -2615,9 +2600,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams?.imgSideBwOutline!==null && unitParams?.imgSideBwOutline!==undefined? 'data:image/png;base64,' + unitParams?.imgSideBwOutline : noImage} width={100} height={100} alt="real image" />
+                                                <img onClick={()=>handleImgPop(unitParams?.resultImg?.imgSideBwOrganism)} src={unitParams?.resultImg?.imgSideBwOrganism!==null && unitParams?.resultImg?.imgSideBwOrganism!==undefined? 'data:image/png;base64,' + unitParams?.resultImg?.imgSideBwOrganism : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={pImgSideBwOutline ? pImgSideBwOutline :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pimgSideBwOrganism ? pimgSideBwOrganism :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -2650,9 +2635,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams?.imgSideBwReversal!==null&&unitParams?.imgSideBwReversal!==undefined ? 'data:image/png;base64,' + unitParams?.imgSideBwReversal : noImage} width={100} height={100} alt="real image" />
+                                                <img onClick={()=>handleImgPop(unitParams?.resultImg?.imgSideBwReversal)} src={unitParams?.resultImg?.imgSideBwReversal!==null&&unitParams?.resultImg?.imgSideBwReversal!==undefined ? 'data:image/png;base64,' + unitParams?.resultImg?.imgSideBwReversal : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={pImgSideBwReversal ? pImgSideBwReversal :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pimgSideBwReversal ? pimgSideBwReversal :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -2685,9 +2670,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams?.imgSideBwBwRate1!==null && unitParams?.imgSideBwBwRate1!==undefined? 'data:image/png;base64,' + unitParams?.imgSideBwBwRate1 : noImage} width={100} height={100} alt="real image" />
+                                                <img onClick={()=>handleImgPop(unitParams?.resultImg?.imgSideBwBwRate1)} src={unitParams?.resultImg?.imgSideBwBwRate1!==null && unitParams?.resultImg?.imgSideBwBwRate1!==undefined? 'data:image/png;base64,' + unitParams?.resultImg?.imgSideBwBwRate1 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={pImgSideBwBwRate1 ? pImgSideBwBwRate1 :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pimgSideBwBwRate1 ? pimgSideBwBwRate1 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -2724,9 +2709,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams?.imgSideBwBwRate2!==null && unitParams?.imgSideBwBwRate2!==undefined ? 'data:image/png;base64,' + unitParams?.imgSideBwBwRate2 : noImage} width={100} height={100} alt="real image" />
+                                                <img onClick={()=>handleImgPop(unitParams?.resultImg?.imgSideBwBwRate2)} src={unitParams?.resultImg?.imgSideBwBwRate2!==null && unitParams?.resultImg?.imgSideBwBwRate2!==undefined ? 'data:image/png;base64,' + unitParams?.resultImg?.imgSideBwBwRate2 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={pImgSideBwBwRate2 ? pImgSideBwBwRate2 :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pimgSideBwBwRate2 ? pimgSideBwBwRate2 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -2759,9 +2744,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams?.imgSideBwBwRate3!==null &&unitParams?.imgSideBwBwRate3!==undefined ? 'data:image/png;base64,' + unitParams?.imgSideBwBwRate3 : noImage} width={100} height={100} alt="real image" />
+                                                <img onClick={()=>handleImgPop(unitParams?.resultImg?.imgSideBwBwRate3)} src={unitParams?.resultImg?.imgSideBwBwRate3!==null &&unitParams?.resultImg?.imgSideBwBwRate3!==undefined ? 'data:image/png;base64,' + unitParams?.resultImg?.imgSideBwBwRate3 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={pImgSideBwBwRate3 ? pImgSideBwBwRate3 :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pimgSideBwBwRate3 ? pimgSideBwBwRate3 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -2794,9 +2779,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams?.imgSideBwBwRate4!==null && unitParams?.imgSideBwBwRate4!==undefined? 'data:image/png;base64,' + unitParams?.imgSideBwBwRate4 : noImage} width={100} height={100} alt="real image" />
+                                                <img onClick={()=>handleImgPop(unitParams?.resultImg?.imgSideBwBwRate4)} src={unitParams?.resultImg?.imgSideBwBwRate4!==null && unitParams?.resultImg?.imgSideBwBwRate4!==undefined? 'data:image/png;base64,' + unitParams?.resultImg?.imgSideBwBwRate4 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={pImgSideBwBwRate4 ? pImgSideBwBwRate4 :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pimgSideBwBwRate4 ? pimgSideBwBwRate4 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -2829,9 +2814,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams?.imgSideBwBwRate5!==null && unitParams?.imgSideBwBwRate5!==undefined? 'data:image/png;base64,' + unitParams?.imgSideBwBwRate5 : noImage} width={100} height={100} alt="real image" />
+                                                <img onClick={()=>handleImgPop(unitParams?.resultImg?.imgSideBwBwRate5)} src={unitParams?.resultImg?.imgSideBwBwRate5!==null && unitParams?.resultImg?.imgSideBwBwRate5!==undefined? 'data:image/png;base64,' + unitParams?.resultImg?.imgSideBwBwRate5 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={pImgSideBwBwRate5 ? pImgSideBwBwRate5 :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pimgSideBwBwRate5 ? pimgSideBwBwRate5 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -2864,9 +2849,9 @@ export const XrayinfoWrite = () => {
 
                                             <Space direction="vertical">
                                                 {imgRealEdit === true ?  
-                                                <img src={unitParams?.imgSideBwBwRate6!==null && unitParams?.imgSideBwBwRate6!==undefined? 'data:image/png;base64,' + unitParams?.imgSideBwBwRate6 : noImage} width={100} height={100} alt="real image" />
+                                                <img onClick={()=>handleImgPop(unitParams?.resultImg?.imgSideBwBwRate6)} src={unitParams?.resultImg?.imgSideBwBwRate6!==null && unitParams?.resultImg?.imgSideBwBwRate6!==undefined? 'data:image/png;base64,' + unitParams?.resultImg?.imgSideBwBwRate6 : noImage} width={100} height={100} alt="real image" />
                                                 : 
-                                                <img src={pImgSideBwBwRate6 ? pImgSideBwBwRate6 :noImage} width={100} height={100} alt="real image"/>
+                                                <img src={pimgSideBwBwRate6 ? pimgSideBwBwRate6 :noImage} width={100} height={100} alt="real image"/>
                                                 }                                                
                                             </Space>
                                         </Form.Item>
@@ -2891,7 +2876,7 @@ export const XrayinfoWrite = () => {
                 onOk={Unit_ModalOk}
                 onCancel={Unit_ModalCancel}
                 title="물품추가"
-                width={500}
+                width={650}
                 style={{
                     left: 130,
                     zIndex: 999
@@ -2911,7 +2896,7 @@ export const XrayinfoWrite = () => {
                         <Form.Item>
                             <Row >
                                 <Col style={{ textAlign: 'center', padding: '0 10px' }}>
-                                    <img src={'data:image/png;base64,'+ popupImg} />
+                                    <img src={'data:image/png;base64,'+ popupimg} />
                                 </Col>
                             </Row>
                         </Form.Item>
