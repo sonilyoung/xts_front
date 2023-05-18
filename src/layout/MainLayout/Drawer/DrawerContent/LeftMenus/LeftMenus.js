@@ -43,7 +43,6 @@ const items = [
 
     getItem('교육 관리', 'sub3', <AppstoreAddOutlined />, [
         getItem('교육차수 관리', 'g7', <BlockOutlined />, [
-            getItem(<Link to="/educurriculum/edubaseline">차수 등록</Link>, '16', <FileTextOutlined />),
             getItem(<Link to="/educurriculum/eduprocadd">교육과정</Link>, '177', <FileTextOutlined />)
         ]),
         
