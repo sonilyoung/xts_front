@@ -937,7 +937,7 @@ export const Xrayinformation = () => {
 
     //물품팝업리스트
     const handleSelectUnitPopupList = async () => {
-        const popupList = await selectUnitPopupList({"languageCode" : 'kor'});
+        const popupList = await selectUnitPopupList({"languageCode" : 'kr'});
         //setUnitPopupList(popupList?.data?.RET_DATA);
         setTargetUnitPopupList(popupList?.data?.RET_DATA);
         setDataSourcePop([
