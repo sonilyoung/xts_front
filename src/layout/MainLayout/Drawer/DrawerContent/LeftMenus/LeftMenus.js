@@ -34,37 +34,36 @@ const items = [
         ])
     ]),
 
-    
     getItem('학습 관리', 'sub2', <AppstoreAddOutlined />, [
-        getItem('교육 모듈구성', 'g5', <BlockOutlined />, [
-            getItem(<Link to="/learning/curriculum">X-ray 판독모듈 구성</Link>, '10', <FileTextOutlined />)
-        ]),
+        // getItem('교육 모듈구성', 'g5', <BlockOutlined />, [
+        getItem(<Link to="/learning/curriculum">학습모듈 관리</Link>, '10', <FileTextOutlined />),
+        getItem(<Link to="/educurriculum/eduprocadd">학습과정 관리</Link>, '177', <FileTextOutlined />)
+        // ]),
     ]),
 
-    getItem('교육 관리', 'sub3', <AppstoreAddOutlined />, [
-        getItem('교육차수 관리', 'g7', <BlockOutlined />, [
-            getItem(<Link to="/educurriculum/eduprocadd">교육과정</Link>, '177', <FileTextOutlined />)
-        ]),
-        
-    ]),
+    // getItem('교육 관리', 'sub3', <AppstoreAddOutlined />, [
+    //     getItem('교육차수 관리', 'g7', <BlockOutlined />, [
+    //     ]),
+
+    // ]),
 
     getItem('교육생 관리', 'sub4', <AppstoreAddOutlined />, [
-        getItem(<Link to="/student/studentinformation">교육생 정보조회</Link>, '18', <FileTextOutlined />),
+        getItem(<Link to="/student/studentinformation">교육생 정보조회</Link>, '18', <FileTextOutlined />)
     ]),
 
     getItem('통계', 'sub6', <AppstoreAddOutlined />, [
         getItem('교육실적조회', 'g8', <BlockOutlined />, [
-            getItem(<Link to="/statistics/evaluationscore">평가점수 조회</Link>, '26', <FileTextOutlined />),
-            getItem(<Link to="/statistics/wronganswerrate">문제별 오답률 조회</Link>, '28', <FileTextOutlined />),
+            getItem(<Link to="/statistics/evaluationscore">평가점수 조회</Link>, '27', <FileTextOutlined />),
+            getItem(<Link to="/statistics/wronganswerrate">문제별 오답률 조회</Link>, '29', <FileTextOutlined />)
             // getItem('설문조사 결과 조회', '29', <FileTextOutlined />),
-        ]),
+        ])
     ]),
 
     getItem('환경설정', 'sub7', <AppstoreAddOutlined />, [
         getItem(<Link to="/preferences/notices">공지사항 관리</Link>, '34', <FileTextOutlined />),
         getItem(<Link to="/preferences/commoncode">공통코드 관리</Link>, '37', <FileTextOutlined />),
         getItem('메뉴관리', '41', <FileTextOutlined />),
-        getItem(<Link to="/system/systemmessage">시스템메세지 관리</Link>, '38', <FileTextOutlined />),
+        getItem(<Link to="/preferences/system">시스템메세지 관리</Link>, '38', <FileTextOutlined />)
     ])
 ];
 const LeftMenus = () => {

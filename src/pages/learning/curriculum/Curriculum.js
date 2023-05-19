@@ -1,21 +1,33 @@
 /* eslint-disable no-unused-vars */
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Typography } from '@mui/material';
-import { Col, Row, Button, Form, Input, Select, Drawer, Table, Space, Tooltip, Switch, Divider, Modal, Badge, Card } from 'antd';
+import { Col, Row, Button, Form, Input, Select, Drawer, Table, Space, Tooltip, Switch, Radio, Modal, Badge, Card, Divider } from 'antd';
 import 'antd/dist/antd.css';
-import { PlusOutlined, EditFilled, DeleteFilled, ExclamationCircleFilled } from '@ant-design/icons';
+import { PlusOutlined, EditFilled, DeleteFilled, ExclamationCircleFilled, AppstoreOutlined, BarsOutlined } from '@ant-design/icons';
 
 // project import
 import MainCard from 'components/MainCard';
+
+import { XrayInformation } from 'pages/learning/curriculum/XrayInformation';
 
 export const Curriculum = () => {
     const { confirm } = Modal;
     const [form] = Form.useForm();
 
+    const [questionsModalOpen, setQuestionsModalOpen] = useState();
+    const [question_props_value, setQuestion_props_value] = useState([]);
+    const [questionmethod, setQuestionMethod] = useState('s'); // 문항방식 Slide/Cut 방식
     const [loading, setLoading] = useState(false);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]); //셀렉트 박스 option Selected 값
     const [open, setOpen] = useState(false);
     const [dataEdit, setDataEdit] = useState(false); // Drawer 수정 우측폼 상태
+
+    // 제한 시간 Value 설정 Start
+    const Minute_Opt = [];
+    for (let i = 5; i <= 120; i += 5) {
+        Minute_Opt.push({ value: i.toString(), label: i.toString() + '분' });
+    }
+    // 제한 시간 Value 설정 End
 
     const [dataSource, setDataSource] = useState([
         {
@@ -190,6 +202,23 @@ export const Curriculum = () => {
         };
     });
 
+    // 출제 문항 검색 Modal Start
+    const Questions_Modal = () => {
+        setQuestionsModalOpen(true);
+    };
+
+    // 출제 문항 선택 완료 (Modal 닫기)
+    const Questions_handleOk = (Question_Value) => {
+        console.log('문제 출제:', Question_Value);
+        setQuestion_props_value(Question_Value);
+        setQuestionsModalOpen(false);
+    };
+
+    // 출제 문항 Modal 닫기
+    const Questions_handleCancel = () => {
+        setQuestionsModalOpen(false);
+    };
+
     //체크 박스 이벤트
     const onSelectChange = (newSelectedRowKeys) => {
         console.log('selectedRowKeys changed: ', newSelectedRowKeys);
@@ -274,6 +303,11 @@ export const Curriculum = () => {
                 }
             });
         }
+    };
+
+    const onChange = ({ target: { value } }) => {
+        console.log(value);
+        setQuestionMethod(value);
     };
 
     return (
@@ -363,24 +397,27 @@ export const Curriculum = () => {
                 <MainCard>
                     <Form layout="vertical" form={form}>
                         <Row gutter={24}>
-                            <Col span={16}>
+                            <Col span={24}>
                                 <Form.Item
                                     name="ModuleName"
                                     label="모듈명"
                                     rules={[
                                         {
                                             required: true,
-                                            message: 'Please Enter Module Name.'
+                                            message: '모듈명'
                                         }
                                     ]}
                                 >
-                                    <Input placeholder="Please Enter Module Name." />
+                                    <Input placeholder="# 모듈명" />
                                 </Form.Item>
                             </Col>
-                            <Col span={8}>
+                        </Row>
+                        <Divider style={{ margin: '10px 0' }} />
+                        <Row gutter={24}>
+                            <Col span={12}>
                                 <Form.Item
                                     name="SlideSpeed"
-                                    label="슬라이드 속도"
+                                    label="슬라이드(문제) 속도"
                                     rules={[
                                         {
                                             required: true,
@@ -421,228 +458,166 @@ export const Curriculum = () => {
                                     />
                                 </Form.Item>
                             </Col>
+                            <Col span={12}>
+                                <Form.Item
+                                    name="QuestionType"
+                                    label="학습방식 (슬라이드 / 컷)"
+                                    rules={[
+                                        {
+                                            required: true
+                                        }
+                                    ]}
+                                >
+                                    <Radio.Group onChange={onChange} buttonStyle="solid" defaultValue="s">
+                                        <Radio.Button value="s"> Slide 방식 </Radio.Button>
+                                        <Radio.Button value="c"> Cut 방식 </Radio.Button>
+                                    </Radio.Group>
+                                </Form.Item>
+                            </Col>
                         </Row>
-
+                        <Divider style={{ margin: '10px 0' }} />
+                        <Row gutter={24}>
+                            <Col span={12}>
+                                <Form.Item
+                                    name="Level"
+                                    label="난이도 레벨"
+                                    rules={[
+                                        {
+                                            required: true
+                                        }
+                                    ]}
+                                >
+                                    <Select
+                                        defaultValue={{
+                                            value: 0,
+                                            label: '# 난이도레벨'
+                                        }}
+                                        style={{
+                                            width: '100%'
+                                        }}
+                                        options={[
+                                            {
+                                                value: '1',
+                                                label: 'Level 1'
+                                            },
+                                            {
+                                                value: '2',
+                                                label: 'Level 2'
+                                            },
+                                            {
+                                                value: '3',
+                                                label: 'Level 3'
+                                            },
+                                            {
+                                                value: '4',
+                                                label: 'Level 4'
+                                            },
+                                            {
+                                                value: '5',
+                                                label: 'Level 5'
+                                            }
+                                        ]}
+                                    />
+                                </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                                <Form.Item
+                                    name="limit_time "
+                                    label="제한시간"
+                                    rules={[
+                                        {
+                                            required: true
+                                        }
+                                    ]}
+                                >
+                                    <Select
+                                        defaultValue={{
+                                            value: 0,
+                                            label: '# 제한시간'
+                                        }}
+                                        style={{
+                                            width: '100%'
+                                        }}
+                                        options={Minute_Opt}
+                                    />
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                        <Divider style={{ margin: '10px 0' }} />
+                        <Row gutter={24}>
+                            <Col span={24}>
+                                <Form.Item
+                                    name="useYn"
+                                    label="사용여부"
+                                    rules={[
+                                        {
+                                            required: true
+                                        }
+                                    ]}
+                                >
+                                    <Switch checkedChildren="사용" unCheckedChildren="미사용" style={{ width: '80px' }} />
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                        <Divider style={{ margin: '10px 0' }} />
                         <Card bordered style={{ textAlign: 'center', margin: '20px 0' }}>
                             <Row>
                                 <Col span={24}>
                                     <div>총 출제 문항 수</div>
-                                    <Badge style={{ width: '40px' }} count={'0'} color="#52c41a" overflowCount={9999} />
+                                    <Badge
+                                        style={{ width: '40px', marginTop: '5px' }}
+                                        count={question_props_value.length}
+                                        color="#52c41a"
+                                        overflowCount={9999}
+                                    />
                                 </Col>
+
+                                {/* 테스트 */}
+                                {question_props_value.map((q) => {
+                                    return <Col span={6}>● {q}</Col>;
+                                })}
+                                {/* 테스트 */}
                             </Row>
                         </Card>
-
-                        <Row gutter={16}>
-                            <Col span={8}>
-                                <Form.Item
-                                    name="001Type"
-                                    label="총기류"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: 'Please Enter quantity.'
-                                        }
-                                    ]}
+                        <Divider style={{ margin: '10px 0' }} />
+                        <Row gutter={24}>
+                            <Col span={24}>
+                                <Button
+                                    style={{ marginBottom: '30px', width: '100%', height: '40px', borderRadius: '5px' }}
+                                    type="primary"
+                                    onClick={Questions_Modal}
                                 >
-                                    <Input placeholder="# 수량" />
-                                </Form.Item>
+                                    출제 문항 검색
+                                </Button>
                             </Col>
-                            <Col span={8}>
-                                <Form.Item
-                                    name="002Type"
-                                    label="폭발류"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: 'Please Enter quantity.'
-                                        }
-                                    ]}
-                                >
-                                    <Input placeholder="# 수량" />
-                                </Form.Item>
-                            </Col>
-                            <Col span={8}>
-                                <Form.Item
-                                    name="003Type"
-                                    label="실탄류"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: 'Please Enter quantity.'
-                                        }
-                                    ]}
-                                >
-                                    <Input placeholder="# 수량" />
-                                </Form.Item>
-                            </Col>
-                        </Row>
-                        <Row gutter={16}>
-                            <Col span={8}>
-                                <Form.Item
-                                    name="004Type"
-                                    label="도검류"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: 'Please Enter quantity.'
-                                        }
-                                    ]}
-                                >
-                                    <Input placeholder="# 수량" />
-                                </Form.Item>
-                            </Col>
-                            <Col span={8}>
-                                <Form.Item
-                                    name="005Type"
-                                    label="일반무기류"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: 'Please Enter quantity.'
-                                        }
-                                    ]}
-                                >
-                                    <Input placeholder="# 수량" />
-                                </Form.Item>
-                            </Col>
-                            <Col span={8}>
-                                <Form.Item
-                                    name="006Type"
-                                    label="위장무기류"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: 'Please Enter quantity.'
-                                        }
-                                    ]}
-                                >
-                                    <Input placeholder="# 수량" />
-                                </Form.Item>
-                            </Col>
-                        </Row>
-                        <Row gutter={16}>
-                            <Col span={8}>
-                                <Form.Item
-                                    name="007Type"
-                                    label="공구/생활용품류"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: 'Please Enter quantity.'
-                                        }
-                                    ]}
-                                >
-                                    <Input placeholder="# 수량" />
-                                </Form.Item>
-                            </Col>
-                            <Col span={8}>
-                                <Form.Item
-                                    name="008Type"
-                                    label="인화성물질류"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: 'Please Enter quantity.'
-                                        }
-                                    ]}
-                                >
-                                    <Input placeholder="# 수량" />
-                                </Form.Item>
-                            </Col>
-                            <Col span={8}>
-                                <Form.Item
-                                    name="009Type"
-                                    label="위험물질류"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: 'Please Enter quantity.'
-                                        }
-                                    ]}
-                                >
-                                    <Input placeholder="# 수량" />
-                                </Form.Item>
-                            </Col>
-                        </Row>
-                        <Row gutter={16}>
-                            <Col span={8}>
-                                <Form.Item
-                                    name="010Type"
-                                    label="액체, 겔 물품"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: 'Please Enter quantity.'
-                                        }
-                                    ]}
-                                >
-                                    <Input placeholder="# 수량" />
-                                </Form.Item>
-                            </Col>
-                            <Col span={8}>
-                                <Form.Item
-                                    name="011Type"
-                                    label="주류"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: 'Please Enter quantity.'
-                                        }
-                                    ]}
-                                >
-                                    <Input placeholder="# 수량" />
-                                </Form.Item>
-                            </Col>
-                            <Col span={8}>
-                                <Form.Item
-                                    name="012Type"
-                                    label="전기/전자제품"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: 'Please Enter quantity.'
-                                        }
-                                    ]}
-                                >
-                                    <Input placeholder="# 수량" />
-                                </Form.Item>
-                            </Col>
-                        </Row>
-                        <Row gutter={16}>
-                            <Col span={8}>
-                                <Form.Item
-                                    name="013Type"
-                                    label="확인물품"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: 'Please Enter quantity.'
-                                        }
-                                    ]}
-                                >
-                                    <Input placeholder="# 수량" />
-                                </Form.Item>
-                            </Col>
-                            <Col span={8}>
-                                <Form.Item
-                                    name="014Type"
-                                    label="통과"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: 'Please Enter quantity.'
-                                        }
-                                    ]}
-                                >
-                                    <Input placeholder="# 수량" />
-                                </Form.Item>
-                            </Col>
-                            <Col span={8}></Col>
                         </Row>
                     </Form>
                 </MainCard>
             </Drawer>
             {/* 추가 폼 End */}
+
+            {/* 출제 문항 검색 Modal Start */}
+            <Modal
+                open={questionsModalOpen}
+                closable={false}
+                width={1200}
+                style={{
+                    left: 130,
+                    zIndex: 999
+                }}
+                // footer={[
+                //     <Button
+                //         type="primary"
+                //         onClick={Questions_handleOk}
+                //         style={{ width: '100px', borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                //     >
+                //         선택 완료
+                //     </Button>
+                // ]}
+            >
+                <XrayInformation QuestionCnt={Questions_handleOk} />
+            </Modal>
+            {/* 출제 문항 검색 Modal End */}
         </>
     );
 };

@@ -40,17 +40,17 @@ export const EduProcAdd = () => {
 
     // Modal창 Start
     const [open, setOpen] = useState(false);
-    const [eduDayModalOpen, setEduDayModalOpen] = useState(false); // 교육일정 설정 Modal창
-    const [studentModalOpen, setStudentModalOpen] = useState(false); // 교육생 검색 Modal창
-    const [eduDayViewModalOpen, setEduDayViewModalOpen] = useState(false); // 교육일정 상세정보 Modal창
-    const [studentViewModalOpen, setStudentViewModalOpen] = useState(false); // 교육생 상세정보 Modal창
+    const [eduDayModalOpen, setEduDayModalOpen] = useState(false); // 학습일정 설정 Modal창
+    const [studentModalOpen, setStudentModalOpen] = useState(false); // 학습생 검색 Modal창
+    const [eduDayViewModalOpen, setEduDayViewModalOpen] = useState(false); // 학습일정 상세정보 Modal창
+    const [studentViewModalOpen, setStudentViewModalOpen] = useState(false); // 학습생 상세정보 Modal창
     // Modal창 End
 
     // Data source Start
     // const [dataSource, setDataSource] = useState([]); // 차수 데이터 소스
-    const [eduDaydataSource, setEduDayDataSource] = useState([]); // 교육일정 데이터 소스
-    // const [studentdataSourceSearch, setStudentdataSourceSearch] = useState([]); // 교육생 검색 데이터 소스
-    const [studentdataSourceView, setStudentdataSourceView] = useState([]); // 교육생 상세정보 데이터 소스
+    const [eduDaydataSource, setEduDayDataSource] = useState([]); // 학습일정 데이터 소스
+    // const [studentdataSourceSearch, setStudentdataSourceSearch] = useState([]); // 학습생 검색 데이터 소스
+    const [studentdataSourceView, setStudentdataSourceView] = useState([]); // 학습생 상세정보 데이터 소스
     // Data source End
 
     // Title Text Start
@@ -125,7 +125,7 @@ export const EduProcAdd = () => {
             align: 'center'
         },
         {
-            title: '교육 과정',
+            title: '학습 과정',
             dataIndex: 'rowdata1',
             align: 'center'
         },
@@ -141,12 +141,12 @@ export const EduProcAdd = () => {
             align: 'center'
         },
         {
-            title: '교육일',
+            title: '학습일',
             dataIndex: 'rowdata4',
             align: 'center',
             render: (_, { rowdata1, rowdata2, rowdata4 }) => (
                 <>
-                    <Tooltip title="교육일 정보" color="#108ee9">
+                    <Tooltip title="학습일 정보" color="#108ee9">
                         <Button
                             type="primary"
                             onClick={() => EduDayView_Modal(rowdata1, rowdata2)}
@@ -165,12 +165,12 @@ export const EduProcAdd = () => {
             align: 'center'
         },
         {
-            title: '교육생 인원',
+            title: '학습생 인원',
             dataIndex: 'rowdata6',
             align: 'center',
             render: (_, { rowdata1, rowdata2, rowdata6 }) => (
                 <>
-                    <Tooltip title="교육생 정보" color="#108ee9">
+                    <Tooltip title="학습생 정보" color="#108ee9">
                         <Button
                             type="primary"
                             onClick={() => StudentView_Modal(rowdata1, rowdata2)}
@@ -230,7 +230,7 @@ export const EduProcAdd = () => {
             align: 'center'
         },
         {
-            title: '교육생',
+            title: '학습생',
             dataIndex: 'rowdata1',
             align: 'center'
         }
@@ -364,15 +364,15 @@ export const EduProcAdd = () => {
             })
         };
     });
-    // 교육생 검색 End
+    // 학습생 검색 End
 
-    //체크 박스 이벤트 (교육생)
+    //체크 박스 이벤트 (학습생)
     const onSelectChangeStudentSearch = (newSelectedRowKeysSub) => {
         console.log('selectedRowKeysStudentSearch changed: ', newSelectedRowKeysSub);
         setSelectedRowKeysStudentSearch(newSelectedRowKeysSub);
     };
 
-    //체크 박스 선택 (교육생)
+    //체크 박스 선택 (학습생)
     const rowSelectionStudentSearch = {
         selectedRowKeysStudentSearch,
         onChange: onSelectChangeStudentSearch
@@ -469,7 +469,7 @@ export const EduProcAdd = () => {
         console.log('End : ' + dateString[1]);
     };
 
-    // 교육 일정 설정 Start
+    // 학습 일정 설정 Start
     const EduDay_Modal = () => {
         setEduDayModalOpen(true);
     };
@@ -479,9 +479,9 @@ export const EduProcAdd = () => {
     const EduDay_handleCancel = () => {
         setEduDayModalOpen(false);
     };
-    // 교육 일정 설정 End
+    // 학습 일정 설정 End
 
-    // 교육생 검색 Modal Start
+    // 학습생 검색 Modal Start
     const Student_Modal = () => {
         setStudentModalOpen(true);
     };
@@ -491,9 +491,9 @@ export const EduProcAdd = () => {
     const Student_handleCancel = () => {
         setStudentModalOpen(false);
     };
-    // 교육생 검색 Modal End
+    // 학습생 검색 Modal End
 
-    // 교육 일정 상세정보 Start
+    // 학습 일정 상세정보 Start
     const EduDayView_Modal = (rowdata1, rowdata2) => {
         setEduDayViewModalOpen(true);
         setEduDayViewTitle(rowdata1 + ' ' + rowdata2);
@@ -504,9 +504,9 @@ export const EduProcAdd = () => {
     const EduDayView_handleCancel = () => {
         setEduDayViewModalOpen(false);
     };
-    // 교육 일정 상세정보 End
+    // 학습 일정 상세정보 End
 
-    // 교육생 일정 상세정보 Start
+    // 학습생 일정 상세정보 Start
     const StudentView_Modal = (rowdata1, rowdata2) => {
         setStudentViewModalOpen(true);
         setStudentViewTitle(rowdata1 + ' ' + rowdata2);
@@ -517,7 +517,7 @@ export const EduProcAdd = () => {
     const StudentView_handleCancel = () => {
         setStudentViewModalOpen(false);
     };
-    // 교육생 일정 상세정보 End
+    // 학습생 일정 상세정보 End
 
     const handleChange = (value) => {
         console.log(`selected ${value}`);
@@ -525,15 +525,15 @@ export const EduProcAdd = () => {
 
     const eduComplete = (txt) => {
         confirm({
-            title: '교육완료 처리하시겠습까?',
+            title: '학습완료 처리하시겠습까?',
             icon: <ExclamationCircleFilled />,
-            // content: txt + ' 교육완료! ',
+            // content: txt + ' 학습완료! ',
             okText: '예',
             okType: 'danger',
             cancelText: '아니오',
             onOk() {
                 Modal.success({
-                    content: '교육완료'
+                    content: '학습완료'
                 });
             },
             onCancel() {}
@@ -541,7 +541,7 @@ export const EduProcAdd = () => {
     };
     return (
         <>
-            <MainCard title="교육과정 관리">
+            <MainCard title="학습과정 관리">
                 <Typography variant="body1">
                     <Row style={{ marginBottom: 16 }}>
                         <Col span={8}></Col>
@@ -585,7 +585,7 @@ export const EduProcAdd = () => {
             {/* 추가 폼 Start */}
             <Drawer
                 maskClosable={false}
-                title={`교육과정 ${dataEdit === true ? '수정' : '추가'}`}
+                title={`학습과정 ${dataEdit === true ? '수정' : '추가'}`}
                 onClose={onAddClose}
                 open={open}
                 width={400}
@@ -629,7 +629,7 @@ export const EduProcAdd = () => {
                             <Col span={24}>
                                 <Form.Item
                                     name="EduProcedure"
-                                    label="교육과정 선택"
+                                    label="학습과정 선택"
                                     rules={[
                                         {
                                             required: true,
@@ -640,7 +640,7 @@ export const EduProcAdd = () => {
                                     <Select
                                         defaultValue={{
                                             value: 0,
-                                            label: '# 교육과정 선택'
+                                            label: '# 학습과정 선택'
                                         }}
                                         style={{
                                             width: '100%'
@@ -648,23 +648,23 @@ export const EduProcAdd = () => {
                                         options={[
                                             {
                                                 value: 'Lv1',
-                                                label: '초급 과정'
+                                                label: 'Level 1'
                                             },
                                             {
                                                 value: 'Lv2',
-                                                label: '초급 심화 과정'
+                                                label: 'Level 2'
                                             },
                                             {
                                                 value: 'Lv3',
-                                                label: '중급 과정'
+                                                label: 'Level 3'
                                             },
                                             {
                                                 value: 'Lv4',
-                                                label: '중급 심화 과정'
+                                                label: 'Level 4'
                                             },
                                             {
                                                 value: 'Lv5',
-                                                label: '전문가 과정'
+                                                label: 'Level 5'
                                             }
                                         ]}
                                     />
@@ -718,7 +718,7 @@ export const EduProcAdd = () => {
                             <Col span={24}>
                                 <Form.Item
                                     name="EduDayChk"
-                                    label="교육일차"
+                                    label="학습일수"
                                     rules={[
                                         {
                                             required: true,
@@ -726,7 +726,7 @@ export const EduProcAdd = () => {
                                         }
                                     ]}
                                 >
-                                    <Input placeholder="# 일차" />
+                                    <Input placeholder="# 일수" />
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -738,7 +738,7 @@ export const EduProcAdd = () => {
                                     type="primary"
                                     onClick={EduDay_Modal}
                                 >
-                                    교육일자 설정
+                                    학습일자 설정
                                 </Button>
                             </Col>
                         </Row>
@@ -746,7 +746,7 @@ export const EduProcAdd = () => {
                             <Col span={24}>
                                 <Form.Item
                                     name="EduPoints"
-                                    label="배점 선택"
+                                    label="수료기준점수"
                                     rules={[
                                         {
                                             required: true,
@@ -757,16 +757,12 @@ export const EduProcAdd = () => {
                                     <Select
                                         defaultValue={{
                                             value: 0,
-                                            label: '# 배점 선택'
+                                            label: '# 수료기준점수'
                                         }}
                                         style={{
                                             width: '100%'
                                         }}
                                         options={[
-                                            {
-                                                value: '50',
-                                                label: '50'
-                                            },
                                             {
                                                 value: '60',
                                                 label: '60'
@@ -792,6 +788,24 @@ export const EduProcAdd = () => {
                                 </Form.Item>
                             </Col>
                         </Row>
+
+                        <Row gutter={24}>
+                            <Col span={24}>
+                                <Form.Item
+                                    name="EduDayChk"
+                                    label="학습생 제한수"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Please Enter quantity.'
+                                        }
+                                    ]}
+                                >
+                                    <Input placeholder="# 제한수" />
+                                </Form.Item>
+                            </Col>
+                        </Row>
+
                         <Row gutter={24}>
                             <Col span={24}>
                                 <Button
@@ -799,7 +813,7 @@ export const EduProcAdd = () => {
                                     type="primary"
                                     onClick={Student_Modal}
                                 >
-                                    교육생 검색
+                                    학습생 검색
                                 </Button>
                             </Col>
                         </Row>
@@ -807,7 +821,7 @@ export const EduProcAdd = () => {
                 </MainCard>
             </Drawer>
             {/* 추가 폼 End */}
-            {/* 교육일자 설정 Modal Start */}
+            {/* 학습일자 설정 Modal Start */}
             <Modal
                 open={eduDayModalOpen}
                 onOk={EduDay_handleOk}
@@ -827,7 +841,7 @@ export const EduProcAdd = () => {
                     </Button>
                 ]}
             >
-                <MainCard title="교육 일정별 학습과정 설정" style={{ marginTop: 30 }}>
+                <MainCard title="학습 일정별 학습과정 설정" style={{ marginTop: 30 }}>
                     <Form layout="horizontal" form={form}>
                         <Row gutter={24} style={{ marginBottom: 14 }}>
                             <Col span={20} style={{ textAlign: 'center' }}>
@@ -1040,9 +1054,9 @@ export const EduProcAdd = () => {
                     </Form>
                 </MainCard>
             </Modal>
-            {/* 교육일자 설정 Modal End */}
+            {/* 학습일자 설정 Modal End */}
 
-            {/* 교육생 검색 Modal Start */}
+            {/* 학습생 검색 Modal Start */}
             <Modal
                 open={studentModalOpen}
                 onOk={Student_handleOk}
@@ -1062,7 +1076,7 @@ export const EduProcAdd = () => {
                     </Button>
                 ]}
             >
-                <MainCard title="교육생 검색" style={{ marginTop: 30 }}>
+                <MainCard title="학습생 검색" style={{ marginTop: 30 }}>
                     <Typography variant="body1">
                         <Table
                             components={studentcomponentsSearch}
@@ -1077,9 +1091,9 @@ export const EduProcAdd = () => {
                     </Typography>
                 </MainCard>
             </Modal>
-            {/* 교육생 검색 Modal End */}
+            {/* 학습생 검색 Modal End */}
 
-            {/* 교육일자 상세정보 Modal Start */}
+            {/* 학습일자 상세정보 Modal Start */}
             <Modal
                 open={eduDayViewModalOpen}
                 onOk={EduDayView_handleOk}
@@ -1099,7 +1113,7 @@ export const EduProcAdd = () => {
                     </Button>
                 ]}
             >
-                <MainCard title="교육 일정 상세정보" style={{ marginTop: 30 }}>
+                <MainCard title="학습 일정 상세정보" style={{ marginTop: 30 }}>
                     <Form layout="horizontal" form={form}>
                         <Row gutter={24} style={{ marginBottom: 14 }}>
                             <Col span={24} style={{ textAlign: 'center' }}>
@@ -1127,7 +1141,7 @@ export const EduProcAdd = () => {
                                     color="#2db7f5"
                                     style={{ padding: '5px 7px', cursor: 'pointer' }}
                                 >
-                                    교육완료
+                                    학습완료
                                 </Tag>
                             </Col>
                         </Row>
@@ -1151,7 +1165,7 @@ export const EduProcAdd = () => {
                                     onClick={() => eduComplete('Day 2')}
                                     style={{ padding: '5px 7px', cursor: 'pointer' }}
                                 >
-                                    교육진행
+                                    학습진행
                                 </Tag>
                             </Col>
                         </Row>
@@ -1175,7 +1189,7 @@ export const EduProcAdd = () => {
                                     onClick={() => eduComplete('Day 3')}
                                     style={{ padding: '5px 7px', cursor: 'pointer' }}
                                 >
-                                    교육진행
+                                    학습진행
                                 </Tag>
                             </Col>
                         </Row>
@@ -1199,7 +1213,7 @@ export const EduProcAdd = () => {
                                     onClick={() => eduComplete('Day 4')}
                                     style={{ padding: '5px 7px', cursor: 'pointer' }}
                                 >
-                                    교육진행
+                                    학습진행
                                 </Tag>
                             </Col>
                         </Row>
@@ -1220,16 +1234,16 @@ export const EduProcAdd = () => {
                                     onClick={() => eduComplete('Day 5')}
                                     style={{ padding: '5px 7px', cursor: 'pointer' }}
                                 >
-                                    교육진행
+                                    학습진행
                                 </Tag>
                             </Col>
                         </Row>
                     </Form>
                 </MainCard>
             </Modal>
-            {/* 교육일자 상세정보 Modal End */}
+            {/* 학습일자 상세정보 Modal End */}
 
-            {/* 교육생 상세정보 Modal Start */}
+            {/* 학습생 상세정보 Modal Start */}
             <Modal
                 open={studentViewModalOpen}
                 onOk={StudentView_handleOk}
@@ -1249,7 +1263,7 @@ export const EduProcAdd = () => {
                     </Button>
                 ]}
             >
-                <MainCard title="교육생 상세정보" style={{ marginTop: 30 }}>
+                <MainCard title="학습생 상세정보" style={{ marginTop: 30 }}>
                     <Form layout="horizontal" form={form}>
                         <Row gutter={24} style={{ marginBottom: 14 }}>
                             <Col span={24} style={{ textAlign: 'center' }}>
@@ -1258,11 +1272,11 @@ export const EduProcAdd = () => {
                                 </Tag>
                             </Col>
                         </Row>
-                        교육생 정보
+                        학습생 정보
                     </Form>
                 </MainCard>
             </Modal>
-            {/* 교육생 상세정보 Modal End */}
+            {/* 학습생 상세정보 Modal End */}
         </>
     );
 };

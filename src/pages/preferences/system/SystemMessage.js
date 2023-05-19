@@ -1,12 +1,16 @@
 /* eslint-disable*/
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Typography } from '@mui/material';
-import { Col, Row, Button, Form, Input, Table, Select, Space, Tooltip, Tag, Badge, Divider, Card, Modal ,Drawer } from 'antd';
+import { Col, Row, Button, Form, Input, Table, Select, Space, Tooltip, Tag, Badge, Divider, Card, Modal, Drawer } from 'antd';
 import 'antd/dist/antd.css';
-import { useGetLanguageApplyListMutation,useInsertLanguageApplyMutation,useGetLanguageApplyMutation,useDeleteLanguageApplyMutation,useUpdateLanguageApplyMutation } from '../../hooks/api/SystemManagement/SystemManagement';
 import {
-    useGetLanguageListMutation
-} from '../../hooks/api/ContentsManagement/ContentsManagement';
+    useGetLanguageApplyListMutation,
+    useInsertLanguageApplyMutation,
+    useGetLanguageApplyMutation,
+    useDeleteLanguageApplyMutation,
+    useUpdateLanguageApplyMutation
+} from '../../../hooks/api/SystemManagement/SystemManagement';
+import { useGetLanguageListMutation } from '../../../hooks/api/ContentsManagement/ContentsManagement';
 import { PlusOutlined, EditFilled, DeleteFilled, ExclamationCircleFilled } from '@ant-design/icons';
 
 // project import
@@ -38,19 +42,18 @@ export const SystemMessage = () => {
 
     const handleLanguage = async () => {
         const Languageresponse = await getLanguageApplyList({
-            //"groupId" : "login",    
-            "languageCode" : languageCode             
+            //"groupId" : "login",
+            languageCode: languageCode
         });
-        
+
         setDataSource([
-            ...Languageresponse?.data?.RET_DATA.map((d, i) => 
-            ({
+            ...Languageresponse?.data?.RET_DATA.map((d, i) => ({
                 key: d.codeNo,
                 rowdata0: i + 1,
-                rowdata1: d.codeDesc,//구분
-                rowdata2: d.groupId,//그룹코드 
-                rowdata3: d.codeName,//메세지코드
-                rowdata4: d[d.groupId+d.sortOrder]//메세지
+                rowdata1: d.codeDesc, //구분
+                rowdata2: d.groupId, //그룹코드
+                rowdata3: d.codeName, //메세지코드
+                rowdata4: d[d.groupId + d.sortOrder] //메세지
             }))
         ]);
         setLoading(false);
@@ -65,7 +68,7 @@ export const SystemMessage = () => {
                 label: lan.languageName
             }))
         ]);
-    };    
+    };
 
     const EditableContext = React.createContext(null);
     const EditableRow = ({ index, ...props }) => {
@@ -151,26 +154,31 @@ export const SystemMessage = () => {
             title: '메세지코드',
             dataIndex: 'rowdata3',
             align: 'center'
-        },        
+        },
         {
             title: '메세지',
             dataIndex: 'rowdata4',
             align: 'center'
-        },        
+        },
         {
             width: '100px',
             title: '수정',
             render: (rowdata1) => (
                 <>
                     <Tooltip title="수정" color="#108ee9">
-                        <Button  onClick={()=>handleUnitMod({rowdata1})} type="primary" style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }} icon={<EditFilled />}>
+                        <Button
+                            onClick={() => handleUnitMod({ rowdata1 })}
+                            type="primary"
+                            style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                            icon={<EditFilled />}
+                        >
                             수정
                         </Button>
                     </Tooltip>
                 </>
             ),
             align: 'center'
-        }       
+        }
     ];
 
     // const handleDelete = (key) => {
@@ -235,24 +243,22 @@ export const SystemMessage = () => {
 
     // 물품 수정 버튼
     const handleUnitMod = async (e) => {
-        
         console.log('groupId:', e.rowdata1.rowdata2);
         console.log('codeName:', e.rowdata1.rowdata3);
         const response = await getLanguage({
-            "groupId" : e.rowdata1.rowdata2,
-            "codeName" : e.rowdata1.rowdata3,
-            "languageCode" : languageCode
+            groupId: e.rowdata1.rowdata2,
+            codeName: e.rowdata1.rowdata3,
+            languageCode: languageCode
         });
-        
+
         //console.log('unitName2:',response.data.RET_DATA.unitName);
         setUnitParams(response.data.RET_DATA);
         //params = response.data.RET_DATA;
         form.resetFields();
-        setDataEdit(true);        
+        setDataEdit(true);
         setOpen(true);
-        
-    };       
-    
+    };
+
     // 추가 취소
     const onAddClose = () => {
         setOpen(false);
@@ -262,15 +268,14 @@ export const SystemMessage = () => {
     };
 
     // 추가 등록
-    const insertSubmit = async() => {
-
+    const insertSubmit = async () => {
         const response = await insertLanguage({
-            "languageCode" : unitParams?.languageCode, 
-            "groupId" :  unitParams?.groupId, 
-            "sortOrder" : unitParams?.sortOrder,   
-            "codeValue" : unitParams?.codeValue,    
-            "codeName" : unitParams?.codeName,    
-            "codeDesc" : unitParams?.codeDesc,    
+            languageCode: unitParams?.languageCode,
+            groupId: unitParams?.groupId,
+            sortOrder: unitParams?.sortOrder,
+            codeValue: unitParams?.codeValue,
+            codeName: unitParams?.codeName,
+            codeDesc: unitParams?.codeDesc
         });
 
         setRefresh(response);
@@ -285,16 +290,16 @@ export const SystemMessage = () => {
     };
 
     // 수정
-    const updateSubmit = async() => {
+    const updateSubmit = async () => {
         console.log(unitParams);
         const response = await updateLanguage({
-            "codeNo" : unitParams?.codeNo,
-            "languageCode" : unitParams?.languageCode, 
-            "groupId" :  unitParams?.groupId, 
-            "sortOrder" : unitParams?.sortOrder,   
-            "codeValue" : unitParams?.codeValue,    
-            "codeName" : unitParams?.codeName,    
-            "codeDesc" : unitParams?.codeDesc,    
+            codeNo: unitParams?.codeNo,
+            languageCode: unitParams?.languageCode,
+            groupId: unitParams?.groupId,
+            sortOrder: unitParams?.sortOrder,
+            codeValue: unitParams?.codeValue,
+            codeName: unitParams?.codeName,
+            codeDesc: unitParams?.codeDesc
         });
 
         setRefresh(response);
@@ -305,13 +310,13 @@ export const SystemMessage = () => {
                 setDataEdit(false);
                 form.resetFields();
             }
-        });        
-    };    
+        });
+    };
 
     // 삭제
-    const deleteSubmit = async() => {
+    const deleteSubmit = async () => {
         const response = await deleteLanguage({
-            "codeNo" : unitParams?.codeNo
+            codeNo: unitParams?.codeNo
         });
 
         setRefresh(response);
@@ -323,12 +328,12 @@ export const SystemMessage = () => {
                 form.resetFields();
             }
         });
-    };    
+    };
 
     // 수정 버튼
     const handleEdit = (EditKey) => {
         console.log(EditKey);
-        setUnitParams({ ...unitParams, "codeNo": EditKey })
+        setUnitParams({ ...unitParams, codeNo: EditKey });
         setDataEdit(true);
         setOpen(true);
     };
@@ -460,10 +465,14 @@ export const SystemMessage = () => {
                                 </Tooltip>
                             )}
                             <Tooltip title="삭제">
-                                <Button type="danger" onClick={deleteSubmit} style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}>
+                                <Button
+                                    type="danger"
+                                    onClick={deleteSubmit}
+                                    style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                >
                                     삭제
                                 </Button>
-                            </Tooltip>                            
+                            </Tooltip>
                         </Space>
                     </>
                 }
@@ -481,12 +490,13 @@ export const SystemMessage = () => {
                                         }
                                     ]}
                                 >
-                                    <Input 
+                                    <Input
                                         name="codeDesc"
                                         value={unitParams?.codeDesc}
                                         defaultValue={unitParams?.codeDesc}
-                                        onChange={(e) => setUnitParams({ ...unitParams, "codeDesc": e.target.value })}                                    
-                                        placeholder="Please Enter codeDesc" />
+                                        onChange={(e) => setUnitParams({ ...unitParams, codeDesc: e.target.value })}
+                                        placeholder="Please Enter codeDesc"
+                                    />
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -506,7 +516,7 @@ export const SystemMessage = () => {
                                         name="groupId"
                                         value={unitParams?.groupId}
                                         defaultValue={unitParams?.groupId}
-                                        onChange={(e) => setUnitParams({ ...unitParams, "groupId": e.target.value })}                                    
+                                        onChange={(e) => setUnitParams({ ...unitParams, groupId: e.target.value })}
                                         style={{
                                             width: '100%'
                                         }}
@@ -530,7 +540,7 @@ export const SystemMessage = () => {
                                         name="codeName"
                                         value={unitParams?.codeName}
                                         defaultValue={unitParams?.codeName}
-                                        onChange={(e) => setUnitParams({ ...unitParams, "codeName": e.target.value })}                                    
+                                        onChange={(e) => setUnitParams({ ...unitParams, codeName: e.target.value })}
                                         style={{
                                             width: '100%'
                                         }}
@@ -554,7 +564,7 @@ export const SystemMessage = () => {
                                         name="codeValue"
                                         value={unitParams?.codeValue}
                                         defaultValue={unitParams?.codeValue}
-                                        onChange={(e) => setUnitParams({ ...unitParams, "codeValue": e.target.value })}                                    
+                                        onChange={(e) => setUnitParams({ ...unitParams, codeValue: e.target.value })}
                                         style={{
                                             width: '100%'
                                         }}
@@ -562,7 +572,7 @@ export const SystemMessage = () => {
                                     />
                                 </Form.Item>
                             </Col>
-                        </Row>     
+                        </Row>
                         <Row gutter={16}>
                             <Col span={24}>
                                 <Form.Item
@@ -578,7 +588,7 @@ export const SystemMessage = () => {
                                         name="sortOrder"
                                         value={unitParams?.sortOrder}
                                         defaultValue={unitParams?.sortOrder}
-                                        onChange={(e) => setUnitParams({ ...unitParams, "sortOrder": e.target.value })}                                    
+                                        onChange={(e) => setUnitParams({ ...unitParams, sortOrder: e.target.value })}
                                         style={{
                                             width: '100%'
                                         }}
@@ -586,7 +596,7 @@ export const SystemMessage = () => {
                                     />
                                 </Form.Item>
                             </Col>
-                        </Row>                                                                      
+                        </Row>
                         <Divider style={{ margin: '10px 0' }} />
                         <Row gutter={24}>
                             <Col span={24}>
@@ -600,26 +610,26 @@ export const SystemMessage = () => {
                                         }
                                     ]}
                                 >
-                                <Select
-                                    defaultValue={unitParams?.languageCode}
-                                    onChange={(e) => setUnitParams({ ...unitParams, "languageCode": e })}
-                                    style={{
-                                        width: '100%'
-                                    }}
-                                    options={[
-                                        {
-                                            value: 'kor',
-                                            label: '한국어'
-                                        },
-                                        {
-                                            value: 'eng',
-                                            label: '영어'
-                                        },
-                                    ]}
-                                />
+                                    <Select
+                                        defaultValue={unitParams?.languageCode}
+                                        onChange={(e) => setUnitParams({ ...unitParams, languageCode: e })}
+                                        style={{
+                                            width: '100%'
+                                        }}
+                                        options={[
+                                            {
+                                                value: 'kor',
+                                                label: '한국어'
+                                            },
+                                            {
+                                                value: 'eng',
+                                                label: '영어'
+                                            }
+                                        ]}
+                                    />
                                 </Form.Item>
                             </Col>
-                        </Row>                       
+                        </Row>
                     </Form>
                 </MainCard>
             </Drawer>

@@ -108,22 +108,22 @@ export const XrayinfoWrite = {
     ]
 };
 
-export const xrayModule = {
-    id: '9',
-    title: 'Navigation',
-    type: 'group',
-    children: [
-        {
-            id: '/learning/xraymodule',
-            title: '학습관리 > 교육 모듈 구성 > X-ray 판독모듈 구성',
-            subtitle: 'X-ray 판독모듈 구성',
-            type: 'item',
-            url: '/learning/xraymodule',
-            icon: icons.ProjectOutlined,
-            breadcrumbs: true
-        }
-    ]
-};
+// export const xrayModule = {
+//     id: '9',
+//     title: 'Navigation',
+//     type: 'group',
+//     children: [
+//         {
+//             id: '/learning/xraymodule',
+//             title: '학습관리 > 교육 모듈 구성 > X-ray 판독모듈 구성',
+//             subtitle: 'X-ray 판독모듈 구성',
+//             type: 'item',
+//             url: '/learning/xraymodule',
+//             icon: icons.ProjectOutlined,
+//             breadcrumbs: true
+//         }
+//     ]
+// };
 
 export const curriculum = {
     id: '10',
@@ -132,7 +132,7 @@ export const curriculum = {
     children: [
         {
             id: '/learning/curriculum',
-            title: '학습관리 > 교육 모듈 구성 > 커리큘럼 관리',
+            title: '학습관리 > 학습모듈 관리',
             type: 'item',
             url: '/learning/curriculum',
             icon: icons.ProjectOutlined,
@@ -141,124 +141,124 @@ export const curriculum = {
     ]
 };
 
-export const xrayPoint = {
-    id: '11',
-    title: 'Navigation',
-    type: 'group',
-    children: [
-        {
-            id: '/learning/xraypoint',
-            title: '학습 관리 > X-ray 판독 배점관리',
-            subtitle: 'X-ray 판독 배점관리',
-            type: 'item',
-            url: '/learning/xraypoint',
-            icon: icons.ProjectOutlined,
-            breadcrumbs: true
-        }
-    ]
-};
+// export const xrayPoint = {
+//     id: '11',
+//     title: 'Navigation',
+//     type: 'group',
+//     children: [
+//         {
+//             id: '/learning/xraypoint',
+//             title: '학습 관리 > X-ray 판독 배점관리',
+//             subtitle: 'X-ray 판독 배점관리',
+//             type: 'item',
+//             url: '/learning/xraypoint',
+//             icon: icons.ProjectOutlined,
+//             breadcrumbs: true
+//         }
+//     ]
+// };
 
-export const eduType = {
-    id: '12',
-    title: 'Navigation',
-    type: 'group',
-    children: [
-        {
-            id: '/learning/edutype',
-            title: '학습 관리 > 교육 타입관리',
-            subtitle: '교육 타입관리',
-            type: 'item',
-            url: '/learning/edutype',
-            icon: icons.ProjectOutlined,
-            breadcrumbs: true
-        }
-    ]
-};
+// export const eduType = {
+//     id: '12',
+//     title: 'Navigation',
+//     type: 'group',
+//     children: [
+//         {
+//             id: '/learning/edutype',
+//             title: '학습 관리 > 교육 타입관리',
+//             subtitle: '교육 타입관리',
+//             type: 'item',
+//             url: '/learning/edutype',
+//             icon: icons.ProjectOutlined,
+//             breadcrumbs: true
+//         }
+//     ]
+// };
 
-export const eduGroup = {
-    id: '13',
-    title: 'Navigation',
-    type: 'group',
-    children: [
-        {
-            id: '/educurriculum/edugroup',
-            title: '교육 관리 > 교육과정 관리 > 그룹 관리',
-            subtitle: '그룹 관리',
-            type: 'item',
-            url: '/educurriculum/edugroup',
-            icon: icons.ProjectOutlined,
-            breadcrumbs: true
-        }
-    ]
-};
+// export const eduGroup = {
+//     id: '13',
+//     title: 'Navigation',
+//     type: 'group',
+//     children: [
+//         {
+//             id: '/educurriculum/edugroup',
+//             title: '교육 관리 > 교육과정 관리 > 그룹 관리',
+//             subtitle: '그룹 관리',
+//             type: 'item',
+//             url: '/educurriculum/edugroup',
+//             icon: icons.ProjectOutlined,
+//             breadcrumbs: true
+//         }
+//     ]
+// };
 
-export const eduClass = {
-    id: '14',
-    title: 'Navigation',
-    type: 'group',
-    children: [
-        {
-            id: '/educurriculum/educlass',
-            title: '교육 관리 > 교육과정 관리 > 과정 분류',
-            subtitle: '과정 분류',
-            type: 'item',
-            url: '/educurriculum/educlass',
-            icon: icons.ProjectOutlined,
-            breadcrumbs: true
-        }
-    ]
-};
+// export const eduClass = {
+//     id: '14',
+//     title: 'Navigation',
+//     type: 'group',
+//     children: [
+//         {
+//             id: '/educurriculum/educlass',
+//             title: '교육 관리 > 교육과정 관리 > 과정 분류',
+//             subtitle: '과정 분류',
+//             type: 'item',
+//             url: '/educurriculum/educlass',
+//             icon: icons.ProjectOutlined,
+//             breadcrumbs: true
+//         }
+//     ]
+// };
 
-export const eduProc = {
-    id: '15',
-    title: 'Navigation',
-    type: 'group',
-    children: [
-        {
-            id: '/educurriculum/eduproc',
-            title: '교육 관리 > 교육과정 관리 > 과정 등록',
-            subtitle: '과정 등록',
-            type: 'item',
-            url: '/educurriculum/eduproc',
-            icon: icons.ProjectOutlined,
-            breadcrumbs: true
-        }
-    ]
-};
+// export const eduProc = {
+//     id: '15',
+//     title: 'Navigation',
+//     type: 'group',
+//     children: [
+//         {
+//             id: '/educurriculum/eduproc',
+//             title: '교육 관리 > 교육과정 관리 > 과정 등록',
+//             subtitle: '과정 등록',
+//             type: 'item',
+//             url: '/educurriculum/eduproc',
+//             icon: icons.ProjectOutlined,
+//             breadcrumbs: true
+//         }
+//     ]
+// };
 
-export const edubaseline = {
-    id: '16',
-    title: 'Navigation',
-    type: 'group',
-    children: [
-        {
-            id: '/educurriculum/edubaseline',
-            title: '교육 관리 > 교육차수 관리 > 차수 등록',
-            subtitle: '차수 등록',
-            type: 'item',
-            url: '/educurriculum/edubaseline',
-            icon: icons.ProjectOutlined,
-            breadcrumbs: true
-        }
-    ]
-};
+// export const edubaseline = {
+//     id: '16',
+//     title: 'Navigation',
+//     type: 'group',
+//     children: [
+//         {
+//             id: '/educurriculum/edubaseline',
+//             title: '교육 관리 > 교육차수 관리 > 차수 등록',
+//             subtitle: '차수 등록',
+//             type: 'item',
+//             url: '/educurriculum/edubaseline',
+//             icon: icons.ProjectOutlined,
+//             breadcrumbs: true
+//         }
+//     ]
+// };
 
-export const edubaselinemenu = {
-    id: '17',
-    title: 'Navigation',
-    type: 'group',
-    children: [
-        {
-            id: '/educurriculum/edubaselinemenu',
-            title: '교육 관리 > 교육차수 관리 > 차수별 메뉴관리',
-            subtitle: '차수별 메뉴관리',
-            type: 'item',
-            url: '/educurriculum/edubaselinemenu',
-            icon: icons.ProjectOutlined,
-            breadcrumbs: true
-        }
-    ]
-};
+// export const edubaselinemenu = {
+//     id: '17',
+//     title: 'Navigation',
+//     type: 'group',
+//     children: [
+//         {
+//             id: '/educurriculum/edubaselinemenu',
+//             title: '교육 관리 > 교육차수 관리 > 차수별 메뉴관리',
+//             subtitle: '차수별 메뉴관리',
+//             type: 'item',
+//             url: '/educurriculum/edubaselinemenu',
+//             icon: icons.ProjectOutlined,
+//             breadcrumbs: true
+//         }
+//     ]
+// };
 
 export const eduprocadd = {
     id: '177',
@@ -267,8 +267,8 @@ export const eduprocadd = {
     children: [
         {
             id: '/educurriculum/eduprocadd',
-            title: '교육 관리 > 교육과정 등록',
-            subtitle: '교육과정 등록',
+            title: '학습 관리 > 학습과정 관리',
+            subtitle: '학습과정 관리',
             type: 'item',
             url: '/educurriculum/eduprocadd',
             icon: icons.ProjectOutlined,
@@ -294,22 +294,22 @@ export const studentinformation = {
     ]
 };
 
-export const baseline = {
-    id: '19',
-    title: 'Navigation',
-    type: 'group',
-    children: [
-        {
-            id: '/student/baseline',
-            title: '교육생 관리 > 교육생 차수관리',
-            subtitle: '교육생 차수관리',
-            type: 'item',
-            url: '/student/baseline',
-            icon: icons.ProjectOutlined,
-            breadcrumbs: true
-        }
-    ]
-};
+// export const baseline = {
+//     id: '19',
+//     title: 'Navigation',
+//     type: 'group',
+//     children: [
+//         {
+//             id: '/student/baseline',
+//             title: '교육생 관리 > 교육생 차수관리',
+//             subtitle: '교육생 차수관리',
+//             type: 'item',
+//             url: '/student/baseline',
+//             icon: icons.ProjectOutlined,
+//             breadcrumbs: true
+//         }
+//     ]
+// };
 
 export const evaluationscore = {
     id: '27',
@@ -327,22 +327,22 @@ export const evaluationscore = {
         }
     ]
 };
-export const educationaleval = {
-    id: '28',
-    title: 'Navigation',
-    type: 'group',
-    children: [
-        {
-            id: '/statistics/educationaleval',
-            title: '통계 > 교육실적 조회 > 교육평가 조회',
-            subtitle: '교육평가 조회',
-            type: 'item',
-            url: '/statistics/educationaleval',
-            icon: icons.ProjectOutlined,
-            breadcrumbs: true
-        }
-    ]
-};
+// export const educationaleval = {
+//     id: '28',
+//     title: 'Navigation',
+//     type: 'group',
+//     children: [
+//         {
+//             id: '/statistics/educationaleval',
+//             title: '통계 > 교육실적 조회 > 교육평가 조회',
+//             subtitle: '교육평가 조회',
+//             type: 'item',
+//             url: '/statistics/educationaleval',
+//             icon: icons.ProjectOutlined,
+//             breadcrumbs: true
+//         }
+//     ]
+// };
 export const wronganswerrate = {
     id: '29',
     title: 'Navigation',
@@ -359,75 +359,74 @@ export const wronganswerrate = {
         }
     ]
 };
-export const traineeevaluation = {
-    id: '30',
-    title: 'Navigation',
-    type: 'group',
-    children: [
-        {
-            id: '/statistics/traineeevaluation',
-            title: '통계 > 교육실적 조회 > 교육생 평가 조회',
-            subtitle: '교육생 평가 조회',
-            type: 'item',
-            url: '/statistics/traineeevaluation',
-            icon: icons.ProjectOutlined,
-            breadcrumbs: true
-        }
-    ]
-};
+// export const traineeevaluation = {
+//     id: '30',
+//     title: 'Navigation',
+//     type: 'group',
+//     children: [
+//         {
+//             id: '/statistics/traineeevaluation',
+//             title: '통계 > 교육실적 조회 > 교육생 평가 조회',
+//             subtitle: '교육생 평가 조회',
+//             type: 'item',
+//             url: '/statistics/traineeevaluation',
+//             icon: icons.ProjectOutlined,
+//             breadcrumbs: true
+//         }
+//     ]
+// };
 
-export const traineescoreranking = {
-    id: '31',
-    title: 'Navigation',
-    type: 'group',
-    children: [
-        {
-            id: '/statistics/traineescoreranking',
-            title: '통계 > 최종평가 조회 > 교육생 점수 순위 조회',
-            subtitle: ' 교육생 점수 순위 조회',
-            type: 'item',
-            url: '/statistics/traineescoreranking',
-            icon: icons.ProjectOutlined,
-            breadcrumbs: true
-        }
-    ]
-};
-export const evaluationscoreby = {
-    id: '32',
-    title: 'Navigation',
-    type: 'group',
-    children: [
-        {
-            id: '/statistics/evaluationscoreby',
-            title: '통계 > 최종평가 조회 > 기관별 평가 점수 조회',
-            subtitle: '기관별 평가 점수 조회',
-            type: 'item',
-            url: '/statistics/evaluationscoreby',
-            icon: icons.ProjectOutlined,
-            breadcrumbs: true
-        }
-    ]
-};
-export const annualtraining = {
-    id: '33',
-    title: 'Navigation',
-    type: 'group',
-    children: [
-        {
-            id: '/statistics/annualtraining',
-            title: '통계 > 최종평가 조회 > 연도/회차별 교육평균 조회',
-            subtitle: '연도|회차별 교육평균 조회',
-            type: 'item',
-            url: '/statistics/annualtraining',
-            icon: icons.ProjectOutlined,
-            breadcrumbs: true
-        }
-    ]
-};
+// export const traineescoreranking = {
+//     id: '31',
+//     title: 'Navigation',
+//     type: 'group',
+//     children: [
+//         {
+//             id: '/statistics/traineescoreranking',
+//             title: '통계 > 최종평가 조회 > 교육생 점수 순위 조회',
+//             subtitle: ' 교육생 점수 순위 조회',
+//             type: 'item',
+//             url: '/statistics/traineescoreranking',
+//             icon: icons.ProjectOutlined,
+//             breadcrumbs: true
+//         }
+//     ]
+// };
+// export const evaluationscoreby = {
+//     id: '32',
+//     title: 'Navigation',
+//     type: 'group',
+//     children: [
+//         {
+//             id: '/statistics/evaluationscoreby',
+//             title: '통계 > 최종평가 조회 > 기관별 평가 점수 조회',
+//             subtitle: '기관별 평가 점수 조회',
+//             type: 'item',
+//             url: '/statistics/evaluationscoreby',
+//             icon: icons.ProjectOutlined,
+//             breadcrumbs: true
+//         }
+//     ]
+// };
+// export const annualtraining = {
+//     id: '33',
+//     title: 'Navigation',
+//     type: 'group',
+//     children: [
+//         {
+//             id: '/statistics/annualtraining',
+//             title: '통계 > 최종평가 조회 > 연도/회차별 교육평균 조회',
+//             subtitle: '연도|회차별 교육평균 조회',
+//             type: 'item',
+//             url: '/statistics/annualtraining',
+//             icon: icons.ProjectOutlined,
+//             breadcrumbs: true
+//         }
+//     ]
+// };
 
 export const notices = {
     id: '34',
-
     title: 'Navigation',
     type: 'group',
     children: [
@@ -445,7 +444,6 @@ export const notices = {
 
 export const commoncode = {
     id: '37',
-
     title: 'Navigation',
     type: 'group',
     children: [
@@ -455,6 +453,23 @@ export const commoncode = {
             subtitle: '공통코드 관리',
             type: 'item',
             url: '/preferences/commoncode',
+            icon: icons.ProjectOutlined,
+            breadcrumbs: true
+        }
+    ]
+};
+
+export const system = {
+    id: '38',
+    title: 'Navigation',
+    type: 'group',
+    children: [
+        {
+            id: '/preferences/system',
+            title: '환경설정 > 시스템메세지 관리',
+            subtitle: '시스템메세지 관리',
+            type: 'item',
+            url: '/preferences/system',
             icon: icons.ProjectOutlined,
             breadcrumbs: true
         }
