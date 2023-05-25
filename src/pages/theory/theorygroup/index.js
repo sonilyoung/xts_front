@@ -1,0 +1,1 @@
+export { TheoryGroup } from './TheoryGroup';

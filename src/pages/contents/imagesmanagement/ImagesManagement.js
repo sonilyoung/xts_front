@@ -22,7 +22,14 @@ import {
 import { Typography } from '@mui/material';
 import './index.css';
 import { PlusOutlined, EditFilled, DeleteFilled, UploadOutlined, MinusCircleOutlined } from '@ant-design/icons';
-import { useGetUnitListMutation, useInsertUnitMutation, useUpdateUnitMutation, useDeleteUnitMutation, useSaveUnitImgMutation, useGetUnitMutation} from '../../../hooks/api/ContentsManagement/ContentsManagement';
+import {
+    useGetUnitListMutation,
+    useInsertUnitMutation,
+    useUpdateUnitMutation,
+    useDeleteUnitMutation,
+    useSaveUnitImgMutation,
+    useGetUnitMutation
+} from '../../../hooks/api/ContentsManagement/ContentsManagement';
 import MenuItem from '@mui/material/MenuItem';
 // project import
 import MainCard from 'components/MainCard';
@@ -45,7 +52,6 @@ import dimg12 from 'assets/images/demo/1.jpg';
 import dimg13 from 'assets/images/demo/1.jpg';
 
 export const ImagesManagement = () => {
-
     const { confirm } = Modal;
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false); // 로딩 초기값
@@ -72,13 +78,12 @@ export const ImagesManagement = () => {
     const [frontImgEdit, setFrontImgEdit] = useState(true);
     const [sideImgEdit, setSideImgEdit] = useState(true);
 
-    
     const [threedImg, setThreedImg] = useState(null);
 
     const [fileReal, setFileReal] = useState(null);
     const [fileFront, setFileFront] = useState(null);
     const [fileSide, setFileSide] = useState(null);
-    const [fileThreed, setFileThreed] = useState(null);//3d 데모 이미지
+    const [fileThreed, setFileThreed] = useState(null); //3d 데모 이미지
 
     const [unitGroupCd, setUnitGroupCd] = useState(); // 단품그룹
     const [languageCode, setLanguageCode] = useState('kor'); // 언어코드
@@ -128,7 +133,7 @@ export const ImagesManagement = () => {
             title: '물품분류코드',
             dataIndex: 'rowdata2',
             align: 'center'
-        },        
+        },
         {
             title: '물품분류',
             dataIndex: 'rowdata3',
@@ -163,7 +168,12 @@ export const ImagesManagement = () => {
             render: (rowdata1) => (
                 <>
                     <Tooltip title="수정" color="#108ee9">
-                        <Button  onClick={()=>handleUnitMod({rowdata1})} type="primary" style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }} icon={<EditFilled />}>
+                        <Button
+                            onClick={() => handleUnitMod({ rowdata1 })}
+                            type="primary"
+                            style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                            icon={<EditFilled />}
+                        >
                             수정
                         </Button>
                     </Tooltip>
@@ -177,11 +187,11 @@ export const ImagesManagement = () => {
     const rowSelection = {
         onChange: (selectedRowKeys, selectedRows) => {
             console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-        },
+        }
         //getCheckboxProps: (record) => ({
-            //disabled: record.name === 'Disabled User',
-            // Column configuration not to be checked
-            //name: record.name
+        //disabled: record.name === 'Disabled User',
+        // Column configuration not to be checked
+        //name: record.name
         //})
     };
 
@@ -190,7 +200,7 @@ export const ImagesManagement = () => {
         setDataEdit(false);
         setOpen(true);
         setUnitParams(null);
-        form.resetFields();        
+        form.resetFields();
     };
 
     // 이미지가져오기
@@ -200,39 +210,37 @@ export const ImagesManagement = () => {
         setUnitScanThreed(g);
         setFileThreed(null);
         const response = await unitDetail({
-            "languageCode" : languageCode,
-            "unitId" : e
+            languageCode: languageCode,
+            unitId: e
         });
-        
-        console.log('이미지가져오기:',response.data.RET_DATA);
+
+        console.log('이미지가져오기:', response.data.RET_DATA);
         setUnitParams(response.data.RET_DATA);
         //params = response.data.RET_DATA;
 
         setRealImgEdit(true);
         setFrontImgEdit(true);
-        setSideImgEdit(true);        
-    };        
+        setSideImgEdit(true);
+    };
 
     // 물품 수정 버튼
     const handleUnitMod = async (e) => {
-
         const response = await unitDetail({
-            "languageCode" : languageCode,
-            "unitId" : e?.rowdata1?.key
+            languageCode: languageCode,
+            unitId: e?.rowdata1?.key
         });
-        
+
         setUnitParams(response.data.RET_DATA);
         //params = response.data.RET_DATA;
         form.resetFields();
-        setDataEdit(true);        
+        setDataEdit(true);
         setImgEdit(true);
         setOpen(true);
 
         setRealImgEdit(true);
         setFrontImgEdit(true);
         setSideImgEdit(true);
-
-    };    
+    };
 
     // 추가 취소
     const onAddClose = () => {
@@ -240,7 +248,6 @@ export const ImagesManagement = () => {
         setDataEdit(false);
         form.resetFields();
     };
-
 
     // 추가 및 수정 처리
     const onAddSubmit = () => {
@@ -267,15 +274,15 @@ export const ImagesManagement = () => {
 
     //단품저장
     const onSaveSubmit = async () => {
-        console.log('저장:',unitParams);
+        console.log('저장:', unitParams);
 
         const response = await insertUnit({
-            "unitGroupCd" : unitParams?.unitGroupCd,
-            "languageCode" : languageCode,
-            "studyLvl" : unitParams?.studyLvl,
-            "unitName" : unitParams?.unitName,
-            "unitDesc" : unitParams?.unitDesc,
-            "useYn" : unitParams?.useYn
+            unitGroupCd: unitParams?.unitGroupCd,
+            languageCode: languageCode,
+            studyLvl: unitParams?.studyLvl,
+            unitName: unitParams?.unitName,
+            unitDesc: unitParams?.unitDesc,
+            useYn: unitParams?.useYn
         });
         setRefresh(response);
         Modal.success({
@@ -290,17 +297,16 @@ export const ImagesManagement = () => {
 
     //단품수정
     const onUpdateSubmit = async () => {
-        
-        console.log('수정:',unitParams);
+        console.log('수정:', unitParams);
 
         const response = await unitUpdate({
-            "unitId" : unitParams?.unitId,
-            "unitGroupCd" : unitParams?.unitGroupCd,
-            "languageCode" : unitParams?.languageCode,
-            "studyLvl" : unitParams?.studyLvl,
-            "unitName" : unitParams?.unitName,
-            "unitDesc" : unitParams?.unitDesc,
-            "useYn" : unitParams?.useYn
+            unitId: unitParams?.unitId,
+            unitGroupCd: unitParams?.unitGroupCd,
+            languageCode: unitParams?.languageCode,
+            studyLvl: unitParams?.studyLvl,
+            unitName: unitParams?.unitName,
+            unitDesc: unitParams?.unitDesc,
+            useYn: unitParams?.useYn
         });
         setRefresh(response);
         Modal.success({
@@ -311,13 +317,13 @@ export const ImagesManagement = () => {
                 form.resetFields();
             }
         });
-    };    
+    };
 
     //단품삭제
     const onDelete = async () => {
         const response = await unitDelete({
-            "unitId" : unitParams?.unitId,
-            "languageCode" : unitParams?.languageCode
+            unitId: unitParams?.unitId,
+            languageCode: unitParams?.languageCode
         });
         setRefresh(response);
         Modal.success({
@@ -327,8 +333,8 @@ export const ImagesManagement = () => {
                 setDataEdit(false);
                 form.resetFields();
             }
-        });        
-    }    
+        });
+    };
 
     // 물품명칭 언어 추가 Start
     const Unit_Language = () => {
@@ -348,7 +354,6 @@ export const ImagesManagement = () => {
 
     // 물품명칭 언어 추가 End
 
-
     // 이미지 업로드 input의 onChange
     const imgRef1 = useRef();
     const saverealImg = () => {
@@ -360,7 +365,7 @@ export const ImagesManagement = () => {
         };
         setRealImg(file);
         setRealImgEdit(false);
-    };    
+    };
 
     const imgRef2 = useRef();
     const savefrontImg = () => {
@@ -372,8 +377,8 @@ export const ImagesManagement = () => {
         };
         setFrontImg(file);
         setFrontImgEdit(false);
-    };  
-    
+    };
+
     const imgRef3 = useRef();
     const saveSideImg = () => {
         const file = imgRef3.current.files[0];
@@ -384,7 +389,7 @@ export const ImagesManagement = () => {
         };
         setSideImg(file);
         setSideImgEdit(false);
-    };      
+    };
 
     /*
     const imgRef4 = useRef();
@@ -397,28 +402,27 @@ export const ImagesManagement = () => {
         };
         setThreedImg(file);
     };*/
-    
-        
+
     const fileInput1 = React.createRef();
-    const handleButtonClick1 = e =>  {
+    const handleButtonClick1 = (e) => {
         //setDataEdit(false);
         setImgEdit(false);
         imgRef1.current.click();
     };
 
     const fileInput2 = React.createRef();
-    const handleButtonClick2 = e => {
+    const handleButtonClick2 = (e) => {
         //setDataEdit(false);
         setImgEdit(false);
         imgRef2.current.click();
     };
 
     const fileInput3 = React.createRef();
-    const handleButtonClick3 = e => {
+    const handleButtonClick3 = (e) => {
         //setDataEdit(false);
         setImgEdit(false);
         imgRef3.current.click();
-    };    
+    };
 
     //3d생성
     const handleThreed = () => {
@@ -428,43 +432,54 @@ export const ImagesManagement = () => {
         setFileThreed(loadingImg);
         const timer = setTimeout(() => {
             console.log('Initial timeout!');
-            if(unitScanThreed==='G000001'){//총기류
+            if (unitScanThreed === 'G000001') {
+                //총기류
                 setFileThreed(dimg1);
-            }else if(unitScanThreed==='G000002'){//폭발물류
+            } else if (unitScanThreed === 'G000002') {
+                //폭발물류
                 setFileThreed(dimg2);
-            }else if(unitScanThreed==='G000003'){//실탄류
+            } else if (unitScanThreed === 'G000003') {
+                //실탄류
                 setFileThreed(dimg3);
-            }else if(unitScanThreed==='G000004'){//도검류
+            } else if (unitScanThreed === 'G000004') {
+                //도검류
                 setFileThreed(dimg4);
-            }else if(unitScanThreed==='G000005'){//일반무기류    
+            } else if (unitScanThreed === 'G000005') {
+                //일반무기류
                 setFileThreed(dimg5);
-            }else if(unitScanThreed==='G000006'){//위장무기류
+            } else if (unitScanThreed === 'G000006') {
+                //위장무기류
                 setFileThreed(dimg6);
-            }else if(unitScanThreed==='G000007'){//공구/생활용품류
+            } else if (unitScanThreed === 'G000007') {
+                //공구/생활용품류
                 setFileThreed(dimg7);
-            }else if(unitScanThreed==='G000008'){//인화성물질류
+            } else if (unitScanThreed === 'G000008') {
+                //인화성물질류
                 setFileThreed(dimg8);
-            }else if(unitScanThreed==='G000009'){//위험물질류
+            } else if (unitScanThreed === 'G000009') {
+                //위험물질류
                 setFileThreed(dimg9);
-            }else if(unitScanThreed==='G000010'){//액체, 겔 물종류
+            } else if (unitScanThreed === 'G000010') {
+                //액체, 겔 물종류
                 setFileThreed(dimg10);
-            }else if(unitScanThreed==='G000011'){//주류
+            } else if (unitScanThreed === 'G000011') {
+                //주류
                 setFileThreed(dimg11);
-            }else if(unitScanThreed==='G000012'){//전기/전자제품류                  
+            } else if (unitScanThreed === 'G000012') {
+                //전기/전자제품류
                 setFileThreed(dimg12);
-            }else{//확인물품류
+            } else {
+                //확인물품류
                 setFileThreed(dimg13);
-            }            
-            
+            }
         }, 5000);
-        
+
         //clearTimeout(timer);
-    }
+    };
 
     // 실물 이미지 업로드 처리
     const handleUpload = async () => {
-        
-        if(unitScanId===undefined){
+        if (unitScanId === undefined) {
             Modal.error({
                 content: '이미지 업로드 할 대상을 선택해주세요.',
                 onOk() {
@@ -472,21 +487,21 @@ export const ImagesManagement = () => {
                     setDataEdit(false);
                     form.resetFields();
                 }
-            });            
+            });
             return false;
         }
 
         let formData = new FormData();
-        const params = { 
+        const params = {
             //unitScanId: unitScanId,
             unitId: unitId,
             unitGroupCd: unitScanThreed
         };
-        formData.append("params", new Blob([JSON.stringify(params)], { type: 'application/json' }));
-        formData.append("realImg", realImg);
-        formData.append("frontImg", frontImg);
-        formData.append("sideImg", sideImg);     
-       
+        formData.append('params', new Blob([JSON.stringify(params)], { type: 'application/json' }));
+        formData.append('realImg', realImg);
+        formData.append('frontImg', frontImg);
+        formData.append('sideImg', sideImg);
+
         console.log('realImg: ', realImg);
         const response = await saveUnitImg(formData);
         console.log('결과:', response);
@@ -503,7 +518,7 @@ export const ImagesManagement = () => {
                 setDataEdit(false);
                 form.resetFields();
             }
-        });        
+        });
     };
 
     const onFinish = (values) => {
@@ -513,12 +528,11 @@ export const ImagesManagement = () => {
 
     useEffect(() => {
         setLoading(true); // 로딩 호출
-        console.log('useEffect2');
         handleUnit();
-    }, [refresh])    
+    }, [refresh]);
 
     return (
-        <>  
+        <>
             <MainCard title="물품 이미지">
                 <Typography variant="body1">
                     <Row gutter={[16, 16]}>
@@ -539,26 +553,27 @@ export const ImagesManagement = () => {
                                     </Space>
                                 </Col>
                             </Row>
-                            <Table 
-                                columns={imagescolumns} dataSource={dataSource} 
+                            <Table
+                                columns={imagescolumns}
+                                dataSource={dataSource}
                                 onRow={(record, rowIndex) => {
                                     return {
-                                      onClick: event => { 
-                                         console.log(record);
-                                         setDataEdit(true);
-                                         getUnitImgList(record.key, record.rowdata1, record.rowdata2);
-                                      }, // click row
-                                      onDoubleClick: event => {}, // double click row
-                                      onContextMenu: event => {}, // right button click row
-                                      onMouseEnter: event => {}, // mouse enter row
-                                      onMouseLeave: event => {}, // mouse leave row
+                                        onClick: (event) => {
+                                            // console.log(record);
+                                            setDataEdit(true);
+                                            getUnitImgList(record.key, record.rowdata1, record.rowdata2);
+                                        } // click row
+                                        // onDoubleClick: (event) => {}, // double click row
+                                        // onContextMenu: (event) => {}, // right button click row
+                                        // onMouseEnter: (event) => {}, // mouse enter row
+                                        // onMouseLeave: (event) => {} // mouse leave row
                                     };
-                                  }}
-                                  onHeaderRow={(columns, index) => {
+                                }}
+                                onHeaderRow={() => {
                                     return {
-                                      onClick: () => {}, // click header row
+                                        onClick: () => {} // click header row
                                     };
-                                  }}                           
+                                }}
                                 loading={loading}
                             />
                         </Col>
@@ -578,7 +593,7 @@ export const ImagesManagement = () => {
                                                     type="success"
                                                     onClick={handleUpload}
                                                     htmlType="submit"
-                                                    loding={uploading}
+                                                    loading={uploading}
                                                     style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
                                                     icon={<PlusOutlined />}
                                                 >
@@ -587,21 +602,20 @@ export const ImagesManagement = () => {
                                             </Tooltip>
                                         </Space>
 
-
                                         <Space direction="vertical">
                                             <Tooltip title="3D생성">
-                                                    <Button
-                                                        type="success"
-                                                        onClick={handleThreed}
-                                                        htmlType="submit"
-                                                        loding={uploading}
-                                                        style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
-                                                        icon={<PlusOutlined />}
-                                                    >
-                                                        3D이미지생성
-                                                    </Button>
+                                                <Button
+                                                    type="success"
+                                                    onClick={handleThreed}
+                                                    htmlType="submit"
+                                                    loading={uploading}
+                                                    style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                                    icon={<PlusOutlined />}
+                                                >
+                                                    3D이미지생성
+                                                </Button>
                                             </Tooltip>
-                                            </Space>                                         
+                                        </Space>
                                     </Col>
                                 </Row>
 
@@ -615,28 +629,39 @@ export const ImagesManagement = () => {
                                                         width: 350
                                                     }}
                                                 >
-                                                        <Button 
-                                                            onClick={handleButtonClick1}
-                                                            icon={<UploadOutlined />}
-                                                            style={{ height: '40px', padding: '0 120px', backgroundColor: '#f0f0f0' }}
-                                                        >
-                                                            real image
-                                                        </Button>                                                        
-                                                        <input type="file"
-                                                                //ref={fileInput1}
-                                                                /*onChange={handleChange} */
-                                                                onChange={saverealImg}
-                                                                ref={imgRef1}
-                                                                style={{ display: "none" }} />                                                     
+                                                    <Button
+                                                        onClick={handleButtonClick1}
+                                                        icon={<UploadOutlined />}
+                                                        style={{ height: '40px', padding: '0 120px', backgroundColor: '#f0f0f0' }}
+                                                    >
+                                                        real image
+                                                    </Button>
+                                                    <input
+                                                        type="file"
+                                                        //ref={fileInput1}
+                                                        /*onChange={handleChange} */
+                                                        onChange={saverealImg}
+                                                        ref={imgRef1}
+                                                        style={{ display: 'none' }}
+                                                    />
                                                 </Card>
                                             </Space>
 
                                             <Space direction="vertical">
-                                                {realImgEdit === true ?  
-                                                <img src={unitParams.realImg!==null ? 'data:image/png;base64,' + unitParams.realImg : noImage} width={280} height={280} alt="real image" />
-                                                : 
-                                                <img src={fileReal ? fileReal :noImage} width={280} height={280} alt="real image"/>
-                                                }                                                
+                                                {realImgEdit === true ? (
+                                                    <img
+                                                        src={
+                                                            unitParams.realImg !== null
+                                                                ? 'data:image/png;base64,' + unitParams.realImg
+                                                                : noImage
+                                                        }
+                                                        width={280}
+                                                        height={280}
+                                                        alt="real image"
+                                                    />
+                                                ) : (
+                                                    <img src={fileReal ? fileReal : noImage} width={280} height={280} alt="real image" />
+                                                )}
                                             </Space>
                                         </Form.Item>
                                     </Col>
@@ -649,15 +674,13 @@ export const ImagesManagement = () => {
                                                         width: 350
                                                     }}
                                                 >
-                                                        <Button 
-                                                            style={{ height: '40px', padding: '0 120px', backgroundColor: '#FFFFFF' }}
-                                                        >
-                                                            3D image
-                                                        </Button>                                                        
+                                                    <Button style={{ height: '40px', padding: '0 120px', backgroundColor: '#FFFFFF' }}>
+                                                        3D image
+                                                    </Button>
                                                 </Card>
                                             </Space>
                                             <Space direction="vertical">
-                                                <img src={fileThreed ? fileThreed :noImage} width={280} height={280} alt="3D image"/>
+                                                <img src={fileThreed ? fileThreed : noImage} width={280} height={280} alt="3D image" />
                                             </Space>
                                         </Form.Item>
                                     </Col>
@@ -673,60 +696,82 @@ export const ImagesManagement = () => {
                                                         width: 350
                                                     }}
                                                 >
-                                                        <Button 
-                                                            onClick={handleButtonClick2}
-                                                            icon={<UploadOutlined />}
-                                                            style={{ height: '40px', padding: '0 120px', backgroundColor: '#f0f0f0' }}
-                                                        >
-                                                            front image
-                                                        </Button>                                                        
-                                                        <input type="file"
-                                                                //ref={fileInput1}
-                                                                /*onChange={handleChange} */
-                                                                onChange={savefrontImg}
-                                                                ref={imgRef2}
-                                                                style={{ display: "none" }} />                                                     
+                                                    <Button
+                                                        onClick={handleButtonClick2}
+                                                        icon={<UploadOutlined />}
+                                                        style={{ height: '40px', padding: '0 120px', backgroundColor: '#f0f0f0' }}
+                                                    >
+                                                        front image
+                                                    </Button>
+                                                    <input
+                                                        type="file"
+                                                        //ref={fileInput1}
+                                                        /*onChange={handleChange} */
+                                                        onChange={savefrontImg}
+                                                        ref={imgRef2}
+                                                        style={{ display: 'none' }}
+                                                    />
                                                 </Card>
                                             </Space>
                                             <Space direction="vertical">
-                                                {frontImgEdit === true ?  
-                                                <img src={unitParams.frontImg!==null ? 'data:image/png;base64,' + unitParams.frontImg : noImage} width={280} height={280} alt="front image" />
-                                                : 
-                                                <img src={fileFront ? fileFront :noImage} width={280} height={280} alt="front image"/>
-                                                }                                                   
+                                                {frontImgEdit === true ? (
+                                                    <img
+                                                        src={
+                                                            unitParams.frontImg !== null
+                                                                ? 'data:image/png;base64,' + unitParams.frontImg
+                                                                : noImage
+                                                        }
+                                                        width={280}
+                                                        height={280}
+                                                        alt="front image"
+                                                    />
+                                                ) : (
+                                                    <img src={fileFront ? fileFront : noImage} width={280} height={280} alt="front image" />
+                                                )}
                                             </Space>
                                         </Form.Item>
                                     </Col>
                                     <Col span={12}>
                                         <Form.Item name="FileS">
-                                        <Space direction="vertical">
+                                            <Space direction="vertical">
                                                 <Card
                                                     size="small"
                                                     style={{
                                                         width: 350
                                                     }}
                                                 >
-                                                        <Button 
-                                                            onClick={handleButtonClick3}
-                                                            icon={<UploadOutlined />}
-                                                            style={{ height: '40px', padding: '0 120px', backgroundColor: '#f0f0f0' }}
-                                                        >
-                                                            side image
-                                                        </Button>                                                        
-                                                        <input type="file"
-                                                                //ref={fileInput1}
-                                                                /*onChange={handleChange} */
-                                                                onChange={saveSideImg}
-                                                                ref={imgRef3}
-                                                                style={{ display: "none" }} />                                                     
+                                                    <Button
+                                                        onClick={handleButtonClick3}
+                                                        icon={<UploadOutlined />}
+                                                        style={{ height: '40px', padding: '0 120px', backgroundColor: '#f0f0f0' }}
+                                                    >
+                                                        side image
+                                                    </Button>
+                                                    <input
+                                                        type="file"
+                                                        //ref={fileInput1}
+                                                        /*onChange={handleChange} */
+                                                        onChange={saveSideImg}
+                                                        ref={imgRef3}
+                                                        style={{ display: 'none' }}
+                                                    />
                                                 </Card>
                                             </Space>
                                             <Space direction="vertical">
-                                                {sideImgEdit === true ?  
-                                                <img src={unitParams.sideImg!==null ? 'data:image/png;base64,' + unitParams.sideImg : noImage} width={280} height={280} alt="side image" />
-                                                : 
-                                                <img src={fileSide ? fileSide :noImage} width={280} height={280} alt="side image"/>
-                                                }                                                  
+                                                {sideImgEdit === true ? (
+                                                    <img
+                                                        src={
+                                                            unitParams.sideImg !== null
+                                                                ? 'data:image/png;base64,' + unitParams.sideImg
+                                                                : noImage
+                                                        }
+                                                        width={280}
+                                                        height={280}
+                                                        alt="side image"
+                                                    />
+                                                ) : (
+                                                    <img src={fileSide ? fileSide : noImage} width={280} height={280} alt="side image" />
+                                                )}
                                             </Space>
                                         </Form.Item>
                                     </Col>
@@ -775,7 +820,11 @@ export const ImagesManagement = () => {
                                 </Tooltip>
                             )}
                             <Tooltip title="삭제">
-                                <Button type="danger" onClick={onDelete} style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}>
+                                <Button
+                                    type="danger"
+                                    onClick={onDelete}
+                                    style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                >
                                     삭제
                                 </Button>
                             </Tooltip>
@@ -787,7 +836,6 @@ export const ImagesManagement = () => {
                     <Form name="Unit_Add" layout="vertical" form={form}>
                         <Row gutter={16}>
                             <Col span={24}>
-
                                 <Form.Item
                                     name="unitId"
                                     label="물품분류"
@@ -801,8 +849,8 @@ export const ImagesManagement = () => {
                                     <Select
                                         //onChange={(e) => setUnitGroupCd(e.target.value)}
                                         //onChange={handleGroupUnit}
-                                        onChange={(e) => setUnitParams({ ...unitParams, "unitGroupCd": e })}
-                                        defaultValue = {()=>unitParams?.unitGroupCd}
+                                        onChange={(e) => setUnitParams({ ...unitParams, unitGroupCd: e })}
+                                        defaultValue={() => unitParams?.unitGroupCd}
                                         style={{
                                             width: '100%'
                                         }}
@@ -880,10 +928,10 @@ export const ImagesManagement = () => {
                                 >
                                     <Input
                                         type="text"
-                                        name="unitName"                                    
+                                        name="unitName"
                                         value={unitParams?.unitName}
                                         defaultValue={unitParams?.unitName}
-                                        onChange={(e) => setUnitParams({ ...unitParams, "unitName": e.target.value })}
+                                        onChange={(e) => setUnitParams({ ...unitParams, unitName: e.target.value })}
                                         style={{
                                             width: '100%'
                                         }}
@@ -906,10 +954,10 @@ export const ImagesManagement = () => {
                                 >
                                     <Input
                                         type="text"
-                                        name="unitDesc"                                       
+                                        name="unitDesc"
                                         value={unitParams?.unitDesc}
                                         defaultValue={unitParams?.unitDesc}
-                                        onChange={(e) => setUnitParams({ ...unitParams, "unitDesc": e.target.value })}
+                                        onChange={(e) => setUnitParams({ ...unitParams, unitDesc: e.target.value })}
                                         style={{
                                             width: '100%'
                                         }}
@@ -931,24 +979,24 @@ export const ImagesManagement = () => {
                                         }
                                     ]}
                                 >
-                                <Select
-                                    defaultValue = {()=>unitParams?.useYn}
-                                    onChange={(e) => setUnitParams({ ...unitParams, "useYn": e })}
-                                    style={{
-                                        width: '100%'
-                                    }}
-                                    options={[
-                                        {
-                                            value: 'Y',
-                                            label: '사용'
-                                        },
-                                        {
-                                            value: 'N',
-                                            label: '미사용'
-                                        },
-                                    ]}
-                                />    
-                                </Form.Item>                            
+                                    <Select
+                                        defaultValue={() => unitParams?.useYn}
+                                        onChange={(e) => setUnitParams({ ...unitParams, useYn: e })}
+                                        style={{
+                                            width: '100%'
+                                        }}
+                                        options={[
+                                            {
+                                                value: 'Y',
+                                                label: '사용'
+                                            },
+                                            {
+                                                value: 'N',
+                                                label: '미사용'
+                                            }
+                                        ]}
+                                    />
+                                </Form.Item>
                             </Col>
                         </Row>
 
@@ -964,23 +1012,23 @@ export const ImagesManagement = () => {
                                         }
                                     ]}
                                 >
-                                <Select
-                                    defaultValue={unitParams?.languageCode}
-                                    onChange={(e) => setUnitParams({ ...unitParams, "languageCode": e })}
-                                    style={{
-                                        width: '100%'
-                                    }}
-                                    options={[
-                                        {
-                                            value: 'kor',
-                                            label: '한국어'
-                                        },
-                                        {
-                                            value: 'eng',
-                                            label: '영어'
-                                        },
-                                    ]}
-                                />
+                                    <Select
+                                        defaultValue={unitParams?.languageCode}
+                                        onChange={(e) => setUnitParams({ ...unitParams, languageCode: e })}
+                                        style={{
+                                            width: '100%'
+                                        }}
+                                        options={[
+                                            {
+                                                value: 'kor',
+                                                label: '한국어'
+                                            },
+                                            {
+                                                value: 'eng',
+                                                label: '영어'
+                                            }
+                                        ]}
+                                    />
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -1032,9 +1080,8 @@ export const ImagesManagement = () => {
                     </Form>
                 </MainCard>
             </Modal>
-            
+
             {/* 물품명칭 언어 추가 Modal End */}
-            
         </>
     );
 };
