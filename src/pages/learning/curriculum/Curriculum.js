@@ -479,6 +479,42 @@ export const Curriculum = () => {
                         <Row gutter={24}>
                             <Col span={12}>
                                 <Form.Item
+                                    name="QuestionType"
+                                    label="모듈타입 (학습 / 평가)"
+                                    rules={[
+                                        {
+                                            required: true
+                                        }
+                                    ]}
+                                >
+                                    <Radio.Group onChange={onChange} buttonStyle="solid" defaultValue="s">
+                                        <Radio.Button value="l"> 학습 </Radio.Button>
+                                        <Radio.Button value="e"> 평가 </Radio.Button>
+                                    </Radio.Group>
+                                </Form.Item>
+                            </Col>
+
+                            <Col span={12}>
+                                <Form.Item
+                                    name="QuestionType"
+                                    label="금지물품 통과시 불합격 처리"
+                                    rules={[
+                                        {
+                                            required: true
+                                        }
+                                    ]}
+                                >
+                                    <Radio.Group onChange={onChange} buttonStyle="solid" defaultValue="s">
+                                        <Radio.Button value="Y"> 사용 </Radio.Button>
+                                        <Radio.Button value="N"> 미사용 </Radio.Button>
+                                    </Radio.Group>
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                        <Divider style={{ margin: '10px 0' }} />
+                        <Row gutter={24}>
+                            <Col span={12}>
+                                <Form.Item
                                     name="Level"
                                     label="난이도 레벨"
                                     rules={[

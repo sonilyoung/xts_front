@@ -1,0 +1,1 @@
+export { TheoryInfo } from './TheoryInfo';

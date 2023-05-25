@@ -383,7 +383,7 @@ export const XrayPoint = () => {
     };
 
     useEffect(() => {
-        setLoading(true); // 로딩 호출
+        // setLoading(true); // 로딩 호출
         handleXrayPoint(); // api 호출
     }, []);
 

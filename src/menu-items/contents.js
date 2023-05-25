@@ -141,56 +141,56 @@ export const curriculum = {
     ]
 };
 
-// export const xrayPoint = {
-//     id: '11',
-//     title: 'Navigation',
-//     type: 'group',
-//     children: [
-//         {
-//             id: '/learning/xraypoint',
-//             title: '학습 관리 > X-ray 판독 배점관리',
-//             subtitle: 'X-ray 판독 배점관리',
-//             type: 'item',
-//             url: '/learning/xraypoint',
-//             icon: icons.ProjectOutlined,
-//             breadcrumbs: true
-//         }
-//     ]
-// };
+export const xrayPoint = {
+    id: '11',
+    title: 'Navigation',
+    type: 'group',
+    children: [
+        {
+            id: '/learning/xraypoint',
+            title: '학습 관리 > 배점관리',
+            subtitle: '배점관리',
+            type: 'item',
+            url: '/learning/xraypoint',
+            icon: icons.ProjectOutlined,
+            breadcrumbs: true
+        }
+    ]
+};
 
-// export const eduType = {
-//     id: '12',
-//     title: 'Navigation',
-//     type: 'group',
-//     children: [
-//         {
-//             id: '/learning/edutype',
-//             title: '학습 관리 > 교육 타입관리',
-//             subtitle: '교육 타입관리',
-//             type: 'item',
-//             url: '/learning/edutype',
-//             icon: icons.ProjectOutlined,
-//             breadcrumbs: true
-//         }
-//     ]
-// };
+export const theoryGroup = {
+    id: '12',
+    title: 'Navigation',
+    type: 'group',
+    children: [
+        {
+            id: '/theory/theorygroup',
+            title: '이론 관리 > 그룹 관리',
+            subtitle: '그룹 관리',
+            type: 'item',
+            url: '/theory/theorygroup',
+            icon: icons.ProjectOutlined,
+            breadcrumbs: true
+        }
+    ]
+};
 
-// export const eduGroup = {
-//     id: '13',
-//     title: 'Navigation',
-//     type: 'group',
-//     children: [
-//         {
-//             id: '/educurriculum/edugroup',
-//             title: '교육 관리 > 교육과정 관리 > 그룹 관리',
-//             subtitle: '그룹 관리',
-//             type: 'item',
-//             url: '/educurriculum/edugroup',
-//             icon: icons.ProjectOutlined,
-//             breadcrumbs: true
-//         }
-//     ]
-// };
+export const theoryInfo = {
+    id: '13',
+    title: 'Navigation',
+    type: 'group',
+    children: [
+        {
+            id: '/theory/theoryinfo',
+            title: '이론 관리 > 정보 관리',
+            subtitle: '정보 관리',
+            type: 'item',
+            url: '/theory/theoryinfo',
+            icon: icons.ProjectOutlined,
+            breadcrumbs: true
+        }
+    ]
+};
 
 // export const eduClass = {
 //     id: '14',

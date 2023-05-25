@@ -37,15 +37,15 @@ const items = [
     getItem('학습 관리', 'sub2', <AppstoreAddOutlined />, [
         // getItem('교육 모듈구성', 'g5', <BlockOutlined />, [
         getItem(<Link to="/learning/curriculum">학습모듈 관리</Link>, '10', <FileTextOutlined />),
-        getItem(<Link to="/educurriculum/eduprocadd">학습과정 관리</Link>, '177', <FileTextOutlined />)
+        getItem(<Link to="/educurriculum/eduprocadd">학습과정 관리</Link>, '177', <FileTextOutlined />),
+        getItem(<Link to="/learning/xraypoint">X-ray 판독 배점관리</Link>, '11', <BlockOutlined />)
         // ]),
     ]),
 
-    // getItem('교육 관리', 'sub3', <AppstoreAddOutlined />, [
-    //     getItem('교육차수 관리', 'g7', <BlockOutlined />, [
-    //     ]),
-
-    // ]),
+    getItem('이론 교육 관리', 'sub3', <AppstoreAddOutlined />, [
+        getItem(<Link to="/theory/theorygroup">그룹 관리</Link>, '12', <FileTextOutlined />),
+        getItem(<Link to="/theory/theoryinfo">정보 관리</Link>, '13', <FileTextOutlined />)
+    ]),
 
     getItem('교육생 관리', 'sub4', <AppstoreAddOutlined />, [
         getItem(<Link to="/student/studentinformation">교육생 정보조회</Link>, '18', <FileTextOutlined />)

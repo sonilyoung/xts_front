@@ -16,8 +16,12 @@ import { XrayinfoWrite } from 'pages/contents/xrayinformationimage'; // 콘텐�
 // 학습 관리
 import { XrayModule } from 'pages/learning/xraymodule'; // 학습관리 / 교육 모듈 구성 / X-ray 판독모듈 구성
 import { Curriculum } from 'pages/learning/curriculum'; // 학습관리 / 교육 모듈 구성 / 커리큘럼 관리
-// import { XrayPoint } from 'pages/learning/xraypoint'; // 학습 관리 / X-ray 판독 배점관리
+import { XrayPoint } from 'pages/learning/xraypoint'; // 학습 관리 / X-ray 판독 배점관리
 // import { EduType } from 'pages/learning/edutype'; // 학습 관리 / 교육 타입관리
+
+// 이론 관리
+import { TheoryGroup } from 'pages/theory/theorygroup'; // 이론 관리 / 그룹 관리
+import { TheoryInfo } from 'pages/theory/theoryinfo'; // 이론 관리 / 정보 관리
 
 // 교육 관리
 // import { EduGroup } from 'pages/educurriculum/edugroup'; // 교육 관리 / 교육과정 관리 / 그룹 관리
@@ -109,21 +113,21 @@ const MainRoutes = {
         //     path: '/learning/edutype',
         //     element: <EduType />
         // },
-        // {
-        //     // 학습 관리 > X-ray 판독 배점관리
-        //     path: '/learning/xraypoint',
-        //     element: <XrayPoint />
-        // },
-        // {
-        //     // 교육 관리 > 교육과정 관리 > 그룹 관리
-        //     path: '/educurriculum/edugroup',
-        //     element: <EduGroup />
-        // },
-        // {
-        //     // 교육 관리 > 교육과정 관리 > 과정 분류
-        //     path: '/educurriculum/educlass',
-        //     element: <EduClass />
-        // },
+        {
+            // 학습 관리 > X-ray 판독 배점관리
+            path: '/learning/xraypoint',
+            element: <XrayPoint />
+        },
+        {
+            // 이론 관리 > 이론 그룹 관리
+            path: '/theory/theorygroup',
+            element: <TheoryGroup />
+        },
+        {
+            // 이론 관리 > 이론 정보 관리
+            path: '/theory/theoryinfo',
+            element: <TheoryInfo />
+        },
         // {
         //     // 교육 관리 > 교육과정 관리 > 과정 등록
         //     path: '/educurriculum/eduproc',
