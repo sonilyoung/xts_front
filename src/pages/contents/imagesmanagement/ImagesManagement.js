@@ -143,9 +143,9 @@ export const ImagesManagement = () => {
             title: '사용여부',
             dataIndex: 'rowdata5',
             align: 'center',
-            render: (_, { rowdata1, rowdata4 }) => (
+            render: (_, { rowdata1, rowdata5 }) => (
                 <>
-                    {rowdata4 === 'Y' ? (
+                    {rowdata5 === 'Y' ? (
                         <Tag color={'green'} key={rowdata1}>
                             {'사용'}
                         </Tag>
