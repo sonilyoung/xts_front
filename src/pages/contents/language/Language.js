@@ -1,9 +1,15 @@
 /* eslint-disable*/
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Typography } from '@mui/material';
-import { Col, Row, Button, Form, Input, Table, Select, Space, Tooltip, Tag, Badge, Divider, Card, Modal ,Drawer } from 'antd';
+import { Col, Row, Button, Form, Input, Table, Select, Space, Tooltip, Tag, Badge, Divider, Card, Modal, Drawer } from 'antd';
 import 'antd/dist/antd.css';
-import { useGetLanguageListMutation, useGetLanguageMutation, useInsertLanguageMutation, useDeleteLanguageMutation, useUpdateLanguageMutation } from '../../../hooks/api/ContentsManagement/ContentsManagement';
+import {
+    useGetLanguageListMutation,
+    useGetLanguageMutation,
+    useInsertLanguageMutation,
+    useDeleteLanguageMutation,
+    useUpdateLanguageMutation
+} from '../../../hooks/api/ContentsManagement/ContentsManagement';
 import { PlusOutlined, EditFilled, DeleteFilled, ExclamationCircleFilled } from '@ant-design/icons';
 
 // project import
@@ -166,7 +172,7 @@ export const Language = () => {
             render: (_, { key }) => (
                 <>
                     <Tooltip title="수정" color="#108ee9">
-                        <Button 
+                        <Button
                             type="primary"
                             onClick={() => handleUnitMod(key)}
                             style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
@@ -245,18 +251,17 @@ export const Language = () => {
     const handleUnitMod = async (e) => {
         console.log('상세:', e);
         const response = await getLanguage({
-            "codeNo" : e
+            codeNo: e
         });
-        
+
         //console.log('unitName2:',response.data.RET_DATA.unitName);
         setUnitParams(response.data.RET_DATA);
         //params = response.data.RET_DATA;
         form.resetFields();
-        setDataEdit(true);        
+        setDataEdit(true);
         setOpen(true);
-        
-    };       
-    
+    };
+
     // 추가 취소
     const onAddClose = () => {
         setOpen(false);
@@ -266,9 +271,8 @@ export const Language = () => {
     };
 
     // 추가 등록
-    const insertSubmit = async() => {
-
-        if(unitParams?.languageCode.length > 3){
+    const insertSubmit = async () => {
+        if (unitParams?.languageCode.length > 3) {
             Modal.error({
                 content: '언어코드는 3자 이내입니다.',
                 onOk() {
@@ -276,14 +280,14 @@ export const Language = () => {
                     setDataEdit(false);
                     form.resetFields();
                 }
-            });            
+            });
             return false;
         }
 
         const response = await insertLanguage({
-            "languageCode" : unitParams?.languageCode, 
-            "languageName" : unitParams?.languageName, 
-            "useYn" : unitParams?.useYn, 
+            languageCode: unitParams?.languageCode,
+            languageName: unitParams?.languageName,
+            useYn: unitParams?.useYn
         });
 
         setRefresh(response);
@@ -298,9 +302,8 @@ export const Language = () => {
     };
 
     // 수정
-    const updateSubmit = async() => {
-
-        if(unitParams?.languageName.length > 10){
+    const updateSubmit = async () => {
+        if (unitParams?.languageName.length > 10) {
             Modal.error({
                 content: '언어명은 10자 이내입니다.',
                 onOk() {
@@ -308,11 +311,11 @@ export const Language = () => {
                     setDataEdit(false);
                     form.resetFields();
                 }
-            });            
+            });
             return false;
-        }        
+        }
 
-        if(unitParams?.languageCode.length > 3){
+        if (unitParams?.languageCode.length > 3) {
             Modal.error({
                 content: '언어코드는 3자 이내입니다.',
                 onOk() {
@@ -320,33 +323,32 @@ export const Language = () => {
                     setDataEdit(false);
                     form.resetFields();
                 }
-            });            
+            });
             return false;
         }
 
-
         const response = await updateLanguage({
-            "codeNo" : unitParams?.codeNo, 
-            "languageCode" : unitParams?.languageCode, 
-            "languageName" : unitParams?.languageName, 
-            "useYn" : unitParams?.useYn, 
+            codeNo: unitParams?.codeNo,
+            languageCode: unitParams?.languageCode,
+            languageName: unitParams?.languageName,
+            useYn: unitParams?.useYn
         });
 
         setRefresh(response);
         Modal.success({
-            content: '추가 완료',
+            content: '수정 완료',
             onOk() {
                 setOpen(false);
                 setDataEdit(false);
                 form.resetFields();
             }
         });
-    };    
+    };
 
     // 삭제
-    const deleteSubmit = async() => {
+    const deleteSubmit = async () => {
         const response = await deleteLanguage({
-            "codeNo" : unitParams?.codeNo
+            codeNo: unitParams?.codeNo
         });
 
         setRefresh(response);
@@ -358,7 +360,7 @@ export const Language = () => {
                 form.resetFields();
             }
         });
-    };    
+    };
 
     // 수정 버튼
     const handleEdit = (EditKey) => {
@@ -474,10 +476,14 @@ export const Language = () => {
                                 </Tooltip>
                             )}
                             <Tooltip title="삭제">
-                                <Button type="danger" onClick={deleteSubmit} style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}>
+                                <Button
+                                    type="danger"
+                                    onClick={deleteSubmit}
+                                    style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                >
                                     삭제
                                 </Button>
-                            </Tooltip>                            
+                            </Tooltip>
                         </Space>
                     </>
                 }
@@ -495,12 +501,13 @@ export const Language = () => {
                                         }
                                     ]}
                                 >
-                                    <Input 
+                                    <Input
                                         name="languageName"
                                         value={unitParams?.languageName}
                                         defaultValue={unitParams?.languageName}
-                                        onChange={(e) => setUnitParams({ ...unitParams, "languageName": e.target.value })}                                    
-                                        placeholder="Please Enter Language Name" />
+                                        onChange={(e) => setUnitParams({ ...unitParams, languageName: e.target.value })}
+                                        placeholder="Please Enter Language Name"
+                                    />
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -520,7 +527,7 @@ export const Language = () => {
                                         name="languageCode"
                                         value={unitParams?.languageCode}
                                         defaultValue={unitParams?.languageCode}
-                                        onChange={(e) => setUnitParams({ ...unitParams, "languageCode": e.target.value })}                                    
+                                        onChange={(e) => setUnitParams({ ...unitParams, languageCode: e.target.value })}
                                         style={{
                                             width: '100%'
                                         }}
@@ -549,24 +556,24 @@ export const Language = () => {
                                 }
                             ]}
                         >
-                        <Select
-                            defaultValue = {unitParams?.useYn}
-                            onChange={(e) => setUnitParams({ ...unitParams, "useYn": e })}
-                            style={{
-                                width: '100%'
-                            }}
-                            options={[
-                                {
-                                    value: 'Y',
-                                    label: '사용'
-                                },
-                                {
-                                    value: 'N',
-                                    label: '미사용'
-                                },
-                            ]}			
-                        />    
-                        </Form.Item>                           
+                            <Select
+                                defaultValue={unitParams?.useYn}
+                                onChange={(e) => setUnitParams({ ...unitParams, useYn: e })}
+                                style={{
+                                    width: '100%'
+                                }}
+                                options={[
+                                    {
+                                        value: 'Y',
+                                        label: '사용'
+                                    },
+                                    {
+                                        value: 'N',
+                                        label: '미사용'
+                                    }
+                                ]}
+                            />
+                        </Form.Item>
                     </Form>
                 </MainCard>
             </Drawer>
