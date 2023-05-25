@@ -19,7 +19,7 @@ export const InforMation = () => {
     const [languageSelect, setLanguageSelect] = useState([]); //셀렉트 박스 option Default 값
     const [selectedRowKeys, setSelectedRowKeys] = useState([]); //셀렉트 박스 option Selected 값
     const [dataSource, setDataSource] = useState([]); // Table 데이터 값
-    const [defaultLanguage, setDefaultLanguage] = useState('kor');
+    const [defaultLanguage, setDefaultLanguage] = useState('kr');
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false); // Drawer 추가 우측폼 상태
     const [dataEdit, setDataEdit] = useState(false); // Drawer 수정 우측폼 상태

@@ -86,7 +86,7 @@ export const ImagesManagement = () => {
     const [fileThreed, setFileThreed] = useState(null); //3d 데모 이미지
 
     const [unitGroupCd, setUnitGroupCd] = useState(); // 단품그룹
-    const [languageCode, setLanguageCode] = useState('kor'); // 언어코드
+    const [languageCode, setLanguageCode] = useState('kr'); // 언어코드
     const [studyLvl, setStudyLvl] = useState('1'); // 스터디레벨
     const [unitName, setUnitName] = useState(); // 단품이름
     const [unitDesc, setUnitDesc] = useState(); // 단품설명
@@ -1020,11 +1020,11 @@ export const ImagesManagement = () => {
                                         }}
                                         options={[
                                             {
-                                                value: 'kor',
+                                                value: 'kr',
                                                 label: '한국어'
                                             },
                                             {
-                                                value: 'eng',
+                                                value: 'en',
                                                 label: '영어'
                                             }
                                         ]}

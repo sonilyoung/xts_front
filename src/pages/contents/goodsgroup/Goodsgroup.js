@@ -34,7 +34,7 @@ export const Goodsgroup = () => {
     const [languageSelect, setLanguageSelect] = useState([]); //셀렉트 박스 option Default 값
     const [selectedRowKeys, setSelectedRowKeys] = useState([]); //셀렉트 박스 option Selected 값
     const [dataSource, setDataSource] = useState([]); // Table 데이터 값
-    const [languageCode, setLanguageCode] = useState('kor');
+    const [languageCode, setLanguageCode] = useState('kr');
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false); // Drawer 추가 우측폼 상태
     const [dataEdit, setDataEdit] = useState(false); // Drawer 수정 우측폼 상태
@@ -233,7 +233,7 @@ export const Goodsgroup = () => {
                 rowdata10 === '' || rowdata10 === undefined || rowdata10 === null ? (
                     <>-</>
                 ) : (
-                    <img src={'data:image/png;base64,' + rowdata10} width="90" alt="images" />
+                    <img src={'data:image/svg+xml;base64,' + rowdata10} width="90" alt="images" />
                 ),
             align: 'center'
         },
@@ -795,11 +795,11 @@ export const Goodsgroup = () => {
                                     }}
                                     options={[
                                         {
-                                            value: 'kor',
+                                            value: 'kr',
                                             label: '한국어'
                                         },
                                         {
-                                            value: 'eng',
+                                            value: 'en',
                                             label: '영어'
                                         },
                                     ]}

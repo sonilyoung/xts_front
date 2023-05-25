@@ -65,7 +65,7 @@ export const XrayinfoWrite = () => {
     const [fileThreed, setFileThreed] = useState(null);//3d 데모 이미지
 
     const [unitGroupCd, setUnitGroupCd] = useState(); // xray그룹
-    const [languageCode, setLanguageCode] = useState('kor'); // 언어코드
+    const [languageCode, setLanguageCode] = useState('kr'); // 언어코드
     const [studyLvl, setStudyLvl] = useState('1'); // 스터디레벨
     const [unitName, setUnitName] = useState(); // xray이름
     const [unitDesc, setUnitDesc] = useState(); // xray설명

@@ -37,7 +37,7 @@ export const SystemMessage = () => {
     const [languageCdVal, setLanguageCdVal] = useState();
     const [unitParams, setUnitParams] = useState({});
     const [refresh, setRefresh] = useState(false); //리프레쉬
-    const [languageCode, setLanguageCode] = useState('kor');
+    const [languageCode, setLanguageCode] = useState('kr');
     const [languageSelect, setLanguageSelect] = useState([]); //셀렉트 박스 option Default 값
 
     const handleLanguage = async () => {
@@ -618,11 +618,11 @@ export const SystemMessage = () => {
                                         }}
                                         options={[
                                             {
-                                                value: 'kor',
+                                                value: 'kr',
                                                 label: '한국어'
                                             },
                                             {
-                                                value: 'eng',
+                                                value: 'en',
                                                 label: '영어'
                                             }
                                         ]}

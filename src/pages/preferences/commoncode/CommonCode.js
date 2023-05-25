@@ -17,7 +17,7 @@ export const CommonCode = () => {
     const [getLanguageList] = useGetLanguageListMutation(); // 언어 hooks api호출
     const [languageSelect, setLanguageSelect] = useState([]); //셀렉트 박스 option Default 값
     const [dataSource, setDataSource] = useState([]); // Table 데이터 값
-    const [defaultLanguage, setDefaultLanguage] = useState('kor');
+    const [defaultLanguage, setDefaultLanguage] = useState('kr');
     const [loading, setLoading] = useState(false);
 
     const [tableParams, setTableParams] = useState({
