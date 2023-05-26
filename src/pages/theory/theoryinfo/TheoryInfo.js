@@ -22,7 +22,7 @@ import {
     message
 } from 'antd';
 import 'antd/dist/antd.css';
-import { PlusOutlined, EditFilled, DeleteFilled, ExclamationCircleFilled, LoadingOutlined, UploadOutlined } from '@ant-design/icons';
+import { PlusOutlined, EditFilled, DeleteFilled, ExclamationCircleFilled, DeleteOutlined, UploadOutlined } from '@ant-design/icons';
 
 import { useDropzone } from 'react-dropzone';
 
@@ -85,9 +85,18 @@ export const TheoryInfo = () => {
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop: handleDrop });
 
+    // 이미지 정답 라디오버튼 클릭
     const handleImageSelect = (image) => {
         setSelectedImage(image);
     };
+
+    // 이미지 삭제
+    const handleImageDelete = (index) => {
+        const updatedImages = [...uploadedImages];
+        updatedImages.splice(index, 1);
+        setUploadedImages(updatedImages);
+    };
+
     // 이미지 업로드 End
 
     // 제한 시간 Value 설정 Start
@@ -808,25 +817,36 @@ export const TheoryInfo = () => {
                                             </Space>
                                             {uploadedImages.length > 0 && (
                                                 <>
-                                                    <h2>업로드된 이미지 정보:</h2>
-                                                    <Row gutter={24}>
-                                                        {uploadedImages.map((image, index) => (
-                                                            <Col key={index} span={12}>
-                                                                <img src={image.base64Image} alt={image.name} style={{ width: '120px' }} />
-                                                                <p>{image.name}</p>
-                                                                <p>{image.size} bytes</p>
-                                                                <p>{image.type}</p>
-                                                                <Form.Item name={`imageanswer${index + 1}`}>
-                                                                    <Radio
-                                                                        checked={selectedImage === index}
-                                                                        onChange={() => handleImageSelect(index)}
-                                                                    >
-                                                                        정답
-                                                                    </Radio>
-                                                                </Form.Item>
-                                                            </Col>
-                                                        ))}
-                                                    </Row>
+                                                    <h2>정답을 선택해주세요</h2>
+                                                    <Space style={{ textAlign: 'center' }}>
+                                                        <Row gutter={24}>
+                                                            {uploadedImages.map((image, index) => (
+                                                                <Col key={index} span={12}>
+                                                                    <img
+                                                                        src={image.base64Image}
+                                                                        alt={image.name}
+                                                                        style={{ width: '120px' }}
+                                                                    />
+                                                                    <p>{image.name}</p>
+                                                                    <p>{image.size} bytes</p>
+                                                                    <p>{image.type}</p>
+                                                                    <Form.Item name={`imageanswer${index + 1}`}>
+                                                                        <Radio
+                                                                            checked={selectedImage === index}
+                                                                            onChange={() => handleImageSelect(index)}
+                                                                        >
+                                                                            정답
+                                                                        </Radio>
+                                                                        <Button
+                                                                            type="danger"
+                                                                            icon={<DeleteOutlined />}
+                                                                            onClick={() => handleImageDelete(index)}
+                                                                        ></Button>
+                                                                    </Form.Item>
+                                                                </Col>
+                                                            ))}
+                                                        </Row>
+                                                    </Space>
                                                 </>
                                             )}
                                         </Space>
