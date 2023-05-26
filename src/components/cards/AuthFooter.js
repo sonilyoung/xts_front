@@ -15,10 +15,11 @@ const AuthFooter = () => {
                 textAlign={matchDownSM ? 'center' : 'inherit'}
             >
                 <Typography variant="subtitle2" color="secondary" component="span">
-                    &copy; Jun 2023 By Company&nbsp;
+                    &copy;{' '}
                     <Typography component={Link} variant="subtitle2" href="http://www.ggus.com" target="_blank" underline="hover">
-                        (주)JUN
-                    </Typography>
+                        (주)준
+                    </Typography>{' '}
+                    2023 By Company&nbsp;
                 </Typography>
 
                 {/* <Stack

@@ -84,7 +84,7 @@ const Profile = () => {
 
     // 로그아웃 처리
     const handleLogout = async () => {
-        setModalText_Out('로그아웃 완료!');
+        // setModalText_Out('로그아웃 완료!');
         setConfirmLoading_Out(true);
         setTimeout(() => {
             setModal_Out(false);
@@ -97,7 +97,7 @@ const Profile = () => {
 
     // 로그아웃 취소
     const handleCancel = () => {
-        console.log('로그아웃 취소');
+        // console.log('로그아웃 취소');
         setModal_Out(false);
     };
 

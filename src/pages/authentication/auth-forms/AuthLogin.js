@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
-import { Modal } from 'antd';
+import { Modal, message } from 'antd';
 
 // material-ui
 import {
@@ -42,6 +42,7 @@ const AuthLogin = () => {
     const [valueId, setValueId] = useState();
     const [showPassword, setShowPassword] = useState(false);
     const [saveIDFlag, setSaveIDFlag] = useState(false);
+    const [messageApi, contextHolder] = message.useMessage();
 
     // 로그인 토큰 정보
     const [userToken] = useUserToken();
@@ -80,12 +81,21 @@ const AuthLogin = () => {
                 if (saveIDFlag) localStorage.setItem(LS_KEY_ID, values.id);
             }
 
-            Modal.success({
-                content: '로그인 성공!',
-                onOk() {
-                    navigate('/');
-                }
+            messageApi.open({
+                type: 'success',
+                content: values.Adminid + '님 로그인 했습니다.'
             });
+
+            setTimeout(() => {
+                navigate('/');
+            }, 1000);
+
+            // Modal.success({
+            //     content: values.Adminid + ' .',
+            //     onOk() {
+            //         navigate('/');
+            //     }
+            // });
         } else {
             Modal.error({ title: 'Error', content: '로그인에 실패하였습니다.' });
         }
@@ -101,6 +111,7 @@ const AuthLogin = () => {
 
     return (
         <div>
+            {contextHolder}
             <Formik
                 initialValues={{
                     Adminid: localStorage.getItem(LS_KEY_SAVE_ID_FLAG) === 'false' ? '' : localStorage.getItem(LS_KEY_ID),
