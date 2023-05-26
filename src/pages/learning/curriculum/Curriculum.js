@@ -609,9 +609,9 @@ export const Curriculum = () => {
                                 </Col>
 
                                 {/* 테스트 */}
-                                {question_props_value.map((q) => {
-                                    return <Col span={6}>● {q}</Col>;
-                                })}
+                                {/* {question_props_value.map((q) => {
+                                    return <Col span={4}>{q}</Col>;
+                                })} */}
                                 {/* 테스트 */}
                             </Row>
                         </Card>
@@ -641,15 +641,15 @@ export const Curriculum = () => {
                     left: 130,
                     zIndex: 999
                 }}
-                // footer={[
-                //     <Button
-                //         type="primary"
-                //         onClick={Questions_handleOk}
-                //         style={{ width: '100px', borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
-                //     >
-                //         선택 완료
-                //     </Button>
-                // ]}
+                footer={[
+                    <Button
+                        type="primary"
+                        onClick={Questions_handleCancel}
+                        style={{ width: '100px', borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                    >
+                        Close
+                    </Button>
+                ]}
             >
                 <XrayInformation QuestionCnt={Questions_handleOk} />
             </Modal>

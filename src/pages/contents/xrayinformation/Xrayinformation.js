@@ -1,20 +1,39 @@
 /* eslint-disable*/
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Typography } from '@mui/material';
-import { Col, Row, Space, Card, Table, Tooltip, Tag, Button, Upload, Drawer, Divider, Input, Select, Switch, Form, Modal, Dragger, Skeleton } from 'antd';
+import {
+    Col,
+    Row,
+    Space,
+    Card,
+    Table,
+    Tooltip,
+    Tag,
+    Button,
+    Upload,
+    Drawer,
+    Divider,
+    Input,
+    Select,
+    Switch,
+    Form,
+    Modal,
+    Dragger,
+    Skeleton
+} from 'antd';
 
 import {
     useGetXrayinformationListMutation,
     useGetXrayinformationSubListMutation,
-    useInsertXrayContentsMutation,//xray컨텐츠등록
-    useUpdateXrayContentsMutation,//xray컨텐츠수정
-    useDeleteXrayContentsMutation,//xray컨텐츠삭제
-    useInsertXrayUnitMutation,//xray컨텐츠 물품등록
-    useDeleteXrayUnitMutation,//xray컨텐츠 물품삭제    
-    useSelectUnitPopupListMutation//물품팝업리스트
+    useInsertXrayContentsMutation, //xray컨텐츠등록
+    useUpdateXrayContentsMutation, //xray컨텐츠수정
+    useDeleteXrayContentsMutation, //xray컨텐츠삭제
+    useInsertXrayUnitMutation, //xray컨텐츠 물품등록
+    useDeleteXrayUnitMutation, //xray컨텐츠 물품삭제
+    useSelectUnitPopupListMutation //물품팝업리스트
 } from '../../../hooks/api/ContentsManagement/ContentsManagement';
 
-import { PlusOutlined, EditFilled, DeleteFilled, UploadOutlined, MinusCircleOutlined , ExclamationCircleFilled} from '@ant-design/icons';
+import { PlusOutlined, EditFilled, DeleteFilled, UploadOutlined, MinusCircleOutlined, ExclamationCircleFilled } from '@ant-design/icons';
 
 // project import
 import MainCard from 'components/MainCard';
@@ -111,7 +130,6 @@ export const Xrayinformation = () => {
         ]);
         setLoadingSub(false);
     };
-
 
     const EditableContext = React.createContext(null);
     const EditableRow = ({ ...props }) => {
@@ -263,7 +281,7 @@ export const Xrayinformation = () => {
         },
         {
             width: '100px',
-            title: '학습Level',
+            title: '학습 난이도',
             dataIndex: 'rowdata7',
             align: 'center',
             render: (_, { rowdata1, rowdataNo, rowdata7 }) =>
@@ -277,17 +295,17 @@ export const Xrayinformation = () => {
                         defaultValue={xrayinformationList[rowdataNo]?.studyLvl}
                         onChange={(e) => {
                             var arrTemp = [];
-                            xrayinformationList.forEach(function(t) {
-                                if(t.bagScanId === rowdata1){
+                            xrayinformationList.forEach(function (t) {
+                                if (t.bagScanId === rowdata1) {
                                     //object copy
-                                    const tempTargetAdd = {...t , "studyLvl": e.value};
+                                    const tempTargetAdd = { ...t, studyLvl: e.value };
                                     arrTemp.push(tempTargetAdd);
-                                }else{
+                                } else {
                                     arrTemp.push(t);
                                 }
                             });
                             setXrayinformationList(arrTemp);
-                        }}                           
+                        }}
                         options={[
                             {
                                 value: '1',
@@ -308,7 +326,7 @@ export const Xrayinformation = () => {
                             {
                                 value: '5',
                                 label: '5Level'
-                            }                            
+                            }
                         ]}
                     />
                 ) : null
@@ -329,18 +347,17 @@ export const Xrayinformation = () => {
                         defaultValue={xrayinformationList[rowdataNo]?.useYn}
                         onChange={(e) => {
                             var arrTemp = [];
-                            xrayinformationList.forEach(function(t) {
-                                if(t.bagScanId === rowdata1){
+                            xrayinformationList.forEach(function (t) {
+                                if (t.bagScanId === rowdata1) {
                                     //object copy
-                                    const tempTargetAdd = {...t , "useYn": e.value};
+                                    const tempTargetAdd = { ...t, useYn: e.value };
                                     arrTemp.push(tempTargetAdd);
-                                }else{
+                                } else {
                                     arrTemp.push(t);
                                 }
                             });
                             setXrayinformationList(arrTemp);
-                        }}    
-
+                        }}
                         options={[
                             {
                                 value: 'N',
@@ -410,131 +427,127 @@ export const Xrayinformation = () => {
             title: 'Seq',
             dataIndex: 'rowdata13',
             align: 'center',
-            render: (_, { rowdata1, rowdata2, rowdata13 }) =>
-                 (
-                    <Select
-                        labelInValue
-                        defaultValue={{
-                            value: rowdata13
-                        }}
-                        style={{
-                            width: '100%'
-                        }}
-                        //onChange={handleChange}
-                        onChange={(seq) => {
-                            console.log("rowdata1:", rowdata1);
-                            console.log("rowdata2:", rowdata2);
-                            console.log("rowdata13:", rowdata13);
+            render: (_, { rowdata1, rowdata2, rowdata13 }) => (
+                <Select
+                    labelInValue
+                    defaultValue={{
+                        value: rowdata13
+                    }}
+                    style={{
+                        width: '100%'
+                    }}
+                    //onChange={handleChange}
+                    onChange={(seq) => {
+                        console.log('rowdata1:', rowdata1);
+                        console.log('rowdata2:', rowdata2);
+                        console.log('rowdata13:', rowdata13);
 
-                            console.log("정답:", seq.value);
-                            console.log("setBagScanId:", bagScanId);
-                            var arrTemp = [];
-                            //var tempTarget = targetUnitPopupList.find(v => v.unitScanId === rowdata1);
-                            //Object.preventExtensions(tempTarget);
-                            targetUnitPopupList.forEach(function(t) {
-                                console.log("타겟:", t);
-                                if(t.unitScanId === rowdata1){
-                                    //object copy
-                                    console.log('확인1');
-                                    const tempTargetAdd = {...t ,seq: seq.value};
-                                    arrTemp.push(tempTargetAdd);
-                                }else{
-                                    console.log('확인2');
-                                    arrTemp.push(t);
-                                }
-                            });
+                        console.log('정답:', seq.value);
+                        console.log('setBagScanId:', bagScanId);
+                        var arrTemp = [];
+                        //var tempTarget = targetUnitPopupList.find(v => v.unitScanId === rowdata1);
+                        //Object.preventExtensions(tempTarget);
+                        targetUnitPopupList.forEach(function (t) {
+                            console.log('타겟:', t);
+                            if (t.unitScanId === rowdata1) {
+                                //object copy
+                                console.log('확인1');
+                                const tempTargetAdd = { ...t, seq: seq.value };
+                                arrTemp.push(tempTargetAdd);
+                            } else {
+                                console.log('확인2');
+                                arrTemp.push(t);
+                            }
+                        });
 
+                        //arrTemp.push(tempTargetAdd);
+                        //setTargetUnitPopupList([...targetUnitPopupList, arrTemp]);
 
-                            //arrTemp.push(tempTargetAdd);
-                            //setTargetUnitPopupList([...targetUnitPopupList, arrTemp]);
-
-                            setTargetUnitPopupList(arrTemp);
-                            console.log("targetUnitPopupList:", targetUnitPopupList);
-                        }}
-                        options={[
-                            {
-                                value: '1',
-                                label: '1'
-                            },
-                            {
-                                value: '2',
-                                label: '2'
-                            },
-                            {
-                                value: '3',
-                                label: '3'
-                            },
-                            {
-                                value: '4',
-                                label: '4'
-                            },
-                            {
-                                value: '5',
-                                label: '5'
-                            }                                                                                    
-                        ]}
-                    />
-                ) 
-        },                  
+                        setTargetUnitPopupList(arrTemp);
+                        console.log('targetUnitPopupList:', targetUnitPopupList);
+                    }}
+                    options={[
+                        {
+                            value: '1',
+                            label: '1'
+                        },
+                        {
+                            value: '2',
+                            label: '2'
+                        },
+                        {
+                            value: '3',
+                            label: '3'
+                        },
+                        {
+                            value: '4',
+                            label: '4'
+                        },
+                        {
+                            value: '5',
+                            label: '5'
+                        }
+                    ]}
+                />
+            )
+        },
         {
             width: '200px',
             title: '정답물품',
             dataIndex: 'rowdata16',
             align: 'center',
-            render: (_, { rowdata1, rowdata2, rowdata16 }) =>
-                 (
-                    <Select
-                        labelInValue
-                        defaultValue={{
-                            value: rowdata16
-                        }}
-                        style={{
-                            width: '100%'
-                        }}
-                        //onChange={handleChange}
-                        onChange={(selectedAnswerItem) => {
-                            console.log("rowdata1:", rowdata1);
-                            console.log("rowdata2:", rowdata2);
-                            console.log("rowdata16:", rowdata16);
+            render: (_, { rowdata1, rowdata2, rowdata16 }) => (
+                <Select
+                    labelInValue
+                    defaultValue={{
+                        value: rowdata16
+                    }}
+                    style={{
+                        width: '100%'
+                    }}
+                    //onChange={handleChange}
+                    onChange={(selectedAnswerItem) => {
+                        console.log('rowdata1:', rowdata1);
+                        console.log('rowdata2:', rowdata2);
+                        console.log('rowdata16:', rowdata16);
 
-                            console.log("정답:", selectedAnswerItem.value);
-                            console.log("setBagScanId:", bagScanId);
-                            var arrTemp = [];
-                            //var tempTarget = targetUnitPopupList.find(v => v.unitScanId === rowdata1);
-                            //Object.preventExtensions(tempTarget);
-                            targetUnitPopupList.forEach(function(t) {
-                                console.log("타겟:", t);
-                                if(t.unitScanId === rowdata1){
-                                    //object copy
-                                    console.log('확인1');
-                                    const tempTargetAdd = {...t ,answerItem: selectedAnswerItem.value};
-                                    arrTemp.push(tempTargetAdd);
-                                }else{
-                                    console.log('확인2');
-                                    arrTemp.push(t);
-                                }
-                            });
-
-
-                            //arrTemp.push(tempTargetAdd);
-                            //setTargetUnitPopupList([...targetUnitPopupList, arrTemp]);
-
-                            setTargetUnitPopupList(arrTemp);
-                            console.log("targetUnitPopupList:", targetUnitPopupList);
-                        }}
-                        options={[
-                            {
-                                value: 'N',
-                                label: '미정답'
-                            },
-                            {
-                                value: 'Y',
-                                label: '정답'
+                        console.log('정답:', selectedAnswerItem.value);
+                        console.log('setBagScanId:', bagScanId);
+                        var arrTemp = [];
+                        //var tempTarget = targetUnitPopupList.find(v => v.unitScanId === rowdata1);
+                        //Object.preventExtensions(tempTarget);
+                        targetUnitPopupList.forEach(function (t) {
+                            console.log('타겟:', t);
+                            if (t.unitScanId === rowdata1) {
+                                //object copy
+                                console.log('확인1');
+                                const tempTargetAdd = { ...t, answerItem: selectedAnswerItem.value };
+                                arrTemp.push(tempTargetAdd);
+                            } else {
+                                console.log('확인2');
+                                arrTemp.push(t);
                             }
-                        ]}
-                    />
-                ) 
-        }                
+                        });
+
+                        //arrTemp.push(tempTargetAdd);
+                        //setTargetUnitPopupList([...targetUnitPopupList, arrTemp]);
+
+                        setTargetUnitPopupList(arrTemp);
+                        console.log('targetUnitPopupList:', targetUnitPopupList);
+                    }}
+                    options={[
+                        {
+                            value: 'N',
+                            label: '미정답'
+                        },
+                        {
+                            value: 'Y',
+                            label: '정답'
+                        }
+                    ]}
+                />
+            )
+        }
     ];
 
     // 팝업 테이블 title
@@ -586,7 +599,7 @@ export const Xrayinformation = () => {
             dataIndex: 'rowdata6',
             align: 'center'
         }
-    ];    
+    ];
 
     //정답물품선택
     const handleChange = (value) => {
@@ -644,7 +657,6 @@ export const Xrayinformation = () => {
         };
     });
 
-
     const columnsPop = defaultColumnsPop.map((col) => {
         if (!col.editable) {
             return col;
@@ -660,7 +672,6 @@ export const Xrayinformation = () => {
             })
         };
     });
-
 
     //체크 박스 이벤트 (상단)
     const onSelectChange = (newSelectedRowKeys) => {
@@ -678,7 +689,7 @@ export const Xrayinformation = () => {
     const onSelectChangePop = (selectedKeyPop) => {
         console.log('selectedKeyPop changed: ', selectedKeyPop);
         setSelectedKeyPop(selectedKeyPop);
-    };    
+    };
 
     //체크 박스 선택 (상단)
     const rowSelection = {
@@ -692,37 +703,35 @@ export const Xrayinformation = () => {
         onChange: onSelectChangeSub
     };
 
-
     //체크 박스 선택 (팝업)
     const rowSelectionPop = {
         selectedKeyPop,
         onChange: onSelectChangePop
-    };    
+    };
 
     // 수정 (상단)
-    const handleEdit = async() => {
+    const handleEdit = async () => {
         setLoading(true);
         if (selectedRowKeys == '') {
             Modal.error({
                 content: '수정할 항목을 선택해주세요.'
             });
         } else {
-            console.log('수정 xrayinformationList:', xrayinformationList)
+            console.log('수정 xrayinformationList:', xrayinformationList);
 
-            const response = await updateXrayContents({     
-                "paramList" : xrayinformationList          
+            const response = await updateXrayContents({
+                paramList: xrayinformationList
             });
             setLoading(false);
 
-    
-            if ((response?.data?.RET_CODE === "0000") ||(response?.data?.RET_CODE === "0100")) {
+            if (response?.data?.RET_CODE === '0000' || response?.data?.RET_CODE === '0100') {
                 Modal.success({
                     content: response?.data?.RET_DESC
-                });            
+                });
             } else {
                 Modal.success({
                     content: response?.data?.RET_DESC
-                });             
+                });
             }
             handleXrayinformation(); // 그룹 api 호출
         }
@@ -747,36 +756,35 @@ export const Xrayinformation = () => {
                 },
                 onCancel() {
                     //Modal.error({
-                        //content: '삭제취소'
+                    //content: '삭제취소'
                     //});
                 }
             });
         }
     };
 
-
     const onSaveSubmit = async () => {
         setLoading(true);
         //params.unitScanId = targetUnitPopupList[0].unitScanId;
         //params.unitId = targetUnitPopupList[0].unitId;
         //params.unitGroupCd = targetUnitPopupList[0].unitGroupCd;
-        console.log('저장:', params)
-        const response = await insertXrayContents({     
-            "studyLvl" : params?.studyLvl,
+        console.log('저장:', params);
+        const response = await insertXrayContents({
+            studyLvl: params?.studyLvl,
             //"unitId" : params?.unitId,
             //"unitScanId" : params?.unitScanId,
-            "useYn" : params?.useYn,
-            //"unitGroupCd" : params?.unitGroupCd   
+            useYn: params?.useYn
+            //"unitGroupCd" : params?.unitGroupCd
         });
         setLoading(false);
-        if ((response?.data?.RET_CODE === "0000") ||(response?.data?.RET_CODE === "0100")) {
+        if (response?.data?.RET_CODE === '0000' || response?.data?.RET_CODE === '0100') {
             Modal.success({
                 content: response?.data?.RET_DESC
-            });            
+            });
         } else {
             Modal.success({
                 content: response?.data?.RET_DESC
-            });             
+            });
         }
         handleXrayinformation(); // 그룹 api 호출
         //handleXrayinformationSub(params?.unitScanId);
@@ -784,85 +792,79 @@ export const Xrayinformation = () => {
 
     const onDeleteSubmit = async () => {
         setLoading(true);
-        console.log('삭제:', selectedRowKeys)
+        console.log('삭제:', selectedRowKeys);
 
-        const response = await deleteXrayContents({     
-            "bagScanIds" : selectedRowKeys,
+        const response = await deleteXrayContents({
+            bagScanIds: selectedRowKeys
         });
         setLoading(false);
 
-        if ((response?.data?.RET_CODE === "0000") ||(response?.data?.RET_CODE === "0100")) {
+        if (response?.data?.RET_CODE === '0000' || response?.data?.RET_CODE === '0100') {
             Modal.success({
                 content: response?.data?.RET_DESC
-            });            
+            });
         } else {
             Modal.success({
                 content: response?.data?.RET_DESC
-            });             
+            });
         }
         handleXrayinformation(); // 그룹 api 호출
     };
-
-
 
     const onDelete = async () => {
         setLoading(true);
         params.unitScanId = targetUnitPopupList.unitScanId;
         params.unitId = targetUnitPopupList.unitId;
         params.unitGroupCd = targetUnitPopupList.unitGroupCd;
-        console.log('저장:', params)
-        const response = await insertXrayContents({     
-            "studyLvl" : params?.studyLvl,
-            "unitId" : params?.unitId,
-            "unitScanId" : params?.unitScanId,
-            "useYn" : params?.useYn,
-            "unitGroupCd" : params?.unitGroupCd   
+        console.log('저장:', params);
+        const response = await insertXrayContents({
+            studyLvl: params?.studyLvl,
+            unitId: params?.unitId,
+            unitScanId: params?.unitScanId,
+            useYn: params?.useYn,
+            unitGroupCd: params?.unitGroupCd
         });
         setLoading(false);
-        if ((response?.data?.RET_CODE === "0000") ||(response?.data?.RET_CODE === "0100")) {
+        if (response?.data?.RET_CODE === '0000' || response?.data?.RET_CODE === '0100') {
             Modal.success({
                 content: response?.data?.RET_DESC
-            });            
+            });
         } else {
             Modal.success({
                 content: response?.data?.RET_DESC
-            });             
+            });
         }
         handleXrayinformation(); // 그룹 api 호출
-        //handleXrayinformationSub(params?.unitScanId); 
-    } 
+        //handleXrayinformationSub(params?.unitScanId);
+    };
 
-
-    
     // 하단 저장
-    const handleSaveSub = async () => {    
+    const handleSaveSub = async () => {
         setLoading(true);
 
         console.log('하단저장');
         console.log('bagScanId:', bagScanId);
 
-        const response = await insertXrayUnit({     
-            "bagScanId" : bagScanId,
-            "paramList" : targetUnitPopupList
+        const response = await insertXrayUnit({
+            bagScanId: bagScanId,
+            paramList: targetUnitPopupList
         });
         setLoading(false);
-        if ((response?.data?.RET_CODE === "0000") ||(response?.data?.RET_CODE === "0100")) {
+        if (response?.data?.RET_CODE === '0000' || response?.data?.RET_CODE === '0100') {
             Modal.success({
                 content: response?.data?.RET_DESC
-            });            
+            });
         } else {
             Modal.success({
                 content: response?.data?.RET_DESC
-            });             
+            });
         }
         handleXrayinformation(); // 그룹 api 호출
-        //handleXrayinformationSub(params?.unitScanId);         
-    }
-
+        //handleXrayinformationSub(params?.unitScanId);
+    };
 
     // 수정 (하단)
     const handleEditSub = () => {
-
         Modal.success({
             content: '저장완료'
         });
@@ -901,7 +903,7 @@ export const Xrayinformation = () => {
         setDataEdit(false);
         setOpen(true);
         setParams(null);
-        form.resetFields();   
+        form.resetFields();
     };
 
     // 추가 취소(상단)
@@ -911,7 +913,6 @@ export const Xrayinformation = () => {
         setDataEdit(false);
         form.resetFields();
     };
-
 
     // 물품명칭 언어 추가 Start
     const Unit_Language = () => {
@@ -930,14 +931,14 @@ export const Xrayinformation = () => {
     };
 
     //물품팝업리스트호출
-    const handleUnitPoupList = () =>{
+    const handleUnitPoupList = () => {
         setOnSearchItem(true);
         handleSelectUnitPopupList();
-    }
+    };
 
     //물품팝업리스트
     const handleSelectUnitPopupList = async () => {
-        const popupList = await selectUnitPopupList({"languageCode" : 'kr'});
+        const popupList = await selectUnitPopupList({ languageCode: 'kr' });
         //setUnitPopupList(popupList?.data?.RET_DATA);
         setTargetUnitPopupList(popupList?.data?.RET_DATA);
         setDataSourcePop([
@@ -958,20 +959,20 @@ export const Xrayinformation = () => {
                 rowdata18: s.unitDesc /*물품설명*/
             }))
         ]);
-        setLoadingSub(false);        
-    }
+        setLoadingSub(false);
+    };
 
     //물품선택팝업 -> 선택버튼클릭
-    const handleSelectPop = () =>{
+    const handleSelectPop = () => {
         let arrTemp = [];
-        selectedKeyPop.forEach(function(e) {
-            arrTemp.push(unitPopupList.find(v => v.unitScanId === e));
+        selectedKeyPop.forEach(function (e) {
+            arrTemp.push(unitPopupList.find((v) => v.unitScanId === e));
         });
 
-        console.log('선택버튼 arrTemp:', arrTemp)
+        console.log('선택버튼 arrTemp:', arrTemp);
         setTargetUnitPopupList(arrTemp);
         //form.resetFields();
-        console.log('선택버튼 targetUnitPopupList:', targetUnitPopupList)
+        console.log('선택버튼 targetUnitPopupList:', targetUnitPopupList);
 
         setDataSourceSub(
             arrTemp.map((s, i) => ({
@@ -990,9 +991,9 @@ export const Xrayinformation = () => {
                 rowdata15: s.insertId /*등록자*/,
                 rowdata18: s.unitDesc /*물품설명*/
             }))
-        );//하단리스트목록초기화
+        ); //하단리스트목록초기화
         setOnSearchItem(false); //팝업창닫기
-    }
+    };
 
     useEffect(() => {
         setLoading(true); // 로딩 호출
@@ -1016,7 +1017,7 @@ export const Xrayinformation = () => {
                                     >
                                         추가
                                     </Button>
-                                </Tooltip>                                 
+                                </Tooltip>
                                 <Tooltip title="수정">
                                     <Button
                                         type="primary"
@@ -1063,12 +1064,12 @@ export const Xrayinformation = () => {
                                 }*/
 
                                 onDoubleClick: () => {
-                                    console.log("click:", record.rowdata1);
+                                    console.log('click:', record.rowdata1);
                                     if (record.rowdata0 !== bagScanId) {
                                         setLoadingSub(true);
                                         setBagScanId(record.rowdata1);
-                                        handleXrayinformationSub(record.rowdata1);     
-                                    }                               
+                                        handleXrayinformationSub(record.rowdata1);
+                                    }
                                 }
                             };
                         }}
@@ -1077,62 +1078,61 @@ export const Xrayinformation = () => {
                         }}
                     />
                     {/*<Skeleton loading={loadingSub} active>*/}
-                        <Row style={{ marginTop: '20px', marginBottom: '5px' }}>
-                            <Col span={8}></Col>
-                            <Col span={8} offset={8} style={{ textAlign: 'right' }}>
-                                <Space>
-                                    <Tooltip title="물품추가">
-                                        <Button
-                                            type="success"
-                                            onClick={()=>handleUnitPoupList()}
-                                            style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
-                                            icon={<PlusOutlined />}
-                                        >
-                                            물품추가
-                                        </Button>
-                                    </Tooltip>
+                    <Row style={{ marginTop: '20px', marginBottom: '5px' }}>
+                        <Col span={8}></Col>
+                        <Col span={8} offset={8} style={{ textAlign: 'right' }}>
+                            <Space>
+                                <Tooltip title="물품추가">
+                                    <Button
+                                        type="success"
+                                        onClick={() => handleUnitPoupList()}
+                                        style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                        icon={<PlusOutlined />}
+                                    >
+                                        물품추가
+                                    </Button>
+                                </Tooltip>
 
-                                    <Tooltip title="물품저장">
-                                        <Button
-                                            type="primary"
-                                            onClick={handleSaveSub}
-                                            style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
-                                            icon={<EditFilled />}
-                                        >
-                                            물품저장
-                                        </Button>
-                                    </Tooltip>
-                                    <Tooltip title="물품삭제">
-                                        <Button
-                                            type="danger"
-                                            onClick={handleDelSub}
-                                            style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
-                                            icon={<DeleteFilled />}
-                                        >
-                                            물품삭제
-                                        </Button>
-                                    </Tooltip>
-                                </Space>
-                            </Col>
-                        </Row>
-                        <Table
-                            size="small"
-                            components={components}
-                            rowClassName={() => 'editable-row'}
-                            bordered={true}
-                            dataSource={dataSourceSub}
-                            columns={columnsSub}
-                            loading={loadingSub}
-                            rowSelection={rowSelectionSub}
-                            pagination={false}
-                            scroll={{
-                                y: 300
-                            }}
-                        />
+                                <Tooltip title="물품저장">
+                                    <Button
+                                        type="primary"
+                                        onClick={handleSaveSub}
+                                        style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                        icon={<EditFilled />}
+                                    >
+                                        물품저장
+                                    </Button>
+                                </Tooltip>
+                                <Tooltip title="물품삭제">
+                                    <Button
+                                        type="danger"
+                                        onClick={handleDelSub}
+                                        style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                        icon={<DeleteFilled />}
+                                    >
+                                        물품삭제
+                                    </Button>
+                                </Tooltip>
+                            </Space>
+                        </Col>
+                    </Row>
+                    <Table
+                        size="small"
+                        components={components}
+                        rowClassName={() => 'editable-row'}
+                        bordered={true}
+                        dataSource={dataSourceSub}
+                        columns={columnsSub}
+                        loading={loadingSub}
+                        rowSelection={rowSelectionSub}
+                        pagination={false}
+                        scroll={{
+                            y: 300
+                        }}
+                    />
                     {/*</Skeleton>*/}
                 </Typography>
             </MainCard>
-
 
             {/* Xray 가방 추가 폼 Start */}
             <Drawer
@@ -1172,7 +1172,11 @@ export const Xrayinformation = () => {
                                 </Tooltip>
                             )}
                             <Tooltip title="삭제">
-                                <Button type="danger" onClick={onDelete} style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}>
+                                <Button
+                                    type="danger"
+                                    onClick={onDelete}
+                                    style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                >
                                     삭제
                                 </Button>
                             </Tooltip>
@@ -1258,36 +1262,36 @@ export const Xrayinformation = () => {
                                         }
                                     ]}
                                 >
-                                <Select
-                                    defaultValue = {()=>params?.studyLvl}
-                                    onChange={(e) => setParams({ ...params, "studyLvl": e })}
-                                    style={{
-                                        width: '100%'
-                                    }}
-                                    options={[
-                                        {
-                                            value: '1',
-                                            label: '1 Level'
-                                        },
-                                        {
-                                            value: '2',
-                                            label: '2 Level'
-                                        },
-                                        {
-                                            value: '3',
-                                            label: '3 Level'
-                                        },
-                                        {
-                                            value: '4',
-                                            label: '4 Level'
-                                        },
-                                        {
-                                            value: '5',
-                                            label: '5 Level'
-                                        },                                        
-                                    ]}
-                                />    
-                                </Form.Item>                            
+                                    <Select
+                                        defaultValue={() => params?.studyLvl}
+                                        onChange={(e) => setParams({ ...params, studyLvl: e })}
+                                        style={{
+                                            width: '100%'
+                                        }}
+                                        options={[
+                                            {
+                                                value: '1',
+                                                label: '1 Level'
+                                            },
+                                            {
+                                                value: '2',
+                                                label: '2 Level'
+                                            },
+                                            {
+                                                value: '3',
+                                                label: '3 Level'
+                                            },
+                                            {
+                                                value: '4',
+                                                label: '4 Level'
+                                            },
+                                            {
+                                                value: '5',
+                                                label: '5 Level'
+                                            }
+                                        ]}
+                                    />
+                                </Form.Item>
                             </Col>
                         </Row>
 
@@ -1303,27 +1307,26 @@ export const Xrayinformation = () => {
                                         }
                                     ]}
                                 >
-                                <Select
-                                    defaultValue = {()=>params?.useYn}
-                                    onChange={(e) => setParams({ ...params, "useYn": e })}
-                                    style={{
-                                        width: '100%'
-                                    }}
-                                    options={[
-                                        {
-                                            value: 'Y',
-                                            label: '사용'
-                                        },
-                                        {
-                                            value: 'N',
-                                            label: '미사용'
-                                        },
-                                    ]}
-                                />    
-                                </Form.Item>                            
+                                    <Select
+                                        defaultValue={() => params?.useYn}
+                                        onChange={(e) => setParams({ ...params, useYn: e })}
+                                        style={{
+                                            width: '100%'
+                                        }}
+                                        options={[
+                                            {
+                                                value: 'Y',
+                                                label: '사용'
+                                            },
+                                            {
+                                                value: 'N',
+                                                label: '미사용'
+                                            }
+                                        ]}
+                                    />
+                                </Form.Item>
                             </Col>
                         </Row>
-
                     </Form>
                 </MainCard>
             </Drawer>
@@ -1347,7 +1350,7 @@ export const Xrayinformation = () => {
                         style={{ width: '100px', borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
                     >
                         select
-                    </Button>,                    
+                    </Button>,
                     <Button
                         type="primary"
                         onClick={Unit_LanguageCancel}
@@ -1378,9 +1381,8 @@ export const Xrayinformation = () => {
                     </Form>
                 </MainCard>
             </Modal>
-            
-            {/* 물품추가 Modal End */}            
 
+            {/* 물품추가 Modal End */}
         </>
     );
 };

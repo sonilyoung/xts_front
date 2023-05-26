@@ -1,7 +1,7 @@
 /* eslint-disable*/
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Typography } from '@mui/material';
-import { Table, Button, Input, Form, Modal } from 'antd';
+import { Row, Col, Table, Button, Select, Form, Modal, Divider } from 'antd';
 
 import { useGetXrayinformationListMutation } from '../../../hooks/api/ContentsManagement/ContentsManagement';
 
@@ -10,6 +10,8 @@ import MainCard from 'components/MainCard';
 
 export const XrayInformation = (props) => {
     const { confirm } = Modal;
+    const [randemBoxOpen, setRandemBoxOpen] = useState(false);
+
     const [getXrayinformationList] = useGetXrayinformationListMutation(); // 콘텐츠 정보 관리 hooks api호출
     const [xrayinformationList, setXrayinformationList] = useState(); // 콘텐츠 정보관리 리스트 상단 값
 
@@ -18,6 +20,9 @@ export const XrayInformation = (props) => {
 
     const [loading, setLoading] = useState(false);
     const [form] = Form.useForm();
+
+    const [randemLevel, setRandemLevel] = useState(0); // 난이도 레벨
+    const [randemlimit, setRandemlimit] = useState(5); // 출제 문항수
 
     // 데이터 값 선언
     const handleXrayinformation = async () => {
@@ -48,62 +53,6 @@ export const XrayInformation = (props) => {
             }))
         ]);
         setLoading(false);
-    };
-
-    const EditableContext = React.createContext(null);
-    const EditableRow = ({ ...props }) => {
-        const [form] = Form.useForm();
-        return (
-            <Form form={form} component={false}>
-                <EditableContext.Provider value={form}>
-                    <tr {...props} />
-                </EditableContext.Provider>
-            </Form>
-        );
-    };
-
-    const EditableCell = ({ title, editable, children, dataIndex, record, handleSave, ...restProps }) => {
-        const [editing, setEditing] = useState(false);
-        const inputRef = useRef(null);
-        const form = useContext(EditableContext);
-        useEffect(() => {
-            if (editing) {
-                inputRef.current.focus();
-            }
-        }, [editing]);
-
-        const toggleEdit = () => {
-            setEditing(!editing);
-            form.setFieldsValue({
-                [dataIndex]: record[dataIndex]
-            });
-        };
-
-        const save = async () => {
-            try {
-                const values = await form.validateFields();
-                toggleEdit();
-                handleSave({
-                    ...record,
-                    ...values
-                });
-            } catch (errInfo) {
-                console.log('Save failed:', errInfo);
-            }
-        };
-        let childNode = children;
-        if (editable) {
-            childNode = editing ? (
-                <Form.Item style={{ margin: 0 }} name={dataIndex} rules={[{ required: true, message: `${title} is required.` }]}>
-                    <Input ref={inputRef} onPressEnter={save} onBlur={save} />
-                </Form.Item>
-            ) : (
-                <div className="editable-cell-value-wrap" onClick={toggleEdit} aria-hidden="true">
-                    {children}
-                </div>
-            );
-        }
-        return <td {...restProps}>{childNode}</td>;
     };
 
     // 상단 테이블 Title
@@ -150,8 +99,8 @@ export const XrayInformation = (props) => {
             align: 'center'
         },
         {
-            width: '80px',
-            title: '학습Level',
+            width: '100px',
+            title: '난이도 Level',
             dataIndex: 'rowdata7',
             align: 'center'
         },
@@ -162,6 +111,13 @@ export const XrayInformation = (props) => {
             align: 'center'
         }
     ];
+
+    // 출제 문제항 Arr Start
+    const questionsArr = [];
+    for (let i = 5; i <= 100; i += 5) {
+        questionsArr.push({ value: i.toString(), label: i.toString() + ' 문항' });
+    }
+    // 출제 문제항 Arr End
 
     // 타이틀 컬럼  = 데이터 컬럼 Index세팅
     const handleSave = (row) => {
@@ -176,25 +132,27 @@ export const XrayInformation = (props) => {
     };
 
     const components = {
-        body: {
-            row: EditableRow,
-            cell: EditableCell
-        }
+        //     body: {
+        //         row: EditableRow,
+        //         cell: EditableCell
+        //     }
     };
 
     const columns = defaultColumns.map((col) => {
-        if (!col.editable) {
-            return col;
-        }
+        // if (!col.editable) {
+        //     return col;
+        // }
         return {
             ...col,
-            onCell: (record) => ({
-                record,
-                editable: col.editable,
-                dataIndex: col.dataIndex,
-                title: col.title,
-                handleSave
-            })
+            onCell: (record) => {
+                return {
+                    record,
+                    // editable: col.editable,
+                    dataIndex: col.dataIndex,
+                    title: col.title,
+                    handleSave
+                };
+            }
         };
     });
 
@@ -213,6 +171,18 @@ export const XrayInformation = (props) => {
     const QuestionsOk = () => {
         //console.log(selectedRowKeys);
         props.QuestionCnt(selectedRowKeys);
+    };
+
+    // 랜덤박스 오픈
+    const Questions_Randem = () => {
+        setRandemBoxOpen(true);
+    };
+
+    // 랜덤 추출
+    const Questions_handleRandem = () => {
+        console.log('난이도 레벨 : ', randemLevel);
+        console.log('출제 문항수 : ', randemlimit);
+        setRandemBoxOpen(false);
     };
 
     useEffect(() => {
@@ -240,8 +210,119 @@ export const XrayInformation = (props) => {
                     >
                         선택 완료
                     </Button>
+                    <Button
+                        type="primary"
+                        danger
+                        onClick={Questions_Randem}
+                        style={{ marginLeft: '20px', width: '100px', borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                    >
+                        랜덤 선택
+                    </Button>
                 </Typography>
             </MainCard>
+
+            {/* 랜덤박스 Modal Start */}
+            <Modal
+                open={randemBoxOpen}
+                width={400}
+                style={{
+                    top: 250,
+                    left: 130,
+                    zIndex: 999
+                }}
+                footer={[]}
+            >
+                <>
+                    <MainCard form={form} style={{ marginTop: '30px' }} title="랜덤 선택">
+                        <Form layout="vertical">
+                            <Row gutter={24}>
+                                <Col span={24}>
+                                    <Form.Item
+                                        name="Randem_Level"
+                                        label="난이도 레벨"
+                                        rules={[
+                                            {
+                                                required: true
+                                            }
+                                        ]}
+                                    >
+                                        <Select
+                                            defaultValue={{
+                                                value: randemLevel,
+                                                label: '# 난이도 레벨'
+                                            }}
+                                            style={{
+                                                width: '100%'
+                                            }}
+                                            options={[
+                                                {
+                                                    value: '0',
+                                                    label: 'All Level'
+                                                },
+                                                {
+                                                    value: '1',
+                                                    label: 'Level 1'
+                                                },
+                                                {
+                                                    value: '2',
+                                                    label: 'Level 2'
+                                                },
+                                                {
+                                                    value: '3',
+                                                    label: 'Level 3'
+                                                },
+                                                {
+                                                    value: '4',
+                                                    label: 'Level 4'
+                                                },
+                                                {
+                                                    value: '5',
+                                                    label: 'Level 5'
+                                                }
+                                            ]}
+                                            onChange={(value) => setRandemLevel(value)}
+                                        />
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+                            <Divider style={{ margin: '10px 0' }} />
+                            <Row gutter={24}>
+                                <Col span={24}>
+                                    <Form.Item
+                                        name="Randem_limit"
+                                        label="출제 문항수"
+                                        rules={[
+                                            {
+                                                required: true
+                                            }
+                                        ]}
+                                    >
+                                        <Select
+                                            defaultValue={{
+                                                value: randemlimit,
+                                                label: '# 출제 문항수'
+                                            }}
+                                            style={{
+                                                width: '100%'
+                                            }}
+                                            options={questionsArr}
+                                            onChange={(value) => setRandemlimit(value)}
+                                        />
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+                            <Button
+                                type="primary"
+                                onClick={Questions_handleRandem}
+                                style={{ width: '100%', borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                            >
+                                랜덤 추출
+                            </Button>
+                        </Form>
+                    </MainCard>
+                </>
+            </Modal>
+            {/* 랜덤박스 Modal End */}
         </>
     );
 };

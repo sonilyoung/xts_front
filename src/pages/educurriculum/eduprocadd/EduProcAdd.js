@@ -47,6 +47,12 @@ export const EduProcAdd = () => {
     // Modal창 End
 
     // Data source Start
+    const [valueBaseLines, setValueBaseLines] = useState(0); // 차수 선택
+    const [startedudate, setStartEdudate] = useState(0); // 학습 일정 Start
+    const [endedudate, setEndEdudate] = useState(0); // 학습 일정 End
+
+    const [valueDays, setValueDays] = useState(); // 학습일수
+
     // const [dataSource, setDataSource] = useState([]); // 차수 데이터 소스
     const [eduDaydataSource, setEduDayDataSource] = useState([]); // 학습일정 데이터 소스
     // const [studentdataSourceSearch, setStudentdataSourceSearch] = useState([]); // 학습생 검색 데이터 소스
@@ -465,8 +471,17 @@ export const EduProcAdd = () => {
     };
 
     const onRangeChange = (date, dateString) => {
-        console.log('Start : ' + dateString[0]);
-        console.log('End : ' + dateString[1]);
+        setStartEdudate(dateString[0]);
+        setEndEdudate(dateString[1]);
+        // console.log('Start : ' + dateString[0]);
+        // console.log('End : ' + dateString[1]);
+    };
+
+    const onRangeDayChange = (date, dateString) => {
+        // setStartEdudate(dateString[0]);
+        setEndEdudate(dateString[1]);
+        // console.log('Start : ' + dateString[0]);
+        // console.log('End : ' + dateString[1]);
     };
 
     // 학습 일정 설정 Start
@@ -676,6 +691,7 @@ export const EduProcAdd = () => {
                                 <Form.Item
                                     name="BaseLine"
                                     label="차수 선택"
+                                    value={valueBaseLines}
                                     rules={[
                                         {
                                             required: true,
@@ -692,6 +708,7 @@ export const EduProcAdd = () => {
                                             width: '100%'
                                         }}
                                         options={baseLineArr}
+                                        onChange={(e) => setValueBaseLines(e)}
                                     />
                                 </Form.Item>
                             </Col>
@@ -717,8 +734,9 @@ export const EduProcAdd = () => {
                         <Row gutter={24}>
                             <Col span={24}>
                                 <Form.Item
-                                    name="EduDayChk"
+                                    name="eduDays"
                                     label="학습일수"
+                                    value={valueDays}
                                     rules={[
                                         {
                                             required: true,
@@ -726,7 +744,7 @@ export const EduProcAdd = () => {
                                         }
                                     ]}
                                 >
-                                    <Input placeholder="# 일수" />
+                                    <Input placeholder="# 일수" onChange={(e) => setValueDays(e.target.value)} />
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -792,7 +810,7 @@ export const EduProcAdd = () => {
                         <Row gutter={24}>
                             <Col span={24}>
                                 <Form.Item
-                                    name="EduDayChk"
+                                    name="EduStudentChk"
                                     label="학습생 제한수"
                                     rules={[
                                         {
@@ -826,7 +844,7 @@ export const EduProcAdd = () => {
                 open={eduDayModalOpen}
                 onOk={EduDay_handleOk}
                 onCancel={EduDay_handleCancel}
-                width={700}
+                width={850}
                 style={{
                     left: 130,
                     zIndex: 999
@@ -845,8 +863,8 @@ export const EduProcAdd = () => {
                     <Form layout="horizontal" form={form}>
                         <Row gutter={24} style={{ marginBottom: 14 }}>
                             <Col span={20} style={{ textAlign: 'center' }}>
-                                <Tag color="#108ee9" style={{ padding: '11px 220px', borderRadius: '5px', fontSize: '14px' }}>
-                                    2023년 1차
+                                <Tag color="#108ee9" style={{ padding: '11px 280px', borderRadius: '5px', fontSize: '14px' }}>
+                                    2023년 {valueBaseLines}차
                                 </Tag>
                             </Col>
                             <Col span={4}>
@@ -857,7 +875,7 @@ export const EduProcAdd = () => {
                                             style={{
                                                 float: 'right',
                                                 cursor: 'pointer',
-                                                padding: '11px 25px',
+                                                padding: '11px 40px',
                                                 borderRadius: '5px',
                                                 fontSize: '14px'
                                             }}
@@ -868,189 +886,49 @@ export const EduProcAdd = () => {
                                 </Space>
                             </Col>
                         </Row>
-                        <Row gutter={24}>
-                            <Col span={4}>
-                                <Tag icon={<ClockCircleOutlined />} color="#108ee9" style={{ padding: '5px 18px', borderRadius: '5px' }}>
-                                    Day 1
-                                </Tag>
-                            </Col>
-                            <Col span={20}>
-                                <Form.Item name="EduDay001">
-                                    <Select
-                                        mode="multiple"
-                                        style={{
-                                            width: '100%'
-                                        }}
-                                        onChange={handleChange}
-                                        options={[
-                                            {
-                                                value: '물품연습 모듈',
-                                                label: '물품연습 모듈'
-                                            },
-                                            {
-                                                value: '학습 모듈',
-                                                label: '학습 모듈'
-                                            },
-                                            {
-                                                value: 'AI강화학습 모듈',
-                                                label: 'AI강화학습 모듈'
-                                            },
-                                            {
-                                                value: '평가 모듈',
-                                                label: '평가 모듈'
-                                            }
-                                        ]}
+
+                        {Array.from({ length: valueDays }, (_, index) => (
+                            <Row gutter={24} key={index}>
+                                <Col span={8}>
+                                    <RangePicker
+                                        name={`Day ${index + 1}`}
+                                        id={`Day ${index + 1}`}
+                                        defaultValue={[dayjs(startedudate, 'YYYY-MM-DD'), dayjs(endedudate, 'YYYY-MM-DD')]}
+                                        onChange={onRangeDayChange}
+                                        disabled={valueDays - 1 === index ? [false, true] : index === 0 ? [true, false] : [false, false]}
                                     />
-                                </Form.Item>
-                            </Col>
-                        </Row>
-                        <Row gutter={24}>
-                            <Col span={4}>
-                                <Tag icon={<ClockCircleOutlined />} color="#108ee9" style={{ padding: '5px 18px', borderRadius: '5px' }}>
-                                    Day 2
-                                </Tag>
-                            </Col>
-                            <Col span={20}>
-                                <Form.Item name="EduDay002">
-                                    <Select
-                                        mode="multiple"
-                                        style={{
-                                            width: '100%'
-                                        }}
-                                        onChange={handleChange}
-                                        options={[
-                                            {
-                                                value: '물품연습 모듈',
-                                                label: '물품연습 모듈'
-                                            },
-                                            {
-                                                value: '학습 모듈',
-                                                label: '학습 모듈'
-                                            },
-                                            {
-                                                value: 'AI강화학습 모듈',
-                                                label: 'AI강화학습 모듈'
-                                            },
-                                            {
-                                                value: '평가 모듈',
-                                                label: '평가 모듈'
-                                            }
-                                        ]}
-                                    />
-                                </Form.Item>
-                            </Col>
-                        </Row>
-                        <Row gutter={24}>
-                            <Col span={4}>
-                                <Tag icon={<ClockCircleOutlined />} color="#108ee9" style={{ padding: '5px 18px', borderRadius: '5px' }}>
-                                    Day 3
-                                </Tag>
-                            </Col>
-                            <Col span={20}>
-                                <Form.Item name="EduDay003">
-                                    <Select
-                                        mode="multiple"
-                                        style={{
-                                            width: '100%'
-                                        }}
-                                        onChange={handleChange}
-                                        options={[
-                                            {
-                                                value: '물품연습 모듈',
-                                                label: '물품연습 모듈'
-                                            },
-                                            {
-                                                value: '학습 모듈',
-                                                label: '학습 모듈'
-                                            },
-                                            {
-                                                value: 'AI강화학습 모듈',
-                                                label: 'AI강화학습 모듈'
-                                            },
-                                            {
-                                                value: '평가 모듈',
-                                                label: '평가 모듈'
-                                            }
-                                        ]}
-                                    />
-                                </Form.Item>
-                            </Col>
-                        </Row>
-                        <Row gutter={24}>
-                            <Col span={4}>
-                                <Tag icon={<ClockCircleOutlined />} color="#108ee9" style={{ padding: '5px 18px', borderRadius: '5px' }}>
-                                    Day 4
-                                </Tag>
-                            </Col>
-                            <Col span={20}>
-                                <Form.Item name="EduDay004">
-                                    <Select
-                                        mode="multiple"
-                                        style={{
-                                            width: '100%'
-                                        }}
-                                        onChange={handleChange}
-                                        options={[
-                                            {
-                                                value: '물품연습 모듈',
-                                                label: '물품연습 모듈'
-                                            },
-                                            {
-                                                value: '학습 모듈',
-                                                label: '학습 모듈'
-                                            },
-                                            {
-                                                value: 'AI강화학습 모듈',
-                                                label: 'AI강화학습 모듈'
-                                            },
-                                            {
-                                                value: '평가 모듈',
-                                                label: '평가 모듈'
-                                            }
-                                        ]}
-                                    />
-                                </Form.Item>
-                            </Col>
-                        </Row>
-                        <Row gutter={24}>
-                            <Col span={4}>
-                                <Tag icon={<ClockCircleOutlined />} color="#108ee9" style={{ padding: '5px 18px', borderRadius: '5px' }}>
-                                    Day 5
-                                </Tag>
-                            </Col>
-                            <Col span={20}>
-                                <Form.Item name="EduDay005">
-                                    <Select
-                                        placeholder="Select Module"
-                                        defaultValue={['물품연습 모듈']}
-                                        optionLabelProp="label"
-                                        mode="multiple"
-                                        style={{
-                                            width: '100%'
-                                        }}
-                                        onChange={handleChange}
-                                        options={[
-                                            {
-                                                value: '물품연습 모듈',
-                                                label: '물품연습 모듈'
-                                            },
-                                            {
-                                                value: '학습 모듈',
-                                                label: '학습 모듈'
-                                            },
-                                            {
-                                                value: 'AI강화학습 모듈',
-                                                label: 'AI강화학습 모듈'
-                                            },
-                                            {
-                                                value: '평가 모듈',
-                                                label: '평가 모듈'
-                                            }
-                                        ]}
-                                    />
-                                </Form.Item>
-                            </Col>
-                        </Row>
+                                </Col>
+                                <Col span={16}>
+                                    <Form.Item name={`EduDay00${index + 1}`}>
+                                        <Select
+                                            mode="multiple"
+                                            style={{
+                                                width: '100%'
+                                            }}
+                                            onChange={handleChange}
+                                            options={[
+                                                {
+                                                    value: '물품연습 모듈',
+                                                    label: '물품연습 모듈'
+                                                },
+                                                {
+                                                    value: '학습 모듈',
+                                                    label: '학습 모듈'
+                                                },
+                                                {
+                                                    value: 'AI강화학습 모듈',
+                                                    label: 'AI강화학습 모듈'
+                                                },
+                                                {
+                                                    value: '평가 모듈',
+                                                    label: '평가 모듈'
+                                                }
+                                            ]}
+                                        />
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+                        ))}
                     </Form>
                 </MainCard>
             </Modal>
