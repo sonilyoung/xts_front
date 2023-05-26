@@ -50,19 +50,22 @@ export const TheoryInfo = () => {
 
     // 이미지 업로드 Start
     const handleDrop = (acceptedFiles) => {
-        acceptedFiles.forEach((file) => {
+        const remainingSlots = 4 - uploadedImages.length;
+        const filesToUpload = acceptedFiles.slice(0, remainingSlots);
+        filesToUpload.forEach((file) => {
+            // 이미지 파일 유효성 검사 및 처리
             const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
             if (!isJpgOrPng) {
                 message.error('You can only upload JPG/PNG file!');
                 return;
             }
-
             const isLt2M = file.size / 1024 / 1024 < 2;
             if (!isLt2M) {
                 message.error('Image must be smaller than 2MB!');
                 return;
             }
 
+            // 파일 정보 및 base64 변환
             const reader = new FileReader();
             reader.onload = () => {
                 const base64Image = reader.result;
@@ -72,6 +75,7 @@ export const TheoryInfo = () => {
                     type: file.type,
                     base64Image: base64Image
                 };
+                // 업로드된 이미지 추가
                 setUploadedImages((prevImages) => [...prevImages, uploadedImage]);
                 console.log(uploadedImage);
             };
@@ -785,15 +789,20 @@ export const TheoryInfo = () => {
                                                 <Button
                                                     {...getRootProps()}
                                                     className={`dropzone ${isDragActive ? 'active' : ''}`}
-                                                    style={{ padding: '20px 50px', height: '100px' }}
+                                                    style={{ padding: '10px 85px', height: '150px' }}
                                                     size="large"
-                                                    icon={<UploadOutlined />}
+                                                    disabled={uploadedImages.length >= 4}
                                                 >
+                                                    <p>
+                                                        <UploadOutlined />
+                                                    </p>
                                                     <input {...getInputProps()} />
                                                     {isDragActive ? (
                                                         <p>이미지를 여기에 놓아주세요...</p>
                                                     ) : (
-                                                        <p>이미지를 드래그하거나 클릭하여 업로드하세요.</p>
+                                                        <>
+                                                            <p>이미지를 드래그하거나 클릭하여 업로드하세요.</p>
+                                                        </>
                                                     )}
                                                 </Button>
                                             </Space>
