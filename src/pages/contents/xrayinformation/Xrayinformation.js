@@ -939,7 +939,7 @@ export const Xrayinformation = () => {
     //물품팝업리스트
     const handleSelectUnitPopupList = async () => {
         const popupList = await selectUnitPopupList({ languageCode: 'kr' });
-        //setUnitPopupList(popupList?.data?.RET_DATA);
+        setUnitPopupList(popupList?.data?.RET_DATA);
         setTargetUnitPopupList(popupList?.data?.RET_DATA);
         setDataSourcePop([
             ...popupList?.data?.RET_DATA.map((s, i) => ({
@@ -968,11 +968,8 @@ export const Xrayinformation = () => {
         selectedKeyPop.forEach(function (e) {
             arrTemp.push(unitPopupList.find((v) => v.unitScanId === e));
         });
-
-        console.log('선택버튼 arrTemp:', arrTemp);
         setTargetUnitPopupList(arrTemp);
         //form.resetFields();
-        console.log('선택버튼 targetUnitPopupList:', targetUnitPopupList);
 
         setDataSourceSub(
             arrTemp.map((s, i) => ({

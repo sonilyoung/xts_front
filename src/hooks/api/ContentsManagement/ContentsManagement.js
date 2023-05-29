@@ -272,7 +272,7 @@ export const contentsManagement = createApi({
         }),
 
 
-        //xray컨텐츠 이미지업로드
+        //xray컨텐츠 이미지업로드(db)
         updateXrayContentsImg: builder.mutation({
             query: (body) => ({
                 url: 'adm/contents/updateXrayContentsImg.do',
@@ -282,7 +282,15 @@ export const contentsManagement = createApi({
             })
         }),
 
-
+        //xray컨텐츠 이미지업로드(이미지)
+        xrayImageUpload: builder.mutation({
+            query: (body) => ({
+                url: 'file/xrayImageUpload.do',
+                method: 'POST',
+                body: body,
+                contentType: 'multipart/form-data'
+            })
+        }),
     })
 });
 
@@ -314,5 +322,6 @@ export const {
     useDeleteXrayUnitMutation,//xray컨텐츠 물품삭제
     useSelectUnitPopupListMutation,//물품팝업리스트
     useSelectXrayImgContentsMutation, //xray컨텐츠 이미지상세정보가져오기
-    useUpdateXrayContentsImgMutation, //xray컨텐츠 이미지업로드
+    useUpdateXrayContentsImgMutation, //xray컨텐츠 이미지업로드(db)
+    useXrayImageUploadMutation, //xray컨텐츠 이미지업로드(db)
 } = contentsManagement;

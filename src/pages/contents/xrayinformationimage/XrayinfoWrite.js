@@ -24,7 +24,8 @@ import { PlusOutlined, EditFilled, DeleteFilled, UploadOutlined, MinusCircleOutl
 import { 
     useGetXrayinformationListMutation, 
     useSelectXrayImgContentsMutation,
-    useUpdateXrayContentsImgMutation
+    useUpdateXrayContentsImgMutation,
+    useXrayImageUploadMutation
 } from '../../../hooks/api/ContentsManagement/ContentsManagement';
 import MenuItem from '@mui/material/MenuItem';
 // project import
@@ -40,7 +41,8 @@ export const XrayinfoWrite = () => {
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(false); // 로딩 초기값
 
-    const [saveXrayImg] = useUpdateXrayContentsImgMutation(); // xray이미지 저장 api
+    const [saveXrayImg] = useUpdateXrayContentsImgMutation(); // xray이미지 db저장 api
+    const [uploadXrayImg] = useXrayImageUploadMutation(); // xray이미지 서버저장 api
     const [xrayDetail] = useSelectXrayImgContentsMutation(); // xray 이미지상세
 
     const [dataSource, setDataSource] = useState([]); // Table 데이터 값
@@ -371,7 +373,8 @@ export const XrayinfoWrite = () => {
     const [pimgSideBwBwRate4,	setpimgSideBwBwRate4	]	=	useState('');
     const [pimgSideBwBwRate5,	setpimgSideBwBwRate5	]	=	useState('');
     const [pimgSideBwBwRate6,	setpimgSideBwBwRate6	]	=	useState('');    
-
+    const [pimgMultiple,	setPimgMultiple	]	=	useState([]);    
+    
 
     // 이미지 업로드 input의 onChange
     const imgRefFrontColor1 = useRef();//정면컬러1
@@ -432,7 +435,7 @@ export const XrayinfoWrite = () => {
             setpimgFrontColor(reader.result);
         };
         setImgFrontColor(file);
-        //setImgRealEdit(false);
+        setImgRealEdit(false);
     };    
 
 
@@ -1120,7 +1123,6 @@ export const XrayinfoWrite = () => {
         //setImgRealEdit(false);
     }; 
 
-    
 
     //3d생성
     const handleThreed = () => {
@@ -1209,6 +1211,51 @@ export const XrayinfoWrite = () => {
             }
         });        
     };
+
+    const handleChange = (e) => {
+        e.preventDefault();
+        e.persist();
+        console.log(e.target.files);
+        
+        let files = e.target.files
+        setPimgMultiple(files);
+        
+      };    
+
+    // 이미지 추가 등록
+    const insertSubmit = async () => {
+        if (unitParams?.bagScanId.length <= 0) {
+            Modal.error({
+                content: 'bagScanId를 입력하세요.',
+                onOk() {
+                    setOpen(false);
+                    setDataEdit(false);
+                    form.resetFields();
+                }
+            });
+            return false;
+        }
+
+        console.log("bagScanId:", unitParams?.bagScanId);
+        console.log("files:", pimgMultiple);
+
+        let formData = new FormData();
+        const params = { targetName: unitParams?.bagScanId, command : "xray"};
+        formData.append("params", new Blob([JSON.stringify(params)], { type: 'application/json' }));
+        Object.values(pimgMultiple).forEach((pimgMultiple) => formData.append("files", pimgMultiple));
+        //formData.append("files", pimgMultiple);
+        const response = await uploadXrayImg(formData);
+
+        setRefresh(response);
+        Modal.success({
+            content: '추가 완료',
+            onOk() {
+                setOpen(false);
+                setDataEdit(false);
+                form.resetFields();
+            }
+        });
+    };    
 
     const onFinish = (values) => {
         console.log('Success:', values);
@@ -2141,6 +2188,20 @@ export const XrayinfoWrite = () => {
                                         </Space>
 
                                     </Col>
+                                    <Col span={8} offset={8} style={{ textAlign: 'right' }}>
+                                        <Space>
+                                            <Tooltip title="추가">
+                                                <Button
+                                                    type="success"
+                                                    onClick={handleAdd}
+                                                    style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                                    icon={<PlusOutlined />}
+                                                >
+                                                    추가
+                                                </Button>
+                                            </Tooltip>
+                                        </Space>
+                                    </Col>                                    
                                 </Row>
 
                                 <Row gutter={[8, 8]}>
@@ -2904,6 +2965,80 @@ export const XrayinfoWrite = () => {
                 </MainCard>
             </Modal>
             
+            {/* 이미지추가 폼 Start */}
+            <Drawer
+                maskClosable={false}
+                title={`이미지 추가`}
+                onClose={onAddClose}
+                open={open}
+                width={400}
+                style={{ top: '60px' }}
+                extra={
+                    <>
+                        <Space>
+                            <Tooltip title="취소" placement="bottom">
+                                <Button onClick={onAddClose} style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}>
+                                    취소
+                                </Button>
+                            </Tooltip>
+                            <Tooltip title="추가" placement="bottom" color="#108ee9">
+                                <Button
+                                    onClick={insertSubmit}
+                                    style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                    type="primary"
+                                >
+                                    추가
+                                </Button>
+                            </Tooltip>
+                        </Space>
+                    </>
+                }
+            >
+                <MainCard>
+                    <Form layout="vertical" form={form}>
+                        <Row gutter={16}>
+                            <Col span={24}>
+                                <Form.Item
+                                    label="bagScanId"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Please Enter bagScanId'
+                                        }
+                                    ]}
+                                >
+                                    <Input
+                                        name="bagScanId"
+                                        value={unitParams?.bagScanId}
+                                        defaultValue={unitParams?.bagScanId}
+                                        onChange={(e) => setUnitParams({ ...unitParams, bagScanId: e.target.value })}
+                                        placeholder="Please Enter bagScanId"
+                                    />
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                        <Row gutter={16}>
+                            <Col span={24}>
+                                <Form.Item
+                                    label="xray 파일"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Please Enter xray 파일'
+                                        }
+                                    ]}
+                                >
+                                    <input type="file"
+                                            //ref={fileInput1}
+                                            /*onChange={handleChange} */
+                                            onChange={handleChange}
+                                            multiple/>  
+                                </Form.Item>
+                            </Col>
+                        </Row>                        
+                    </Form>
+                </MainCard>
+            </Drawer>            
         </>
     );
 };

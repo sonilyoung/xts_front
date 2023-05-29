@@ -28,7 +28,8 @@ import {
     useUpdateUnitMutation,
     useDeleteUnitMutation,
     useSaveUnitImgMutation,
-    useGetUnitMutation
+    useGetUnitMutation,
+    useXrayImageUploadMutation
 } from '../../../hooks/api/ContentsManagement/ContentsManagement';
 import MenuItem from '@mui/material/MenuItem';
 // project import
@@ -66,6 +67,8 @@ export const ImagesManagement = () => {
 
     const [dataSource, setDataSource] = useState([]); // Table 데이터 값
     const [open, setOpen] = useState(false); // Drawer 추가 우측폼 상태
+    const [unitopen, setUnitopen] = useState(false); // Drawer 단품이미지 추가 우측폼 상태
+    
     const [dataEdit, setDataEdit] = useState(false); // Drawer 수정 우측폼 상태
     const [imgEdit, setImgEdit] = useState(false); // 이미지업로드를 위한 상태값
     const [uploading, setUploading] = useState(false); // 이미지업로드
@@ -99,6 +102,8 @@ export const ImagesManagement = () => {
     //const params = useRef(); // 수정화면
     const [refresh, setRefresh] = useState(false); //리프레쉬
     const [unitParams, setUnitParams] = useState({});
+    const [unitMultiple, setUnitMultiple]	=	useState([]); //멀티업로드 이미지
+    const [uploadXrayImg] = useXrayImageUploadMutation(); // xray이미지 서버저장 api
 
     const handleUnit = async () => {
         const getUnitListResponse = await getUnitList({ languageCode: languageCode });
@@ -203,6 +208,15 @@ export const ImagesManagement = () => {
         form.resetFields();
     };
 
+    // 단품 이미지 추가 버튼
+    const handleUnitAdd = () => {
+        setDataEdit(false);
+        setUnitopen(true);
+        form.resetFields();
+    };    
+
+    
+
     // 이미지가져오기
     const getUnitImgList = async (e, u, g) => {
         setUnitScanId(e);
@@ -248,6 +262,13 @@ export const ImagesManagement = () => {
         setDataEdit(false);
         form.resetFields();
     };
+
+    // 단품이미지 추가 취소
+    const onAddUnitClose = () => {
+        setUnitopen(false);
+        setDataEdit(false);
+        form.resetFields();
+    };    
 
     // 추가 및 수정 처리
     const onAddSubmit = () => {
@@ -526,6 +547,51 @@ export const ImagesManagement = () => {
         // console.log(...fileListR);
     };
 
+    const handleChange = (e) => {
+        e.preventDefault();
+        e.persist();
+        console.log(e.target.files);
+        
+        let files = e.target.files
+        setUnitMultiple(files);
+        
+    };     
+
+    // 단품이미지 추가 등록
+    const insertSubmit = async () => {
+        if (unitParams?.unitId.length <= 0) {
+            Modal.error({
+                content: 'unitId를 입력하세요.',
+                onOk() {
+                    setOpen(false);
+                    setDataEdit(false);
+                    form.resetFields();
+                }
+            });
+            return false;
+        }
+
+        console.log("unitId:", unitParams?.unitId);
+        console.log("files:", unitMultiple);
+
+        let formData = new FormData();
+        const params = { targetName: unitParams?.unitId, command : "unit"};
+        formData.append("params", new Blob([JSON.stringify(params)], { type: 'application/json' }));
+        Object.values(unitMultiple).forEach((unitMultiple) => formData.append("files", unitMultiple));
+        //formData.append("files", pimgMultiple);
+        const response = await uploadXrayImg(formData);
+
+        setRefresh(response);
+        Modal.success({
+            content: '추가 완료',
+            onOk() {
+                setOpen(false);
+                setDataEdit(false);
+                form.resetFields();
+            }
+        });
+    };        
+
     useEffect(() => {
         setLoading(true); // 로딩 호출
         handleUnit();
@@ -616,6 +682,20 @@ export const ImagesManagement = () => {
                                                 </Button>
                                             </Tooltip>
                                         </Space>
+
+
+                                        <Space direction="vertical">
+                                            <Tooltip title="단품이미지추가">
+                                                <Button
+                                                    type="success"
+                                                    onClick={handleUnitAdd}
+                                                    style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                                    icon={<PlusOutlined />}
+                                                >
+                                                    단품이미지추가
+                                                </Button>
+                                            </Tooltip>
+                                        </Space>                                        
                                     </Col>
                                 </Row>
 
@@ -651,8 +731,8 @@ export const ImagesManagement = () => {
                                                 {realImgEdit === true ? (
                                                     <img
                                                         src={
-                                                            unitParams.realImg !== null
-                                                                ? 'data:image/png;base64,' + unitParams.realImg
+                                                            unitParams?.realImg !== null
+                                                                ? 'data:image/png;base64,' + unitParams?.realImg
                                                                 : noImage
                                                         }
                                                         width={280}
@@ -717,8 +797,8 @@ export const ImagesManagement = () => {
                                                 {frontImgEdit === true ? (
                                                     <img
                                                         src={
-                                                            unitParams.frontImg !== null
-                                                                ? 'data:image/png;base64,' + unitParams.frontImg
+                                                            unitParams?.frontImg !== null
+                                                                ? 'data:image/png;base64,' + unitParams?.frontImg
                                                                 : noImage
                                                         }
                                                         width={280}
@@ -761,8 +841,8 @@ export const ImagesManagement = () => {
                                                 {sideImgEdit === true ? (
                                                     <img
                                                         src={
-                                                            unitParams.sideImg !== null
-                                                                ? 'data:image/png;base64,' + unitParams.sideImg
+                                                            unitParams?.sideImg !== null
+                                                                ? 'data:image/png;base64,' + unitParams?.sideImg
                                                                 : noImage
                                                         }
                                                         width={280}
@@ -1036,6 +1116,83 @@ export const ImagesManagement = () => {
                 </MainCard>
             </Drawer>
             {/* 이미지 관리 추가 폼 End */}
+
+
+            {/* 이미지추가 폼 Start */}
+            <Drawer
+                maskClosable={false}
+                title={`이미지 추가`}
+                onClose={onAddUnitClose}
+                open={unitopen}
+                width={400}
+                style={{ top: '60px' }}
+                extra={
+                    <>
+                        <Space>
+                            <Tooltip title="취소" placement="bottom">
+                                <Button onClick={onAddUnitClose} style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}>
+                                    취소
+                                </Button>
+                            </Tooltip>
+                            <Tooltip title="추가" placement="bottom" color="#108ee9">
+                                <Button
+                                    onClick={insertSubmit}
+                                    style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                    type="primary"
+                                >
+                                    추가
+                                </Button>
+                            </Tooltip>
+                        </Space>
+                    </>
+                }
+            >
+                <MainCard>
+                    <Form layout="vertical" form={form}>
+                        <Row gutter={16}>
+                            <Col span={24}>
+                                <Form.Item
+                                    label="unitId"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Please Enter unitId'
+                                        }
+                                    ]}
+                                >
+                                    <Input
+                                        name="unitId"
+                                        value={unitParams?.unitId}
+                                        defaultValue={unitParams?.unitId}
+                                        onChange={(e) => setUnitParams({ ...unitParams, unitId: e.target.value })}
+                                        placeholder="Please Enter unitId"
+                                    />
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                        <Row gutter={16}>
+                            <Col span={24}>
+                                <Form.Item
+                                    label="단품이미지파일"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Please Enter 단품이미지파일'
+                                        }
+                                    ]}
+                                >
+                                    <input type="file"
+                                            //ref={fileInput1}
+                                            /*onChange={handleChange} */
+                                            onChange={handleChange}
+                                            multiple/>  
+                                </Form.Item>
+                            </Col>
+                        </Row>                        
+                    </Form>
+                </MainCard>
+            </Drawer>    
+
 
             {/* 물품명칭 언어 추가 Modal Start */}
             <Modal
