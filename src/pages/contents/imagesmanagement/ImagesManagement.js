@@ -936,56 +936,132 @@ export const ImagesManagement = () => {
                                         }}
                                         options={[
                                             {
-                                                value: 'G000001',
-                                                label: '총기류'
+                                                value: '1001',
+                                                label: '총기부품류'
                                             },
                                             {
-                                                value: 'G000002',
-                                                label: '폭발물류'
+                                                value: '1100',
+                                                label: '폭발물류1'
                                             },
                                             {
-                                                value: 'G000003',
+                                                value: '1102',
+                                                label: '도화선'
+                                            },
+                                            {
+                                                value: '2000',
                                                 label: '실탄류'
                                             },
                                             {
-                                                value: 'G000004',
+                                                value: '2100',
                                                 label: '도검류'
                                             },
                                             {
-                                                value: 'G000005',
-                                                label: '일반무기류'
+                                                value: '2200',
+                                                label: '일반무기'
                                             },
                                             {
-                                                value: 'G000006',
-                                                label: '위장무기류'
+                                                value: '2300',
+                                                label: '스포츠용품류'
                                             },
                                             {
-                                                value: 'G000007',
+                                                value: '2400',
                                                 label: '공구/생활용품류'
                                             },
                                             {
-                                                value: 'G000008',
+                                                value: '2401',
+                                                label: '금속류'
+                                            },
+                                            {
+                                                value: '2500',
                                                 label: '인화성물질류'
                                             },
                                             {
-                                                value: 'G000009',
+                                                value: '2600',
                                                 label: '위험물질류'
                                             },
                                             {
-                                                value: 'G000010',
-                                                label: '액체, 겔 물품류'
+                                                value: '2700',
+                                                label: '액체,겔 물품'
                                             },
                                             {
-                                                value: 'G000011',
+                                                value: '3000',
+                                                label: '전기/전자제품'
+                                            },
+                                            {
+                                                value: '3001',
+                                                label: '저장장치류'
+                                            },
+                                            {
+                                                value: '3100',
+                                                label: '확인물품1'
+                                            },
+                                            {
+                                                value: '3101',
+                                                label: '의약품류'
+                                            },
+                                            {
+                                                value: '3102',
+                                                label: '위험물질'
+                                            },
+                                            {
+                                                value: '9000',
+                                                label: '통과'
+                                            },
+                                            {
+                                                value: '9001',
+                                                label: '기타개인용품류'
+                                            },
+                                            {
+                                                value: '9002',
+                                                label: '의류/직물류'
+                                            },
+                                            {
+                                                value: '9003',
+                                                label: '가정용품류'
+                                            },
+                                            {
+                                                value: '9004',
+                                                label: '화장품류'
+                                            },
+                                            {
+                                                value: '9005',
+                                                label: '보석류'
+                                            },
+                                            {
+                                                value: '9006',
+                                                label: '문구용품류'
+                                            },
+                                            {
+                                                value: '9007',
+                                                label: '종이류'
+                                            },
+                                            {
+                                                value: '9008',
+                                                label: '장난감류'
+                                            },
+                                            {
+                                                value: '9009',
+                                                label: '깡통류'
+                                            },
+                                            {
+                                                value: '9010',
+                                                label: '식료품류'
+                                            },
+                                            {
+                                                value: '1000',
+                                                label: '총기류'
+                                            },
+                                            {
+                                                value: '1101',
+                                                label: '폭발물구성품'
+                                            },
+                                            {
+                                                value: '9011',
+                                                label: '가방류'
+                                            },
+                                            {
+                                                value: '2800',
                                                 label: '주류'
-                                            },
-                                            {
-                                                value: 'G000012',
-                                                label: '전기/전자제품류'
-                                            },
-                                            {
-                                                value: 'G000013',
-                                                label: '확인물품류'
                                             }
                                         ]}
                                     />
