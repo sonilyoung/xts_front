@@ -45,14 +45,32 @@ export const TheoryInfo = () => {
     const [dataEdit, setDataEdit] = useState(false); // Drawer 수정 우측폼 상태
     const [questionType, setQuestionType] = useState(); // 문제 유형
 
-    const [uploadedImages, setUploadedImages] = useState([]);
-    const [selectedImage, setSelectedImage] = useState(null);
+    const [Quest_answer1, setQuest_answer1] = useState(''); // 사지선다형 질문
+    const [Quest_answer1_1, setQuest_answer1_1] = useState(''); // 사지선다형 정답
+    const [Quest_answer1_2, setQuest_answer1_2] = useState(''); // 사지선다형 오답
+    const [Quest_answer1_3, setQuest_answer1_3] = useState(''); // 사지선다형 오답
+    const [Quest_answer1_4, setQuest_answer1_4] = useState(''); // 사지선다형 오답
+
+    const [Quest_answer2, setQuest_answer2] = useState(''); // O/X형 질문
+    const [Quest_answer2_1, setQuest_answer2_1] = useState(''); // O/X형 정답
+
+    const [Quest_answer3, setQuest_answer3] = useState(''); // O/X형 질문
+    const [uploadedImages3, setUploadedImages3] = useState([]); // 이미지선다형 이미지
+    const [selectedImage3, setSelectedImage3] = useState(null);
+
+    const [Quest_answer4, setQuest_answer4] = useState(''); // 이미지 + 사지선다형 질문
+    const [uploadedImages4, setUploadedImages4] = useState([]); // 이미지 + 사지선다형 이미지
+    const [Quest_answer4_1, setQuest_answer4_1] = useState(''); // 이미지 + 사지선다형 정답
+    const [Quest_answer4_2, setQuest_answer4_2] = useState(''); // 이미지 + 사지선다형 오답
+    const [Quest_answer4_3, setQuest_answer4_3] = useState(''); // 이미지 + 사지선다형 오답
+    const [Quest_answer4_4, setQuest_answer4_4] = useState(''); // 이미지 + 사지선다형 오답
 
     // 이미지 업로드 Start
-    const handleDrop = (acceptedFiles) => {
-        const remainingSlots = 4 - uploadedImages.length;
-        const filesToUpload = acceptedFiles.slice(0, remainingSlots);
-        filesToUpload.forEach((file) => {
+    // 이미지선다형 문제
+    const handleDrop3 = (acceptedFiles3) => {
+        const remainingSlots3 = 4 - uploadedImages3.length;
+        const filesToUpload3 = acceptedFiles3.slice(0, remainingSlots3);
+        filesToUpload3.forEach((file) => {
             // 이미지 파일 유효성 검사 및 처리
             const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
             if (!isJpgOrPng) {
@@ -66,37 +84,92 @@ export const TheoryInfo = () => {
             }
 
             // 파일 정보 및 base64 변환
-            const reader = new FileReader();
-            reader.onload = () => {
-                const base64Image = reader.result;
-                const uploadedImage = {
+            const reader3 = new FileReader();
+            reader3.onload = () => {
+                const base64Image = reader3.result;
+                const uploadedImage3 = {
                     name: file.name,
                     size: file.size,
                     type: file.type,
                     base64Image: base64Image
                 };
                 // 업로드된 이미지 추가
-                setUploadedImages((prevImages) => [...prevImages, uploadedImage]);
-                console.log(uploadedImage);
+                setUploadedImages3((prevImages3) => [...prevImages3, uploadedImage3]);
+                console.log(uploadedImage3);
             };
-            reader.readAsDataURL(file);
+            reader3.readAsDataURL(file);
         });
     };
-
-    const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop: handleDrop });
+    const {
+        getRootProps: getRootProps3,
+        getInputProps: getInputProps3,
+        isDragActive: isDragActive3
+    } = useDropzone({
+        onDrop: handleDrop3
+    });
 
     // 이미지 정답 라디오버튼 클릭
-    const handleImageSelect = (image) => {
-        setSelectedImage(image);
+    const handleImageSelect3 = (image) => {
+        console.log(image);
+        setSelectedImage3(image);
     };
 
     // 이미지 삭제
-    const handleImageDelete = (index) => {
-        const updatedImages = [...uploadedImages];
-        updatedImages.splice(index, 1);
-        setUploadedImages(updatedImages);
+    const handleImageDelete3 = (index) => {
+        const updatedImages3 = [...uploadedImages3];
+        updatedImages3.splice(index, 1);
+        setUploadedImages3(updatedImages3);
     };
 
+    // 이미지+사지선다형 문제
+    const handleDrop4 = (acceptedFiles4) => {
+        const remainingSlots4 = 1 - uploadedImages4.length;
+        const filesToUpload4 = acceptedFiles4.slice(0, remainingSlots4);
+        filesToUpload4.forEach((file) => {
+            // 이미지 파일 유효성 검사 및 처리
+            const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+            if (!isJpgOrPng) {
+                message.error('You can only upload JPG/PNG file!');
+                return;
+            }
+            const isLt2M = file.size / 1024 / 1024 < 2;
+            if (!isLt2M) {
+                message.error('Image must be smaller than 2MB!');
+                return;
+            }
+
+            // 파일 정보 및 base64 변환
+            const reader4 = new FileReader();
+            reader4.onload = () => {
+                const base64Image = reader4.result;
+                const uploadedImage4 = {
+                    name: file.name,
+                    size: file.size,
+                    type: file.type,
+                    base64Image: base64Image
+                };
+                // 업로드된 이미지 추가
+                setUploadedImages4((prevImages4) => [...prevImages4, uploadedImage4]);
+                console.log(uploadedImage4);
+            };
+            reader4.readAsDataURL(file);
+        });
+    };
+
+    const {
+        getRootProps: getRootProps4,
+        getInputProps: getInputProps4,
+        isDragActive: isDragActive4
+    } = useDropzone({
+        onDrop: handleDrop4
+    });
+
+    // 이미지 삭제
+    const handleImageDelete4 = (index) => {
+        const updatedImages4 = [...uploadedImages4];
+        updatedImages4.splice(index, 1);
+        setUploadedImages4(updatedImages4);
+    };
     // 이미지 업로드 End
 
     // 제한 시간 Value 설정 Start
@@ -264,23 +337,6 @@ export const TheoryInfo = () => {
         };
     });
 
-    // 출제 문항 검색 Modal Start
-    const Questions_Modal = () => {
-        setQuestionsModalOpen(true);
-    };
-
-    // 출제 문항 선택 완료 (Modal 닫기)
-    const Questions_handleOk = (Question_Value) => {
-        console.log('문제 출제:', Question_Value);
-        setQuestion_props_value(Question_Value);
-        setQuestionsModalOpen(false);
-    };
-
-    // 출제 문항 Modal 닫기
-    const Questions_handleCancel = () => {
-        setQuestionsModalOpen(false);
-    };
-
     //체크 박스 이벤트
     const onSelectChange = (newSelectedRowKeys) => {
         console.log('selectedRowKeys changed: ', newSelectedRowKeys);
@@ -365,11 +421,6 @@ export const TheoryInfo = () => {
                 }
             });
         }
-    };
-
-    const onChange = ({ target: { value } }) => {
-        console.log(value);
-        setQuestionMethod(value);
     };
 
     return (
@@ -511,12 +562,9 @@ export const TheoryInfo = () => {
                                             required: true
                                         }
                                     ]}
+                                    initialValue={questionType}
                                 >
                                     <Select
-                                        defaultValue={{
-                                            value: { questionType },
-                                            label: '# 문제 유형'
-                                        }}
                                         style={{
                                             width: '100%'
                                         }}
@@ -538,7 +586,14 @@ export const TheoryInfo = () => {
                                                 label: '이미지+사지선다형'
                                             }
                                         ]}
-                                        onChange={(value) => setQuestionType(value)}
+                                        onChange={(value) => {
+                                            form.resetFields();
+                                            setQuestionType(value);
+                                            form.setFieldsValue({
+                                                Question_Type: value
+                                            });
+                                        }}
+                                        value={questionType}
                                     />
                                 </Form.Item>
                             </Col>
@@ -630,7 +685,7 @@ export const TheoryInfo = () => {
                                     <Row>
                                         <Col span={24}>
                                             <Form.Item
-                                                name="Question"
+                                                name="Quest_answer1"
                                                 label="질문"
                                                 rules={[
                                                     {
@@ -639,7 +694,11 @@ export const TheoryInfo = () => {
                                                     }
                                                 ]}
                                             >
-                                                <Input placeholder="# 질문" />
+                                                <Input
+                                                    placeholder="# 질문"
+                                                    value={Quest_answer1}
+                                                    onChange={(e) => setQuest_answer1(e.target.value)}
+                                                />
                                             </Form.Item>
                                         </Col>
                                     </Row>
@@ -649,7 +708,7 @@ export const TheoryInfo = () => {
                                     <Row gutter={24}>
                                         <Col span={12}>
                                             <Form.Item
-                                                name="Question"
+                                                name="Quest_answer1_1"
                                                 label="정답"
                                                 rules={[
                                                     {
@@ -658,12 +717,16 @@ export const TheoryInfo = () => {
                                                     }
                                                 ]}
                                             >
-                                                <Input placeholder="# 정답" />
+                                                <Input
+                                                    placeholder="# 정답"
+                                                    value={Quest_answer1_1}
+                                                    onChange={(e) => setQuest_answer1_1(e.target.value)}
+                                                />
                                             </Form.Item>
                                         </Col>
                                         <Col span={12}>
                                             <Form.Item
-                                                name="Question"
+                                                name="Quest_answer1_2"
                                                 label="오답"
                                                 rules={[
                                                     {
@@ -672,14 +735,18 @@ export const TheoryInfo = () => {
                                                     }
                                                 ]}
                                             >
-                                                <Input placeholder="# 오답" />
+                                                <Input
+                                                    placeholder="# 오답"
+                                                    value={Quest_answer1_2}
+                                                    onChange={(e) => setQuest_answer1_2(e.target.value)}
+                                                />
                                             </Form.Item>
                                         </Col>
                                     </Row>
                                     <Row gutter={24}>
                                         <Col span={12}>
                                             <Form.Item
-                                                name="Question"
+                                                name="Quest_answer1_3"
                                                 label="오답"
                                                 rules={[
                                                     {
@@ -688,12 +755,16 @@ export const TheoryInfo = () => {
                                                     }
                                                 ]}
                                             >
-                                                <Input placeholder="# 오답" />
+                                                <Input
+                                                    placeholder="# 오답"
+                                                    value={Quest_answer1_3}
+                                                    onChange={(e) => setQuest_answer1_3(e.target.value)}
+                                                />
                                             </Form.Item>
                                         </Col>
                                         <Col span={12}>
                                             <Form.Item
-                                                name="Question"
+                                                name="Quest_answer1_4"
                                                 label="오답"
                                                 rules={[
                                                     {
@@ -702,20 +773,24 @@ export const TheoryInfo = () => {
                                                     }
                                                 ]}
                                             >
-                                                <Input placeholder="# 오답" />
+                                                <Input
+                                                    placeholder="# 오답"
+                                                    value={Quest_answer1_4}
+                                                    onChange={(e) => setQuest_answer1_4(e.target.value)}
+                                                />
                                             </Form.Item>
                                         </Col>
                                     </Row>
                                 </Card>
                             </>
-                        ) : questionType === '2' ? (
+                        ) : questionType === '2' ? ( //질문 : Quest_answer2, 정답 : Quest_answer2_1 ~ Quest_answer2_4
                             <>
                                 <Divider style={{ margin: '10px 0' }} />
                                 <Card bordered style={{ height: '110px' }}>
                                     <Row gutter={24}>
                                         <Col span={24}>
                                             <Form.Item
-                                                name="Question"
+                                                name="Quest_answer2"
                                                 label="질문"
                                                 rules={[
                                                     {
@@ -724,44 +799,55 @@ export const TheoryInfo = () => {
                                                     }
                                                 ]}
                                             >
-                                                <Input placeholder="# 질문" />
+                                                <Input
+                                                    placeholder="# 질문"
+                                                    value={Quest_answer2}
+                                                    onChange={(e) => setQuest_answer2(e.target.value)}
+                                                />
                                             </Form.Item>
                                         </Col>
                                     </Row>
                                 </Card>
                                 <p style={{ margin: '10px 0' }} />
-                                <Row gutter={24}>
-                                    <Col span={12}>
-                                        <Form.Item
-                                            name="QuestionType"
-                                            label="정답"
-                                            rules={[
-                                                {
-                                                    required: true
-                                                }
-                                            ]}
-                                        >
-                                            <Radio.Group onChange={onChange} buttonStyle="solid" defaultValue="o">
-                                                <Radio.Button value="o">
-                                                    <span style={{ padding: '0 15px' }}>O</span>
-                                                </Radio.Button>
-                                                <span style={{ padding: '0 10px' }}></span>
-                                                <Radio.Button value="x">
-                                                    <span style={{ padding: '0 15px' }}>X</span>
-                                                </Radio.Button>
-                                            </Radio.Group>
-                                        </Form.Item>
-                                    </Col>
-                                </Row>
+                                <Card bordered>
+                                    <Row gutter={24}>
+                                        <Col span={12}>
+                                            <Form.Item
+                                                name="Quest_answer2_1"
+                                                label="정답"
+                                                rules={[
+                                                    {
+                                                        required: true
+                                                    }
+                                                ]}
+                                                initialValue={Quest_answer2_1}
+                                            >
+                                                <Radio.Group
+                                                    onChange={(e) => setQuest_answer2_1(e.target.value)}
+                                                    buttonStyle="solid"
+                                                    defaultValue={Quest_answer2_1}
+                                                >
+                                                    <Radio.Button value="O">
+                                                        <span style={{ padding: '0 15px' }}>O</span>
+                                                    </Radio.Button>
+                                                    <span style={{ padding: '0 10px' }}></span>
+                                                    <Radio.Button value="X">
+                                                        <span style={{ padding: '0 15px' }}>X</span>
+                                                    </Radio.Button>
+                                                </Radio.Group>
+                                            </Form.Item>
+                                        </Col>
+                                    </Row>
+                                </Card>
                             </>
-                        ) : questionType === '3' ? (
+                        ) : questionType === '3' ? ( //질문 : Quest_quest3, 정답 : Quest_answer3
                             <>
                                 <Divider style={{ margin: '10px 0' }} />
                                 <Card bordered style={{ height: '110px' }}>
                                     <Row gutter={24}>
                                         <Col span={24}>
                                             <Form.Item
-                                                name="Question"
+                                                name="Quest_quest3"
                                                 label="질문"
                                                 rules={[
                                                     {
@@ -770,7 +856,11 @@ export const TheoryInfo = () => {
                                                     }
                                                 ]}
                                             >
-                                                <Input placeholder="# 질문" />
+                                                <Input
+                                                    placeholder="# 질문"
+                                                    value={Quest_answer3}
+                                                    onChange={(e) => setQuest_answer3(e.target.value)}
+                                                />
                                             </Form.Item>
                                         </Col>
                                     </Row>
@@ -785,76 +875,263 @@ export const TheoryInfo = () => {
                                             }}
                                             size="large"
                                         >
-                                            {/* <div {...getRootProps()} className={`dropzone ${isDragActive ? 'active' : ''}`}>
-                                                <input {...getInputProps()} />
-                                                {isDragActive ? (
-                                                    <p>이미지를 여기에 놓아주세요...</p>
-                                                ) : (
-                                                    <p>이미지를 드래그하거나 클릭하여 업로드하세요.</p>
-                                                )}
-                                            </div>
-                                             */}
-                                            <Space wrap>
-                                                <Button
-                                                    {...getRootProps()}
-                                                    className={`dropzone ${isDragActive ? 'active' : ''}`}
-                                                    style={{ padding: '10px 85px', height: '150px' }}
-                                                    size="large"
-                                                    disabled={uploadedImages.length >= 4}
-                                                >
-                                                    <p>
-                                                        <UploadOutlined />
-                                                    </p>
-                                                    <input {...getInputProps()} />
-                                                    {isDragActive ? (
-                                                        <p>이미지를 여기에 놓아주세요...</p>
-                                                    ) : (
-                                                        <>
-                                                            <p>이미지를 드래그하거나 클릭하여 업로드하세요.</p>
-                                                        </>
-                                                    )}
-                                                </Button>
-                                            </Space>
-                                            {uploadedImages.length > 0 && (
+                                            {uploadedImages3.length === 0 ? (
+                                                <Space wrap>
+                                                    <Button
+                                                        {...getRootProps3()}
+                                                        className={`dropzone ${isDragActive3 ? 'active' : ''}`}
+                                                        style={{ padding: '10px 85px', height: '150px' }}
+                                                        size="large"
+                                                        disabled={uploadedImages3.length >= 4}
+                                                    >
+                                                        <p>
+                                                            <UploadOutlined />
+                                                        </p>
+                                                        <input {...getInputProps3()} />
+                                                        {isDragActive3 ? (
+                                                            <p>이미지를 여기에 놓아주세요...</p>
+                                                        ) : (
+                                                            <>
+                                                                <p>이미지를 드래그하거나 클릭하여 업로드하세요.</p>
+                                                            </>
+                                                        )}
+                                                    </Button>
+                                                </Space>
+                                            ) : (
                                                 <>
-                                                    <h2>정답을 선택해주세요</h2>
-                                                    <Space style={{ textAlign: 'center' }}>
+                                                    <Card bordered>
                                                         <Row gutter={24}>
-                                                            {uploadedImages.map((image, index) => (
-                                                                <Col key={index} span={12}>
-                                                                    <img
-                                                                        src={image.base64Image}
-                                                                        alt={image.name}
-                                                                        style={{ width: '120px' }}
-                                                                    />
-                                                                    <p>{image.name}</p>
-                                                                    <p>{image.size} bytes</p>
-                                                                    <p>{image.type}</p>
-                                                                    <Form.Item name={`imageanswer${index + 1}`}>
-                                                                        <Radio
-                                                                            checked={selectedImage === index}
-                                                                            onChange={() => handleImageSelect(index)}
-                                                                        >
-                                                                            정답
-                                                                        </Radio>
+                                                            <Col span={24}>
+                                                                <h2>정답을 선택해주세요</h2>
+                                                            </Col>
+                                                        </Row>
+                                                        <Space style={{ textAlign: 'center' }}>
+                                                            <Row gutter={24}>
+                                                                {uploadedImages3.map((image3, index) => (
+                                                                    <Col key={index} span={12}>
                                                                         <Button
+                                                                            name="Quest_answer3"
                                                                             type="danger"
                                                                             icon={<DeleteOutlined />}
-                                                                            onClick={() => handleImageDelete(index)}
-                                                                        ></Button>
-                                                                    </Form.Item>
-                                                                </Col>
-                                                            ))}
-                                                        </Row>
-                                                    </Space>
+                                                                            onClick={() => handleImageDelete3(index)}
+                                                                            style={{ marginBottom: '6px' }}
+                                                                        >
+                                                                            {image3.name}
+                                                                        </Button>
+                                                                        <img
+                                                                            src={image3.base64Image}
+                                                                            alt={image3.name}
+                                                                            style={{ width: '120px' }}
+                                                                        />
+                                                                        {/* <p>{image3.name}</p>
+                                                                    <p>{image3.size} bytes</p>
+                                                                    <p>{image3.type}</p> */}
+                                                                        <Form.Item
+                                                                            name={`imageanswer${index + 1}`}
+                                                                            style={{ marginTop: '6px' }}
+                                                                        >
+                                                                            <Radio.Button
+                                                                                checked={selectedImage3 === index}
+                                                                                onChange={() => handleImageSelect3(index)}
+                                                                                style={{ width: '120px' }}
+                                                                            >
+                                                                                정답 선택
+                                                                            </Radio.Button>
+                                                                        </Form.Item>
+                                                                    </Col>
+                                                                ))}
+                                                            </Row>
+                                                        </Space>
+                                                    </Card>
                                                 </>
                                             )}
                                         </Space>
                                     </Col>
                                 </Row>
                             </>
-                        ) : questionType === '4' ? (
-                            ''
+                        ) : questionType === '4' ? ( //질문 : Quest_quest4, 정답 : Quest_answer4
+                            <>
+                                <Divider style={{ margin: '10px 0' }} />
+                                <Card bordered style={{ height: '110px' }}>
+                                    <Row gutter={24}>
+                                        <Col span={24}>
+                                            <Form.Item
+                                                name="Quest_answer4"
+                                                label="질문"
+                                                rules={[
+                                                    {
+                                                        required: true,
+                                                        message: 'Please Enter Question.'
+                                                    }
+                                                ]}
+                                            >
+                                                <Input
+                                                    placeholder="# 질문"
+                                                    value={Quest_answer4}
+                                                    onChange={(e) => setQuest_answer4(e.target.value)}
+                                                />
+                                            </Form.Item>
+                                        </Col>
+                                    </Row>
+                                </Card>
+                                <p style={{ margin: '10px 0' }} />
+                                <Row gutter={24}>
+                                    <Col span={24}>
+                                        <Space
+                                            direction="vertical"
+                                            style={{
+                                                width: '100%'
+                                            }}
+                                            size="large"
+                                        >
+                                            {uploadedImages4.length === 0 ? (
+                                                <Space wrap>
+                                                    <Button
+                                                        {...getRootProps4()}
+                                                        className={`dropzone ${isDragActive4 ? 'active' : ''}`}
+                                                        style={{ padding: '10px 85px', height: '150px' }}
+                                                        size="large"
+                                                        disabled={uploadedImages4.length >= 1}
+                                                    >
+                                                        <p>
+                                                            <UploadOutlined />
+                                                        </p>
+                                                        <input {...getInputProps4()} />
+                                                        {isDragActive4 ? (
+                                                            <p>이미지를 여기에 놓아주세요...</p>
+                                                        ) : (
+                                                            <>
+                                                                <p>이미지를 드래그하거나 클릭하여 업로드하세요.</p>
+                                                            </>
+                                                        )}
+                                                    </Button>
+                                                </Space>
+                                            ) : (
+                                                <>
+                                                    <Card bordered>
+                                                        <Space style={{ textAlign: 'center', marginBottom: '20px' }}>
+                                                            <Row gutter={24}>
+                                                                {uploadedImages4.map((image4, index) => (
+                                                                    <React.Fragment key={index}>
+                                                                        <Col span={12}>
+                                                                            <img
+                                                                                src={image4.base64Image}
+                                                                                alt={image4.name}
+                                                                                style={{ width: '120px' }}
+                                                                            />
+                                                                        </Col>
+                                                                        <Col
+                                                                            span={12}
+                                                                            style={{
+                                                                                display: 'flex',
+                                                                                alignItems: 'center'
+                                                                            }}
+                                                                        >
+                                                                            <Form.Item name={`imageanswer${index + 1}`}>
+                                                                                <Button
+                                                                                    type="danger"
+                                                                                    icon={<DeleteOutlined />}
+                                                                                    onClick={() => handleImageDelete4(index)}
+                                                                                    alt="삭제"
+                                                                                    title="삭제"
+                                                                                >
+                                                                                    {image4.name}
+                                                                                </Button>
+                                                                            </Form.Item>
+                                                                        </Col>
+                                                                    </React.Fragment>
+                                                                ))}
+                                                            </Row>
+                                                        </Space>
+                                                        <Divider style={{ margin: '10px 0' }} />
+                                                        <Row gutter={24}>
+                                                            <Col span={24}>
+                                                                <h2>정답을 입력해주세요</h2>
+                                                            </Col>
+                                                        </Row>
+                                                        <Row gutter={24}>
+                                                            <Col span={12}>
+                                                                <Form.Item
+                                                                    name="Quest_answer4_1"
+                                                                    label="정답"
+                                                                    rules={[
+                                                                        {
+                                                                            required: true,
+                                                                            message: 'Please Enter Question.'
+                                                                        }
+                                                                    ]}
+                                                                >
+                                                                    <Input
+                                                                        placeholder="# 정답"
+                                                                        value={Quest_answer4_1}
+                                                                        onChange={(e) => setQuest_answer4_1(e.target.value)}
+                                                                    />
+                                                                </Form.Item>
+                                                            </Col>
+                                                            <Col span={12}>
+                                                                <Form.Item
+                                                                    name="Quest_answer4_2"
+                                                                    label="오답"
+                                                                    rules={[
+                                                                        {
+                                                                            required: true,
+                                                                            message: 'Please Enter Question.'
+                                                                        }
+                                                                    ]}
+                                                                >
+                                                                    <Input
+                                                                        placeholder="# 오답"
+                                                                        value={Quest_answer4_2}
+                                                                        onChange={(e) => setQuest_answer4_2(e.target.value)}
+                                                                    />
+                                                                </Form.Item>
+                                                            </Col>
+                                                        </Row>
+                                                        <Row gutter={24}>
+                                                            <Col span={12}>
+                                                                <Form.Item
+                                                                    name="Quest_answer4_3"
+                                                                    label="오답"
+                                                                    rules={[
+                                                                        {
+                                                                            required: true,
+                                                                            message: 'Please Enter Question.'
+                                                                        }
+                                                                    ]}
+                                                                >
+                                                                    <Input
+                                                                        placeholder="# 오답"
+                                                                        value={Quest_answer4_3}
+                                                                        onChange={(e) => setQuest_answer4_3(e.target.value)}
+                                                                    />
+                                                                </Form.Item>
+                                                            </Col>
+                                                            <Col span={12}>
+                                                                <Form.Item
+                                                                    name="Quest_answer4_4"
+                                                                    label="오답"
+                                                                    rules={[
+                                                                        {
+                                                                            required: true,
+                                                                            message: 'Please Enter Question.'
+                                                                        }
+                                                                    ]}
+                                                                >
+                                                                    <Input
+                                                                        placeholder="# 오답"
+                                                                        value={Quest_answer4_4}
+                                                                        onChange={(e) => setQuest_answer4_4(e.target.value)}
+                                                                    />
+                                                                </Form.Item>
+                                                            </Col>
+                                                        </Row>
+                                                    </Card>
+                                                </>
+                                            )}
+                                        </Space>
+                                    </Col>
+                                </Row>
+                            </>
                         ) : (
                             ''
                         )}
@@ -862,29 +1139,6 @@ export const TheoryInfo = () => {
                 </MainCard>
             </Drawer>
             {/* 추가 폼 End */}
-
-            {/* 출제 문항 검색 Modal Start */}
-            <Modal
-                open={questionsModalOpen}
-                closable={false}
-                width={1200}
-                style={{
-                    left: 130,
-                    zIndex: 999
-                }}
-                footer={[
-                    <Button
-                        type="primary"
-                        onClick={Questions_handleCancel}
-                        style={{ width: '100px', borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
-                    >
-                        Close
-                    </Button>
-                ]}
-            >
-                <XrayInformation QuestionCnt={Questions_handleOk} />
-            </Modal>
-            {/* 출제 문항 검색 Modal End */}
         </>
     );
 };
