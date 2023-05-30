@@ -37,7 +37,7 @@ export const TheoryInfo = () => {
     const [selectedRowKeys, setSelectedRowKeys] = useState([]); //셀렉트 박스 option Selected 값
     const [open, setOpen] = useState(false);
     const [dataEdit, setDataEdit] = useState(false); // Drawer 수정 우측폼 상태
-    const [questionType, setQuestionType] = useState(); // 문제 유형
+    const [questionType, setQuestionType] = useState(''); // 문제 유형
 
     const [Quest_answer1, setQuest_answer1] = useState(''); // 사지선다형 질문
     const [Quest_answer1_1, setQuest_answer1_1] = useState(''); // 사지선다형 정답
@@ -354,6 +354,9 @@ export const TheoryInfo = () => {
         setOpen(false);
         setDataEdit(false);
         form.resetFields();
+        setUploadedImages3([]);
+        setUploadedImages4([]);
+        setQuestionType('');
     };
 
     // 수정 버튼
@@ -563,6 +566,10 @@ export const TheoryInfo = () => {
                                             width: '100%'
                                         }}
                                         options={[
+                                            {
+                                                value: '',
+                                                label: '# 문제 타입 선택'
+                                            },
                                             {
                                                 value: '1',
                                                 label: '사지선다형'
