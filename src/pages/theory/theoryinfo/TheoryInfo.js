@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
-import { Typography } from '@mui/material';
 import {
     Col,
     Row,
@@ -18,9 +17,10 @@ import {
     Card,
     Divider,
     Tag,
-    Upload,
+    Typography,
     message
 } from 'antd';
+const { Text, Link } = Typography;
 import 'antd/dist/antd.css';
 import { PlusOutlined, EditFilled, DeleteFilled, ExclamationCircleFilled, DeleteOutlined, UploadOutlined } from '@ant-design/icons';
 
@@ -29,17 +29,11 @@ import { useDropzone } from 'react-dropzone';
 // project import
 import MainCard from 'components/MainCard';
 
-import { XrayInformation } from 'pages/learning/curriculum/XrayInformation';
-
 export const TheoryInfo = () => {
     const { confirm } = Modal;
     const [form] = Form.useForm();
 
-    const [questionsModalOpen, setQuestionsModalOpen] = useState();
-    const [question_props_value, setQuestion_props_value] = useState([]);
-    const [questionmethod, setQuestionMethod] = useState('s'); // 문항방식 Slide/Cut 방식
     const [loading, setLoading] = useState(false);
-    const [uploading, setUpLoading] = useState(false);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]); //셀렉트 박스 option Selected 값
     const [open, setOpen] = useState(false);
     const [dataEdit, setDataEdit] = useState(false); // Drawer 수정 우측폼 상태
@@ -588,6 +582,8 @@ export const TheoryInfo = () => {
                                         ]}
                                         onChange={(value) => {
                                             form.resetFields();
+                                            setUploadedImages3([]);
+                                            setUploadedImages4([]);
                                             setQuestionType(value);
                                             form.setFieldsValue({
                                                 Question_Type: value
@@ -892,7 +888,11 @@ export const TheoryInfo = () => {
                                                             <p>이미지를 여기에 놓아주세요...</p>
                                                         ) : (
                                                             <>
-                                                                <p>이미지를 드래그하거나 클릭하여 업로드하세요.</p>
+                                                                <p>
+                                                                    <Text type="warning">이미지선다형</Text>
+                                                                    <br />
+                                                                    이미지를 드래그하거나 클릭하여 업로드하세요.
+                                                                </p>
                                                             </>
                                                         )}
                                                     </Button>
@@ -1001,7 +1001,11 @@ export const TheoryInfo = () => {
                                                             <p>이미지를 여기에 놓아주세요...</p>
                                                         ) : (
                                                             <>
-                                                                <p>이미지를 드래그하거나 클릭하여 업로드하세요.</p>
+                                                                <p>
+                                                                    <Text type="warning">이미지+사지선다형</Text>
+                                                                    <br />
+                                                                    이미지를 드래그하거나 클릭하여 업로드하세요.
+                                                                </p>
                                                             </>
                                                         )}
                                                     </Button>
