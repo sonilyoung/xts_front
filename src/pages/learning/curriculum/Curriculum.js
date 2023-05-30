@@ -461,26 +461,7 @@ export const Curriculum = () => {
                             <Col span={12}>
                                 <Form.Item
                                     name="QuestionType"
-                                    label="학습방식 (슬라이드 / 컷)"
-                                    rules={[
-                                        {
-                                            required: true
-                                        }
-                                    ]}
-                                >
-                                    <Radio.Group onChange={onChange} buttonStyle="solid" defaultValue="s">
-                                        <Radio.Button value="s"> Slide 방식 </Radio.Button>
-                                        <Radio.Button value="c"> Cut 방식 </Radio.Button>
-                                    </Radio.Group>
-                                </Form.Item>
-                            </Col>
-                        </Row>
-                        <Divider style={{ margin: '10px 0' }} />
-                        <Row gutter={24}>
-                            <Col span={12}>
-                                <Form.Item
-                                    name="QuestionType"
-                                    label="모듈타입 (학습 / 평가)"
+                                    label="학습방식 (평가/학습)"
                                     rules={[
                                         {
                                             required: true
@@ -490,6 +471,25 @@ export const Curriculum = () => {
                                     <Radio.Group onChange={onChange} buttonStyle="solid" defaultValue="s">
                                         <Radio.Button value="l"> 학습 </Radio.Button>
                                         <Radio.Button value="e"> 평가 </Radio.Button>
+                                    </Radio.Group>
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                        <Divider style={{ margin: '10px 0' }} />
+                        <Row gutter={24}>
+                            <Col span={12}>
+                                <Form.Item
+                                    name="QuestionType"
+                                    label="모듈타입 (슬라이드 / 컷)"
+                                    rules={[
+                                        {
+                                            required: true
+                                        }
+                                    ]}
+                                >
+                                    <Radio.Group onChange={onChange} buttonStyle="solid" defaultValue="s">
+                                        <Radio.Button value="s"> Slide 방식 </Radio.Button>
+                                        <Radio.Button value="c"> Cut 방식 </Radio.Button>
                                     </Radio.Group>
                                 </Form.Item>
                             </Col>
