@@ -203,21 +203,27 @@ export const XrayInformation = (props) => {
                         columns={columns}
                         rowSelection={rowSelection}
                     />
-                    <Button
-                        type="primary"
-                        onClick={QuestionsOk}
-                        style={{ width: '100px', borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
-                    >
-                        선택 완료
-                    </Button>
-                    <Button
-                        type="primary"
-                        danger
-                        onClick={Questions_Randem}
-                        style={{ marginLeft: '20px', width: '100px', borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
-                    >
-                        랜덤 선택
-                    </Button>
+                    <Row style={{ width: '100%', margin: '10px 0px' }}>
+                        <Col span={3}>
+                            <Button
+                                type="primary"
+                                onClick={QuestionsOk}
+                                style={{ width: '100px', borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                            >
+                                선택 완료 [{selectedRowKeys.length}]
+                            </Button>
+                        </Col>
+                        <Col span={3}>
+                            <Button
+                                type="primary"
+                                danger
+                                onClick={Questions_Randem}
+                                style={{ marginLeft: '20px', width: '100px', borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                            >
+                                랜덤 선택
+                            </Button>
+                        </Col>
+                    </Row>
                 </Typography>
             </MainCard>
 
