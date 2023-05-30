@@ -412,6 +412,22 @@ export const Curriculum = () => {
                                 </Form.Item>
                             </Col>
                         </Row>
+                        <Row gutter={24}>
+                            <Col span={24}>
+                                <Form.Item
+                                    name="moduleDesc"
+                                    label="모듈설명"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: '모듈설명'
+                                        }
+                                    ]}
+                                >
+                                    <Input placeholder="# 모듈설명" />
+                                </Form.Item>
+                            </Col>
+                        </Row>
                         <Divider style={{ margin: '10px 0' }} />
                         <Row gutter={24}>
                             <Col span={12}>
@@ -576,6 +592,23 @@ export const Curriculum = () => {
                                         }}
                                         options={Minute_Opt}
                                     />
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                        <Divider style={{ margin: '10px 0' }} />
+                        <Row gutter={24}>
+                            <Col span={24}>
+                                <Form.Item
+                                    name="questionCnt"
+                                    label="출제문제수"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: '출제문제수'
+                                        }
+                                    ]}
+                                >
+                                    <Input placeholder="# 출제문제수" />
                                 </Form.Item>
                             </Col>
                         </Row>
