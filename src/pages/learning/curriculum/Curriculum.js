@@ -613,7 +613,7 @@ export const Curriculum = () => {
                         </Row>
                         <Divider style={{ margin: '10px 0' }} />
                         <Row gutter={24}>
-                            <Col span={12}>
+                            <Col span={24}>
                                 <Form.Item
                                     name="questionCnt"
                                     label="출제문제수"
@@ -625,20 +625,6 @@ export const Curriculum = () => {
                                     ]}
                                 >
                                     <Input placeholder="# 출제문제수" />
-                                </Form.Item>
-                            </Col>
-                            <Col span={12}>
-                                <Form.Item
-                                    name="totalScore"
-                                    label="평가가중치"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: '평가가중치'
-                                        }
-                                    ]}
-                                >
-                                    <Input placeholder="# 평가가중치" />
                                 </Form.Item>
                             </Col>
                         </Row>

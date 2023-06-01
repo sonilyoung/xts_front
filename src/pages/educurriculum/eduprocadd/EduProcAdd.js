@@ -810,19 +810,19 @@ export const EduProcAdd = () => {
                         <Row gutter={24}>
                             <Col span={12}>
                                 <Form.Item
-                                    name="practiceScore"
-                                    label="실기기준점수"
+                                    name="practiceTotalScore"
+                                    label="실기가중치"
                                     rules={[
                                         {
                                             required: true,
-                                            message: 'Please Enter practiceScore Selected.'
+                                            message: 'Please Enter practiceTotalScore Selected.'
                                         }
                                     ]}
                                 >
                                     <Select
                                         defaultValue={{
                                             value: 0,
-                                            label: '# 실기기준점수'
+                                            label: '# 실기가중치'
                                         }}
                                         style={{
                                             width: '100%'
@@ -874,19 +874,19 @@ export const EduProcAdd = () => {
                             </Col>
                             <Col span={12}>
                                 <Form.Item
-                                    name="practiceTotalScore"
-                                    label="실기가중치"
+                                    name="evaluationTotalScore"
+                                    label="평가가중치"
                                     rules={[
                                         {
                                             required: true,
-                                            message: 'Please Enter practiceTotalScore Selected.'
+                                            message: 'Please Enter evaluationTotalScore Selected.'
                                         }
                                     ]}
                                 >
                                     <Select
                                         defaultValue={{
                                             value: 0,
-                                            label: '# 실기가중치'
+                                            label: '# 평가가중치'
                                         }}
                                         style={{
                                             width: '100%'
