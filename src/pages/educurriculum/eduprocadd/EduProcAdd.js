@@ -50,7 +50,7 @@ export const EduProcAdd = () => {
     const [valueBaseLines, setValueBaseLines] = useState(0); // 차수 선택
     const [startedudate, setStartEdudate] = useState(0); // 학습 일정 Start
     const [endedudate, setEndEdudate] = useState(0); // 학습 일정 End
-
+    const [ProcName, setProcName] = useState(); // 학습과정명
     const [valueDays, setValueDays] = useState(); // 학습일수
 
     // const [dataSource, setDataSource] = useState([]); // 차수 데이터 소스
@@ -643,46 +643,16 @@ export const EduProcAdd = () => {
                         <Row gutter={24}>
                             <Col span={24}>
                                 <Form.Item
-                                    name="EduProcedure"
-                                    label="학습과정 선택"
+                                    name="ProcName"
+                                    label="학습과정명"
                                     rules={[
                                         {
                                             required: true,
-                                            message: 'Please Enter Curriculum.'
+                                            message: 'Please Enter ProcName.'
                                         }
                                     ]}
                                 >
-                                    <Select
-                                        defaultValue={{
-                                            value: 0,
-                                            label: '# 학습과정 선택'
-                                        }}
-                                        style={{
-                                            width: '100%'
-                                        }}
-                                        options={[
-                                            {
-                                                value: 'Lv1',
-                                                label: 'Level 1'
-                                            },
-                                            {
-                                                value: 'Lv2',
-                                                label: 'Level 2'
-                                            },
-                                            {
-                                                value: 'Lv3',
-                                                label: 'Level 3'
-                                            },
-                                            {
-                                                value: 'Lv4',
-                                                label: 'Level 4'
-                                            },
-                                            {
-                                                value: 'Lv5',
-                                                label: 'Level 5'
-                                            }
-                                        ]}
-                                    />
+                                    <Input placeholder="# 학습과정명" onChange={(e) => setProcName(e.target.value)} />
                                 </Form.Item>
                             </Col>
                         </Row>
