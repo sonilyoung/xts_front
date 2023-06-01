@@ -808,6 +808,137 @@ export const EduProcAdd = () => {
                         </Row>
 
                         <Row gutter={24}>
+                            <Col span={12}>
+                                <Form.Item
+                                    name="practiceScore"
+                                    label="실기기준점수"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Please Enter practiceScore Selected.'
+                                        }
+                                    ]}
+                                >
+                                    <Select
+                                        defaultValue={{
+                                            value: 0,
+                                            label: '# 실기기준점수'
+                                        }}
+                                        style={{
+                                            width: '100%'
+                                        }}
+                                        options={[
+                                            {
+                                                value: '10',
+                                                label: '10'
+                                            },
+                                            {
+                                                value: '20',
+                                                label: '20'
+                                            },
+                                            {
+                                                value: '30',
+                                                label: '30'
+                                            },
+                                            {
+                                                value: '40',
+                                                label: '40'
+                                            },
+                                            {
+                                                value: '50',
+                                                label: '50'
+                                            },
+                                            {
+                                                value: '60',
+                                                label: '60'
+                                            },
+                                            {
+                                                value: '70',
+                                                label: '70'
+                                            },
+                                            {
+                                                value: '80',
+                                                label: '80'
+                                            },
+                                            {
+                                                value: '90',
+                                                label: '90'
+                                            },
+                                            {
+                                                value: '100',
+                                                label: '100'
+                                            }
+                                        ]}
+                                    />
+                                </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                                <Form.Item
+                                    name="practiceTotalScore"
+                                    label="실기가중치"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Please Enter practiceTotalScore Selected.'
+                                        }
+                                    ]}
+                                >
+                                    <Select
+                                        defaultValue={{
+                                            value: 0,
+                                            label: '# 실기가중치'
+                                        }}
+                                        style={{
+                                            width: '100%'
+                                        }}
+                                        options={[
+                                            {
+                                                value: '10',
+                                                label: '10'
+                                            },
+                                            {
+                                                value: '20',
+                                                label: '20'
+                                            },
+                                            {
+                                                value: '30',
+                                                label: '30'
+                                            },
+                                            {
+                                                value: '40',
+                                                label: '40'
+                                            },
+                                            {
+                                                value: '50',
+                                                label: '50'
+                                            },
+                                            {
+                                                value: '60',
+                                                label: '60'
+                                            },
+                                            {
+                                                value: '70',
+                                                label: '70'
+                                            },
+                                            {
+                                                value: '80',
+                                                label: '80'
+                                            },
+                                            {
+                                                value: '90',
+                                                label: '90'
+                                            },
+                                            {
+                                                value: '100',
+                                                label: '100'
+                                            }
+                                        ]}
+                                    />
+                                </Form.Item>
+                            </Col>
+                        </Row>
+
+                        <Row gutter={24}>
                             <Col span={24}>
                                 <Form.Item
                                     name="EduStudentChk"
