@@ -731,7 +731,7 @@ export const EduProcAdd = () => {
                             </Col>
                         </Row>
                         <Row gutter={24}>
-                            <Col span={24}>
+                            <Col span={12}>
                                 <Form.Item
                                     name="EduPoints"
                                     label="수료기준점수"
@@ -751,6 +751,70 @@ export const EduProcAdd = () => {
                                             width: '100%'
                                         }}
                                         options={[
+                                            {
+                                                value: '60',
+                                                label: '60'
+                                            },
+                                            {
+                                                value: '70',
+                                                label: '70'
+                                            },
+                                            {
+                                                value: '80',
+                                                label: '80'
+                                            },
+                                            {
+                                                value: '90',
+                                                label: '90'
+                                            },
+                                            {
+                                                value: '100',
+                                                label: '100'
+                                            }
+                                        ]}
+                                    />
+                                </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                                <Form.Item
+                                    name="theoryTotalScore"
+                                    label="이론가중치"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Please Enter theoryTotalScore Selected.'
+                                        }
+                                    ]}
+                                >
+                                    <Select
+                                        defaultValue={{
+                                            value: 0,
+                                            label: '# 이론가중치'
+                                        }}
+                                        style={{
+                                            width: '100%'
+                                        }}
+                                        options={[
+                                            {
+                                                value: '10',
+                                                label: '10'
+                                            },
+                                            {
+                                                value: '20',
+                                                label: '20'
+                                            },
+                                            {
+                                                value: '30',
+                                                label: '30'
+                                            },
+                                            {
+                                                value: '40',
+                                                label: '40'
+                                            },
+                                            {
+                                                value: '50',
+                                                label: '50'
+                                            },
                                             {
                                                 value: '60',
                                                 label: '60'
