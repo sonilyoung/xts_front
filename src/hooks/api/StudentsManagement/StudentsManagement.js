@@ -16,45 +16,45 @@ export const studentsManagement = createApi({
     }),
     endpoints: (builder) => ({
         // 교육생 관리 > 교육생 정보조회
-        getStudentInformationList: builder.mutation({
+        selectUserList: builder.mutation({
             query: (body) => ({
-                url: 'adm/userMgr/getUserList.do',
+                url: 'adm/userMgr/selectUserList.do',
                 method: 'POST',
                 body: body
             })
         }),
 
-        // 교육생 관리 > 교육생 차수관리(상단 - 목록)
-        getUserBaselineList: builder.mutation({
+        // 교육생 관리 > 교육생 정보상세
+        selectUser: builder.mutation({
             query: (body) => ({
-                url: 'adm/userMgr/getUserBaselineList.do',
+                url: 'adm/userMgr/selectUser.do',
                 method: 'POST',
                 body: body
             })
         }),
 
-        // 교육생 관리 > 교육생 차수관리(중앙좌측 - 목록)
-        getUserBaselineSubList: builder.mutation({
+        // 교육생 관리 > 교육생 정보등록
+        insertUser: builder.mutation({
             query: (body) => ({
-                url: 'adm/userMgr/getUserBaselineSubList.do',
+                url: 'adm/userMgr/insertUser.do',
                 method: 'POST',
                 body: body
             })
         }),
 
-        // 교육생 관리 > 교육생 차수관리(중앙우측 - 정보상세)
-        getUserBaselineSubDetail: builder.mutation({
+        // 교육생 관리 > 교육생 정보수정
+        updateUser: builder.mutation({
             query: (body) => ({
-                url: 'adm/userMgr/getUserBaselineSubDetail.do',
+                url: 'adm/userMgr/updateUser.do',
                 method: 'POST',
                 body: body
             })
         }),
 
-        // 교육생 관리 > 교육생 차수관리(하단 - 목록)
-        getUserBaselineSubDetailList: builder.mutation({
+        // 교육생 관리 > 교육생 정보삭제
+        deleteUser: builder.mutation({
             query: (body) => ({
-                url: 'adm/userMgr/getUserBaselineSubDetailList.do',
+                url: 'adm/userMgr/deleteUser.do',
                 method: 'POST',
                 body: body
             })
@@ -62,10 +62,5 @@ export const studentsManagement = createApi({
     })
 });
 
-export const {
-    useGetStudentInformationListMutation,
-    useGetUserBaselineListMutation,
-    useGetUserBaselineSubListMutation,
-    useGetUserBaselineSubDetailMutation,
-    useGetUserBaselineSubDetailListMutation
-} = studentsManagement;
+export const { useSelectUserListMutation, useSelectUserMutation, useInsertUserMutation, useUpdateUserMutation, useDeleteUserMutation } =
+    studentsManagement;
