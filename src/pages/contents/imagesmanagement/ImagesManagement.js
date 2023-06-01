@@ -17,7 +17,8 @@ import {
     Switch,
     Form,
     Modal,
-    Dragger
+    Dragger,
+    Descriptions
 } from 'antd';
 import { Typography } from '@mui/material';
 import './index.css';
@@ -1264,7 +1265,15 @@ export const ImagesManagement = () => {
                                             multiple/>  
                                 </Form.Item>
                             </Col>
-                        </Row>                        
+                        </Row>    
+
+                       <Descriptions title="단품 이미지명 설명" bordered>
+                            <Descriptions.Item>
+                            실사이미지 - 403 <br/>
+                            정면컬러 - 101 <br/>
+                            측면컬러 - 201 <br/>
+                            </Descriptions.Item>
+                        </Descriptions>                                               
                     </Form>
                 </MainCard>
             </Drawer>    

@@ -17,7 +17,8 @@ import {
     Switch,
     Form,
     Modal,
-    Dragger
+    Dragger,
+    Descriptions
 } from 'antd';
 import { Typography } from '@mui/material';
 import { PlusOutlined, EditFilled, DeleteFilled, UploadOutlined, MinusCircleOutlined } from '@ant-design/icons';
@@ -3035,7 +3036,60 @@ export const XrayinfoWrite = () => {
                                             multiple/>  
                                 </Form.Item>
                             </Col>
-                        </Row>                        
+                        </Row>    
+
+                        <Descriptions title="xray 이미지명 설명" bordered>
+                            <Descriptions.Item>
+                            실사이미지 - 403 <br/>
+                            정면XRAY위험물품표시 - 401 <br/>
+                            측면XRAY위험물품표시 - 402 <br/> <br/>
+
+                            정면컬러 - 101 <br/>
+                            정면무기물 - 102 <br/>
+                            정면유기물 - 103 <br/>
+                            정면반전 - 104 <br/>
+                            정면채도 - 105 <br/>
+                            정면채도 - 106 <br/>
+                            정면채도 - 107 <br/>
+                            정면채도 - 108 <br/>
+                            정면채도 - 109 <br/>
+                            정면채도 - 110 <br/> <br/>
+
+                            정면흑백 - 111 <br/>
+                            정면흑백무기물 - 112 <br/>
+                            정면흑백유기물 - 113 <br/>
+                            정면흑백반전 - 114 <br/>
+                            정면흑백채도 - 115 <br/>
+                            정면흑백채도 - 116 <br/>
+                            정면흑백채도 - 117 <br/>
+                            정면흑백채도 - 118 <br/>
+                            정면흑백채도 - 119 <br/>
+                            정면흑백채도 - 120 <br/> <br/>
+
+                            측면컬러 - 201 <br/>
+                            측면무기물 - 202 <br/>
+                            측면유기물 - 203 <br/>
+                            측면반전 - 204 <br/>
+                            측면채도 - 205 <br/>
+                            측면채도 - 206 <br/>
+                            측면채도 - 207 <br/>
+                            측면채도 - 208 <br/>
+                            측면채도 - 209 <br/>
+                            측면채도 - 210 <br/> <br/>
+                            
+                            측면흑백 - 211 <br/>
+                            측면흑백무기물 - 212 <br/>
+                            측면흑백유기물 - 213 <br/>
+                            측면흑백반전 - 214 <br/>
+                            측면흑백채도 - 215 <br/>
+                            측면흑백채도 - 216 <br/>
+                            측면흑백채도 - 217 <br/>
+                            측면흑백채도 - 218 <br/>
+                            측면흑백채도 - 219 <br/>
+                            측면흑백채도 - 220 <br/>
+                            </Descriptions.Item>
+                        </Descriptions>                                 
+
                     </Form>
                 </MainCard>
             </Drawer>            
