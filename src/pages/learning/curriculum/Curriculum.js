@@ -1,9 +1,36 @@
 /* eslint-disable no-unused-vars */
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Typography } from '@mui/material';
-import { Col, Row, Button, Form, Input, Select, Drawer, Table, Space, Tooltip, Switch, Radio, Modal, Badge, Card, Divider } from 'antd';
+import {
+    Col,
+    Row,
+    Button,
+    Form,
+    Input,
+    Select,
+    Drawer,
+    Table,
+    Space,
+    Tooltip,
+    Switch,
+    Radio,
+    Modal,
+    Badge,
+    Card,
+    Divider,
+    Tag
+} from 'antd';
 import 'antd/dist/antd.css';
-import { PlusOutlined, EditFilled, DeleteFilled, ExclamationCircleFilled, AppstoreOutlined, BarsOutlined } from '@ant-design/icons';
+import { PlusOutlined, DeleteFilled, EditFilled, ExclamationCircleFilled } from '@ant-design/icons';
+
+// 학습모듈 관리 - 조회, 등록, 상세, 수정, 삭제 가져오기
+import {
+    useSelectModuleListMutation, // 조회
+    useInsertModuleMutation, // 등록
+    useSelectModuleMutation, // 상세
+    useUpdateModuleMutation, // 수정
+    useDeleteModuleMutation // 삭제
+} from '../../../hooks/api/CurriculumManagement/CurriculumManagement';
 
 // project import
 import MainCard from 'components/MainCard';
@@ -14,55 +41,55 @@ export const Curriculum = () => {
     const { confirm } = Modal;
     const [form] = Form.useForm();
 
-    const [questionsModalOpen, setQuestionsModalOpen] = useState();
-    const [question_props_value, setQuestion_props_value] = useState([]);
-    const [questionmethod, setQuestionMethod] = useState('s'); // 문항방식 Slide/Cut 방식
-    const [loading, setLoading] = useState(false);
+    const [moduleId, setModuleId] = useState(); // 선택된 모듈 ID
+    const [questionsModalOpen, setQuestionsModalOpen] = useState(); // 문항출제 팝업
+
+    // const [moduleNm, setModuleNm] = useState(''); // 모듈명 항목
+    // const [moduleDesc, setModuleDesc] = useState(''); // 모듈설명 항목
+    // const [moduleType, setModuleType] = useState(''); // 모듈타입 항목
+    // const [slideSpeed, setSlideSpeed] = useState(''); // 슬라이드스피드 항목
+    // const [learningType, setLearningType] = useState(''); // 학습방식 항목
+    // const [failToPass, setFailToPass] = useState(''); // 금지물품 통과시 불합격 처리 항목
+    // const [studyLvl, setStudyLvl] = useState(''); // 난이도레벨 항목
+    // const [timeLimit, setTimeLimit] = useState(''); // 제한시간 항목
+    // const [questionCnt, setQuestionCnt] = useState(''); // 출제문제수 항목
+    // const [useYn, setUseYn] = useState('Y'); // 사용여부 항목
+    // const [bagList, setBagList] = useState([]); // 출제문항 목록 배열
+
+    const [itemContainer, setItemContainer] = useState({}); // 항목 컨테이너
+
     const [selectedRowKeys, setSelectedRowKeys] = useState([]); //셀렉트 박스 option Selected 값
     const [open, setOpen] = useState(false);
     const [dataEdit, setDataEdit] = useState(false); // Drawer 수정 우측폼 상태
 
-    // 제한 시간 Value 설정 Start
-    const Minute_Opt = [];
-    for (let i = 5; i <= 120; i += 5) {
-        Minute_Opt.push({ value: i.toString(), label: i.toString() + '분' });
-    }
-    // 제한 시간 Value 설정 End
-
-    const [dataSource, setDataSource] = useState([
-        {
-            rowdata0: '1',
-            rowdata1: '물품연습 모듈',
-            rowdata2: '0',
-            rowdata3: '50',
-            rowdata4: '2023-03-16'
-        },
-        {
-            rowdata0: '2',
-            rowdata1: '단계학습 모듈',
-            rowdata2: '3',
-            rowdata3: '30',
-            rowdata4: '2023-03-16'
-        },
-        {
-            rowdata0: '3',
-            rowdata1: 'AI강화학습 모듈',
-            rowdata2: '3',
-            rowdata3: '40',
-            rowdata4: '2023-03-16'
-        },
-        {
-            rowdata0: '4',
-            rowdata1: '평가',
-            rowdata2: '2',
-            rowdata3: '25',
-            rowdata4: '2023-03-16'
-        }
-    ]);
-
+    // ===============================
+    // Api 호출 Start
+    // 조회 ======================================================
+    const [selectModuleListApi] = useSelectModuleListMutation(); // 조회 hooks api호출
+    const [selectModuleListData, setSelectModuleListData] = useState([]); // 조회 Data 값
+    const [selectModuleListLoading, setSelectModuleListLoading] = useState(false); // 로딩
+    const handel_selectModuleList_Api = async () => {
+        const SelectModuleListresponse = await selectModuleListApi({});
+        setSelectModuleListData([
+            ...SelectModuleListresponse?.data?.RET_DATA.map((d, i) => ({
+                key: d.moduleId,
+                rowdata0: i + 1, // 시퀀스
+                rowdata1: d.moduleNm, // 모듈명
+                rowdata2: d.studyLvl, // 난이도레벨
+                rowdata3: d.slideSpeed, // 슬라이드스피드
+                rowdata4: d.questionCnt, // 출제문제수
+                rowdata5: d.moduleType, // 모듈타입
+                rowdata6: d.learningType, // 학습방식
+                rowdata7: d.failToPass, // 금지물품 통과시 불합격 처리
+                rowdata8: d.useYn, // 사용여부
+                rowdata9: d.insertDate, // 등록일자
+                rowdata10: d.moduleDesc // 모듈설명
+            }))
+        ]);
+        setSelectModuleListLoading(false);
+    };
     const defaultColumns = [
         {
-            width: '80px',
             title: 'No.',
             dataIndex: 'rowdata0',
             align: 'center'
@@ -70,22 +97,81 @@ export const Curriculum = () => {
         {
             title: '모듈명',
             dataIndex: 'rowdata1',
-            align: 'center'
+            align: 'center',
+            render: (_, { rowdata1, rowdata10 }) => (
+                <Tooltip placement="top" title={rowdata10} arrow={true}>
+                    {rowdata1}
+                </Tooltip>
+            )
         },
         {
-            title: '슬라이드 속도',
+            title: '난이도 레벨',
             dataIndex: 'rowdata2',
             align: 'center',
-            render: (_, { rowdata2 }) => <> {rowdata2 === '0' ? '-' : rowdata2 + '초'} </>
+            render: (_, { rowdata2 }) => <> {rowdata2 + 'Lv'} </>
+        },
+        {
+            title: '슬라이드 스피드',
+            dataIndex: 'rowdata3',
+            align: 'center',
+            render: (_, { rowdata3 }) => <> {rowdata3 === '0' ? '-' : rowdata3 + '초'} </>
         },
         {
             title: '출제 문항 수',
-            dataIndex: 'rowdata3',
+            dataIndex: 'rowdata4',
             align: 'center'
         },
         {
+            title: '모듈타입',
+            dataIndex: 'rowdata5',
+            align: 'center',
+            render: (_, { rowdata5 }) => <> {rowdata5 === 's' ? 'Slide' : 'Cut'} </>
+        },
+        {
+            title: '학습방식',
+            dataIndex: 'rowdata6',
+            align: 'center',
+            render: (_, { rowdata6 }) => <> {rowdata6 === 'l' ? '학습' : '평가'} </>
+        },
+        {
+            title: '금지물품 통과시 불합격 처리',
+            dataIndex: 'rowdata7',
+            align: 'center',
+            render: (_, { rowdata7 }) => (
+                <>
+                    {rowdata7 === 'Y' ? (
+                        <Tag color={'green'} key={rowdata7}>
+                            사용
+                        </Tag>
+                    ) : (
+                        <Tag color={'volcano'} key={rowdata7}>
+                            미사용
+                        </Tag>
+                    )}
+                </>
+            )
+        },
+        {
+            title: '사용여부',
+            dataIndex: 'rowdata8',
+            align: 'center',
+            render: (_, { rowdata8 }) => (
+                <>
+                    {rowdata8 === 'Y' ? (
+                        <Tag color={'green'} key={rowdata8}>
+                            사용
+                        </Tag>
+                    ) : (
+                        <Tag color={'volcano'} key={rowdata8}>
+                            미사용
+                        </Tag>
+                    )}
+                </>
+            )
+        },
+        {
             title: '등록일자',
-            dataIndex: 'rowdata4',
+            dataIndex: 'rowdata9',
             align: 'center'
         },
         {
@@ -109,83 +195,119 @@ export const Curriculum = () => {
         }
     ];
 
-    const EditableContext = React.createContext(null);
-    const EditableRow = ({ index, ...props }) => {
-        const [form] = Form.useForm();
-        return (
-            <Form form={form} component={false}>
-                <EditableContext.Provider value={form}>
-                    <tr {...props} />
-                </EditableContext.Provider>
-            </Form>
-        );
-    };
-    const EditableCell = ({ title, editable, children, dataIndex, record, handleSave, ...restProps }) => {
-        const [editing, setEditing] = useState(false);
-        const inputRef = useRef(null);
-        const form = useContext(EditableContext);
-        useEffect(() => {
-            if (editing) {
-                inputRef.current.focus();
-            }
-        }, [editing]);
+    // 등록 ======================================================
+    const [insertModuleApi] = useInsertModuleMutation(); // 등록 hooks api호출
+    const handel_insertModule_Api = async () => {
+        const SelectModuleListresponse = await insertModuleApi({
+            moduleNm: itemContainer.moduleNm,
+            moduleDesc: itemContainer.moduleDesc,
+            studyLvl: itemContainer.studyLvl,
+            slideSpeed: itemContainer.slideSpeed,
+            moduleType: itemContainer.moduleType,
+            learningType: itemContainer.learningType,
+            failToPass: itemContainer.failToPass,
+            timeLimit: itemContainer.timeLimit,
+            useYn: itemContainer.useYn,
+            questionCnt: itemContainer.questionCnt,
+            bagList: itemContainer.bagList
+        });
 
-        const toggleEdit = () => {
-            setEditing(!editing);
-            form.setFieldsValue({
-                [dataIndex]: record[dataIndex]
-            });
-        };
-
-        const save = async () => {
-            try {
-                const values = await form.validateFields();
-                toggleEdit();
-                handleSave({
-                    ...record,
-                    ...values
-                });
-                // Data값이 변경될 경우 체크박스 체크
-                if (record[dataIndex] !== values[dataIndex]) {
-                    selectedRowKeys.length <= '0'
-                        ? onSelectChange([...selectedRowKeys, record.key])
-                        : selectedRowKeys.map((srk) => (srk === record.key ? '' : onSelectChange([...selectedRowKeys, record.key])));
-                }
-            } catch (errInfo) {
-                console.log('Save failed:', errInfo);
-            }
-        };
-        let childNode = children;
-        if (editable) {
-            childNode = editing ? (
-                <Form.Item style={{ margin: 0 }} name={dataIndex} rules={[{ required: true, message: `${title} is required.` }]}>
-                    <Input ref={inputRef} onPressEnter={save} onBlur={save} />
-                </Form.Item>
-            ) : (
-                <div className="editable-cell-value-wrap" onClick={toggleEdit} aria-hidden="true">
-                    {children}
-                </div>
-            );
-        }
-        return <td {...restProps}>{childNode}</td>;
+        SelectModuleListresponse?.data?.RET_CODE === '0100'
+            ? Modal.success({
+                  content: '등록 완료',
+                  onOk() {
+                      setOpen(false);
+                      setDataEdit(false);
+                      form.resetFields();
+                  }
+              })
+            : Modal.success({
+                  content: '등록 오류',
+                  onOk() {}
+              });
     };
+
+    // 상세정보 ======================================================
+    const [selectModuleApi] = useSelectModuleMutation(); // 상세 hooks api호출
+    const handel_SelectModule_Api = async (moduleId) => {
+        const SelectModuleresponse = await selectModuleApi({
+            moduleId: moduleId
+        });
+        setItemContainer(SelectModuleresponse.data.RET_DATA);
+    };
+
+    // 수정 ======================================================
+    const [updateModulApi] = useUpdateModuleMutation(); // 수정 hooks api호출
+    const [updateModulData, setUpdateModulData] = useState(); // 수정 Data 값
+    const handel_UpdateModul_Api = async (moduleId) => {
+        const UpdateModulresponse = await updateModulApi({
+            moduleId: itemContainer.moduleId,
+            moduleNm: itemContainer.moduleNm,
+            moduleDesc: itemContainer.moduleDesc,
+            studyLvl: itemContainer.studyLvl,
+            slideSpeed: itemContainer.slideSpeed,
+            moduleType: itemContainer.moduleType,
+            learningType: itemContainer.learningType,
+            failToPass: itemContainer.failToPass,
+            timeLimit: itemContainer.timeLimit,
+            useYn: itemContainer.useYn,
+            questionCnt: itemContainer.questionCnt,
+            bagList: itemContainer.bagList
+        });
+
+        UpdateModulresponse?.data?.RET_CODE === '0100'
+            ? Modal.success({
+                  content: '수정 완료',
+                  onOk() {
+                      setOpen(false);
+                      setDataEdit(false);
+                      form.resetFields();
+                      handel_selectModuleList_Api();
+                  }
+              })
+            : Modal.success({
+                  content: '수정 오류',
+                  onOk() {}
+              });
+    };
+
+    // 삭제 ======================================================
+    const [deleteModuleApi] = useDeleteModuleMutation(); // 삭제 hooks api호출
+    const handel_DeleteModule_Api = async (moduleId) => {
+        const DeleteModuleresponse = await deleteModuleApi({
+            moduleId: moduleId
+        });
+        DeleteModuleresponse?.data?.RET_CODE === '0300'
+            ? Modal.success({
+                  content: '삭제 완료',
+                  onOk() {}
+              })
+            : Modal.success({
+                  content: '삭제 오류',
+                  onOk() {}
+              });
+    };
+    // Api 호출 End
+    // ===============================
+
+    // 제한 시간 Value 설정 Start
+    const Minute_Opt = [];
+    for (let i = 5; i <= 120; i += 5) {
+        Minute_Opt.push({ value: i.toString(), label: i.toString() + '분' });
+    }
+    // 제한 시간 Value 설정 End
 
     const handleSave = (row) => {
-        const newData = [...dataSource];
+        const newData = [...selectModuleListData];
         const index = newData.findIndex((item) => row.key === item.key);
         const item = newData[index];
         newData.splice(index, 1, {
             ...item,
             ...row
         });
-        setDataSource(newData);
+        setSelectModuleListData(newData);
     };
-    const components = {
-        body: {
-            row: EditableRow,
-            cell: EditableCell
-        }
-    };
+
     const columns = defaultColumns.map((col) => {
         if (!col.editable) {
             return col;
@@ -194,7 +316,6 @@ export const Curriculum = () => {
             ...col,
             onCell: (record) => ({
                 record,
-                editable: col.editable,
                 dataIndex: col.dataIndex,
                 title: col.title,
                 handleSave
@@ -209,8 +330,8 @@ export const Curriculum = () => {
 
     // 출제 문항 선택 완료 (Modal 닫기)
     const Questions_handleOk = (Question_Value) => {
-        console.log('문제 출제:', Question_Value);
-        setQuestion_props_value(Question_Value);
+        // console.log('문제 출제:', Question_Value);
+        setItemContainer({ ...itemContainer, bagList: Question_Value, ...itemContainer, questionCnt: Question_Value.length });
         setQuestionsModalOpen(false);
     };
 
@@ -233,47 +354,35 @@ export const Curriculum = () => {
 
     // 추가 버튼
     const handleAdd = () => {
-        setOpen(true);
+        setItemContainer(null);
+        form.resetFields();
         setDataEdit(false);
+        setOpen(true);
     };
 
     // 추가 취소
     const onAddClose = () => {
+        setItemContainer(null);
+        form.resetFields();
         setOpen(false);
         setDataEdit(false);
-        form.resetFields();
     };
 
     // 수정 버튼
-    const handleEdit = (EditKey) => {
-        console.log(EditKey);
+    const handleEdit = (moduleId) => {
+        handel_SelectModule_Api(moduleId);
+        setModuleId(moduleId);
+        form.resetFields();
         setDataEdit(true);
         setOpen(true);
     };
 
     // 추가 및 수정 처리
     const onAddSubmit = () => {
-        console.log(eduTypeIdVal, eduTypeNmVal, eduTypeDcVal, pointsStdIdVal, eduTypeYnVal);
         if (dataEdit === true) {
-            Modal.success({
-                content: '수정 완료',
-                onOk() {
-                    setOpen(false);
-                    setDataEdit(false);
-                    handleEduType();
-                    form.resetFields();
-                }
-            });
+            handel_UpdateModul_Api(moduleId);
         } else {
-            Modal.success({
-                content: '추가 완료',
-                onOk() {
-                    setOpen(false);
-                    setDataEdit(false);
-                    handleEduType();
-                    form.resetFields();
-                }
-            });
+            handel_insertModule_Api();
         }
     };
 
@@ -287,28 +396,22 @@ export const Curriculum = () => {
             confirm({
                 title: '선택한 항목을 삭제하시겠습니까?',
                 icon: <ExclamationCircleFilled />,
-                content: selectedRowKeys + ' 항목의 데이터',
+                // content: selectedRowKeys + ' 번째 항목의 데이터',
                 okText: '예',
                 okType: 'danger',
                 cancelText: '아니오',
                 onOk() {
-                    Modal.success({
-                        content: '삭제완료'
-                    });
+                    handel_DeleteModule_Api(selectedRowKeys);
                 },
-                onCancel() {
-                    Modal.error({
-                        content: '삭제취소'
-                    });
-                }
+                onCancel() {}
             });
         }
     };
 
-    const onChange = ({ target: { value } }) => {
-        console.log(value);
-        setQuestionMethod(value);
-    };
+    useEffect(() => {
+        setSelectModuleListLoading(true); // 로딩 호출
+        handel_selectModuleList_Api(); // 조회
+    }, []);
 
     return (
         <>
@@ -342,11 +445,10 @@ export const Curriculum = () => {
                         </Col>
                     </Row>
                     <Table
-                        components={components}
                         rowClassName={() => 'editable-row'}
                         bordered={true}
-                        dataSource={dataSource}
-                        loading={loading}
+                        dataSource={selectModuleListData}
+                        loading={selectModuleListLoading}
                         columns={columns}
                         rowSelection={rowSelection}
                     />
@@ -398,49 +500,38 @@ export const Curriculum = () => {
                     <Form layout="vertical" form={form}>
                         <Row gutter={24}>
                             <Col span={24}>
-                                <Form.Item
-                                    name="ModuleName"
-                                    label="모듈명"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: '모듈명'
-                                        }
-                                    ]}
-                                >
-                                    <Input placeholder="# 모듈명" />
+                                <Form.Item label="모듈명" initialValue={itemContainer?.moduleNm}>
+                                    <Input
+                                        name="moduleNm"
+                                        onChange={(e) => setItemContainer({ ...itemContainer, moduleNm: e.target.value })}
+                                        placeholder="# 모듈명"
+                                        value={itemContainer?.moduleNm}
+                                    />
                                 </Form.Item>
                             </Col>
                         </Row>
                         <Row gutter={24}>
                             <Col span={24}>
-                                <Form.Item
-                                    name="ModuleDesc"
-                                    label="모듈설명"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: '모듈설명'
-                                        }
-                                    ]}
-                                >
-                                    <Input placeholder="# 모듈설명" />
+                                <Form.Item label="모듈설명" initialValue={itemContainer?.moduleDesc}>
+                                    <Input
+                                        name="moduleDesc"
+                                        placeholder="# 모듈설명"
+                                        onChange={(e) => setItemContainer({ ...itemContainer, moduleDesc: e.target.value })}
+                                        value={itemContainer?.moduleDesc}
+                                    />
                                 </Form.Item>
                             </Col>
                         </Row>
                         <Divider style={{ margin: '10px 0' }} />
                         <Row gutter={24}>
                             <Col span={12}>
-                                <Form.Item
-                                    name="ModulType"
-                                    label="모듈타입 (슬라이드 / 컷)"
-                                    rules={[
-                                        {
-                                            required: true
-                                        }
-                                    ]}
-                                >
-                                    <Radio.Group onChange={onChange} buttonStyle="solid" defaultValue="s">
+                                <Form.Item label="모듈타입" initialValue={itemContainer?.moduleType}>
+                                    <Radio.Group
+                                        name="moduleType"
+                                        onChange={(e) => setItemContainer({ ...itemContainer, moduleType: e })}
+                                        buttonStyle="solid"
+                                        value={itemContainer?.moduleType}
+                                    >
                                         <Radio.Button value="s">
                                             <span style={{ padding: '0 3px' }}>Slide 방식</span>
                                         </Radio.Button>
@@ -453,23 +544,26 @@ export const Curriculum = () => {
                             </Col>
                             <Col span={12}>
                                 <Form.Item
-                                    name="SlideSpeed"
                                     label="문제 속도"
                                     rules={[
                                         {
                                             required: true,
-                                            message: 'Please Enter Slide Speed.'
+                                            message: 'Please Enter Question Speed.'
                                         }
                                     ]}
+                                    initialValue={itemContainer?.slideSpeed}
                                 >
                                     <Select
+                                        name="slideSpeed"
                                         defaultValue={{
-                                            value: 0,
+                                            value: '',
                                             label: '# 속도'
                                         }}
                                         style={{
                                             width: '100%'
                                         }}
+                                        value={itemContainer?.slideSpeed}
+                                        onChange={(e) => setItemContainer({ ...itemContainer, slideSpeed: e })}
                                         options={[
                                             {
                                                 value: '1',
@@ -499,39 +593,31 @@ export const Curriculum = () => {
                         <Divider style={{ margin: '10px 0' }} />
                         <Row gutter={24}>
                             <Col span={12}>
-                                <Form.Item
-                                    name="EduMethod"
-                                    label="학습방식"
-                                    rules={[
-                                        {
-                                            required: true
-                                        }
-                                    ]}
-                                >
-                                    <Radio.Group onChange={onChange} buttonStyle="solid" defaultValue="s">
+                                <Form.Item label="학습방식" initialValue={itemContainer?.learningType}>
+                                    <Radio.Group
+                                        name="learningType"
+                                        onChange={(e) => setItemContainer({ ...itemContainer, learningType: e.target.value })}
+                                        buttonStyle="solid"
+                                        value={itemContainer?.learningType}
+                                    >
                                         <Radio.Button value="l">
-                                            {' '}
-                                            <span style={{ padding: '0 10px' }}>학습</span>{' '}
+                                            <span style={{ padding: '0 10px' }}>학습</span>
                                         </Radio.Button>
                                         <span style={{ padding: '0 10px' }}></span>
                                         <Radio.Button value="e">
-                                            {' '}
-                                            <span style={{ padding: '0 10px' }}>평가</span>{' '}
+                                            <span style={{ padding: '0 10px' }}>평가</span>
                                         </Radio.Button>
                                     </Radio.Group>
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
-                                <Form.Item
-                                    name="FailProcess"
-                                    label="금지물품 통과시 불합격 처리"
-                                    rules={[
-                                        {
-                                            required: true
-                                        }
-                                    ]}
-                                >
-                                    <Radio.Group onChange={onChange} buttonStyle="solid" defaultValue="s">
+                                <Form.Item label="금지물품 통과시 불합격 처리" initialValue={itemContainer?.failToPass}>
+                                    <Radio.Group
+                                        name="failToPass"
+                                        onChange={(e) => setItemContainer({ ...itemContainer, failToPass: e.target.value })}
+                                        buttonStyle="solid"
+                                        value={itemContainer?.failToPass}
+                                    >
                                         <Radio.Button value="Y">
                                             <span style={{ padding: '0 10px' }}>사용</span>
                                         </Radio.Button>
@@ -546,23 +632,18 @@ export const Curriculum = () => {
                         <Divider style={{ margin: '10px 0' }} />
                         <Row gutter={24}>
                             <Col span={12}>
-                                <Form.Item
-                                    name="DifficultyLevel"
-                                    label="난이도 레벨"
-                                    rules={[
-                                        {
-                                            required: true
-                                        }
-                                    ]}
-                                >
+                                <Form.Item label="난이도 레벨" initialValue={itemContainer?.studyLvl}>
                                     <Select
+                                        name="studyLvl"
                                         defaultValue={{
-                                            value: 0,
+                                            value: '',
                                             label: '# 난이도레벨'
                                         }}
                                         style={{
                                             width: '100%'
                                         }}
+                                        value={itemContainer?.studyLvl}
+                                        onChange={(e) => setItemContainer({ ...itemContainer, studyLvl: e })}
                                         options={[
                                             {
                                                 value: '1',
@@ -589,29 +670,24 @@ export const Curriculum = () => {
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
-                                <Form.Item
-                                    name="limit_time "
-                                    label="제한시간"
-                                    rules={[
-                                        {
-                                            required: true
-                                        }
-                                    ]}
-                                >
+                                <Form.Item label="제한시간" initialValue={itemContainer?.timeLimit}>
                                     <Select
+                                        name="timeLimit"
                                         defaultValue={{
-                                            value: 0,
+                                            value: '',
                                             label: '# 제한시간'
                                         }}
                                         style={{
                                             width: '100%'
                                         }}
+                                        value={itemContainer?.timeLimit}
+                                        onChange={(e) => setItemContainer({ ...itemContainer, timeLimit: e })}
                                         options={Minute_Opt}
                                     />
                                 </Form.Item>
                             </Col>
                         </Row>
-                        <Divider style={{ margin: '10px 0' }} />
+                        {/* <Divider style={{ margin: '10px 0' }} />
                         <Row gutter={24}>
                             <Col span={24}>
                                 <Form.Item
@@ -624,23 +700,32 @@ export const Curriculum = () => {
                                         }
                                     ]}
                                 >
-                                    <Input placeholder="# 출제문제수" />
+                                    <Input
+                                        placeholder="# 출제문제수"
+                                        onChange={(e) => setQuestionCnt(e.target.value)}
+                                        value={questionCnt}
+                                    />
                                 </Form.Item>
                             </Col>
-                        </Row>
+                        </Row> */}
                         <Divider style={{ margin: '10px 0' }} />
                         <Row gutter={24}>
                             <Col span={24}>
-                                <Form.Item
-                                    name="useYn"
-                                    label="사용여부"
-                                    rules={[
-                                        {
-                                            required: true
-                                        }
-                                    ]}
-                                >
-                                    <Switch checkedChildren="사용" unCheckedChildren="미사용" style={{ width: '80px' }} />
+                                <Form.Item label="사용여부" initialValue={itemContainer?.useYn}>
+                                    <Radio.Group
+                                        name="useYn"
+                                        onChange={(e) => setItemContainer({ ...itemContainer, useYn: e.target.value })}
+                                        buttonStyle="solid"
+                                        value={itemContainer?.useYn}
+                                    >
+                                        <Radio.Button value="Y">
+                                            <span style={{ padding: '0 10px' }}>사용</span>
+                                        </Radio.Button>
+                                        <span style={{ padding: '0 10px' }}></span>
+                                        <Radio.Button value="N">
+                                            <span style={{ padding: '0 10px' }}>미사용</span>
+                                        </Radio.Button>
+                                    </Radio.Group>
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -651,17 +736,11 @@ export const Curriculum = () => {
                                     <div>총 출제 문항 수</div>
                                     <Badge
                                         style={{ width: '40px', marginTop: '5px' }}
-                                        count={question_props_value.length}
+                                        count={itemContainer?.questionCnt}
                                         color="#52c41a"
                                         overflowCount={9999}
                                     />
                                 </Col>
-
-                                {/* 테스트 */}
-                                {/* {question_props_value.map((q) => {
-                                    return <Col span={4}>{q}</Col>;
-                                })} */}
-                                {/* 테스트 */}
                             </Row>
                         </Card>
                         <Divider style={{ margin: '10px 0' }} />

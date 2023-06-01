@@ -1,9 +1,14 @@
 /* eslint-disable*/
 import React, { useEffect, useState } from 'react';
 import { Typography } from '@mui/material';
-import { Row, Col, Table, Button, Select, Form, Modal, Divider } from 'antd';
+import { Row, Col, Table, Button, Select, Form, Modal, Divider, Tag } from 'antd';
 
-import { useGetXrayinformationListMutation } from '../../../hooks/api/ContentsManagement/ContentsManagement';
+// 학습모듈 관리 - 랜덤추출, 물품팝업조회, 모듈에 등록된 문제목록 가져오기
+import {
+    useSelectModuleRandomMutation, // 랜덤추출
+    useSelectModuleXrayPopListMutation, // 물품팝업조회
+    useSelectModuleQuestionMutation // 모듈에 등록된 문제목록 가져오기
+} from '../../../hooks/api/CurriculumManagement/CurriculumManagement';
 
 // project import
 import MainCard from 'components/MainCard';
@@ -12,11 +17,7 @@ export const XrayInformation = (props) => {
     const { confirm } = Modal;
     const [randemBoxOpen, setRandemBoxOpen] = useState(false);
 
-    const [getXrayinformationList] = useGetXrayinformationListMutation(); // 콘텐츠 정보 관리 hooks api호출
-    const [xrayinformationList, setXrayinformationList] = useState(); // 콘텐츠 정보관리 리스트 상단 값
-
     const [selectedRowKeys, setSelectedRowKeys] = useState([]); //셀렉트 박스 option Selected 값(상단)
-    const [dataSource, setDataSource] = useState([]); // 상단 Table 데이터 값
 
     const [loading, setLoading] = useState(false);
     const [form] = Form.useForm();
@@ -24,12 +25,18 @@ export const XrayInformation = (props) => {
     const [randemLevel, setRandemLevel] = useState(0); // 난이도 레벨
     const [randemlimit, setRandemlimit] = useState(5); // 출제 문항수
 
+    // ===============================
+    // Api 호출 Start
+
+    // 물품팝업조회 ======================================================
+    const [selectModuleXrayPopListApi] = useSelectModuleXrayPopListMutation(); // 물품팝업조회 hooks api호출
+    const [selectModuleXrayPopListData, setSelectModuleXrayPopListData] = useState(); // 물품팝업조회 Data 값
     // 데이터 값 선언
-    const handleXrayinformation = async () => {
-        const Xrayinformationresponse = await getXrayinformationList({});
-        setXrayinformationList(Xrayinformationresponse?.data?.RET_DATA);
-        setDataSource([
-            ...Xrayinformationresponse?.data?.RET_DATA.map((d, i) => ({
+    const handle_SelectModuleXrayPopList_Api = async () => {
+        const selectModuleXrayPopListresponse = await selectModuleXrayPopListApi({});
+        // setSelectModuleXrayPopListData(selectModuleXrayPopListresponse?.data?.RET_DATA);
+        setSelectModuleXrayPopListData([
+            ...selectModuleXrayPopListresponse?.data?.RET_DATA.map((d, i) => ({
                 key: d.bagScanId,
                 rowdataNo: i,
                 rowdata0: i + 1,
@@ -38,22 +45,70 @@ export const XrayInformation = (props) => {
                 rowdata3: d.unitName /*물품명*/,
                 rowdata4: d.openYn /*개봉여부*/,
                 rowdata5: d.passYn /*통과여부*/,
-                rowdata6: d.actionDiv /*action구분*/,
-                rowdata7: d.studyLvl /*학습Level*/,
-                rowdata8: d.useYn /*사용여부*/,
-                rowdata9: d.frontUseYn /*정면사용여부*/,
-                rowdata10: d.sideUseYn /*측면사용여부*/,
-                rowdata11: d.decipMachineCd /*판독기기코드*/,
-                rowdata12: d.duplexYn /*양방향여부*/,
-                rowdata13: d.seq /*순번*/,
-                rowdata14: d.insertDate /*등록일시*/,
-                rowdata15: d.insertId /*등록자*/,
-                rowdata16: d.updateDate /*수정일시*/,
-                rowdata17: d.updateId /*수정자*/
+                rowdata6: d.actionDivName,
+                rowdata7: d.actionDiv /*action구분*/,
+                rowdata8: d.studyLvl /*학습Level*/,
+                rowdata9: d.useYn /*사용여부*/,
+                rowdata10: d.frontUseYn /*정면사용여부*/,
+                rowdata11: d.sideUseYn /*측면사용여부*/,
+                rowdata12: d.decipMachineCd /*판독기기코드*/,
+                rowdata13: d.duplexYn /*양방향여부*/,
+                rowdata14: d.seq /*순번*/,
+                rowdata15: d.insertDate /*등록일시*/,
+                rowdata16: d.insertId /*등록자*/,
+                rowdata17: d.updateDate /*수정일시*/,
+                rowdata18: d.updateId /*수정자*/
             }))
         ]);
         setLoading(false);
     };
+
+    // 랜덤추출 ======================================================
+    const [selectModuleRandomApi] = useSelectModuleRandomMutation(); // 랜덤추출 hooks api호출
+    // 랜덤 데이터 값 선언
+    const handle_selectModuleRandom_Api = async (randemLevel, randemlimit) => {
+        if (randemLevel === '0') {
+            handle_SelectModuleXrayPopList_Api();
+        } else {
+            const selectModuleXrayPopListresponse = await selectModuleRandomApi({
+                studyLvl: randemLevel,
+                questionCnt: randemlimit
+            });
+            // setSelectModuleXrayPopListData(selectModuleXrayPopListresponse?.data?.RET_DATA);
+            setSelectModuleXrayPopListData([
+                ...selectModuleXrayPopListresponse?.data?.RET_DATA.map((d, i) => ({
+                    key: d.bagScanId,
+                    rowdataNo: i,
+                    rowdata0: i + 1,
+                    rowdata1: d.bagScanId /*가방촬영id*/,
+                    rowdata2: d.unitId /*물품id*/,
+                    rowdata3: d.unitName /*물품명*/,
+                    rowdata4: d.openYn /*개봉여부*/,
+                    rowdata5: d.passYn /*통과여부*/,
+                    rowdata6: d.actionDivName,
+                    rowdata7: d.actionDiv /*action구분*/,
+                    rowdata8: d.studyLvl /*학습Level*/,
+                    rowdata9: d.useYn /*사용여부*/,
+                    rowdata10: d.frontUseYn /*정면사용여부*/,
+                    rowdata11: d.sideUseYn /*측면사용여부*/,
+                    rowdata12: d.decipMachineCd /*판독기기코드*/,
+                    rowdata13: d.duplexYn /*양방향여부*/,
+                    rowdata14: d.seq /*순번*/,
+                    rowdata15: d.insertDate /*등록일시*/,
+                    rowdata16: d.insertId /*등록자*/,
+                    rowdata17: d.updateDate /*수정일시*/,
+                    rowdata18: d.updateId /*수정자*/
+                }))
+            ]);
+            setLoading(false);
+        }
+    };
+    // 모듈에 등록된 문제목록 가져오기 ======================================================
+    const [selectModuleQuestionApi] = useSelectModuleQuestionMutation(); // 모듈에 등록된 문제목록 가져오기 hooks api호출
+    const [selectModuleQuestionData, setSelectModuleQuestionData] = useState(); // 모듈에 등록된 문제목록 가져오기 Data 값
+
+    // Api 호출 End
+    // ===============================
 
     // 상단 테이블 Title
     const defaultColumns = [
@@ -96,19 +151,34 @@ export const XrayInformation = (props) => {
             width: '80px',
             title: 'Action구분',
             dataIndex: 'rowdata6',
-            align: 'center'
+            align: 'center',
+            render: (_, { rowdata6 }) => <>{rowdata6}</>
         },
         {
             width: '100px',
             title: '난이도 Level',
-            dataIndex: 'rowdata7',
-            align: 'center'
+            dataIndex: 'rowdata8',
+            align: 'center',
+            render: (_, { rowdata8 }) => <> {rowdata8 + 'Lv'} </>
         },
         {
             width: '80px',
             title: '사용여부',
-            dataIndex: 'rowdata8',
-            align: 'center'
+            dataIndex: 'rowdata9',
+            align: 'center',
+            render: (_, { rowdata9 }) => (
+                <>
+                    {rowdata9 === 'Y' ? (
+                        <Tag color={'green'} key={rowdata9}>
+                            사용
+                        </Tag>
+                    ) : (
+                        <Tag color={'volcano'} key={rowdata9}>
+                            미사용
+                        </Tag>
+                    )}
+                </>
+            )
         }
     ];
 
@@ -121,33 +191,22 @@ export const XrayInformation = (props) => {
 
     // 타이틀 컬럼  = 데이터 컬럼 Index세팅
     const handleSave = (row) => {
-        const newData = [...dataSource];
+        const newData = [...selectModuleXrayPopListData];
         const index = newData.findIndex((item) => row.key === item.key);
         const item = newData[index];
         newData.splice(index, 1, {
             ...item,
             ...row
         });
-        setDataSource(newData);
-    };
-
-    const components = {
-        //     body: {
-        //         row: EditableRow,
-        //         cell: EditableCell
-        //     }
+        setSelectModuleXrayPopListData(newData);
     };
 
     const columns = defaultColumns.map((col) => {
-        // if (!col.editable) {
-        //     return col;
-        // }
         return {
             ...col,
             onCell: (record) => {
                 return {
                     record,
-                    // editable: col.editable,
                     dataIndex: col.dataIndex,
                     title: col.title,
                     handleSave
@@ -169,7 +228,6 @@ export const XrayInformation = (props) => {
     };
 
     const QuestionsOk = () => {
-        //console.log(selectedRowKeys);
         props.QuestionCnt(selectedRowKeys);
     };
 
@@ -182,23 +240,23 @@ export const XrayInformation = (props) => {
     const Questions_handleRandem = () => {
         console.log('난이도 레벨 : ', randemLevel);
         console.log('출제 문항수 : ', randemlimit);
+        handle_selectModuleRandom_Api(randemLevel, randemlimit);
         setRandemBoxOpen(false);
     };
 
     useEffect(() => {
         setLoading(true); // 로딩 호출
-        handleXrayinformation(); // 그룹 api 호출
+        handle_SelectModuleXrayPopList_Api(); // 그룹 api 호출
     }, []);
 
     return (
         <>
-            <MainCard title="정보 관리">
+            <MainCard title="출제 문항">
                 <Typography variant="body1">
                     <Table
                         size="middle"
-                        components={components}
                         bordered={true}
-                        dataSource={dataSource}
+                        dataSource={selectModuleXrayPopListData}
                         loading={loading}
                         columns={columns}
                         rowSelection={rowSelection}
@@ -304,6 +362,7 @@ export const XrayInformation = (props) => {
                                         ]}
                                     >
                                         <Select
+                                            disabled={randemLevel === '0' ? true : false}
                                             defaultValue={{
                                                 value: randemlimit,
                                                 label: '# 출제 문항수'

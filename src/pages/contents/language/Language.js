@@ -240,16 +240,15 @@ export const Language = () => {
 
     // 추가
     const handleAdd = () => {
-        console.log('언어 추가');
         setDataEdit(false);
         setOpen(true);
         setUnitParams(null);
         form.resetFields();
     };
 
-    // 물품 수정 버튼
+    // 수정 버튼
     const handleUnitMod = async (e) => {
-        console.log('상세:', e);
+        // console.log('상세:', e);
         const response = await getLanguage({
             codeNo: e
         });
