@@ -28,7 +28,8 @@ import {
     useSelectUserMutation,
     useInsertUserMutation,
     useUpdateUserMutation,
-    useDeleteUserMutation
+    useDeleteUserMutation,
+    useSelectUserCheckMutation
 } from '../../../hooks/api/StudentsManagement/StudentsManagement';
 
 import { PlusOutlined, EditFilled, DeleteFilled, ExclamationCircleFilled } from '@ant-design/icons';
@@ -40,55 +41,29 @@ import moment from 'moment';
 export const Studentinformation = () => {
     const { confirm } = Modal;
     const [form] = Form.useForm();
-    const [getStudentInformationList] = useSelectUserListMutation(); // 교육생 정보 hooks api호출
-    const [studentInformationList, setStudentInformationList] = useState(); // 교육생 정보 리스트 값
+
     const [dataSource, setDataSource] = useState([]); // Table 데이터 값
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false); // Drawer 추가 우측폼 상태
     const [dataEdit, setDataEdit] = useState(false); // Drawer 수정 우측폼 상태
 
+    const [selectedRowKeys, setSelectedRowKeys] = useState([]); //셀렉트 박스 option Selected 값
+    const [userId, setUserId] = useState([]); // 선택한 교육생 아이디 값
+    const [idChk, setIdChk] = useState(false); // 선택한 교육생 아이디 값
     const [itemContainer, setItemContainer] = useState({}); // 항목 컨테이너
 
-    // 입교신청서 및 기본정보
-    // const [userId, setUserId] = useState(); // 아이디
-    // const [userPw, setUserPw] = useState(); // 비밀번호
-    // const [userNm, setUserNm] = useState(); // 회원명(국문)
-    // const [authCd, setAuthCd] = useState(); // 권한코드( 0001 학생)
-    // const [eduName, setEduName] = useState(); // 보안검색요원초기교육
-    // const [userNmCh, setUserNmCh] = useState(); // 회원명(한문)
-    // const [userNmEn, setUserNmEn] = useState(); // 회원명(영문)
-    // const [sex, setSex] = useState(); // 성별
-    // const [birthDay, setBirthDay] = useState(); // 생년월일
-    // const [age, setAge] = useState(); // 나이(만)
-    // const [address, setAddress] = useState(); // 주소
-    // const [email, setEmail] = useState(); // 이메일
-    // const [department, setDepartment] = useState(); // 소속
-    // const [position, setPosition] = useState(); // 직책
-    // const [work, setWork] = useState(); // 담당업무
-    // const [telNo, setTelNo] = useState(); // 전화번호
-    // const [hpNo, setHpNo] = useState(); // 휴대폰번호
-    // const [careerYn, setCareerYn] = useState('N'); // 보안검색 경력유무
-    // const [career1, setCareer1] = useState(); // 보안검색 경력1
-    // const [career2, setCareer2] = useState(); // 보안검색 경력2
-    // const [career3, setCareer3] = useState(); // 보안검색 경력3
-    // const [career4, setCareer4] = useState(); // 보안검색 경력4
-    // const [career5, setCareer5] = useState(); // 보안검색 경력5
-    // const [lastEduSchool, setLastEduSchool] = useState(); // 최종출신학교
-    // const [militaryCareer, setMilitaryCareer] = useState(); // 군경력
-    // const [registNumber, setRegistNumber] = useState(); // 주민번호
-    // const [employStatusYn, setEmployStatusYn] = useState(); // 재직여부
-    // const [lastEdu, setLastEdu] = useState(); // 최종학력
-    // const [company, setCompany] = useState(); // 소속회사명
-    // const [writeDate, setWriteDate] = useState(); // 입교신청일
-
-    // 데이터 값 선언
-    const handleStudents = async () => {
-        const StudentInformationresponse = await getStudentInformationList({});
-        setStudentInformationList(StudentInformationresponse?.data?.RET_DATA);
+    // ===============================
+    // Api 호출 Start
+    // 조회 ======================================================
+    const [SelectUserListApi] = useSelectUserListMutation(); // 교육생 정보 hooks api호출
+    const [selectUserListData, setSelectUserListData] = useState(); // 교육생 정보 리스트 값
+    const handle_SelectUserList_Api = async () => {
+        const SelectUserListresponse = await SelectUserListApi({});
+        setSelectUserListData(SelectUserListresponse?.data?.RET_DATA);
         setDataSource([
-            ...StudentInformationresponse?.data?.RET_DATA.map((d, i) => ({
-                key: i,
-                userNo: d.userNo,
+            ...SelectUserListresponse?.data?.RET_DATA.map((d, i) => ({
+                key: d.userId,
+                userNo: i + 1,
                 userId: d.userId,
                 userNm: d.userNm,
                 userPw: d.userPw,
@@ -102,6 +77,8 @@ export const Studentinformation = () => {
                 telNo: d.telNo,
                 hpNo: d.hpNo,
                 email: d.email,
+                eduName: d.eduName,
+                writeDate: d.writeDate,
                 loginStart: d.loginStart,
                 loginLast: d.loginLast,
                 loginError: d.loginError,
@@ -119,8 +96,209 @@ export const Studentinformation = () => {
         setLoading(false);
     };
 
+    // 등록 ======================================================
+    const [InsertUserApi] = useInsertUserMutation(); // 교육생 정보 hooks api호출
+    const handle_InsertUser_Api = async () => {
+        const InsertUserresponse = await InsertUserApi({
+            eduName: itemContainer.eduName, //                      교육과정명
+            writeDate: itemContainer.writeDate, //                  입교신청일
+            userId: itemContainer.userId, //                        아이디
+            userPw: itemContainer.userPw, //                        패스워드
+            userNm: itemContainer.userNm, //                        성명국문
+            userNmCh: itemContainer.userNmCh, //                    성명한문
+            userNmEn: itemContainer.userNmEn, //                    성명영어
+            sex: itemContainer.sex, //                              성별 1 남 2여
+            registNumber: itemContainer.registNumber, //            주민번호
+            birthDay: itemContainer.birthDay, //                    생일
+            age: itemContainer.age, //                              나이
+            telNo: itemContainer.telNo, //                          전화번호
+            hpNo: itemContainer.hpNo, //                            핸드폰번호
+            email: itemContainer.email, //                          이메일
+            address: itemContainer.address, //                      주소
+            company: itemContainer.company, //                      소속회사명
+            employStatusYn: itemContainer.employStatusYn, //        재직여부
+            dept: itemContainer.dept, //                            소속
+            position: itemContainer.position, //                    직책
+            work: itemContainer.work, //                            담당업무
+            lastEdu: itemContainer.lastEdu, //                      최종학력
+            lastEduName: itemContainer.lastEduName, //              최종학력명
+            lastEduDept: itemContainer.lastEduDept, //              최종학력학과
+            lastEduYear: itemContainer.lastEduYear, //              최종학력년제
+            lastEduEnd: itemContainer.lastEduEnd, //                졸업 Y /재학 N
+            militaryStartDate: itemContainer.militaryStartDate, //  군경력시작일
+            militaryEndDate: itemContainer.militaryEndDate, //      군경력 종료일
+            militaryCareer: itemContainer.militaryCareer, //        군별
+            militaryClass: itemContainer.militaryClass, //          병과
+            militaryEnd: itemContainer.militaryEnd, //              최종계급
+            careerYn: itemContainer.careerYn, //                    보안경력유무
+            career1: itemContainer.career1, //                      보안검색경력담당업무1
+            careerStartDate1: itemContainer.careerStartDate1, //    보안검색경력시작일1
+            careerEndDate1: itemContainer.careerEndDate1, //        보안검색경력종료일1
+            careerCompany1: itemContainer.careerCompany1, //        보안검색경력소속1
+            careerPosition1: itemContainer.careerPosition1, //       보안검색경력직책1
+            career2: itemContainer.career2,
+            careerStartDate2: itemContainer.careerStartDate2,
+            careerEndDate2: itemContainer.careerEndDate2,
+            careerCompany2: itemContainer.careerCompany2,
+            careerPosition2: itemContainer.careerPosition2
+            // career3: itemContainer.career3,
+            // careerStartDate3: itemContainer.careerStartDate3,
+            // careerEndDate3: itemContainer.careerEndDate3,
+            // careerCompany3: itemContainer.careerCompany3,
+            // careerPosition3: itemContainer.careerPosition3,
+            // career4: itemContainer.career4,
+            // careerStartDate4: itemContainer.careerStartDate4,
+            // careerEndDate4: itemContainer.careerEndDate4,
+            // careerCompany4: itemContainer.careerCompany4,
+            // careerPosition4: itemContainer.careerPosition4,
+            // career5: itemContainer.career5,
+            // careerStartDate5: itemContainer.careerStartDate5,
+            // careerEndDate5: itemContainer.careerEndDate5,
+            // careerCompany5: itemContainer.careerCompany5,
+            // careerPosition5: itemContainer.careerPosition5
+        });
+        InsertUserresponse?.data?.RET_CODE === '0100'
+            ? Modal.success({
+                  content: '등록 완료',
+                  onOk() {
+                      setOpen(false);
+                      setDataEdit(false);
+                      form.resetFields();
+                      handle_SelectUserList_Api();
+                  }
+              })
+            : Modal.success({
+                  content: '등록 오류',
+                  onOk() {}
+              });
+    };
+
+    // 아이디 중복 체크 ===========================================
+    const [SelectUserCheckApi] = useSelectUserCheckMutation(); // 상세 hooks api호출
+    const handel_SelectUserCheck_Api = async (userId) => {
+        const SelectUserCheckresponse = await SelectUserCheckApi({
+            userId: userId
+        });
+        SelectUserCheckresponse.data.RET_CODE === '9996'
+            ? (setItemContainer({ ...itemContainer, userId: '' }),
+              setIdChk(false),
+              Modal.success({
+                  content: SelectUserCheckresponse.data.RET_DESC,
+                  onOk() {}
+              }))
+            : setIdChk(true);
+    };
+
+    // 상세 ======================================================
+    const [SelectUserApi] = useSelectUserMutation(); // 상세 hooks api호출
+    const handel_SelectUser_Api = async (userId) => {
+        const SelectUserresponse = await SelectUserApi({
+            userId: userId
+        });
+        setItemContainer(SelectUserresponse.data.RET_DATA);
+    };
+
+    // 수정 ======================================================
+    const [UpdateUserApi] = useUpdateUserMutation(); // 수정 hooks api호출
+    const handel_UpdateUser_Api = async () => {
+        const UpdateUserresponse = await UpdateUserApi({
+            useYn: itemContainer.useYn, //                          사용여부
+            eduName: itemContainer.eduName, //                      교육과정명
+            writeDate: itemContainer.writeDate, //                  입교신청일
+            userId: userId, //                                      아이디
+            userPw: itemContainer.userPw, //                        패스워드
+            userNm: itemContainer.userNm, //                        성명국문
+            userNmCh: itemContainer.userNmCh, //                    성명한문
+            userNmEn: itemContainer.userNmEn, //                    성명영어
+            sex: itemContainer.sex, //                              성별 1 남 2여
+            registNumber: itemContainer.registNumber, //            주민번호
+            birthDay: itemContainer.birthDay, //                    생일
+            age: itemContainer.age, //                              나이
+            telNo: itemContainer.telNo, //                          전화번호
+            hpNo: itemContainer.hpNo, //                            핸드폰번호
+            email: itemContainer.email, //                          이메일
+            address: itemContainer.address, //                      주소
+            company: itemContainer.company, //                      소속회사명
+            employStatusYn: itemContainer.employStatusYn, //        재직여부
+            dept: itemContainer.dept, //                            소속
+            position: itemContainer.position, //                    직책
+            work: itemContainer.work, //                            담당업무
+            lastEdu: itemContainer.lastEdu, //                      최종학력
+            lastEduName: itemContainer.lastEduName, //              최종학력명
+            lastEduDept: itemContainer.lastEduDept, //              최종학력학과
+            lastEduYear: itemContainer.lastEduYear, //              최종학력년제
+            lastEduEnd: itemContainer.lastEduEnd, //                졸업 Y /재학 N
+            militaryStartDate: itemContainer.militaryStartDate, //  군경력시작일
+            militaryEndDate: itemContainer.militaryEndDate, //      군경력 종료일
+            militaryCareer: itemContainer.militaryCareer, //        군별
+            militaryClass: itemContainer.militaryClass, //          병과
+            militaryEnd: itemContainer.militaryEnd, //              최종계급
+            careerYn: itemContainer.careerYn, //                    보안경력유무
+            career1: itemContainer.career1, //                      보안검색경력담당업무1
+            careerStartDate1: itemContainer.careerStartDate1, //    보안검색경력시작일1
+            careerEndDate1: itemContainer.careerEndDate1, //        보안검색경력종료일1
+            careerCompany1: itemContainer.careerCompany1, //        보안검색경력소속1
+            careerPosition1: itemContainer.careerPosition1, //       보안검색경력직책1
+            career2: itemContainer.career2,
+            careerStartDate2: itemContainer.careerStartDate2,
+            careerEndDate2: itemContainer.careerEndDate2,
+            careerCompany2: itemContainer.careerCompany2,
+            careerPosition2: itemContainer.careerPosition2
+            // career3: itemContainer.career3,
+            // careerStartDate3: itemContainer.careerStartDate3,
+            // careerEndDate3: itemContainer.careerEndDate3,
+            // careerCompany3: itemContainer.careerCompany3,
+            // careerPosition3: itemContainer.careerPosition3,
+            // career4: itemContainer.career4,
+            // careerStartDate4: itemContainer.careerStartDate4,
+            // careerEndDate4: itemContainer.careerEndDate4,
+            // careerCompany4: itemContainer.careerCompany4,
+            // careerPosition4: itemContainer.careerPosition4,
+            // career5: itemContainer.career5,
+            // careerStartDate5: itemContainer.careerStartDate5,
+            // careerEndDate5: itemContainer.careerEndDate5,
+            // careerCompany5: itemContainer.careerCompany5,
+            // careerPosition5: itemContainer.careerPosition5
+        });
+        console.log(userId);
+        console.log(UpdateUserresponse);
+        UpdateUserresponse?.data?.RET_CODE === '0100'
+            ? Modal.success({
+                  content: '수정 완료',
+                  onOk() {
+                      setOpen(false);
+                      setDataEdit(false);
+                      form.resetFields();
+                      handle_SelectUserList_Api();
+                  }
+              })
+            : Modal.success({
+                  content: '수정 오류',
+                  onOk() {}
+              });
+    };
+    // 삭제 ======================================================
+    const [DeleteUserApi] = useDeleteUserMutation(); // 삭제 hooks api호출
+    const handel_DeleteUser_Api = async (userIdList) => {
+        const DeleteUserresponse = await DeleteUserApi({
+            userIdList: userIdList
+        });
+        DeleteUserresponse?.data?.RET_CODE === '0300'
+            ? Modal.success({
+                  content: '삭제 완료',
+                  onOk() {
+                      handle_SelectUserList_Api();
+                  }
+              })
+            : Modal.success({
+                  content: '삭제 오류',
+                  onOk() {}
+              });
+    };
+
+    // Api 호출 End
+    // ===============================
     const columns = [
-        Table.SELECTION_COLUMN,
         {
             width: '70px',
             title: 'No',
@@ -130,14 +308,14 @@ export const Studentinformation = () => {
             align: 'center'
         },
         {
-            title: '사용자ID',
+            title: '교육생 ID',
             dataIndex: 'userId',
             sorter: (a, b) => a.name.length - b.name.length,
             ellipsis: true,
             align: 'center'
         },
         {
-            title: '사용자명',
+            title: '교육생 명',
             dataIndex: 'userNm',
             sorter: (a, b) => a.chinese - b.chinese,
             ellipsis: true,
@@ -149,46 +327,40 @@ export const Studentinformation = () => {
             align: 'center'
         },
         {
-            width: '100px',
+            width: '110px',
             title: '부서',
             dataIndex: 'dept',
             align: 'center'
         },
         {
-            width: '90px',
+            width: '110px',
             title: '직위',
             dataIndex: 'position',
             align: 'center'
         },
         {
-            title: '교육구분',
-            dataIndex: 'trainingDiv',
-            align: 'center'
-        },
-        // ,
-        // {
-        //     title: '최초로그인',
-        //     dataIndex: 'loginStart',
-        //     align: 'center'
-        // }
-        {
-            title: '최종로그인',
-            dataIndex: 'loginLast',
+            title: '교육 구분',
+            dataIndex: 'eduName',
             align: 'center'
         },
         {
-            width: '90px',
+            title: '입교 신청일',
+            dataIndex: 'writeDate',
+            align: 'center'
+        },
+        {
+            width: '85px',
             title: '사용여부',
             dataIndex: 'useYn',
             align: 'center',
             render: (_, { useYn }) => (
                 <>
-                    {useYn === '1' ? (
-                        <Tag color={'green'} key={useYn} onClick={() => handelUser()}>
+                    {useYn === 'Y' ? (
+                        <Tag color={'green'} key={useYn}>
                             사용
                         </Tag>
                     ) : (
-                        <Tag color={'volcano'} key={useYn} onClick={() => handelUser()}>
+                        <Tag color={'volcano'} key={useYn}>
                             미사용
                         </Tag>
                     )}
@@ -196,23 +368,20 @@ export const Studentinformation = () => {
             )
         },
         {
-            title: '교육생 사진',
-            dataIndex: 'userPhoto',
-            align: 'center'
-        },
-        {
+            width: '110px',
             title: '등록일자',
             dataIndex: 'insertDate',
             align: 'center'
         },
         {
+            width: '120px',
             title: '수정',
-            render: (_, { userNo }) => (
+            render: (_, { userId }) => (
                 <>
                     <Tooltip title="수정" color="#108ee9">
                         <Button
                             type="primary"
-                            onClick={() => handleEdit(userNo)}
+                            onClick={() => handleEdit(userId)}
                             style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
                             icon={<EditFilled />}
                         >
@@ -232,63 +401,82 @@ export const Studentinformation = () => {
         //setSortedInfo(sorter);
     };
 
-    const rowSelection = {
-        onChange: (selectedRowKeys, selectedRows) => {
-            console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-        },
-        onSelect: (record, selected, selectedRows) => {
-            console.log(record, selected, selectedRows);
-        },
-        onSelectAll: (selected, selectedRows, changeRows) => {
-            console.log(selected, selectedRows, changeRows);
-        }
+    //체크 박스 이벤트
+    const onSelectChange = (newSelectedRowKeys) => {
+        console.log('selectedRowKeys changed: ', newSelectedRowKeys);
+        setSelectedRowKeys(newSelectedRowKeys);
     };
 
-    const handelUser = (e) => {
-        console.log(e, '사용여부');
+    //체크 박스 선택
+    const rowSelection = {
+        selectedRowKeys,
+        onChange: onSelectChange
+    };
+
+    // 수정 버튼 클릭
+    const handleEdit = (userId) => {
+        handel_SelectUser_Api(userId);
+        setUserId(userId);
+        form.resetFields();
+        setDataEdit(true);
+        setIdChk(true);
+        setOpen(true);
     };
 
     // 추가 버튼
     const handleAdd = () => {
+        setItemContainer([]);
+        form.resetFields();
         setDataEdit(false);
         setOpen(true);
     };
 
     // 추가 및 수정 취소
     const onAddClose = () => {
-        setOpen(false);
+        setItemContainer([]);
         form.resetFields();
+        setOpen(false);
     };
 
     // 추가 및 수정 처리
     const onAddSubmit = () => {
-        // console.log(procGroupCdVal, procGroupNmVal, procGroupYnVal);
         if (dataEdit === true) {
-            Modal.success({
-                content: '수정 완료',
-                onOk() {
-                    setOpen(false);
-                    setDataEdit(false);
-                    // handleTheoryGroup();
-                    form.resetFields();
-                }
+            handel_UpdateUser_Api();
+        } else {
+            handle_InsertUser_Api();
+        }
+    };
+
+    // 아이디 중복 체크 버튼 클릭 이벤트
+    const handel_IdChk = (user_id) => {
+        handel_SelectUserCheck_Api(user_id);
+    };
+
+    // 삭제
+    const handleDel = () => {
+        if (selectedRowKeys == '') {
+            Modal.error({
+                content: '삭제할 항목을 선택해주세요.'
             });
         } else {
-            Modal.success({
-                content: '추가 완료',
+            confirm({
+                title: '선택한 항목을 삭제하시겠습니까?',
+                icon: <ExclamationCircleFilled />,
+                // content: selectedRowKeys + ' 번째 항목의 데이터',
+                okText: '예',
+                okType: 'danger',
+                cancelText: '아니오',
                 onOk() {
-                    setOpen(false);
-                    setDataEdit(false);
-                    // handleTheoryGroup();
-                    form.resetFields();
-                }
+                    handel_DeleteUser_Api(selectedRowKeys);
+                },
+                onCancel() {}
             });
         }
     };
 
     useEffect(() => {
         setLoading(true);
-        handleStudents();
+        handle_SelectUserList_Api();
     }, []);
 
     return (
@@ -306,6 +494,16 @@ export const Studentinformation = () => {
                                         icon={<PlusOutlined />}
                                     >
                                         추가
+                                    </Button>
+                                </Tooltip>
+                                <Tooltip title="삭제">
+                                    <Button
+                                        type="danger"
+                                        onClick={handleDel}
+                                        style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                        icon={<DeleteFilled />}
+                                    >
+                                        삭제
                                     </Button>
                                 </Tooltip>
                             </Space>
@@ -365,6 +563,40 @@ export const Studentinformation = () => {
             >
                 <Form layout="vertical" form={form}>
                     <Card>
+                        {idChk ? (
+                            <Row gutter={24}>
+                                <Col span={24}>
+                                    <Form.Item
+                                        label="사용여부"
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: '사용여부'
+                                            }
+                                        ]}
+                                        initialValue={itemContainer?.useYn}
+                                    >
+                                        <Radio.Group
+                                            name="useYn"
+                                            onChange={(e) => setItemContainer({ ...itemContainer, useYn: e.target.value })}
+                                            buttonStyle="solid"
+                                            value={itemContainer?.useYn}
+                                        >
+                                            <Radio.Button value="Y">
+                                                <span style={{ padding: '0 15px' }}>사용</span>
+                                            </Radio.Button>
+                                            <span style={{ padding: '0 10px' }}></span>
+                                            <Radio.Button value="N">
+                                                <span style={{ padding: '0 15px' }}>미사용</span>
+                                            </Radio.Button>
+                                        </Radio.Group>
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+                        ) : (
+                            ''
+                        )}
+
                         <Row gutter={24}>
                             <Col span={24}>
                                 <Form.Item
@@ -381,18 +613,18 @@ export const Studentinformation = () => {
                                         name="eduName"
                                         defaultValue="# 교육과정"
                                         style={{
-                                            width: '285px'
+                                            width: '100%'
                                         }}
                                         onChange={(e) => setItemContainer({ ...itemContainer, eduName: e })}
                                         value={itemContainer?.eduName}
                                         options={[
                                             {
                                                 label: '보안검색요원 초기교육',
-                                                value: '1'
+                                                value: '보안검색요원 초기교육'
                                             },
                                             {
                                                 label: '항공경비요원 초기교육',
-                                                value: '2'
+                                                value: '항공경비요원 초기교육'
                                             }
                                         ]}
                                     />
@@ -413,12 +645,15 @@ export const Studentinformation = () => {
                                 >
                                     <DatePicker
                                         name="writeDate"
-                                        onChange={(e) => setItemContainer({ ...itemContainer, writeDate: e })}
+                                        // onChange={(e) => setItemContainer({ ...itemContainer, writeDate: e.format('YYYY-MM-DD') })}
+                                        onChange={(e) => {
+                                            setItemContainer({ ...itemContainer, writeDate: e.format('YYYY-MM-DD') });
+                                        }}
                                         placeholder="입교신청일"
                                         style={{
                                             width: '100%'
                                         }}
-                                        value={itemContainer?.writeDate}
+                                        value={itemContainer?.writeDate ? moment(itemContainer.writeDate) : null}
                                     />
                                 </Form.Item>
                             </Col>
@@ -436,12 +671,35 @@ export const Studentinformation = () => {
                                     ]}
                                     initialValue={itemContainer?.userId}
                                 >
-                                    <Input
-                                        name="userId"
-                                        placeholder="아이디"
-                                        onChange={(e) => setItemContainer({ ...itemContainer, userId: e.target.value })}
-                                        value={itemContainer?.userId}
-                                    />
+                                    {idChk ? ( // 수정의 경우
+                                        <Input
+                                            name="userId"
+                                            placeholder="아이디"
+                                            onChange={(e) => setItemContainer({ ...itemContainer, userId: e.target.value })}
+                                            value={itemContainer?.userId}
+                                            disabled={idChk}
+                                        />
+                                    ) : (
+                                        // 등록의 경우
+                                        <Space direction="horizontal">
+                                            <Input
+                                                name="userId"
+                                                placeholder="아이디"
+                                                onChange={(e) => setItemContainer({ ...itemContainer, userId: e.target.value })}
+                                                value={itemContainer?.userId}
+                                                disabled={idChk}
+                                            />
+                                            <Button
+                                                style={{
+                                                    width: 80
+                                                }}
+                                                onClick={() => handel_IdChk(itemContainer?.userId)}
+                                                disabled={idChk}
+                                            >
+                                                사용가능
+                                            </Button>
+                                        </Space>
+                                    )}
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
@@ -600,8 +858,13 @@ export const Studentinformation = () => {
                                 >
                                     <DatePicker
                                         name="birthDay"
-                                        onChange={(e) => setItemContainer({ ...itemContainer, birthDay: e })}
-                                        value={itemContainer?.birthDay}
+                                        onChange={(e) => {
+                                            setItemContainer({
+                                                ...itemContainer,
+                                                birthDay: e.format('YYYY-MM-DD')
+                                            });
+                                        }}
+                                        value={itemContainer?.birthDay ? moment(itemContainer.birthDay) : null}
                                         placeholder="생년월일"
                                         style={{
                                             width: '48%'
@@ -768,7 +1031,7 @@ export const Studentinformation = () => {
                                         style={{
                                             width: '285px'
                                         }}
-                                        onChange={(e) => setItemContainer({ ...itemContainer, employStatusYn: e.target.value })}
+                                        onChange={(e) => setItemContainer({ ...itemContainer, employStatusYn: e })}
                                         options={[
                                             {
                                                 label: '자사근로자',
@@ -948,10 +1211,17 @@ export const Studentinformation = () => {
                                             locale={locale}
                                             onChange={(dates) => {
                                                 const [start, end] = dates;
-                                                setItemContainer({ ...itemContainer, militaryStartDate: start.format('YYYY-MM') });
-                                                setItemContainer({ ...itemContainer, militaryEndDate: end.format('YYYY-MM') });
+                                                setItemContainer({
+                                                    ...itemContainer,
+                                                    militaryEndDate: end.format('YYYY-MM'),
+                                                    ...itemContainer,
+                                                    militaryStartDate: start.format('YYYY-MM')
+                                                });
                                             }}
-                                            // value={[itemContainer?.militaryStartDate, itemContainer?.militaryEndDate]}
+                                            value={[
+                                                itemContainer?.militaryStartDate ? moment(itemContainer.militaryStartDate) : null,
+                                                itemContainer?.militaryEndDate ? moment(itemContainer.militaryEndDate) : null
+                                            ]}
                                         />
                                         <Input
                                             style={{
@@ -1026,11 +1296,18 @@ export const Studentinformation = () => {
                                                     picker="month"
                                                     locale={locale}
                                                     onChange={(dates) => {
-                                                        const [start1, end1] = dates;
-                                                        setItemContainer({ ...itemContainer, careerStartDate1: start1.format('YYYY-MM') });
-                                                        setItemContainer({ ...itemContainer, careerEndDate1: end1.format('YYYY-MM') });
+                                                        const [start, end] = dates;
+                                                        setItemContainer({
+                                                            ...itemContainer,
+                                                            careerEndDate1: end.format('YYYY-MM'),
+                                                            ...itemContainer,
+                                                            careerStartDate1: start.format('YYYY-MM')
+                                                        });
                                                     }}
-                                                    // value={[itemContainer?.careerStartDate1, itemContainer?.careerEndDate1]}
+                                                    value={[
+                                                        itemContainer?.careerStartDate1 ? moment(itemContainer.careerStartDate1) : null,
+                                                        itemContainer?.careerEndDate1 ? moment(itemContainer.careerEndDate1) : null
+                                                    ]}
                                                 />
                                                 <Input
                                                     name="careerCompany1"
@@ -1082,7 +1359,10 @@ export const Studentinformation = () => {
                                                         setItemContainer({ ...itemContainer, careerStartDate2: start2.format('YYYY-MM') });
                                                         setItemContainer({ ...itemContainer, careerEndDate2: end2.format('YYYY-MM') });
                                                     }}
-                                                    // value={[itemContainer?.careerStartDate2, itemContainer?.careerEndDate2]}
+                                                    value={[
+                                                        itemContainer?.careerStartDate2 ? moment(itemContainer.careerStartDate2) : null,
+                                                        itemContainer?.careerEndDate2 ? moment(itemContainer.careerEndDate2) : null
+                                                    ]}
                                                 />
                                                 <Input
                                                     name="careerCompany2"
@@ -1116,8 +1396,8 @@ export const Studentinformation = () => {
                                         </Form.Item>
                                     </Col>
                                 </Row>
-                                {/* 3 */}
-                                <Divider style={{ margin: '10px 0' }} />
+                                {/* 3 ~ 5 */}
+                                {/* <Divider style={{ margin: '10px 0' }} />
                                 <Row gutter={24}>
                                     <Col span={24}>
                                         <Form.Item label="보안검색경력 [3]">
@@ -1168,7 +1448,7 @@ export const Studentinformation = () => {
                                         </Form.Item>
                                     </Col>
                                 </Row>
-                                {/* 4 */}
+                                
                                 <Divider style={{ margin: '10px 0' }} />
                                 <Row gutter={24}>
                                     <Col span={24}>
@@ -1220,7 +1500,7 @@ export const Studentinformation = () => {
                                         </Form.Item>
                                     </Col>
                                 </Row>
-                                {/* 5 */}
+                                
                                 <Divider style={{ margin: '10px 0' }} />
                                 <Row gutter={24}>
                                     <Col span={24}>
@@ -1271,7 +1551,7 @@ export const Studentinformation = () => {
                                             </Space>
                                         </Form.Item>
                                     </Col>
-                                </Row>
+                                </Row> */}
                             </>
                         ) : (
                             ''
@@ -1286,4 +1566,3 @@ export const Studentinformation = () => {
         </>
     );
 };
-// export default Studentinformation;

@@ -58,9 +58,24 @@ export const studentsManagement = createApi({
                 method: 'POST',
                 body: body
             })
+        }),
+
+        // 교육생 관리 > 교육생 아이디 중복 체크
+        selectUserCheck: builder.mutation({
+            query: (body) => ({
+                url: 'adm/userMgr/selectUserCheck.do',
+                method: 'POST',
+                body: body
+            })
         })
     })
 });
 
-export const { useSelectUserListMutation, useSelectUserMutation, useInsertUserMutation, useUpdateUserMutation, useDeleteUserMutation } =
-    studentsManagement;
+export const {
+    useSelectUserListMutation,
+    useSelectUserMutation,
+    useInsertUserMutation,
+    useUpdateUserMutation,
+    useDeleteUserMutation,
+    useSelectUserCheckMutation
+} = studentsManagement;
