@@ -34,7 +34,12 @@ const items = [
         ])
     ]),
 
-    getItem('학습 관리', 'sub2', <AppstoreAddOutlined />, [
+    getItem('강사 관리', 'sub2', <AppstoreAddOutlined />, [
+        getItem(<Link to="/teacher/teacherinformation">강사 정보조회</Link>, '6', <FileTextOutlined />),
+        getItem(<Link to="/teacher/theoryinformation">이론 조회</Link>, '7', <FileTextOutlined />)
+    ]),
+
+    getItem('학습 관리', 'sub3', <AppstoreAddOutlined />, [
         // getItem('교육 모듈구성', 'g5', <BlockOutlined />, [
         getItem(<Link to="/learning/curriculum">학습모듈 관리</Link>, '10', <FileTextOutlined />),
         getItem(<Link to="/educurriculum/eduprocadd">학습과정 관리</Link>, '177', <FileTextOutlined />),
@@ -42,12 +47,12 @@ const items = [
         // ]),
     ]),
 
-    getItem('이론 교육 관리', 'sub3', <AppstoreAddOutlined />, [
+    getItem('이론 교육 관리', 'sub4', <AppstoreAddOutlined />, [
         getItem(<Link to="/theory/theorygroup">그룹 관리</Link>, '12', <FileTextOutlined />),
         getItem(<Link to="/theory/theoryinfo">정보 관리</Link>, '13', <FileTextOutlined />)
     ]),
 
-    getItem('교육생 관리', 'sub4', <AppstoreAddOutlined />, [
+    getItem('교육생 관리', 'sub5', <AppstoreAddOutlined />, [
         getItem(<Link to="/student/studentinformation">교육생 정보조회</Link>, '18', <FileTextOutlined />)
     ]),
 

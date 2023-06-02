@@ -17,7 +17,7 @@ export const XrayInformation = (props) => {
     const { confirm } = Modal;
     const [randemBoxOpen, setRandemBoxOpen] = useState(false);
 
-    const [selectedRowKeys, setSelectedRowKeys] = useState([]); //셀렉트 박스 option Selected 값(상단)
+    const [selectedRowKeys, setSelectedRowKeys] = useState(props.BagList); //셀렉트 박스 option Selected 값(상단)
 
     const [loading, setLoading] = useState(false);
     const [form] = Form.useForm();

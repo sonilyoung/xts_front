@@ -13,6 +13,9 @@ import { ImagesManagement } from 'pages/contents/imagesmanagement'; // 콘텐츠
 import { Xrayinformation } from 'pages/contents/xrayinformation'; // 콘텐츠 관리 / X-ray 콘텐츠 관리 / 정보 관리
 import { XrayinfoWrite } from 'pages/contents/xrayinformationimage'; // 콘텐츠 관리 / X-ray 콘텐츠 관리 / 정보 관리 등록
 
+import { Teacherinformation } from 'pages/teacher/teacherinformation'; // 강사 관리 / 강사정보 관리
+import { Theoryinformation } from 'pages/teacher/theoryinformation'; // 강사 관리 / 이론정보 관리
+
 // 학습 관리
 import { XrayModule } from 'pages/learning/xraymodule'; // 학습관리 / 교육 모듈 구성 / X-ray 판독모듈 구성
 import { Curriculum } from 'pages/learning/curriculum'; // 학습관리 / 교육 모듈 구성 / 커리큘럼 관리
@@ -97,6 +100,16 @@ const MainRoutes = {
             // 콘텐츠 관리 > X-ray 콘텐츠 관리 > 이미지 관리
             path: '/contents/xrayinformationimage',
             element: <XrayinfoWrite />
+        },
+        {
+            // 강사 관리 > 강사정보 관리
+            path: '/teacher/teacherinformation',
+            element: <Teacherinformation />
+        },
+        {
+            // 강사 관리 > 이론정보 관리
+            path: '/teacher/theoryinformation',
+            element: <Theoryinformation />
         },
         {
             // 학습관리 > 학습모듈 관리

@@ -54,7 +54,7 @@ export const Curriculum = () => {
     // const [timeLimit, setTimeLimit] = useState(''); // 제한시간 항목
     // const [questionCnt, setQuestionCnt] = useState(''); // 출제문제수 항목
     // const [useYn, setUseYn] = useState('Y'); // 사용여부 항목
-    // const [bagList, setBagList] = useState([]); // 출제문항 목록 배열
+    const [bagList, setBagList] = useState([]); // 출제문항 목록 배열
 
     const [itemContainer, setItemContainer] = useState({}); // 항목 컨테이너
 
@@ -233,15 +233,16 @@ export const Curriculum = () => {
         const SelectModuleresponse = await selectModuleApi({
             moduleId: moduleId
         });
+
         setItemContainer(SelectModuleresponse.data.RET_DATA);
+        setBagList(SelectModuleresponse.data.RET_DATA.bagList);
     };
 
     // 수정 ======================================================
     const [updateModulApi] = useUpdateModuleMutation(); // 수정 hooks api호출
-    const [updateModulData, setUpdateModulData] = useState(); // 수정 Data 값
     const handel_UpdateModul_Api = async (moduleId) => {
         const UpdateModulresponse = await updateModulApi({
-            moduleId: itemContainer.moduleId,
+            moduleId: moduleId,
             moduleNm: itemContainer.moduleNm,
             moduleDesc: itemContainer.moduleDesc,
             studyLvl: itemContainer.studyLvl,
@@ -252,7 +253,7 @@ export const Curriculum = () => {
             timeLimit: itemContainer.timeLimit,
             useYn: itemContainer.useYn,
             questionCnt: itemContainer.questionCnt,
-            bagList: itemContainer.bagList
+            bagList: bagList
         });
 
         UpdateModulresponse?.data?.RET_CODE === '0100'
@@ -275,12 +276,14 @@ export const Curriculum = () => {
     const [deleteModuleApi] = useDeleteModuleMutation(); // 삭제 hooks api호출
     const handel_DeleteModule_Api = async (moduleId) => {
         const DeleteModuleresponse = await deleteModuleApi({
-            moduleId: moduleId
+            moduleIdList: moduleId
         });
         DeleteModuleresponse?.data?.RET_CODE === '0300'
             ? Modal.success({
                   content: '삭제 완료',
-                  onOk() {}
+                  onOk() {
+                      handel_selectModuleList_Api();
+                  }
               })
             : Modal.success({
                   content: '삭제 오류',
@@ -331,7 +334,8 @@ export const Curriculum = () => {
     // 출제 문항 선택 완료 (Modal 닫기)
     const Questions_handleOk = (Question_Value) => {
         // console.log('문제 출제:', Question_Value);
-        setItemContainer({ ...itemContainer, bagList: Question_Value, ...itemContainer, questionCnt: Question_Value.length });
+        setBagList(Question_Value);
+        setItemContainer({ ...itemContainer, questionCnt: Question_Value.length });
         setQuestionsModalOpen(false);
     };
 
@@ -454,7 +458,6 @@ export const Curriculum = () => {
                     />
                 </Typography>
             </MainCard>
-
             {/* 추가 폼 Start */}
             <Drawer
                 maskClosable={false}
@@ -759,7 +762,6 @@ export const Curriculum = () => {
                 </MainCard>
             </Drawer>
             {/* 추가 폼 End */}
-
             {/* 출제 문항 검색 Modal Start */}
             <Modal
                 open={questionsModalOpen}
@@ -779,7 +781,7 @@ export const Curriculum = () => {
                     </Button>
                 ]}
             >
-                <XrayInformation QuestionCnt={Questions_handleOk} />
+                <XrayInformation QuestionCnt={Questions_handleOk} BagList={bagList.slice()} />
             </Modal>
             {/* 출제 문항 검색 Modal End */}
         </>

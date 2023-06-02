@@ -1009,7 +1009,7 @@ export const EduProcAdd = () => {
                 open={eduDayModalOpen}
                 onOk={EduDay_handleOk}
                 onCancel={EduDay_handleCancel}
-                width={850}
+                width={950}
                 style={{
                     left: 130,
                     zIndex: 999
@@ -1028,7 +1028,10 @@ export const EduProcAdd = () => {
                     <Form layout="horizontal" form={form}>
                         <Row gutter={24} style={{ marginBottom: 14 }}>
                             <Col span={20} style={{ textAlign: 'center' }}>
-                                <Tag color="#108ee9" style={{ padding: '11px 280px', borderRadius: '5px', fontSize: '14px' }}>
+                                <Tag
+                                    color="#108ee9"
+                                    style={{ float: 'left', padding: '11px 280px', borderRadius: '5px', fontSize: '14px' }}
+                                >
                                     2023년 {valueBaseLines}차
                                 </Tag>
                             </Col>
@@ -1040,7 +1043,7 @@ export const EduProcAdd = () => {
                                             style={{
                                                 float: 'right',
                                                 cursor: 'pointer',
-                                                padding: '11px 40px',
+                                                padding: '11px 46px',
                                                 borderRadius: '5px',
                                                 fontSize: '14px'
                                             }}
@@ -1054,8 +1057,9 @@ export const EduProcAdd = () => {
 
                         {Array.from({ length: valueDays }, (_, index) => (
                             <Row gutter={24} key={index}>
-                                <Col span={8}>
+                                <Col span={7}>
                                     <RangePicker
+                                        style={{ height: '88px' }}
                                         name={`Day ${index + 1}`}
                                         id={`Day ${index + 1}`}
                                         defaultValue={[dayjs(startedudate, 'YYYY-MM-DD'), dayjs(endedudate, 'YYYY-MM-DD')]}
@@ -1063,9 +1067,40 @@ export const EduProcAdd = () => {
                                         disabled={valueDays - 1 === index ? [false, true] : index === 0 ? [true, false] : [false, false]}
                                     />
                                 </Col>
-                                <Col span={16}>
+
+                                <Col span={17}>
                                     <Form.Item name={`EduDay00${index + 1}`}>
                                         <Select
+                                            placeholder="# 모듈 선택"
+                                            mode="multiple"
+                                            style={{
+                                                width: '100%'
+                                            }}
+                                            onChange={handleChange}
+                                            options={[
+                                                {
+                                                    value: '물품연습 모듈',
+                                                    label: '물품연습 모듈'
+                                                },
+                                                {
+                                                    value: '학습 모듈',
+                                                    label: '학습 모듈'
+                                                },
+                                                {
+                                                    value: 'AI강화학습 모듈',
+                                                    label: 'AI강화학습 모듈'
+                                                },
+                                                {
+                                                    value: '평가 모듈',
+                                                    label: '평가 모듈'
+                                                }
+                                            ]}
+                                        />
+                                    </Form.Item>
+
+                                    <Form.Item name={`EduDay10${index + 1}`}>
+                                        <Select
+                                            placeholder="# 메뉴 선택"
                                             mode="multiple"
                                             style={{
                                                 width: '100%'

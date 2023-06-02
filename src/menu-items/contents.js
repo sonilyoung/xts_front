@@ -91,7 +91,7 @@ export const xrayinformation = {
     ]
 };
 
-export const XrayinfoWrite = {
+export const xrayinfoWrite = {
     id: '5',
     title: 'Navigation',
     type: 'group',
@@ -108,6 +108,39 @@ export const XrayinfoWrite = {
     ]
 };
 
+export const teacherinformation = {
+    id: '6',
+    title: 'Navigation',
+    type: 'group',
+    children: [
+        {
+            id: '/teacher/teacherinformation',
+            title: '강사 관리 > 강사정보 조회',
+            subtitle: '강사정보 조회',
+            type: 'item',
+            url: '/teacher/teacherinformation',
+            icon: icons.ProjectOutlined,
+            breadcrumbs: true
+        }
+    ]
+};
+
+export const theoryinformation = {
+    id: '7',
+    title: 'Navigation',
+    type: 'group',
+    children: [
+        {
+            id: '/teacher/theoryinformation',
+            title: '강사 관리 > 이론 관리',
+            subtitle: '이론 관리',
+            type: 'item',
+            url: '/teacher/theoryinformation',
+            icon: icons.ProjectOutlined,
+            breadcrumbs: true
+        }
+    ]
+};
 // export const xrayModule = {
 //     id: '9',
 //     title: 'Navigation',
