@@ -80,6 +80,79 @@ export const curriculumManagement = createApi({
                 body: body
             })
         }),
+
+        // 학습과정 관리 > 조회
+        selectBaselineList: builder.mutation({
+            query: (body) => ({
+                url: 'adm/eduMgr/selectBaselineList.do',
+                method: 'POST',
+                body: body
+            })
+        }),
+        // 학습과정 관리 > 상세
+        selectBaseline: builder.mutation({
+            query: (body) => ({
+                url: 'adm/eduMgr/selectBaseline.do',
+                method: 'POST',
+                body: body
+            })
+        }),
+        // 학습과정 관리 > 등록
+        insertBaseline: builder.mutation({
+            query: (body) => ({
+                url: 'adm/eduMgr/insertBaseline.do',
+                method: 'POST',
+                body: body
+            })
+        }),
+        // 학습과정 관리 > 등록 - (커리큘럼 메뉴목록 조회)
+        selectModuleMenuList: builder.mutation({
+            query: (body) => ({
+                url: 'adm/system/selectModuleMenuList.do',
+                method: 'POST',
+                body: body
+            })
+        }),
+        // 학습과정 관리 > 수정
+        updateBaseline: builder.mutation({
+            query: (body) => ({
+                url: 'adm/eduMgr/updateBaseline.do',
+                method: 'POST',
+                body: body
+            })
+        }),
+        // 학습과정 관리 > 삭제
+        deleteBaseline: builder.mutation({
+            query: (body) => ({
+                url: 'adm/eduMgr/deleteBaseline.do',
+                method: 'POST',
+                body: body
+            })
+        }),
+        // 학습과정 관리 > 커리큘럼 교육생삭제
+        deleteBaselineStudent: builder.mutation({
+            query: (body) => ({
+                url: 'adm/eduMgr/deleteBaselineStudent.do',
+                method: 'POST',
+                body: body
+            })
+        }),
+        // 학습과정 관리 > 학습일정 상세정보 팝업
+        selectBaselineEduDateList: builder.mutation({
+            query: (body) => ({
+                url: 'adm/eduMgr/selectBaselineEduDateList.do',
+                method: 'POST',
+                body: body
+            })
+        }),
+        // 학습과정 관리 > 학습생 인원 상세정보 팝업
+        selectBaselineStuList: builder.mutation({
+            query: (body) => ({
+                url: 'adm/eduMgr/selectBaselineStuList.do',
+                method: 'POST',
+                body: body
+            })
+        }),
         // Xray배점관리 > 조회 (상단)
         selectPointStdList: builder.mutation({
             query: (body) => ({
@@ -173,12 +246,21 @@ export const {
     useSelectModuleXrayPopListMutation, // 학습모듈 관리 > 물품팝업조회
     useSelectModuleQuestionMutation, // 학습모듈 관리 > 모듈에 등록된 문제목록 가져오기
 
+    useSelectBaselineListMutation, // 학습과정 관리 조회
+    useSelectBaselineMutation, // 학습과정 관리 상세
+    useInsertBaselineMutation, // 학습과정 관리 등록
+    useSelectModuleMenuListMutation, // 학습과정 관리 등록-(커리큘럼 메뉴목록 조회)
+    useUpdateBaselineMutation, // 학습과정 관리 수정
+    useDeleteBaselineMutation, // 학습과정 관리 삭제
+    useDeleteBaselineStudentMutation, // 학습과정 관리 커리큘럼 교육생삭제
+    useSelectBaselineEduDateListMutation, // 학습과정 관리 학습일정 상세정보 팝업
+    useSelectBaselineStuListMutation, // 학습과정 관리 학습생 인원 상세정보 팝업
+
     useSelectPointStdListMutation, // Xray배점관리 조회 (상단)
     useInsertPointStdMutation, // Xray배점관리 등록 (상단)
     useSelectPointStdMutation, // Xray배점관리 상세 (상단)
     useUpdatePointStdMutation, // Xray배점관리 수정 (상단)
     useDeletePointStdMutation, // Xray배점관리 삭제 (상단)
-
     useSelectPointStdDetailListMutation, // Xray배점관리 조회 (하단)
     useInsertPointStdDetailMutation, // Xray배점관리 등록 (하단)
     useSelectPointStdDetailMutation, // Xray배점관리 상세 (하단)

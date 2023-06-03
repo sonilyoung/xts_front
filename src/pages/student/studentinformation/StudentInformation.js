@@ -303,21 +303,21 @@ export const Studentinformation = () => {
             width: '70px',
             title: 'No',
             dataIndex: 'userNo',
-            sorter: (a, b) => a.name.length - b.name.length,
+            sorter: (a, b) => a.userNo - b.userNo,
             ellipsis: true,
             align: 'center'
         },
         {
             title: '교육생 ID',
             dataIndex: 'userId',
-            sorter: (a, b) => a.name.length - b.name.length,
+            sorter: (a, b) => a.userId.length - b.userId.length,
             ellipsis: true,
             align: 'center'
         },
         {
             title: '교육생 명',
             dataIndex: 'userNm',
-            sorter: (a, b) => a.chinese - b.chinese,
+            sorter: (a, b) => a.userNm.length - b.userNm.length,
             ellipsis: true,
             align: 'center'
         },
