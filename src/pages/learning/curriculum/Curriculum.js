@@ -209,7 +209,7 @@ export const Curriculum = () => {
             timeLimit: itemContainer.timeLimit,
             useYn: itemContainer.useYn,
             questionCnt: itemContainer.questionCnt,
-            bagList: itemContainer.bagList
+            bagList: bagList
         });
 
         SelectModuleListresponse?.data?.RET_CODE === '0100'
@@ -219,6 +219,7 @@ export const Curriculum = () => {
                       setOpen(false);
                       setDataEdit(false);
                       form.resetFields();
+                      handel_selectModuleList_Api();
                   }
               })
             : Modal.success({
@@ -364,8 +365,9 @@ export const Curriculum = () => {
         setOpen(true);
     };
 
-    // 추가 취소
+    // 추가/수정 취소
     const onAddClose = () => {
+        setBagList(null);
         setItemContainer(null);
         form.resetFields();
         setOpen(false);
@@ -531,7 +533,7 @@ export const Curriculum = () => {
                                 <Form.Item label="모듈타입" initialValue={itemContainer?.moduleType}>
                                     <Radio.Group
                                         name="moduleType"
-                                        onChange={(e) => setItemContainer({ ...itemContainer, moduleType: e })}
+                                        onChange={(e) => setItemContainer({ ...itemContainer, moduleType: e.target.value })}
                                         buttonStyle="solid"
                                         value={itemContainer?.moduleType}
                                     >

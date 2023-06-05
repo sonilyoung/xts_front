@@ -122,7 +122,7 @@ export const TheoryGroup_L = ({ ...props }) => {
     const [DeleteTheoryGroupApi] = useDeleteTheoryGroupMutation(); // 삭제 hooks api호출
     const handel_DeleteTheoryGroup_Api = async (userIdList) => {
         const DeleteTheoryGroupresponse = await DeleteTheoryGroupApi({
-            userIdList: userIdList
+            groupNoList: userIdList
         });
         DeleteTheoryGroupresponse?.data?.RET_CODE === '0300'
             ? Modal.success({
@@ -274,7 +274,7 @@ export const TheoryGroup_L = ({ ...props }) => {
             confirm({
                 title: '선택한 [대분류] 항목을 삭제하시겠습니까?',
                 icon: <ExclamationCircleFilled />,
-                content: selectedRowKeys + ' 항목의 데이터',
+                // content: selectedRowKeys + ' 항목의 데이터',
                 okText: '예',
                 okType: 'danger',
                 cancelText: '아니오',

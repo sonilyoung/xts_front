@@ -137,7 +137,7 @@ export const XrayPoint = () => {
     const [DeletePointStdApi] = useDeletePointStdMutation(); // 삭제 hooks api호출
     const handel_DeletePointStd_Api = async (pointsStdNo) => {
         const DeletePointStdresponse = await DeletePointStdApi({
-            pointsStdNo: pointsStdNo
+            pointsStdNoList: pointsStdNo
         });
         DeletePointStdresponse?.data?.RET_CODE === '0300'
             ? Modal.success({
@@ -225,8 +225,6 @@ export const XrayPoint = () => {
 
     // (하단)조회 ======================================================
     const [SelectPointStdDetailListApi] = useSelectPointStdDetailListMutation(); // 콘텐츠 정보 관리 hooks api호출
-    const [selectPointStdDetailListData, setSelectPointStdDetailListData] = useState(); // 콘텐츠 정보관리 리스트 상단 값
-    const [selectedRowKeysSub, setSelectedRowKeysSub] = useState([]); //셀렉트 박스 option Selected 값(하단)
     const [pointsDetailNo, setPointsDetailNo] = useState();
     const [openSub, setOpenSub] = useState(false);
 
@@ -234,11 +232,9 @@ export const XrayPoint = () => {
         const SelectPointStdDetailListresponse = await SelectPointStdDetailListApi({
             pointsStdNo: pointsStdNo
         });
-        setSelectPointStdDetailListData(SelectPointStdDetailListresponse?.data?.RET_DATA);
-        setPointsDetailNo(SelectPointStdDetailListresponse?.data?.RET_DATA.pointsDetailNo);
         setDataSourceSub([
             ...SelectPointStdDetailListresponse?.data?.RET_DATA.map((d, i) => ({
-                keySub: d.pointsStdNo,
+                key: i,
                 rowdata0: i + 1,
                 rowdata1: d.pointsDetailNo, //
                 rowdata2: d.pointsStdNm,
@@ -254,42 +250,19 @@ export const XrayPoint = () => {
                 rowdata12: d.insertDate,
                 rowdata13: d.insertId,
                 rowdata14: d.updateDate,
-                rowdata15: d.updateId
+                rowdata15: d.updateId,
+                rowdata16: d.pointsStdNo
             }))
         ]);
         setLoadingSub(false);
     };
 
-    // (하단)등록 ======================================================
-    const [InsertPointStdDetailApi] = useInsertPointStdDetailMutation(); // 등록 hooks api호출
-    const handel_InsertPointStdDetail_Api = async () => {
-        const InsertPointStdDetailresponse = await InsertPointStdDetailApi({
-            pointsStdNm: itemContainer.pointsStdNm,
-            pointsStdDc: itemContainer.pointsStdDc,
-            useYn: itemContainer.useYn
-        });
-
-        InsertPointStdDetailresponse?.data?.RET_CODE === '0100'
-            ? Modal.success({
-                  content: '등록 완료',
-                  onOk() {
-                      setOpen(false);
-                      setDataEdit(false);
-                      form.resetFields();
-                      handle_SelectPointStdDetailList_Api();
-                  }
-              })
-            : Modal.success({
-                  content: '등록 오류',
-                  onOk() {}
-              });
-    };
-
     // (하단)상세 ======================================================
     const [SelectPointStdDetailApi] = useSelectPointStdDetailMutation(); // 상세 hooks api호출
-    const handel_SelectPointStdDetail_Api = async (pointsDetailNo) => {
+    const handel_SelectPointStdDetail_Api = async () => {
         const SelectPointStdDetailresponse = await SelectPointStdDetailApi({
-            pointsDetailNo: pointsDetailNo
+            // pointsDetailNo: pointsDetailNo
+            pointsStdNo: pointsStdNo
         });
         setItemContainerSub(SelectPointStdDetailresponse.data.RET_DATA);
     };
@@ -298,43 +271,57 @@ export const XrayPoint = () => {
     const [UpdatePointStdDetailApi] = useUpdatePointStdDetailMutation(); // 수정 hooks api호출
     const handel_UpdatePointStdDetail_Api = async (pointsStdNo) => {
         const UpdatePointStdDetailresponse = await UpdatePointStdDetailApi({
-            pointsStdNo: pointsStdNo,
-            pointsStdNm: itemContainer.pointsStdNm,
-            pointsStdDc: itemContainer.pointsStdDc,
-            useYn: itemContainer.useYn
+            updateList: [
+                {
+                    pointsDetailNo: itemContainerSub.actionDiv0.pointsDetailNo,
+                    banUnitScore: itemContainerSub.actionDiv0.banUnitScore,
+                    limitUnitScore: itemContainerSub.actionDiv0.limitUnitScore,
+                    questionUnitScore: itemContainerSub.actionDiv0.questionUnitScore,
+                    passUnitScore: itemContainerSub.actionDiv0.passUnitScore
+                },
+                {
+                    pointsDetailNo: itemContainerSub.actionDiv1.pointsDetailNo,
+                    banUnitScore: itemContainerSub.actionDiv1.banUnitScore,
+                    limitUnitScore: itemContainerSub.actionDiv1.limitUnitScore,
+                    questionUnitScore: itemContainerSub.actionDiv1.questionUnitScore,
+                    passUnitScore: itemContainerSub.actionDiv1.passUnitScore
+                },
+                {
+                    pointsDetailNo: itemContainerSub.actionDiv2.pointsDetailNo,
+                    banUnitScore: itemContainerSub.actionDiv2.banUnitScore,
+                    limitUnitScore: itemContainerSub.actionDiv2.limitUnitScore,
+                    questionUnitScore: itemContainerSub.actionDiv2.questionUnitScore,
+                    passUnitScore: itemContainerSub.actionDiv2.passUnitScore
+                },
+                {
+                    pointsDetailNo: itemContainerSub.actionDiv3.pointsDetailNo,
+                    banUnitScore: itemContainerSub.actionDiv3.banUnitScore,
+                    limitUnitScore: itemContainerSub.actionDiv3.limitUnitScore,
+                    questionUnitScore: itemContainerSub.actionDiv3.questionUnitScore,
+                    passUnitScore: itemContainerSub.actionDiv3.passUnitScore
+                },
+                {
+                    pointsDetailNo: itemContainerSub.actionDiv4.pointsDetailNo,
+                    banUnitScore: itemContainerSub.actionDiv4.banUnitScore,
+                    limitUnitScore: itemContainerSub.actionDiv4.limitUnitScore,
+                    questionUnitScore: itemContainerSub.actionDiv4.questionUnitScore,
+                    passUnitScore: itemContainerSub.actionDiv4.passUnitScore
+                }
+            ]
         });
 
         UpdatePointStdDetailresponse?.data?.RET_CODE === '0100'
             ? Modal.success({
                   content: '수정 완료',
                   onOk() {
-                      setOpen(false);
-                      setDataEdit(false);
+                      handle_SelectPointStdDetailList_Api(pointsStdNo);
+                      setItemContainerSub(null);
+                      setOpenSub(false);
                       form.resetFields();
-                      handle_SelectPointStdDetailList_Api();
                   }
               })
             : Modal.success({
                   content: '수정 오류',
-                  onOk() {}
-              });
-    };
-
-    // (하단)삭제 ======================================================
-    const [DeletePointStdDetailApi] = useDeletePointStdDetailMutation(); // 삭제 hooks api호출
-    const handel_DeletePointStdDetail_Api = async (pointsStdNo) => {
-        const DeletePointStdDetailresponse = await DeletePointStdDetailApi({
-            pointsStdNo: pointsStdNo
-        });
-        DeletePointStdDetailresponse?.data?.RET_CODE === '0300'
-            ? Modal.success({
-                  content: '삭제 완료',
-                  onOk() {
-                      handle_SelectPointStdDetailList_Api();
-                  }
-              })
-            : Modal.success({
-                  content: '삭제 오류',
                   onOk() {}
               });
     };
@@ -375,6 +362,26 @@ export const XrayPoint = () => {
     ];
     // Api 호출 End
     // ===============================
+
+    const setRules = [
+        {
+            pattern: /^[0-9]*$/,
+            message: '· 숫자만 입력.'
+        },
+        {
+            required: true,
+            max: 3
+        },
+        {
+            validator: (_, value) => {
+                if (Number(value) <= 100) {
+                    return Promise.resolve();
+                } else {
+                    return Promise.reject('· 100 이하의 값만 입력.');
+                }
+            }
+        }
+    ];
 
     // 상단 이벤트 Start =========================================
     // 타이틀 컬럼  = 데이터 컬럼 Index세팅
@@ -502,26 +509,6 @@ export const XrayPoint = () => {
         };
     });
 
-    // //체크 박스 이벤트(하단)
-    // const onSelectChangeSub = (newSelectedRowKeysSub) => {
-    //     console.log('selectedRowKeysSub changed: ', newSelectedRowKeysSub);
-    //     setSelectedRowKeysSub(newSelectedRowKeysSub);
-    // };
-
-    // //체크 박스 선택 (하단)
-    // const rowSelectionSub = {
-    //     selectedRowKeysSub,
-    //     onChange: onSelectChangeSub
-    // };
-
-    // // 추가 버튼 (하단)
-    // const handleAddSub = () => {
-    //     setItemContainerSub(null);
-    //     form.resetFields();
-    //     setDataEditSub(false);
-    //     setOpenSub(true);
-    // };
-
     // 추가 취소 (하단)
     const onAddCloseSub = () => {
         setItemContainerSub(null);
@@ -532,7 +519,7 @@ export const XrayPoint = () => {
 
     // 수정 버튼 (하단)
     const handleEditSub = (pointsDetailNo) => {
-        handel_SelectPointStdDetail_Api(pointsDetailNo);
+        handel_SelectPointStdDetail_Api(pointsStdNo);
         setPointsDetailNo(pointsDetailNo);
         form.resetFields();
         setDataEditSub(true);
@@ -541,34 +528,8 @@ export const XrayPoint = () => {
 
     // 추가 및 수정 처리 (하단)
     const onAddSubmitSub = () => {
-        if (dataEdit === true) {
-            handel_UpdatePointStdDetail_Api(pointsStdNoSub);
-        } else {
-            handel_InsertPointStdDetail_Api();
-        }
+        handel_UpdatePointStdDetail_Api(pointsStdNo);
     };
-
-    // // 삭제 (하단)
-    // const handleDelSub = () => {
-    //     if (selectedRowKeysSub == '') {
-    //         Modal.error({
-    //             content: '삭제할 항목을 선택해주세요.'
-    //         });
-    //     } else {
-    //         confirm({
-    //             title: '선택한 항목을 삭제하시겠습니까?',
-    //             icon: <ExclamationCircleFilled />,
-    //             // content: selectedRowKeys + ' 번째 항목의 데이터',
-    //             okText: '예',
-    //             okType: 'danger',
-    //             cancelText: '아니오',
-    //             onOk() {
-    //                 handel_DeletePointStdDetail_Api(selectedRowKeysSub);
-    //             },
-    //             onCancel() {}
-    //         });
-    //     }
-    // };
 
     useEffect(() => {
         setLoading(true); // 로딩 호출
@@ -616,15 +577,15 @@ export const XrayPoint = () => {
                                 columns={columns}
                                 rowSelection={rowSelection}
                                 rowClassName={(record) => {
-                                    return record.rowdata0 === pointsStdNo ? `table-row-lightblue` : '';
+                                    return record.key === pointsStdNo ? `table-row-lightblue` : '';
                                 }}
                                 onRow={(record) => {
                                     return {
                                         onClick: () => {
-                                            if (record.rowdata0 !== pointsStdNo) {
+                                            if (record.key !== pointsStdNo) {
                                                 setLoadingSub(true);
-                                                setPointsStdNo(record.rowdata0);
-                                                handle_SelectPointStdDetailList_Api(record.rowdata0);
+                                                setPointsStdNo(record.key);
+                                                handle_SelectPointStdDetailList_Api(record.key);
                                             }
                                         }
                                     };
@@ -641,7 +602,7 @@ export const XrayPoint = () => {
                                             <Tooltip title="수정">
                                                 <Button
                                                     type="primary"
-                                                    onClick={() => handleEditSub(pointsDetailNo)}
+                                                    onClick={() => handleEditSub(pointsStdNo)}
                                                     style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
                                                     icon={<PlusOutlined />}
                                                 >
@@ -652,7 +613,6 @@ export const XrayPoint = () => {
                                     </Col>
                                 </Row>
                                 <Table
-                                    size="small"
                                     rowClassName={() => 'editable-row'}
                                     bordered={true}
                                     dataSource={dataSourceSub}
@@ -766,7 +726,7 @@ export const XrayPoint = () => {
                 title="X-ray 판독 배점 수정"
                 onClose={onAddCloseSub}
                 open={openSub}
-                width={700}
+                width={810}
                 style={{ top: '60px' }}
                 extra={
                     <>
@@ -795,45 +755,115 @@ export const XrayPoint = () => {
                         <Card title="개봉/금지" size="small" type="inner">
                             <Row gutter={24} style={{ marginBottom: '-20px' }}>
                                 <Col span={6}>
-                                    <Form.Item label="금지물품점수" initialValue={itemContainerSub?.banUnitScore}>
-                                        <Input
-                                            name="banUnitScore"
-                                            placeholder="# 금지물품점수"
-                                            onChange={(e) => setItemContainerSub({ ...itemContainerSub, banUnitScore: e.target.value })}
-                                            value={itemContainerSub?.banUnitScore}
-                                        />
+                                    <Form.Item
+                                        name="Score1"
+                                        label="금지물품점수"
+                                        rules={setRules}
+                                        initialValue={itemContainerSub?.actionDiv0?.banUnitScore}
+                                    >
+                                        <Row>
+                                            <Col>
+                                                <Input
+                                                    name="banUnitScore"
+                                                    placeholder="# 금지물품점수"
+                                                    onChange={(e) =>
+                                                        setItemContainerSub({
+                                                            ...itemContainerSub,
+                                                            actionDiv0: {
+                                                                ...itemContainerSub.actionDiv0,
+                                                                banUnitScore: e.target.value
+                                                            }
+                                                        })
+                                                    }
+                                                    value={itemContainerSub?.actionDiv0?.banUnitScore}
+                                                    maxLength={3}
+                                                />
+                                            </Col>
+                                        </Row>
                                     </Form.Item>
                                 </Col>
                                 <Col span={6}>
-                                    <Form.Item label="제한물품점수" initialValue={itemContainerSub?.limitUnitScore}>
-                                        <Input
-                                            name="limitUnitScore"
-                                            placeholder="# 제한물품점수"
-                                            onChange={(e) => setItemContainerSub({ ...itemContainerSub, limitUnitScore: e.target.value })}
-                                            value={itemContainerSub?.limitUnitScore}
-                                        />
+                                    <Form.Item
+                                        name="Score2"
+                                        label="제한물품점수"
+                                        rules={setRules}
+                                        initialValue={itemContainerSub?.actionDiv0?.limitUnitScore}
+                                    >
+                                        <Row>
+                                            <Col>
+                                                <Input
+                                                    name="limitUnitScore"
+                                                    placeholder="# 제한물품점수"
+                                                    onChange={(e) =>
+                                                        setItemContainerSub({
+                                                            ...itemContainerSub,
+                                                            actionDiv0: {
+                                                                ...itemContainerSub.actionDiv0,
+                                                                limitUnitScore: e.target.value
+                                                            }
+                                                        })
+                                                    }
+                                                    value={itemContainerSub?.actionDiv0?.limitUnitScore}
+                                                    maxLength={3}
+                                                />
+                                            </Col>
+                                        </Row>
                                     </Form.Item>
                                 </Col>
                                 <Col span={6}>
-                                    <Form.Item label="의심물품점수" initialValue={itemContainerSub?.questionUnitScore}>
-                                        <Input
-                                            name="questionUnitScore"
-                                            placeholder="# 의심물품점수"
-                                            onChange={(e) =>
-                                                setItemContainerSub({ ...itemContainerSub, questionUnitScore: e.target.value })
-                                            }
-                                            value={itemContainerSub?.questionUnitScore}
-                                        />
+                                    <Form.Item
+                                        name="Score3"
+                                        label="의심물품점수"
+                                        rules={setRules}
+                                        initialValue={itemContainerSub?.actionDiv0?.questionUnitScore}
+                                    >
+                                        <Row>
+                                            <Col>
+                                                <Input
+                                                    name="questionUnitScore"
+                                                    placeholder="# 의심물품점수"
+                                                    onChange={(e) =>
+                                                        setItemContainerSub({
+                                                            ...itemContainerSub,
+                                                            actionDiv0: {
+                                                                ...itemContainerSub.actionDiv0,
+                                                                questionUnitScore: e.target.value
+                                                            }
+                                                        })
+                                                    }
+                                                    value={itemContainerSub?.actionDiv0?.questionUnitScore}
+                                                    maxLength={3}
+                                                />
+                                            </Col>
+                                        </Row>
                                     </Form.Item>
                                 </Col>
                                 <Col span={6}>
-                                    <Form.Item label="통과물품점수" initialValue={itemContainerSub?.passUnitScore}>
-                                        <Input
-                                            name="passUnitScore"
-                                            placeholder="# 통과물품점수"
-                                            onChange={(e) => setItemContainerSub({ ...itemContainerSub, passUnitScore: e.target.value })}
-                                            value={itemContainerSub?.passUnitScore}
-                                        />
+                                    <Form.Item
+                                        name="Score4"
+                                        label="통과물품점수"
+                                        rules={setRules}
+                                        initialValue={itemContainerSub?.actionDiv0?.passUnitScore}
+                                    >
+                                        <Row>
+                                            <Col>
+                                                <Input
+                                                    name="passUnitScore"
+                                                    placeholder="# 통과물품점수"
+                                                    onChange={(e) =>
+                                                        setItemContainerSub({
+                                                            ...itemContainerSub,
+                                                            actionDiv0: {
+                                                                ...itemContainerSub.actionDiv0,
+                                                                passUnitScore: e.target.value
+                                                            }
+                                                        })
+                                                    }
+                                                    value={itemContainerSub?.actionDiv0?.passUnitScore}
+                                                    maxLength={3}
+                                                />
+                                            </Col>
+                                        </Row>
                                     </Form.Item>
                                 </Col>
                             </Row>
@@ -842,45 +872,115 @@ export const XrayPoint = () => {
                         <Card title="미개봉/금지" size="small" type="inner">
                             <Row gutter={24} style={{ marginBottom: '-20px' }}>
                                 <Col span={6}>
-                                    <Form.Item label="금지물품점수" initialValue={itemContainerSub?.banUnitScore}>
-                                        <Input
-                                            name="banUnitScore"
-                                            placeholder="# 금지물품점수"
-                                            onChange={(e) => setItemContainerSub({ ...itemContainerSub, banUnitScore: e.target.value })}
-                                            value={itemContainerSub?.banUnitScore}
-                                        />
+                                    <Form.Item
+                                        name="Score5"
+                                        label="금지물품점수"
+                                        rules={setRules}
+                                        initialValue={itemContainerSub?.actionDiv1?.banUnitScore}
+                                    >
+                                        <Row>
+                                            <Col>
+                                                <Input
+                                                    name="banUnitScore"
+                                                    placeholder="# 금지물품점수"
+                                                    onChange={(e) =>
+                                                        setItemContainerSub({
+                                                            ...itemContainerSub,
+                                                            actionDiv1: {
+                                                                ...itemContainerSub.actionDiv1,
+                                                                banUnitScore: e.target.value
+                                                            }
+                                                        })
+                                                    }
+                                                    value={itemContainerSub?.actionDiv1?.banUnitScore}
+                                                    maxLength={3}
+                                                />
+                                            </Col>
+                                        </Row>
                                     </Form.Item>
                                 </Col>
                                 <Col span={6}>
-                                    <Form.Item label="제한물품점수" initialValue={itemContainerSub?.limitUnitScore}>
-                                        <Input
-                                            name="limitUnitScore"
-                                            placeholder="# 제한물품점수"
-                                            onChange={(e) => setItemContainerSub({ ...itemContainerSub, limitUnitScore: e.target.value })}
-                                            value={itemContainerSub?.limitUnitScore}
-                                        />
+                                    <Form.Item
+                                        name="Score6"
+                                        label="제한물품점수"
+                                        rules={setRules}
+                                        initialValue={itemContainerSub?.actionDiv1?.limitUnitScore}
+                                    >
+                                        <Row>
+                                            <Col>
+                                                <Input
+                                                    name="limitUnitScore"
+                                                    placeholder="# 제한물품점수"
+                                                    onChange={(e) =>
+                                                        setItemContainerSub({
+                                                            ...itemContainerSub,
+                                                            actionDiv1: {
+                                                                ...itemContainerSub.actionDiv1,
+                                                                limitUnitScore: e.target.value
+                                                            }
+                                                        })
+                                                    }
+                                                    value={itemContainerSub?.actionDiv1?.limitUnitScore}
+                                                    maxLength={3}
+                                                />
+                                            </Col>
+                                        </Row>
                                     </Form.Item>
                                 </Col>
                                 <Col span={6}>
-                                    <Form.Item label="의심물품점수" initialValue={itemContainerSub?.questionUnitScore}>
-                                        <Input
-                                            name="questionUnitScore"
-                                            placeholder="# 의심물품점수"
-                                            onChange={(e) =>
-                                                setItemContainerSub({ ...itemContainerSub, questionUnitScore: e.target.value })
-                                            }
-                                            value={itemContainerSub?.questionUnitScore}
-                                        />
+                                    <Form.Item
+                                        name="Score7"
+                                        label="의심물품점수"
+                                        rules={setRules}
+                                        initialValue={itemContainerSub?.actionDiv1?.questionUnitScore}
+                                    >
+                                        <Row>
+                                            <Col>
+                                                <Input
+                                                    name="questionUnitScore"
+                                                    placeholder="# 의심물품점수"
+                                                    onChange={(e) =>
+                                                        setItemContainerSub({
+                                                            ...itemContainerSub,
+                                                            actionDiv1: {
+                                                                ...itemContainerSub.actionDiv1,
+                                                                questionUnitScore: e.target.value
+                                                            }
+                                                        })
+                                                    }
+                                                    value={itemContainerSub?.actionDiv1?.questionUnitScore}
+                                                    maxLength={3}
+                                                />
+                                            </Col>
+                                        </Row>
                                     </Form.Item>
                                 </Col>
                                 <Col span={6}>
-                                    <Form.Item label="통과물품점수" initialValue={itemContainerSub?.passUnitScore}>
-                                        <Input
-                                            name="passUnitScore"
-                                            placeholder="# 통과물품점수"
-                                            onChange={(e) => setItemContainerSub({ ...itemContainerSub, passUnitScore: e.target.value })}
-                                            value={itemContainerSub?.passUnitScore}
-                                        />
+                                    <Form.Item
+                                        name="Score8"
+                                        label="통과물품점수"
+                                        rules={setRules}
+                                        initialValue={itemContainerSub?.actionDiv1?.passUnitScore}
+                                    >
+                                        <Row>
+                                            <Col>
+                                                <Input
+                                                    name="passUnitScore"
+                                                    placeholder="# 통과물품점수"
+                                                    onChange={(e) =>
+                                                        setItemContainerSub({
+                                                            ...itemContainerSub,
+                                                            actionDiv1: {
+                                                                ...itemContainerSub.actionDiv1,
+                                                                passUnitScore: e.target.value
+                                                            }
+                                                        })
+                                                    }
+                                                    value={itemContainerSub?.actionDiv1?.passUnitScore}
+                                                    maxLength={3}
+                                                />
+                                            </Col>
+                                        </Row>
                                     </Form.Item>
                                 </Col>
                             </Row>
@@ -889,45 +989,115 @@ export const XrayPoint = () => {
                         <Card title="개봉/제한" size="small" type="inner">
                             <Row gutter={24} style={{ marginBottom: '-20px' }}>
                                 <Col span={6}>
-                                    <Form.Item label="금지물품점수" initialValue={itemContainerSub?.banUnitScore}>
-                                        <Input
-                                            name="banUnitScore"
-                                            placeholder="# 금지물품점수"
-                                            onChange={(e) => setItemContainerSub({ ...itemContainerSub, banUnitScore: e.target.value })}
-                                            value={itemContainerSub?.banUnitScore}
-                                        />
+                                    <Form.Item
+                                        name="Score9"
+                                        label="금지물품점수"
+                                        rules={setRules}
+                                        initialValue={itemContainerSub?.actionDiv2?.banUnitScore}
+                                    >
+                                        <Row>
+                                            <Col>
+                                                <Input
+                                                    name="banUnitScore"
+                                                    placeholder="# 금지물품점수"
+                                                    onChange={(e) =>
+                                                        setItemContainerSub({
+                                                            ...itemContainerSub,
+                                                            actionDiv2: {
+                                                                ...itemContainerSub.actionDiv2,
+                                                                banUnitScore: e.target.value
+                                                            }
+                                                        })
+                                                    }
+                                                    value={itemContainerSub?.actionDiv2?.banUnitScore}
+                                                    maxLength={3}
+                                                />
+                                            </Col>
+                                        </Row>
                                     </Form.Item>
                                 </Col>
                                 <Col span={6}>
-                                    <Form.Item label="제한물품점수" initialValue={itemContainerSub?.limitUnitScore}>
-                                        <Input
-                                            name="limitUnitScore"
-                                            placeholder="# 제한물품점수"
-                                            onChange={(e) => setItemContainerSub({ ...itemContainerSub, limitUnitScore: e.target.value })}
-                                            value={itemContainerSub?.limitUnitScore}
-                                        />
+                                    <Form.Item
+                                        name="Score10"
+                                        label="제한물품점수"
+                                        rules={setRules}
+                                        initialValue={itemContainerSub?.actionDiv2?.limitUnitScore}
+                                    >
+                                        <Row>
+                                            <Col>
+                                                <Input
+                                                    name="limitUnitScore"
+                                                    placeholder="# 제한물품점수"
+                                                    onChange={(e) =>
+                                                        setItemContainerSub({
+                                                            ...itemContainerSub,
+                                                            actionDiv2: {
+                                                                ...itemContainerSub.actionDiv2,
+                                                                limitUnitScore: e.target.value
+                                                            }
+                                                        })
+                                                    }
+                                                    value={itemContainerSub?.actionDiv2?.limitUnitScore}
+                                                    maxLength={3}
+                                                />
+                                            </Col>
+                                        </Row>
                                     </Form.Item>
                                 </Col>
                                 <Col span={6}>
-                                    <Form.Item label="의심물품점수" initialValue={itemContainerSub?.questionUnitScore}>
-                                        <Input
-                                            name="questionUnitScore"
-                                            placeholder="# 의심물품점수"
-                                            onChange={(e) =>
-                                                setItemContainerSub({ ...itemContainerSub, questionUnitScore: e.target.value })
-                                            }
-                                            value={itemContainerSub?.questionUnitScore}
-                                        />
+                                    <Form.Item
+                                        name="Score11"
+                                        label="의심물품점수"
+                                        rules={setRules}
+                                        initialValue={itemContainerSub?.actionDiv2?.questionUnitScore}
+                                    >
+                                        <Row>
+                                            <Col>
+                                                <Input
+                                                    name="questionUnitScore"
+                                                    placeholder="# 의심물품점수"
+                                                    onChange={(e) =>
+                                                        setItemContainerSub({
+                                                            ...itemContainerSub,
+                                                            actionDiv2: {
+                                                                ...itemContainerSub.actionDiv2,
+                                                                questionUnitScore: e.target.value
+                                                            }
+                                                        })
+                                                    }
+                                                    value={itemContainerSub?.actionDiv2?.questionUnitScore}
+                                                    maxLength={3}
+                                                />
+                                            </Col>
+                                        </Row>
                                     </Form.Item>
                                 </Col>
                                 <Col span={6}>
-                                    <Form.Item label="통과물품점수" initialValue={itemContainerSub?.passUnitScore}>
-                                        <Input
-                                            name="passUnitScore"
-                                            placeholder="# 통과물품점수"
-                                            onChange={(e) => setItemContainerSub({ ...itemContainerSub, passUnitScore: e.target.value })}
-                                            value={itemContainerSub?.passUnitScore}
-                                        />
+                                    <Form.Item
+                                        name="Score12"
+                                        label="통과물품점수"
+                                        rules={setRules}
+                                        initialValue={itemContainerSub?.actionDiv2?.passUnitScore}
+                                    >
+                                        <Row>
+                                            <Col>
+                                                <Input
+                                                    name="passUnitScore"
+                                                    placeholder="# 통과물품점수"
+                                                    onChange={(e) =>
+                                                        setItemContainerSub({
+                                                            ...itemContainerSub,
+                                                            actionDiv2: {
+                                                                ...itemContainerSub.actionDiv2,
+                                                                passUnitScore: e.target.value
+                                                            }
+                                                        })
+                                                    }
+                                                    value={itemContainerSub?.actionDiv2?.passUnitScore}
+                                                    maxLength={3}
+                                                />
+                                            </Col>
+                                        </Row>
                                     </Form.Item>
                                 </Col>
                             </Row>
@@ -936,45 +1106,115 @@ export const XrayPoint = () => {
                         <Card title="개봉/통과" size="small" type="inner">
                             <Row gutter={24} style={{ marginBottom: '-20px' }}>
                                 <Col span={6}>
-                                    <Form.Item label="금지물품점수" initialValue={itemContainerSub?.banUnitScore}>
-                                        <Input
-                                            name="banUnitScore"
-                                            placeholder="# 금지물품점수"
-                                            onChange={(e) => setItemContainerSub({ ...itemContainerSub, banUnitScore: e.target.value })}
-                                            value={itemContainerSub?.banUnitScore}
-                                        />
+                                    <Form.Item
+                                        name="Score13"
+                                        label="금지물품점수"
+                                        rules={setRules}
+                                        initialValue={itemContainerSub?.actionDiv3?.banUnitScore}
+                                    >
+                                        <Row>
+                                            <Col>
+                                                <Input
+                                                    name="banUnitScore"
+                                                    placeholder="# 금지물품점수"
+                                                    onChange={(e) =>
+                                                        setItemContainerSub({
+                                                            ...itemContainerSub,
+                                                            actionDiv3: {
+                                                                ...itemContainerSub.actionDiv3,
+                                                                banUnitScore: e.target.value
+                                                            }
+                                                        })
+                                                    }
+                                                    value={itemContainerSub?.actionDiv3?.banUnitScore}
+                                                    maxLength={3}
+                                                />
+                                            </Col>
+                                        </Row>
                                     </Form.Item>
                                 </Col>
                                 <Col span={6}>
-                                    <Form.Item label="제한물품점수" initialValue={itemContainerSub?.limitUnitScore}>
-                                        <Input
-                                            name="limitUnitScore"
-                                            placeholder="# 제한물품점수"
-                                            onChange={(e) => setItemContainerSub({ ...itemContainerSub, limitUnitScore: e.target.value })}
-                                            value={itemContainerSub?.limitUnitScore}
-                                        />
+                                    <Form.Item
+                                        name="Score14"
+                                        label="제한물품점수"
+                                        rules={setRules}
+                                        initialValue={itemContainerSub?.actionDiv3?.limitUnitScore}
+                                    >
+                                        <Row>
+                                            <Col>
+                                                <Input
+                                                    name="limitUnitScore"
+                                                    placeholder="# 제한물품점수"
+                                                    onChange={(e) =>
+                                                        setItemContainerSub({
+                                                            ...itemContainerSub,
+                                                            actionDiv3: {
+                                                                ...itemContainerSub.actionDiv3,
+                                                                limitUnitScore: e.target.value
+                                                            }
+                                                        })
+                                                    }
+                                                    value={itemContainerSub?.actionDiv3?.limitUnitScore}
+                                                    maxLength={3}
+                                                />
+                                            </Col>
+                                        </Row>
                                     </Form.Item>
                                 </Col>
                                 <Col span={6}>
-                                    <Form.Item label="의심물품점수" initialValue={itemContainerSub?.questionUnitScore}>
-                                        <Input
-                                            name="questionUnitScore"
-                                            placeholder="# 의심물품점수"
-                                            onChange={(e) =>
-                                                setItemContainerSub({ ...itemContainerSub, questionUnitScore: e.target.value })
-                                            }
-                                            value={itemContainerSub?.questionUnitScore}
-                                        />
+                                    <Form.Item
+                                        name="Score15"
+                                        label="의심물품점수"
+                                        rules={setRules}
+                                        initialValue={itemContainerSub?.actionDiv3?.questionUnitScore}
+                                    >
+                                        <Row>
+                                            <Col>
+                                                <Input
+                                                    name="questionUnitScore"
+                                                    placeholder="# 의심물품점수"
+                                                    onChange={(e) =>
+                                                        setItemContainerSub({
+                                                            ...itemContainerSub,
+                                                            actionDiv3: {
+                                                                ...itemContainerSub.actionDiv3,
+                                                                questionUnitScore: e.target.value
+                                                            }
+                                                        })
+                                                    }
+                                                    value={itemContainerSub?.actionDiv3?.questionUnitScore}
+                                                    maxLength={3}
+                                                />
+                                            </Col>
+                                        </Row>
                                     </Form.Item>
                                 </Col>
                                 <Col span={6}>
-                                    <Form.Item label="통과물품점수" initialValue={itemContainerSub?.passUnitScore}>
-                                        <Input
-                                            name="passUnitScore"
-                                            placeholder="# 통과물품점수"
-                                            onChange={(e) => setItemContainerSub({ ...itemContainerSub, passUnitScore: e.target.value })}
-                                            value={itemContainerSub?.passUnitScore}
-                                        />
+                                    <Form.Item
+                                        name="Score16"
+                                        label="통과물품점수"
+                                        rules={setRules}
+                                        initialValue={itemContainerSub?.actionDiv3?.passUnitScore}
+                                    >
+                                        <Row>
+                                            <Col>
+                                                <Input
+                                                    name="passUnitScore"
+                                                    placeholder="# 통과물품점수"
+                                                    onChange={(e) =>
+                                                        setItemContainerSub({
+                                                            ...itemContainerSub,
+                                                            actionDiv3: {
+                                                                ...itemContainerSub.actionDiv3,
+                                                                passUnitScore: e.target.value
+                                                            }
+                                                        })
+                                                    }
+                                                    value={itemContainerSub?.actionDiv3?.passUnitScore}
+                                                    maxLength={3}
+                                                />
+                                            </Col>
+                                        </Row>
                                     </Form.Item>
                                 </Col>
                             </Row>
@@ -983,45 +1223,115 @@ export const XrayPoint = () => {
                         <Card title="미개봉/통과" size="small" type="inner">
                             <Row gutter={24} style={{ marginBottom: '-20px' }}>
                                 <Col span={6}>
-                                    <Form.Item label="금지물품점수" initialValue={itemContainerSub?.banUnitScore}>
-                                        <Input
-                                            name="banUnitScore"
-                                            placeholder="# 금지물품점수"
-                                            onChange={(e) => setItemContainerSub({ ...itemContainerSub, banUnitScore: e.target.value })}
-                                            value={itemContainerSub?.banUnitScore}
-                                        />
+                                    <Form.Item
+                                        name="Score17"
+                                        label="금지물품점수"
+                                        rules={setRules}
+                                        initialValue={itemContainerSub?.actionDiv4?.banUnitScore}
+                                    >
+                                        <Row>
+                                            <Col>
+                                                <Input
+                                                    name="banUnitScore"
+                                                    placeholder="# 금지물품점수"
+                                                    onChange={(e) =>
+                                                        setItemContainerSub({
+                                                            ...itemContainerSub,
+                                                            actionDiv4: {
+                                                                ...itemContainerSub.actionDiv4,
+                                                                banUnitScore: e.target.value
+                                                            }
+                                                        })
+                                                    }
+                                                    value={itemContainerSub?.actionDiv4?.banUnitScore}
+                                                    maxLength={3}
+                                                />
+                                            </Col>
+                                        </Row>
                                     </Form.Item>
                                 </Col>
                                 <Col span={6}>
-                                    <Form.Item label="제한물품점수" initialValue={itemContainerSub?.limitUnitScore}>
-                                        <Input
-                                            name="limitUnitScore"
-                                            placeholder="# 제한물품점수"
-                                            onChange={(e) => setItemContainerSub({ ...itemContainerSub, limitUnitScore: e.target.value })}
-                                            value={itemContainerSub?.limitUnitScore}
-                                        />
+                                    <Form.Item
+                                        name="Score18"
+                                        label="제한물품점수"
+                                        rules={setRules}
+                                        initialValue={itemContainerSub?.actionDiv4?.limitUnitScore}
+                                    >
+                                        <Row>
+                                            <Col>
+                                                <Input
+                                                    name="limitUnitScore"
+                                                    placeholder="# 제한물품점수"
+                                                    onChange={(e) =>
+                                                        setItemContainerSub({
+                                                            ...itemContainerSub,
+                                                            actionDiv4: {
+                                                                ...itemContainerSub.actionDiv4,
+                                                                limitUnitScore: e.target.value
+                                                            }
+                                                        })
+                                                    }
+                                                    value={itemContainerSub?.actionDiv4?.limitUnitScore}
+                                                    maxLength={3}
+                                                />
+                                            </Col>
+                                        </Row>
                                     </Form.Item>
                                 </Col>
                                 <Col span={6}>
-                                    <Form.Item label="의심물품점수" initialValue={itemContainerSub?.questionUnitScore}>
-                                        <Input
-                                            name="questionUnitScore"
-                                            placeholder="# 의심물품점수"
-                                            onChange={(e) =>
-                                                setItemContainerSub({ ...itemContainerSub, questionUnitScore: e.target.value })
-                                            }
-                                            value={itemContainerSub?.questionUnitScore}
-                                        />
+                                    <Form.Item
+                                        name="Score19"
+                                        label="의심물품점수"
+                                        rules={setRules}
+                                        initialValue={itemContainerSub?.actionDiv4?.questionUnitScore}
+                                    >
+                                        <Row>
+                                            <Col>
+                                                <Input
+                                                    name="questionUnitScore"
+                                                    placeholder="# 의심물품점수"
+                                                    onChange={(e) =>
+                                                        setItemContainerSub({
+                                                            ...itemContainerSub,
+                                                            actionDiv4: {
+                                                                ...itemContainerSub.actionDiv4,
+                                                                questionUnitScore: e.target.value
+                                                            }
+                                                        })
+                                                    }
+                                                    value={itemContainerSub?.actionDiv4?.questionUnitScore}
+                                                    maxLength={3}
+                                                />
+                                            </Col>
+                                        </Row>
                                     </Form.Item>
                                 </Col>
                                 <Col span={6}>
-                                    <Form.Item label="통과물품점수" initialValue={itemContainerSub?.passUnitScore}>
-                                        <Input
-                                            name="passUnitScore"
-                                            placeholder="# 통과물품점수"
-                                            onChange={(e) => setItemContainerSub({ ...itemContainerSub, passUnitScore: e.target.value })}
-                                            value={itemContainerSub?.passUnitScore}
-                                        />
+                                    <Form.Item
+                                        name="Score20"
+                                        label="통과물품점수"
+                                        rules={setRules}
+                                        initialValue={itemContainerSub?.actionDiv4?.passUnitScore}
+                                    >
+                                        <Row>
+                                            <Col>
+                                                <Input
+                                                    name="passUnitScore"
+                                                    placeholder="# 통과물품점수"
+                                                    onChange={(e) =>
+                                                        setItemContainerSub({
+                                                            ...itemContainerSub,
+                                                            actionDiv4: {
+                                                                ...itemContainerSub.actionDiv4,
+                                                                passUnitScore: e.target.value
+                                                            }
+                                                        })
+                                                    }
+                                                    value={itemContainerSub?.actionDiv4?.passUnitScore}
+                                                    maxLength={3}
+                                                />
+                                            </Col>
+                                        </Row>
                                     </Form.Item>
                                 </Col>
                             </Row>

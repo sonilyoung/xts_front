@@ -199,11 +199,6 @@ export const EduProcAdd = () => {
             )
         },
         {
-            title: '제한인원수',
-            dataIndex: 'rowdata8',
-            align: 'center'
-        },
-        {
             title: '교육생 인원',
             dataIndex: 'rowdata8',
             align: 'center',
