@@ -18,12 +18,10 @@ export const TheoryGroup = () => {
         setProcGroupCd_L(procGroupCd_M);
         setProcGroupCd_M(procGroupCd_M);
         setProcGroupCd_S('');
-        console.log(procGroupCd_M);
     };
 
     const TheoryGroup_Call_S = (procGroupCd_S) => {
         setProcGroupCd_S(procGroupCd_S);
-        console.log(procGroupCd_S);
     };
 
     return (

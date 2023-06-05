@@ -1,7 +1,14 @@
 /* eslint-disable no-unused-vars */
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Col, Row, Button, Form, Input, Table, Drawer, Space, Tooltip, Tag, Switch, Divider, Modal } from 'antd';
-// import { useGetTheoryGroupListMutation } from '../../../hooks/api/EduManagement/EduManagement';
+import React, { useEffect, useState } from 'react';
+import { Col, Row, Button, Form, Input, Table, Drawer, Space, Tooltip, Tag, Radio, Divider, Modal } from 'antd';
+
+import {
+    useSelectTheoryGroupListMutation,
+    useSelectTheoryGroupMutation,
+    useInsertTheoryGroupMutation,
+    useUpdateTheoryGroupMutation,
+    useDeleteTheoryGroupMutation
+} from '../../../hooks/api/TheoryGroupManagement/TheoryGroupManagement';
 
 // project import
 import MainCard from 'components/MainCard';
@@ -12,11 +19,11 @@ export const TheoryGroup_L = ({ ...props }) => {
     const { confirm } = Modal;
     const [form] = Form.useForm();
 
-    // const [getTheoryGroupList] = useGetTheoryGroupListMutation();
-    const [TheoryGroupList, setTheoryGroupList] = useState();
-    const [dataSource, setdataSource] = useState([]);
+    const [itemContainer, setItemContainer] = useState({}); // 항목 컨테이너
     const [selectedRowKeys, setSelectedRowKeys] = useState([]); //셀렉트 박스 option Selected 값(대분류)
     const [selectprocGroupCd, setSelectprocGroupCd] = useState('');
+    const [groupNoData, setGroupNoData] = useState(''); //수정 선택한 값
+
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false); // Drawer 추가 우측폼 상태
     const [dataEdit, setDataEdit] = useState(false); // Drawer 수정 우측폼 상태
@@ -26,152 +33,157 @@ export const TheoryGroup_L = ({ ...props }) => {
     const [procGroupNmVal, setProcGroupNmVal] = useState();
     const [procGroupYnVal, setProcGroupYnVal] = useState();
 
-    // 대분류 API 호출
-    const handleTheoryGroup = async () => {
-        // const TheoryGroupresponse = await getTheoryGroupList({
-        //     searchType: '1',
-        //     procGroupCd: ''
-        // });
-        // setTheoryGroupList(TheoryGroupresponse?.data?.RET_DATA);
-        // setdataSource([
-        //     ...TheoryGroupresponse?.data?.RET_DATA.map((l, i) => ({
-        //         key: l.procGroupCd,
-        //         rowdata0: i + 1,
-        //         rowdata1: l.procGroupNo,
-        //         rowdata2: l.procGroupCd,
-        //         rowdata3: l.procGroupNm,
-        //         rowdata4: l.procGroupDc,
-        //         rowdata5: l.procGroupSort,
-        //         rowdata6: l.useYn,
-        //         rowdata7: l.parentProcGroupCd,
-        //         rowdata8: l.topProcGroupCd,
-        //         rowdata9: l.searchType,
-        //         rowdata10: 'L'
-        //     }))
-        // ]);
-        // setLoading(false);
+    // ===============================
+    // Api 호출 Start
+    // 조회 ======================================================
+    const [SelectTheoryGroupListApi] = useSelectTheoryGroupListMutation();
+    const [selectTheoryGroupListData, setSelectTheoryGroupListData] = useState();
+    const handle_SelectTheoryGroupList_Api = async () => {
+        const SelectTheoryGroupListresponse = await SelectTheoryGroupListApi({
+            groupType: 'L',
+            theoryParentGroupCd: ''
+        });
+        setSelectTheoryGroupListData([
+            ...SelectTheoryGroupListresponse?.data?.RET_DATA.map((d, i) => ({
+                key: d.groupNo,
+                rowdata0: i + 1,
+                rowdata1: d.groupType,
+                rowdata2: d.theoryGroupCd,
+                rowdata3: d.theoryGroupName,
+                rowdata4: d.theoryParentGroupCd,
+                rowdata5: d.useYn
+            }))
+        ]);
+        setLoading(false);
     };
 
-    const EditableContext = React.createContext(null);
-    const EditableRow = ({ index, ...props }) => {
-        const [form] = Form.useForm();
-        return (
-            <Form form={form} component={false}>
-                <EditableContext.Provider value={form}>
-                    <tr {...props} />
-                </EditableContext.Provider>
-            </Form>
-        );
+    // 상세 ======================================================
+    const [SelectTheoryGroupApi] = useSelectTheoryGroupMutation();
+    const handle_SelectTheoryGroup_Api = async (groupNo) => {
+        const SelectTheoryGroupresponse = await SelectTheoryGroupApi({
+            groupNo: groupNo
+        });
+        setGroupNoData(SelectTheoryGroupresponse?.data?.RET_DATA.groupNo);
+        setItemContainer(SelectTheoryGroupresponse?.data?.RET_DATA);
     };
-    const EditableCell = ({ title, editable, children, dataIndex, record, handleSave, ...restProps }) => {
-        const [editing, setEditing] = useState(false);
-        const inputRef = useRef(null);
-        const form = useContext(EditableContext);
-        useEffect(() => {
-            if (editing) {
-                inputRef.current.focus();
-            }
-        }, [editing]);
 
-        const toggleEdit = () => {
-            setEditing(!editing);
-            form.setFieldsValue({
-                [dataIndex]: record[dataIndex]
-            });
-        };
-
-        const save = async () => {
-            try {
-                const values = await form.validateFields();
-                toggleEdit();
-                handleSave({
-                    ...record,
-                    ...values
-                });
-                // Data값이 변경될 경우 체크박스 체크
-                if (record[dataIndex] != values[dataIndex]) {
-                    selectedRowKeys.length <= 0
-                        ? onSelectChange([record.key])
-                        : selectedRowKeys.map((d_l) => (d_l === record.key ? '' : onSelectChange([...selectedRowKeys, record.key])));
-                }
-            } catch (errInfo) {
-                console.log('Save failed:', errInfo);
-            }
-        };
-
-        let childNode = children;
-        if (editable) {
-            childNode = editing ? (
-                <>
-                    <Form.Item
-                        style={{ margin: '0 auto', width: '100%' }}
-                        name={dataIndex}
-                        rules={[{ required: true, message: `${title} is required.` }]}
-                    >
-                        <Input size="small" ref={inputRef} onPressEnter={save} onBlur={save} />
-                    </Form.Item>
-                </>
-            ) : (
-                <>
-                    <div className="editable-cell-value-wrap" onClick={toggleEdit} aria-hidden="true">
-                        {children}
-                    </div>
-                </>
-            );
-        }
-        return <td {...restProps}>{childNode}</td>;
+    // 등록 ======================================================
+    const [InsertTheoryGroupApi] = useInsertTheoryGroupMutation(); // 교육생 정보 hooks api호출
+    const handle_InsertTheoryGroup_Api = async () => {
+        const InsertTheoryGroupresponse = await InsertTheoryGroupApi({
+            groupType: 'L',
+            theoryGroupCd: itemContainer.theoryGroupCd,
+            theoryGroupName: itemContainer.theoryGroupName,
+            theoryParentGroupCd: '',
+            useYn: itemContainer.useYn
+        });
+        InsertTheoryGroupresponse?.data?.RET_CODE === '0100'
+            ? Modal.success({
+                  content: '등록 완료',
+                  onOk() {
+                      setOpen(false);
+                      setDataEdit(false);
+                      form.resetFields();
+                      handle_SelectTheoryGroupList_Api();
+                  }
+              })
+            : Modal.success({
+                  content: '등록 오류',
+                  onOk() {}
+              });
     };
+    // 수정 ======================================================
+    const [UpdateTheoryGroupApi] = useUpdateTheoryGroupMutation(); // 수정 hooks api호출
+    const handel_UpdateUser_Api = async () => {
+        const UpdateTheoryGroupresponse = await UpdateTheoryGroupApi({
+            groupNo: groupNoData,
+            groupType: itemContainer.groupType,
+            theoryGroupCd: itemContainer.theoryGroupCd,
+            theoryGroupName: itemContainer.theoryGroupName,
+            theoryParentGroupCd: '',
+            useYn: itemContainer.useYn
+        });
+        UpdateTheoryGroupresponse?.data?.RET_CODE === '0100'
+            ? Modal.success({
+                  content: '수정 완료',
+                  onOk() {
+                      setOpen(false);
+                      setDataEdit(false);
+                      form.resetFields();
+                      handle_SelectTheoryGroupList_Api();
+                  }
+              })
+            : Modal.success({
+                  content: '수정 오류',
+                  onOk() {}
+              });
+    };
+    // 삭제 ======================================================
+    const [DeleteTheoryGroupApi] = useDeleteTheoryGroupMutation(); // 삭제 hooks api호출
+    const handel_DeleteTheoryGroup_Api = async (userIdList) => {
+        const DeleteTheoryGroupresponse = await DeleteTheoryGroupApi({
+            userIdList: userIdList
+        });
+        DeleteTheoryGroupresponse?.data?.RET_CODE === '0300'
+            ? Modal.success({
+                  content: '삭제 완료',
+                  onOk() {
+                      handle_SelectTheoryGroupList_Api();
+                  }
+              })
+            : Modal.success({
+                  content: '삭제 오류',
+                  onOk() {}
+              });
+    };
+
+    // Api 호출 End
+    // ===============================
 
     const defaultColumns = [
-        // {
-        //     width: '60px',
-        //     title: 'No',
-        //     dataIndex: 'rowdata0',
-        //     align: 'center',
-        //     render: (text) => (
-        //         <div style={{ cursor: 'pointer' }}>
-        //             <Tooltip title="Double Click">
-        //                 <div>{text}</div>
-        //             </Tooltip>
-        //         </div>
-        //     )
-        // },
+        {
+            width: '60px',
+            title: 'No',
+            dataIndex: 'rowdata0',
+            align: 'center',
+            render: (text) => (
+                <div style={{ cursor: 'pointer' }}>
+                    <div>{text}</div>
+                </div>
+            )
+        },
         {
             title: '대분류코드',
             dataIndex: 'rowdata2',
             align: 'center',
             render: (text) => (
                 <div style={{ cursor: 'pointer' }}>
-                    <Tooltip title="Click">
-                        <div>{text}</div>
-                    </Tooltip>
+                    <div>{text}</div>
                 </div>
             )
         },
         {
             title: '대분류명',
             dataIndex: 'rowdata3',
-            datatype: 'rowdata10',
+            datatype: 'rowdata1',
             align: 'center',
             render: (text) => (
                 <div style={{ cursor: 'pointer' }}>
-                    <Tooltip title="Click">
-                        <div>{text}</div>
-                    </Tooltip>
+                    <div>{text}</div>
                 </div>
             )
         },
         {
             title: '사용여부',
-            dataIndex: 'rowdata6',
-            render: (_, { rowdata6 }) => (
+            dataIndex: 'rowdata5',
+            render: (_, { rowdata5 }) => (
                 <>
-                    {rowdata6 === '1' ? (
-                        <Tag color={'green'} key={rowdata6}>
+                    {rowdata5 === 'Y' ? (
+                        <Tag color={'green'} key={rowdata5}>
                             사용
                         </Tag>
                     ) : (
-                        <Tag color={'volcano'} key={rowdata6}>
+                        <Tag color={'volcano'} key={rowdata5}>
                             미사용
                         </Tag>
                     )}
@@ -200,22 +212,16 @@ export const TheoryGroup_L = ({ ...props }) => {
     ];
 
     const handleSave = (row) => {
-        const newData = row.rowdata10 === 'L' ? [...dataSource] : row.rowdata10 === 'M' ? [...dataSource_m] : [...dataSource_s];
+        const newData = [...selectTheoryGroupListData];
         const index = newData.findIndex((item) => row.key === item.key);
         const item = newData[index];
         newData.splice(index, 1, {
             ...item,
             ...row
         });
-        setdataSource(newData);
+        setSelectTheoryGroupListData(newData);
     };
 
-    const components = {
-        body: {
-            row: EditableRow,
-            cell: EditableCell
-        }
-    };
     const columns = defaultColumns.map((col) => {
         if (!col.editable) {
             return col;
@@ -224,7 +230,6 @@ export const TheoryGroup_L = ({ ...props }) => {
             ...col,
             onCell: (record) => ({
                 record,
-                editable: col.editable,
                 dataIndex: col.dataIndex,
                 title: col.title,
                 handleSave
@@ -246,13 +251,15 @@ export const TheoryGroup_L = ({ ...props }) => {
 
     // 대분류 추가 버튼
     const handleAdd = () => {
+        setItemContainer({});
         setDataEdit(false);
         setOpen(true);
+        form.resetFields();
     };
 
     // 대분류 수정 버튼
     const handleEdit = (EditKey) => {
-        console.log(EditKey);
+        handle_SelectTheoryGroup_Api(EditKey);
         setDataEdit(true);
         setOpen(true);
     };
@@ -261,59 +268,37 @@ export const TheoryGroup_L = ({ ...props }) => {
     const handleDel = () => {
         if (selectedRowKeys == '') {
             Modal.error({
-                content: '[대분류] 삭제할 항목을 선택해주세요.'
+                content: '삭제할 [대분류] 항목을 선택해주세요.'
             });
         } else {
             confirm({
-                title: '[대분류] 선택한 대분류 항목을 삭제하시겠습니까?',
+                title: '선택한 [대분류] 항목을 삭제하시겠습니까?',
                 icon: <ExclamationCircleFilled />,
                 content: selectedRowKeys + ' 항목의 데이터',
                 okText: '예',
                 okType: 'danger',
                 cancelText: '아니오',
                 onOk() {
-                    Modal.success({
-                        content: '[대분류] 삭제완료'
-                    });
+                    handel_DeleteTheoryGroup_Api(selectedRowKeys);
                 },
-                onCancel() {
-                    Modal.error({
-                        content: '[대분류] 삭제취소'
-                    });
-                }
+                onCancel() {}
             });
         }
     };
 
     // 추가 및 수정 취소
     const onAddClose = () => {
+        setItemContainer({});
         setOpen(false);
         form.resetFields();
     };
 
     // 추가 및 수정 처리
     const onAddSubmit = () => {
-        console.log(procGroupCdVal, procGroupNmVal, procGroupYnVal);
         if (dataEdit === true) {
-            Modal.success({
-                content: '수정 완료',
-                onOk() {
-                    setOpen(false);
-                    setDataEdit(false);
-                    handleTheoryGroup();
-                    form.resetFields();
-                }
-            });
+            handel_UpdateUser_Api(); // 수정
         } else {
-            Modal.success({
-                content: '추가 완료',
-                onOk() {
-                    setOpen(false);
-                    setDataEdit(false);
-                    handleTheoryGroup();
-                    form.resetFields();
-                }
-            });
+            handle_InsertTheoryGroup_Api(); // 추가(등록)
         }
     };
 
@@ -322,8 +307,8 @@ export const TheoryGroup_L = ({ ...props }) => {
     };
 
     useEffect(() => {
-        // setLoading(true);
-        handleTheoryGroup();
+        setLoading(true);
+        handle_SelectTheoryGroupList_Api();
     }, []);
 
     return (
@@ -341,16 +326,6 @@ export const TheoryGroup_L = ({ ...props }) => {
                                 추가
                             </Button>
                         </Tooltip>
-                        {/* <Tooltip title="수정">
-                            <Button
-                                type="primary"
-                                onClick={handleEdit}
-                                style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
-                                icon={<EditFilled />}
-                            >
-                                수정
-                            </Button>
-                        </Tooltip> */}
                         <Tooltip title="삭제">
                             <Button
                                 type="danger"
@@ -365,12 +340,11 @@ export const TheoryGroup_L = ({ ...props }) => {
                 </Col>
             </Row>
             <Table
-                components={components}
                 rowClassName={(record) => {
                     return record.rowdata2 === selectprocGroupCd ? `table-row-lightblue` : '';
                 }}
                 bordered={true}
-                dataSource={dataSource}
+                dataSource={selectTheoryGroupListData}
                 loading={loading}
                 columns={columns}
                 pagination={false}
@@ -433,9 +407,6 @@ export const TheoryGroup_L = ({ ...props }) => {
                         <Row gutter={16}>
                             <Col span={24}>
                                 <Form.Item
-                                    name="procGroupCd"
-                                    defaultValue={procGroupCdVal}
-                                    onChange={(e) => setProcGroupCdVal(e.target.value)}
                                     label="대분류 분류코드"
                                     rules={[
                                         {
@@ -444,7 +415,13 @@ export const TheoryGroup_L = ({ ...props }) => {
                                         }
                                     ]}
                                 >
-                                    <Input placeholder="Please Enter Group Code" />
+                                    <Input
+                                        placeholder="Please Enter Group Code"
+                                        name="theoryGroupCd"
+                                        value={itemContainer?.theoryGroupCd}
+                                        onChange={(e) => setItemContainer({ ...itemContainer, theoryGroupCd: e.target.value })}
+                                        disabled={dataEdit}
+                                    />
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -452,9 +429,6 @@ export const TheoryGroup_L = ({ ...props }) => {
                         <Row gutter={16}>
                             <Col span={24}>
                                 <Form.Item
-                                    name="procGroupNm"
-                                    defaultValue={procGroupNmVal}
-                                    onChange={(e) => setProcGroupNmVal(e.target.value)}
                                     label="대분류 분류명"
                                     rules={[
                                         {
@@ -464,9 +438,12 @@ export const TheoryGroup_L = ({ ...props }) => {
                                     ]}
                                 >
                                     <Input
+                                        name="theoryGroupName"
+                                        value={itemContainer?.theoryGroupName}
                                         style={{
                                             width: '100%'
                                         }}
+                                        onChange={(e) => setItemContainer({ ...itemContainer, theoryGroupName: e.target.value })}
                                         placeholder="Please Enter Group Name"
                                     />
                                 </Form.Item>
@@ -475,14 +452,21 @@ export const TheoryGroup_L = ({ ...props }) => {
                         <Divider style={{ margin: '10px 0' }} />
                         <Row gutter={16}>
                             <Col span={24}>
-                                <Form.Item name="useYn" label="대분류 사용여부">
-                                    <Switch
-                                        checkedChildren="사용"
-                                        unCheckedChildren="미사용"
-                                        defaultValue={procGroupYnVal}
-                                        onChange={(e) => setProcGroupYnVal(e.target.value)}
-                                        style={{ width: '80px' }}
-                                    />
+                                <Form.Item label="대분류 사용여부">
+                                    <Radio.Group
+                                        name="useYn"
+                                        onChange={(e) => setItemContainer({ ...itemContainer, useYn: e.target.value })}
+                                        buttonStyle="solid"
+                                        value={itemContainer?.useYn}
+                                    >
+                                        <Radio.Button value="Y">
+                                            <span style={{ padding: '0 15px' }}>사용</span>
+                                        </Radio.Button>
+                                        <span style={{ padding: '0 10px' }}></span>
+                                        <Radio.Button value="N">
+                                            <span style={{ padding: '0 15px' }}>미사용</span>
+                                        </Radio.Button>
+                                    </Radio.Group>
                                 </Form.Item>
                             </Col>
                         </Row>

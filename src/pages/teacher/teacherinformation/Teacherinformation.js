@@ -1,25 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
 import { Typography } from '@mui/material';
-import {
-    Row,
-    Col,
-    Space,
-    Table,
-    Tag,
-    Tooltip,
-    Button,
-    Drawer,
-    Switch,
-    Divider,
-    Form,
-    Input,
-    DatePicker,
-    Card,
-    Radio,
-    Select,
-    Modal
-} from 'antd';
+import { Row, Col, Space, Table, Tag, Tooltip, Button, Drawer, Divider, Form, Input, DatePicker, Card, Radio, Select, Modal } from 'antd';
 import locale from 'antd/es/date-picker/locale/ko_KR';
 const { RangePicker } = DatePicker;
 
