@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Tag, Col, Row, Button, Form, Tooltip, Space, DatePicker, Select } from 'antd';
 
 // project import
@@ -8,6 +8,9 @@ import MainCard from 'components/MainCard';
 import dayjs from 'dayjs';
 import weekday from 'dayjs/plugin/weekday';
 import localeData from 'dayjs/plugin/localeData';
+
+// 모듈 목록 조회
+import { useSelectModuleListMutation } from '../../../hooks/api/CurriculumManagement/CurriculumManagement';
 
 export const StudySch = (props) => {
     const [form] = Form.useForm();
@@ -21,6 +24,19 @@ export const StudySch = (props) => {
     const [eduStartDate, setEduStartDate] = useState(props.EduStartDate);
     const [eduEndDate, setEduEndDate] = useState(props.EduEndDate);
     const [totStudyDate, setTotStudyDate] = useState(props.TotStudyDate);
+
+    // ===============================
+    // Api 호출 Start
+    // 모듈 목록 조회 ======================================================
+    const [selectModuleListApi] = useSelectModuleListMutation(); // 조회 hooks api호출
+    const [selectModuleListData, setSelectModuleListData] = useState([]); // 조회 Data 값
+    const handel_selectModuleList_Api = async () => {
+        const SelectModuleListresponse = await selectModuleListApi({});
+        setSelectModuleListData(SelectModuleListresponse?.data?.RET_DATA);
+    };
+
+    // Api 호출 End
+    // ===============================
 
     // 총교육일수에 맞춰 일자입력 폼 설정 Start
     const initialTotStudyDateList = Array.from({ length: totStudyDate }, () => ({
@@ -47,6 +63,11 @@ export const StudySch = (props) => {
     const handel_Add = () => {
         props.StudySet(totStudyDateList, moduleList, menuList);
     };
+
+    useEffect(() => {
+        handel_selectModuleList_Api(); // 조회
+    }, []);
+
     return (
         <>
             <MainCard title="학습 일정별 학습과정 설정" style={{ marginTop: 30 }}>

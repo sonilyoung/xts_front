@@ -783,7 +783,7 @@ export const Curriculum = () => {
                     </Button>
                 ]}
             >
-                <XrayInformation QuestionCnt={Questions_handleOk} BagList={bagList.slice()} />
+                <XrayInformation QuestionCnt={Questions_handleOk} BagList={bagList?.slice()} />
             </Modal>
             {/* 출제 문항 검색 Modal End */}
         </>

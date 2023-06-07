@@ -183,9 +183,26 @@ export const curriculum = {
     children: [
         {
             id: '/learning/curriculum',
-            title: '학습관리 > 학습모듈 관리',
+            title: '학습관리 > 모듈 관리',
             type: 'item',
             url: '/learning/curriculum',
+            icon: icons.ProjectOutlined,
+            breadcrumbs: true
+        }
+    ]
+};
+
+export const eduprocadd = {
+    id: '177',
+    title: 'Navigation',
+    type: 'group',
+    children: [
+        {
+            id: '/educurriculum/eduprocadd',
+            title: '학습 관리 > 차수 관리',
+            subtitle: '차수 관리',
+            type: 'item',
+            url: '/educurriculum/eduprocadd',
             icon: icons.ProjectOutlined,
             breadcrumbs: true
         }
@@ -199,8 +216,8 @@ export const xrayPoint = {
     children: [
         {
             id: '/learning/xraypoint',
-            title: '학습 관리 > 배점관리',
-            subtitle: '배점관리',
+            title: '학습 관리 > 배점 관리',
+            subtitle: '배점 관리',
             type: 'item',
             url: '/learning/xraypoint',
             icon: icons.ProjectOutlined,
@@ -233,8 +250,8 @@ export const theoryInfo = {
     children: [
         {
             id: '/theory/theoryinfo',
-            title: '이론 관리 > 정보 관리',
-            subtitle: '정보 관리',
+            title: '이론 관리 > 교육 관리',
+            subtitle: '교육 관리',
             type: 'item',
             url: '/theory/theoryinfo',
             icon: icons.ProjectOutlined,
@@ -310,23 +327,6 @@ export const theoryInfo = {
 //         }
 //     ]
 // };
-
-export const eduprocadd = {
-    id: '177',
-    title: 'Navigation',
-    type: 'group',
-    children: [
-        {
-            id: '/educurriculum/eduprocadd',
-            title: '학습 관리 > 학습과정 관리',
-            subtitle: '학습과정 관리',
-            type: 'item',
-            url: '/educurriculum/eduprocadd',
-            icon: icons.ProjectOutlined,
-            breadcrumbs: true
-        }
-    ]
-};
 
 export const studentinformation = {
     id: '18',
