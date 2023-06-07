@@ -15,6 +15,7 @@ import { XrayinfoWrite } from 'pages/contents/xrayinformationimage'; // 콘텐�
 
 import { Teacherinformation } from 'pages/teacher/teacherinformation'; // 강사 관리 / 강사정보 관리
 import { Theoryinformation } from 'pages/teacher/theoryinformation'; // 강사 관리 / 이론정보 관리
+import { Teacherstudent } from 'pages/teacher/teacherstudent'; // 강사 관리 / 교육생정보 관리
 
 // 학습 관리
 import { XrayModule } from 'pages/learning/xraymodule'; // 학습관리 / 교육 모듈 구성 / X-ray 판독모듈 구성
@@ -110,6 +111,11 @@ const MainRoutes = {
             // 강사 관리 > 이론정보 관리
             path: '/teacher/theoryinformation',
             element: <Theoryinformation />
+        },
+        {
+            // 강사 관리 > 교육생정보 관리
+            path: '/teacher/teacherstudent',
+            element: <Teacherstudent />
         },
         {
             // 학습관리 > 학습모듈 관리

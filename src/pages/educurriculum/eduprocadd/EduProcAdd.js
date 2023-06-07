@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Typography } from '@mui/material';
-import { Col, Row, Button, Form, Input, Select, Drawer, Table, Space, Tooltip, Modal, DatePicker, Tag } from 'antd';
+import { Col, Row, Button, Form, Input, Select, Drawer, Table, Space, Tooltip, Modal, DatePicker, Tag, Badge, Card, Divider } from 'antd';
 import 'antd/dist/antd.css';
 import {
     PlusOutlined,
@@ -31,9 +31,12 @@ import localeData from 'dayjs/plugin/localeData';
 
 // project import
 import MainCard from 'components/MainCard';
+import moment from 'moment';
 
 import { StudentSch } from 'pages/educurriculum/eduprocadd/StudentSch'; // 교육생 검색
 import { StudentDetil } from 'pages/educurriculum/eduprocadd/StudentDetil'; // 교육생 정보
+
+import { StudySch } from 'pages/educurriculum/eduprocadd/StudySch'; // 학습일 검색
 
 export const EduProcAdd = () => {
     const { confirm } = Modal;
@@ -51,6 +54,7 @@ export const EduProcAdd = () => {
     // Selected Start
     const [selectedRowKeys, setSelectedRowKeys] = useState([]); //셀렉트 박스 option Selected 값
     const [selectedRowKeysStudentSearch, setSelectedRowKeysStudentSearch] = useState([]); //셀렉트 박스 option Selected 값
+    const [studentsList, setStudentsList] = useState([]); // 교육생 목록 배열
     // Selected End
 
     // Modal창 Start
@@ -66,6 +70,9 @@ export const EduProcAdd = () => {
     const [studyDayArry, setStudyDayArry] = useState([]); // 학습일수 배열
     const [studentArry, setStudentArry] = useState([]); // 교육생 배열
     const [procCdValue, setProcCdValue] = useState([]); // 교육생 정보 조회
+
+    const [menuList, setMenuList] = useState([]); // 메뉴 정보
+    const [moduleList, setModuleList] = useState([]); // 모듈 정보
 
     // Data source End
 
@@ -94,7 +101,7 @@ export const EduProcAdd = () => {
         const SelectBaselineListresponse = await SelectBaselineListApi({});
         setSelectBaselineListData([
             ...SelectBaselineListresponse?.data?.RET_DATA.map((d, i) => ({
-                key: d.moduleId,
+                key: d.procCd,
                 rowdata0: i + 1, // 시퀀스
                 rowdata1: d.procCd, // 차수내부번호
                 rowdata2: d.procName, // 차수명
@@ -111,20 +118,6 @@ export const EduProcAdd = () => {
         ]);
         setLoading(false);
     };
-
-    // 학습일정 상세정보 팝업 ======================================================
-    const [SelectBaselineEduDateListApi] = useSelectBaselineEduDateListMutation(); // 콘텐츠 정보 관리 hooks api호출
-    const [selectBaselineEduDateListData, setSelectBaselineEduDateListData] = useState(); // 콘텐츠 정보관리 리스트 상단 값
-    const handel_SelectBaselineEduDateList_Api = async (procCd) => {
-        const SelectBaselineEduDateListresponse = await SelectBaselineEduDateListApi({
-            procCd: procCd
-        });
-        console.log(SelectBaselineEduDateListresponse?.data?.RET_DATA);
-        setSelectBaselineEduDateListData(SelectBaselineEduDateListresponse?.data?.RET_DATA);
-    };
-
-    // Api 호출 End
-    // ===============================
 
     const defaultColumns = [
         {
@@ -268,6 +261,110 @@ export const EduProcAdd = () => {
         }
     ];
 
+    // 등록 ======================================================
+    const [InsertBaselineApi] = useInsertBaselineMutation(); // 등록 hooks api호출
+    const handel_InsertBaseline_Api = async () => {
+        const InsertBaselineresponse = await InsertBaselineApi({
+            moduleNm: itemContainer.moduleNm,
+            moduleDesc: itemContainer.moduleDesc,
+            studyLvl: itemContainer.studyLvl,
+            slideSpeed: itemContainer.slideSpeed,
+            moduleType: itemContainer.moduleType,
+            learningType: itemContainer.learningType,
+            failToPass: itemContainer.failToPass,
+            timeLimit: itemContainer.timeLimit,
+            useYn: itemContainer.useYn,
+            questionCnt: itemContainer.questionCnt,
+            bagList: bagList
+        });
+
+        InsertBaselineresponse?.data?.RET_CODE === '0100'
+            ? Modal.success({
+                  content: '등록 완료',
+                  onOk() {
+                      setOpen(false);
+                      setDataEdit(false);
+                      form.resetFields();
+                      handel_selectModuleList_Api();
+                  }
+              })
+            : Modal.success({
+                  content: '등록 오류',
+                  onOk() {}
+              });
+    };
+
+    // 상세 ======================================================
+    // useSelectBaselineMutation // 학습과정 관리 상세
+
+    // setBagList(SelectModuleresponse.data.RET_DATA.bagList);
+    // 수정 ======================================================
+
+    //useUpdateBaselineMutation // 학습과정 관리 수정
+    // 삭제 ======================================================
+
+    //useDeleteBaselineMutation // 학습과정 관리 삭제
+
+    // 커리큘럼 메뉴목록 조회
+    //useSelectModuleMenuListMutation
+
+    // 학습일정 상세정보 팝업 ======================================================
+    const [SelectBaselineEduDateListApi] = useSelectBaselineEduDateListMutation(); // 콘텐츠 정보 관리 hooks api호출
+    const [selectBaselineEduDateListData, setSelectBaselineEduDateListData] = useState(); // 콘텐츠 정보관리 리스트 상단 값
+    const handel_SelectBaselineEduDateList_Api = async (procCd) => {
+        const SelectBaselineEduDateListresponse = await SelectBaselineEduDateListApi({
+            procCd: procCd
+        });
+        console.log(SelectBaselineEduDateListresponse?.data?.RET_DATA);
+        setSelectBaselineEduDateListData(SelectBaselineEduDateListresponse?.data?.RET_DATA);
+    };
+
+    // Api 호출 End
+    // ===============================
+
+    const Scoreoptions = [
+        {
+            value: '10',
+            label: '10'
+        },
+        {
+            value: '20',
+            label: '20'
+        },
+        {
+            value: '30',
+            label: '30'
+        },
+        {
+            value: '40',
+            label: '40'
+        },
+        {
+            value: '50',
+            label: '50'
+        },
+        {
+            value: '60',
+            label: '60'
+        },
+        {
+            value: '70',
+            label: '70'
+        },
+        {
+            value: '80',
+            label: '80'
+        },
+        {
+            value: '90',
+            label: '90'
+        },
+        {
+            value: '100',
+            label: '100'
+        }
+    ];
+
     const [studentdataSourceSearch, setStudentdataSourceSearch] = useState([
         {
             rowdata0: '1',
@@ -300,67 +397,6 @@ export const EduProcAdd = () => {
         }
     ];
 
-    const EditableContext = React.createContext(null);
-    const EditableRow = ({ index, ...props }) => {
-        const [form] = Form.useForm();
-        return (
-            <Form form={form} component={false}>
-                <EditableContext.Provider value={form}>
-                    <tr {...props} />
-                </EditableContext.Provider>
-            </Form>
-        );
-    };
-    const EditableCell = ({ title, editable, children, dataIndex, record, handleSave, ...restProps }) => {
-        const [editing, setEditing] = useState(false);
-        const inputRef = useRef(null);
-        const form = useContext(EditableContext);
-        useEffect(() => {
-            if (editing) {
-                inputRef.current.focus();
-            }
-        }, [editing]);
-
-        const toggleEdit = () => {
-            setEditing(!editing);
-            form.setFieldsValue({
-                [dataIndex]: record[dataIndex]
-            });
-        };
-
-        const save = async () => {
-            try {
-                const values = await form.validateFields();
-                toggleEdit();
-                handleSave({
-                    ...record,
-                    ...values
-                });
-                // Data값이 변경될 경우 체크박스 체크
-                if (record[dataIndex] !== values[dataIndex]) {
-                    selectedRowKeys.length <= '0'
-                        ? onSelectChange([...selectedRowKeys, record.key])
-                        : selectedRowKeys.map((srk) => (srk === record.key ? '' : onSelectChange([...selectedRowKeys, record.key])));
-                }
-            } catch (errInfo) {
-                console.log('Save failed:', errInfo);
-            }
-        };
-        let childNode = children;
-        if (editable) {
-            childNode = editing ? (
-                <Form.Item style={{ margin: 0 }} name={dataIndex} rules={[{ required: true, message: `${title} is required.` }]}>
-                    <Input ref={inputRef} onPressEnter={save} onBlur={save} />
-                </Form.Item>
-            ) : (
-                <div className="editable-cell-value-wrap" onClick={toggleEdit} aria-hidden="true">
-                    {children}
-                </div>
-            );
-        }
-        return <td {...restProps}>{childNode}</td>;
-    };
-
     //차수 리스트 Start
     const handleSave = (row) => {
         const newData = [...selectBaselineListData];
@@ -372,12 +408,7 @@ export const EduProcAdd = () => {
         });
         setSelectBaselineListData(newData);
     };
-    const components = {
-        body: {
-            row: EditableRow,
-            cell: EditableCell
-        }
-    };
+
     const columns = defaultColumns.map((col) => {
         if (!col.editable) {
             return col;
@@ -386,7 +417,6 @@ export const EduProcAdd = () => {
             ...col,
             onCell: (record) => ({
                 record,
-                editable: col.editable,
                 dataIndex: col.dataIndex,
                 title: col.title,
                 handleSave
@@ -406,13 +436,6 @@ export const EduProcAdd = () => {
         setStudentColumnsSearch(newData);
     };
 
-    const studentcomponentsSearch = {
-        body: {
-            row: EditableRow,
-            cell: EditableCell
-        }
-    };
-
     const studentSearchcolumns = studentColumnsSearch.map((col) => {
         if (!col.editable) {
             return col;
@@ -421,7 +444,6 @@ export const EduProcAdd = () => {
             ...col,
             onCell: (record) => ({
                 record,
-                editable: col.editable,
                 dataIndex: col.dataIndex,
                 title: col.title,
                 StudenthandleSaveSearch
@@ -476,7 +498,6 @@ export const EduProcAdd = () => {
 
     // 추가 및 수정 처리
     const onAddSubmit = () => {
-        console.log(eduTypeIdVal, eduTypeNmVal, eduTypeDcVal, pointsStdIdVal, eduTypeYnVal);
         if (dataEdit === true) {
             Modal.success({
                 content: '수정 완료',
@@ -528,11 +549,12 @@ export const EduProcAdd = () => {
         }
     };
 
-    const onRangeChange = (date, dateString) => {
-        setStartEdudate(dateString[0]);
-        setEndEdudate(dateString[1]);
-        // console.log('Start : ' + dateString[0]);
-        // console.log('End : ' + dateString[1]);
+    // 교육생 선택 완료 (Modal 닫기)
+    const Student_handleOk = (Student_Value) => {
+        console.log('교육생 :', Student_Value);
+        setStudentsList(Student_Value);
+        setItemContainer({ ...itemContainer, limitPersonCnt: Student_Value.length });
+        setStudentModalOpen(false);
     };
 
     const onRangeDayChange = (date, dateString) => {
@@ -544,7 +566,14 @@ export const EduProcAdd = () => {
 
     // 학습 일정 설정 Start
     const EduDay_Modal = () => {
-        setEduDayModalOpen(true);
+        if (itemContainer.totStudyDate === '' || itemContainer.totStudyDate === undefined) {
+            Modal.error({
+                content: '총교육일수를 입력해주세요!',
+                onOk() {}
+            });
+        } else {
+            setEduDayModalOpen(true);
+        }
     };
     const EduDay_handleOk = () => {
         setEduDayModalOpen(false);
@@ -558,12 +587,11 @@ export const EduProcAdd = () => {
     const Student_Modal = () => {
         setStudentModalOpen(true);
     };
-    const Student_handleOk = () => {
-        setStudentModalOpen(false);
-    };
+
     const Student_handleCancel = () => {
         setStudentModalOpen(false);
     };
+
     // 학습생 검색 Modal End
 
     // 학습 일정 상세정보 Start
@@ -614,6 +642,14 @@ export const EduProcAdd = () => {
         });
     };
 
+    // 학습일 설정 (일자, 모듈, 메뉴) 값
+    const handel_Study_Set = (totStudyDateList, moduleList, menuList) => {
+        console.log(totStudyDateList);
+        console.log(moduleList);
+        console.log(menuList);
+        setEduDayModalOpen(false);
+    };
+
     useEffect(() => {
         setLoading(true); // 로딩 호출
         handel_SelectBaselineList_Api(); // 조회
@@ -651,7 +687,6 @@ export const EduProcAdd = () => {
                         </Col>
                     </Row>
                     <Table
-                        components={components}
                         rowClassName={() => 'editable-row'}
                         bordered={true}
                         dataSource={selectBaselineListData}
@@ -673,13 +708,13 @@ export const EduProcAdd = () => {
                 extra={
                     <>
                         <Space>
-                            <Tooltip title="취소" placement="bottom">
+                            <Tooltip title="학습과정 취소" placement="bottom">
                                 <Button onClick={onAddClose} style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}>
                                     취소
                                 </Button>
                             </Tooltip>
                             {dataEdit === true ? (
-                                <Tooltip title="수정" placement="bottom" color="#108ee9">
+                                <Tooltip title="학습과정 수정" placement="bottom" color="#108ee9">
                                     <Button
                                         onClick={onAddSubmit}
                                         style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
@@ -689,7 +724,7 @@ export const EduProcAdd = () => {
                                     </Button>
                                 </Tooltip>
                             ) : (
-                                <Tooltip title="추가" placement="bottom" color="#108ee9">
+                                <Tooltip title="학습과정 추가" placement="bottom" color="#108ee9">
                                     <Button
                                         onClick={onAddSubmit}
                                         style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
@@ -708,41 +743,60 @@ export const EduProcAdd = () => {
                         <Row gutter={24}>
                             <Col span={24}>
                                 <Form.Item
+                                    name="form01"
                                     label="차수명"
                                     rules={[
                                         {
                                             required: true,
-                                            message: 'Please Enter ProcName.'
+                                            message: '차수명 입력'
                                         }
                                     ]}
+                                    style={{
+                                        width: '100%'
+                                    }}
                                 >
-                                    <Input name="ProcName" placeholder="# 차수명" />
-                                    {/* onChange={(e) => setProcName(e.target.value)} /> */}
+                                    <Row>
+                                        <Col span={24}>
+                                            <Input
+                                                name="procName"
+                                                placeholder="# 차수명"
+                                                onChange={(e) => setItemContainer({ ...itemContainer, procName: e.target.value })}
+                                                value={itemContainer?.procName}
+                                            />
+                                        </Col>
+                                    </Row>
                                 </Form.Item>
                             </Col>
                         </Row>
                         <Row gutter={24}>
                             <Col span={24}>
                                 <Form.Item
+                                    name="form02"
                                     label="차수"
                                     rules={[
                                         {
                                             required: true,
-                                            message: 'Please Enter Slide Speed.'
+                                            message: '차수 선택'
                                         }
                                     ]}
                                 >
-                                    <Select
-                                        name="BaseLine"
-                                        defaultValue={{
-                                            value: 0,
-                                            label: '# 차수 선택'
-                                        }}
-                                        style={{
-                                            width: '100%'
-                                        }}
-                                        options={baseLineArr}
-                                    />
+                                    <Row>
+                                        <Col span={24}>
+                                            <Select
+                                                name="procSeq"
+                                                defaultValue={{
+                                                    value: 0,
+                                                    label: '# 차수 선택'
+                                                }}
+                                                style={{
+                                                    width: '100%'
+                                                }}
+                                                onChange={(e) => setItemContainer({ ...itemContainer, procSeq: e })}
+                                                value={itemContainer?.procSeq}
+                                                options={baseLineArr}
+                                            />
+                                        </Col>
+                                    </Row>
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -750,6 +804,7 @@ export const EduProcAdd = () => {
                         <Row gutter={24}>
                             <Col span={24}>
                                 <Form.Item
+                                    name="form03"
                                     label="교육기간"
                                     rules={[
                                         {
@@ -758,7 +813,28 @@ export const EduProcAdd = () => {
                                         }
                                     ]}
                                 >
-                                    <RangePicker name="EduData" defaultValue={dayjs(new Date())} style={{ width: '100%' }} />
+                                    <Row>
+                                        <Col span={24}>
+                                            <RangePicker
+                                                name="EduData"
+                                                defaultValue={dayjs(new Date())}
+                                                style={{ width: '100%' }}
+                                                onChange={(dates) => {
+                                                    const [start, end] = dates;
+                                                    setItemContainer({
+                                                        ...itemContainer,
+                                                        eduEndDate: end.format('YYYY-MM-DD'),
+                                                        ...itemContainer,
+                                                        eduStartDate: start.format('YYYY-MM-DD')
+                                                    });
+                                                }}
+                                                value={[
+                                                    itemContainer?.eduStartDate ? moment(itemContainer.eduStartDate) : null,
+                                                    itemContainer?.eduEndDate ? moment(itemContainer.eduEndDate) : null
+                                                ]}
+                                            />
+                                        </Col>
+                                    </Row>
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -766,7 +842,7 @@ export const EduProcAdd = () => {
                         <Row gutter={24}>
                             <Col span={24}>
                                 <Form.Item
-                                    name="eduDays"
+                                    name="form04"
                                     label="총교육일수"
                                     rules={[
                                         {
@@ -775,7 +851,16 @@ export const EduProcAdd = () => {
                                         }
                                     ]}
                                 >
-                                    <Input placeholder="# 일수" />
+                                    <Row>
+                                        <Col span={24}>
+                                            <Input
+                                                placeholder="# 일수"
+                                                name="totStudyDate"
+                                                onChange={(e) => setItemContainer({ ...itemContainer, totStudyDate: e.target.value })}
+                                                value={itemContainer?.totStudyDate}
+                                            />
+                                        </Col>
+                                    </Row>
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -787,117 +872,69 @@ export const EduProcAdd = () => {
                                     type="primary"
                                     onClick={EduDay_Modal}
                                 >
-                                    학습일자 설정
+                                    학습일 설정
                                 </Button>
                             </Col>
                         </Row>
                         <Row gutter={24}>
                             <Col span={12}>
                                 <Form.Item
-                                    name="EduPoints"
-                                    label="수료기준점수"
+                                    name="form05"
+                                    label="수료 기준점수"
                                     rules={[
                                         {
                                             required: true,
-                                            message: 'Please Enter Points Selected.'
+                                            message: '※ 수료 기준점수 선택'
                                         }
                                     ]}
                                 >
-                                    <Select
-                                        defaultValue={{
-                                            value: 0,
-                                            label: '# 수료기준점수'
-                                        }}
-                                        style={{
-                                            width: '100%'
-                                        }}
-                                        options={[
-                                            {
-                                                value: '60',
-                                                label: '60'
-                                            },
-                                            {
-                                                value: '70',
-                                                label: '70'
-                                            },
-                                            {
-                                                value: '80',
-                                                label: '80'
-                                            },
-                                            {
-                                                value: '90',
-                                                label: '90'
-                                            },
-                                            {
-                                                value: '100',
-                                                label: '100'
-                                            }
-                                        ]}
-                                    />
+                                    <Row>
+                                        <Col>
+                                            <Select
+                                                name="endingStdScore"
+                                                defaultValue={{
+                                                    value: 0,
+                                                    label: '# 수료 기준점수'
+                                                }}
+                                                style={{
+                                                    width: '210px'
+                                                }}
+                                                options={Scoreoptions}
+                                                onChange={(e) => setItemContainer({ ...itemContainer, endingStdScore: e })}
+                                                value={itemContainer?.endingStdScore}
+                                            />
+                                        </Col>
+                                    </Row>
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
                                 <Form.Item
-                                    name="theoryTotalScore"
-                                    label="이론가중치"
+                                    name="form06"
+                                    label="이론 가중치"
                                     rules={[
                                         {
                                             required: true,
-                                            message: 'Please Enter theoryTotalScore Selected.'
+                                            message: '※ 이론 가중치 선택'
                                         }
                                     ]}
                                 >
-                                    <Select
-                                        defaultValue={{
-                                            value: 0,
-                                            label: '# 이론가중치'
-                                        }}
-                                        style={{
-                                            width: '100%'
-                                        }}
-                                        options={[
-                                            {
-                                                value: '10',
-                                                label: '10'
-                                            },
-                                            {
-                                                value: '20',
-                                                label: '20'
-                                            },
-                                            {
-                                                value: '30',
-                                                label: '30'
-                                            },
-                                            {
-                                                value: '40',
-                                                label: '40'
-                                            },
-                                            {
-                                                value: '50',
-                                                label: '50'
-                                            },
-                                            {
-                                                value: '60',
-                                                label: '60'
-                                            },
-                                            {
-                                                value: '70',
-                                                label: '70'
-                                            },
-                                            {
-                                                value: '80',
-                                                label: '80'
-                                            },
-                                            {
-                                                value: '90',
-                                                label: '90'
-                                            },
-                                            {
-                                                value: '100',
-                                                label: '100'
-                                            }
-                                        ]}
-                                    />
+                                    <Row>
+                                        <Col>
+                                            <Select
+                                                name="theoryTotalScore"
+                                                defaultValue={{
+                                                    value: 0,
+                                                    label: '# 이론 가중치'
+                                                }}
+                                                style={{
+                                                    width: '210px'
+                                                }}
+                                                options={Scoreoptions}
+                                                onChange={(e) => setItemContainer({ ...itemContainer, theoryTotalScore: e })}
+                                                value={itemContainer?.theoryTotalScore}
+                                            />
+                                        </Col>
+                                    </Row>
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -905,139 +942,85 @@ export const EduProcAdd = () => {
                         <Row gutter={24}>
                             <Col span={12}>
                                 <Form.Item
-                                    name="practiceTotalScore"
-                                    label="실기가중치"
+                                    name="form07"
+                                    label="실기 가중치"
                                     rules={[
                                         {
                                             required: true,
-                                            message: 'Please Enter practiceTotalScore Selected.'
+                                            message: '※ 실기 가중치 선택'
                                         }
                                     ]}
                                 >
-                                    <Select
-                                        defaultValue={{
-                                            value: 0,
-                                            label: '# 실기가중치'
-                                        }}
-                                        style={{
-                                            width: '100%'
-                                        }}
-                                        options={[
-                                            {
-                                                value: '10',
-                                                label: '10'
-                                            },
-                                            {
-                                                value: '20',
-                                                label: '20'
-                                            },
-                                            {
-                                                value: '30',
-                                                label: '30'
-                                            },
-                                            {
-                                                value: '40',
-                                                label: '40'
-                                            },
-                                            {
-                                                value: '50',
-                                                label: '50'
-                                            },
-                                            {
-                                                value: '60',
-                                                label: '60'
-                                            },
-                                            {
-                                                value: '70',
-                                                label: '70'
-                                            },
-                                            {
-                                                value: '80',
-                                                label: '80'
-                                            },
-                                            {
-                                                value: '90',
-                                                label: '90'
-                                            },
-                                            {
-                                                value: '100',
-                                                label: '100'
-                                            }
-                                        ]}
-                                    />
+                                    <Row>
+                                        <Col span={12}>
+                                            <Select
+                                                name="practiceTotalScore"
+                                                defaultValue={{
+                                                    value: 0,
+                                                    label: '# 실기 가중치'
+                                                }}
+                                                style={{
+                                                    width: '210px'
+                                                }}
+                                                options={Scoreoptions}
+                                                onChange={(e) => setItemContainer({ ...itemContainer, practiceTotalScore: e })}
+                                                value={itemContainer?.practiceTotalScore}
+                                            />
+                                        </Col>
+                                    </Row>
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
                                 <Form.Item
-                                    name="evaluationTotalScore"
-                                    label="평가가중치"
+                                    name="form08"
+                                    label="평가 가중치"
                                     rules={[
                                         {
                                             required: true,
-                                            message: 'Please Enter evaluationTotalScore Selected.'
+                                            message: '※ 평가 가중치 선택'
                                         }
                                     ]}
                                 >
-                                    <Select
-                                        defaultValue={{
-                                            value: 0,
-                                            label: '# 평가가중치'
-                                        }}
-                                        style={{
-                                            width: '100%'
-                                        }}
-                                        options={[
-                                            {
-                                                value: '10',
-                                                label: '10'
-                                            },
-                                            {
-                                                value: '20',
-                                                label: '20'
-                                            },
-                                            {
-                                                value: '30',
-                                                label: '30'
-                                            },
-                                            {
-                                                value: '40',
-                                                label: '40'
-                                            },
-                                            {
-                                                value: '50',
-                                                label: '50'
-                                            },
-                                            {
-                                                value: '60',
-                                                label: '60'
-                                            },
-                                            {
-                                                value: '70',
-                                                label: '70'
-                                            },
-                                            {
-                                                value: '80',
-                                                label: '80'
-                                            },
-                                            {
-                                                value: '90',
-                                                label: '90'
-                                            },
-                                            {
-                                                value: '100',
-                                                label: '100'
-                                            }
-                                        ]}
-                                    />
+                                    <Row>
+                                        <Col span={12}>
+                                            <Select
+                                                name="evaluationTotalScore"
+                                                defaultValue={{
+                                                    value: 0,
+                                                    label: '# 평가 가중치'
+                                                }}
+                                                style={{
+                                                    width: '210px'
+                                                }}
+                                                options={Scoreoptions}
+                                                onChange={(e) => setItemContainer({ ...itemContainer, evaluationTotalScore: e })}
+                                                value={itemContainer?.evaluationTotalScore}
+                                            />
+                                        </Col>
+                                    </Row>
                                 </Form.Item>
                             </Col>
                         </Row>
 
-                        <Row gutter={24}>
+                        <Divider style={{ margin: '10px 0' }} />
+                        <Card bordered style={{ textAlign: 'center', margin: '20px 0' }}>
+                            <Row>
+                                <Col span={24}>
+                                    <div>교육생 수</div>
+                                    <Badge
+                                        style={{ width: '40px', marginTop: '5px' }}
+                                        count={itemContainer?.limitPersonCnt}
+                                        color="#52c41a"
+                                        overflowCount={9999}
+                                    />
+                                </Col>
+                            </Row>
+                        </Card>
+                        {/* <Row gutter={24}>
                             <Col span={24}>
                                 <Form.Item
                                     name="EduStudentChk"
-                                    label="학습생 제한수"
+                                    label="교육생 수"
                                     rules={[
                                         {
                                             required: true,
@@ -1048,7 +1031,7 @@ export const EduProcAdd = () => {
                                     <Input placeholder="# 제한수" />
                                 </Form.Item>
                             </Col>
-                        </Row>
+                        </Row> */}
 
                         <Row gutter={24}>
                             <Col span={24}>
@@ -1065,7 +1048,7 @@ export const EduProcAdd = () => {
                 </MainCard>
             </Drawer>
             {/* 추가 폼 End */}
-            {/* 학습일자 설정 Modal Start */}
+            {/* 학습일 설정 Modal Start */}
             <Modal
                 open={eduDayModalOpen}
                 onOk={EduDay_handleOk}
@@ -1085,113 +1068,16 @@ export const EduProcAdd = () => {
                     </Button>
                 ]}
             >
-                <MainCard title="학습 일정별 학습과정 설정" style={{ marginTop: 30 }}>
-                    <Form layout="horizontal" form={form}>
-                        <Row gutter={24} style={{ marginBottom: 14 }}>
-                            <Col span={20} style={{ textAlign: 'center' }}>
-                                <Tag
-                                    color="#108ee9"
-                                    style={{ float: 'left', padding: '11px 280px', borderRadius: '5px', fontSize: '14px' }}
-                                >
-                                    2023년 {}차
-                                </Tag>
-                            </Col>
-                            <Col span={4}>
-                                <Space>
-                                    <Tooltip title="저장">
-                                        <Tag
-                                            color="#ff4d4f"
-                                            style={{
-                                                float: 'right',
-                                                cursor: 'pointer',
-                                                padding: '11px 46px',
-                                                borderRadius: '5px',
-                                                fontSize: '14px'
-                                            }}
-                                        >
-                                            저장
-                                        </Tag>
-                                    </Tooltip>
-                                </Space>
-                            </Col>
-                        </Row>
-
-                        {Array.from({ length: 3 }, (_, index) => (
-                            <Row gutter={24} key={index}>
-                                <Col span={7}>
-                                    <RangePicker
-                                        style={{ height: '88px' }}
-                                        name={`Day ${index + 1}`}
-                                        id={`Day ${index + 1}`}
-                                        defaultValue={[dayjs('2023-06-01', 'YYYY-MM-DD'), dayjs('2023-06-10', 'YYYY-MM-DD')]}
-                                        onChange={onRangeDayChange}
-                                        disabled={3 - 1 === index ? [false, true] : index === 0 ? [true, false] : [false, false]}
-                                    />
-                                </Col>
-
-                                <Col span={17}>
-                                    <Form.Item name={`EduDay00${index + 1}`}>
-                                        <Select
-                                            placeholder="# 모듈 선택"
-                                            mode="multiple"
-                                            style={{
-                                                width: '100%'
-                                            }}
-                                            onChange={handleChange}
-                                            options={[
-                                                {
-                                                    value: '물품연습 모듈',
-                                                    label: '물품연습 모듈'
-                                                },
-                                                {
-                                                    value: '학습 모듈',
-                                                    label: '학습 모듈'
-                                                },
-                                                {
-                                                    value: 'AI강화학습 모듈',
-                                                    label: 'AI강화학습 모듈'
-                                                },
-                                                {
-                                                    value: '평가 모듈',
-                                                    label: '평가 모듈'
-                                                }
-                                            ]}
-                                        />
-                                    </Form.Item>
-
-                                    <Form.Item name={`EduDay10${index + 1}`}>
-                                        <Select
-                                            placeholder="# 메뉴 선택"
-                                            mode="multiple"
-                                            style={{
-                                                width: '100%'
-                                            }}
-                                            onChange={handleChange}
-                                            options={[
-                                                {
-                                                    value: '물품연습 모듈',
-                                                    label: '물품연습 모듈'
-                                                },
-                                                {
-                                                    value: '학습 모듈',
-                                                    label: '학습 모듈'
-                                                },
-                                                {
-                                                    value: 'AI강화학습 모듈',
-                                                    label: 'AI강화학습 모듈'
-                                                },
-                                                {
-                                                    value: '평가 모듈',
-                                                    label: '평가 모듈'
-                                                }
-                                            ]}
-                                        />
-                                    </Form.Item>
-                                </Col>
-                            </Row>
-                        ))}
-                    </Form>
-                </MainCard>
+                <StudySch
+                    ProcName={itemContainer?.procName}
+                    ProcSeq={itemContainer?.procSeq}
+                    TotStudyDate={itemContainer?.totStudyDate}
+                    MenuList={menuList.slice()}
+                    ModuleList={moduleList.slice()}
+                    EduStartDate={itemContainer?.eduStartDate}
+                    EduEndDate={itemContainer?.eduEndDate}
+                    StudySet={handel_Study_Set}
+                />
             </Modal>
             {/* 학습일자 설정 Modal End */}
 
@@ -1214,7 +1100,7 @@ export const EduProcAdd = () => {
                     </Button>
                 ]}
             >
-                <StudentSch />
+                <StudentSch StudentsCnt={Student_handleOk} StudentsList={studentsList.slice()} />
             </Modal>
             {/* 교육생 검색 Modal End */}
 
@@ -1388,7 +1274,7 @@ export const EduProcAdd = () => {
                     </Button>
                 ]}
             >
-                <StudentDetil procCdValue={procCdValue} />
+                <StudentDetil />
             </Modal>
             {/* 교육생 상세정보 Modal End */}
         </>

@@ -268,7 +268,7 @@ export const XrayInformation = (props) => {
                                 onClick={QuestionsOk}
                                 style={{ width: '100px', borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
                             >
-                                선택 완료 [{selectedRowKeys.length}]
+                                선택 완료 [{selectedRowKeys?.length}]
                             </Button>
                         </Col>
                         <Col span={3}>

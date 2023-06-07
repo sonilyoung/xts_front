@@ -1,0 +1,1 @@
+export { Teacherstudent } from './Teacherstudent';

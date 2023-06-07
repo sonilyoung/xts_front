@@ -141,6 +141,24 @@ export const theoryinformation = {
         }
     ]
 };
+
+export const teacherstudent = {
+    id: '8',
+    title: 'Navigation',
+    type: 'group',
+    children: [
+        {
+            id: '/teacher/teacherstudent',
+            title: '강사 관리 > 교육생 관리',
+            subtitle: '교육생 관리',
+            type: 'item',
+            url: '/teacher/teacherstudent',
+            icon: icons.ProjectOutlined,
+            breadcrumbs: true
+        }
+    ]
+};
+
 // export const xrayModule = {
 //     id: '9',
 //     title: 'Navigation',

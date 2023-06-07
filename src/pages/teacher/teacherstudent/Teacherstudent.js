@@ -1,16 +1,20 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
 import { Typography } from '@mui/material';
-import { Table, Tag, Col, Row, Button } from 'antd';
+import { Table, Tag, Tooltip, Button } from 'antd';
+
 import { useSelectUserListMutation } from '../../../hooks/api/StudentsManagement/StudentsManagement';
+
+import { FileProtectOutlined } from '@ant-design/icons';
 
 // project import
 import MainCard from 'components/MainCard';
 
-export const StudentSch = (props) => {
+export const Teacherstudent = () => {
     const [dataSource, setDataSource] = useState([]); // Table 데이터 값
     const [loading, setLoading] = useState(false);
-    const [selectedRowKeys, setSelectedRowKeys] = useState(props.StudentsList); //셀렉트 박스 option Selected 값
+
+    const [selectedRowKeys, setSelectedRowKeys] = useState([]); //셀렉트 박스 option Selected 값
 
     // ===============================
     // Api 호출 Start
@@ -55,6 +59,7 @@ export const StudentSch = (props) => {
         ]);
         setLoading(false);
     };
+
     // Api 호출 End
     // ===============================
     const columns = [
@@ -86,17 +91,18 @@ export const StudentSch = (props) => {
             align: 'center'
         },
         {
+            width: '110px',
             title: '부서',
             dataIndex: 'dept',
             align: 'center'
         },
         {
+            width: '110px',
             title: '직위',
             dataIndex: 'position',
             align: 'center'
         },
         {
-            width: '170px',
             title: '교육 구분',
             dataIndex: 'eduName',
             align: 'center'
@@ -111,12 +117,48 @@ export const StudentSch = (props) => {
             title: '사용여부',
             dataIndex: 'useYn',
             align: 'center',
-            render: (_, { useYn }) => <>{useYn === 'Y' ? <Tag color={'green'}>사용</Tag> : <Tag color={'volcano'}>미사용</Tag>}</>
+            render: (_, { useYn }) => (
+                <>
+                    {useYn === 'Y' ? (
+                        <Tag color={'green'} key={useYn}>
+                            사용
+                        </Tag>
+                    ) : (
+                        <Tag color={'volcano'} key={useYn}>
+                            미사용
+                        </Tag>
+                    )}
+                </>
+            )
+        },
+        {
+            title: '학격여부',
+            align: 'center',
+            render: (_, { userId }) => (
+                <>
+                    <Tooltip title="학격여부" color="#108ee9">
+                        <Button
+                            type="primary"
+                            style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                            icon={<FileProtectOutlined />}
+                        >
+                            학격여부
+                        </Button>
+                    </Tooltip>
+                </>
+            )
+        },
+        {
+            width: '110px',
+            title: '등록일자',
+            dataIndex: 'insertDate',
+            align: 'center'
         }
     ];
 
     const onChange = (pagination, filters, sorter, extra) => {
         console.log('params', pagination, filters, sorter, extra);
+        //setSortedInfo(sorter);
     };
 
     //체크 박스 이벤트
@@ -129,10 +171,6 @@ export const StudentSch = (props) => {
     const rowSelection = {
         selectedRowKeys,
         onChange: onSelectChange
-    };
-
-    const StudentOk = () => {
-        props.StudentsCnt(selectedRowKeys);
     };
 
     useEffect(() => {
@@ -152,17 +190,6 @@ export const StudentSch = (props) => {
                         onChange={onChange}
                         loading={loading}
                     />
-                    <Row style={{ width: '100%', margin: '10px 0px' }}>
-                        <Col span={3}>
-                            <Button
-                                type="primary"
-                                onClick={StudentOk}
-                                style={{ width: '100px', borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
-                            >
-                                선택 완료 [{selectedRowKeys?.length}]
-                            </Button>
-                        </Col>
-                    </Row>
                 </Typography>
             </MainCard>
         </>

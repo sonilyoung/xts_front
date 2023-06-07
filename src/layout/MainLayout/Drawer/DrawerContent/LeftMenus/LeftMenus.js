@@ -36,7 +36,8 @@ const items = [
 
     getItem('강사 관리', 'sub2', <AppstoreAddOutlined />, [
         getItem(<Link to="/teacher/teacherinformation">강사 정보조회</Link>, '6', <FileTextOutlined />),
-        getItem(<Link to="/teacher/theoryinformation">이론 조회</Link>, '7', <FileTextOutlined />)
+        getItem(<Link to="/teacher/theoryinformation">이론 조회</Link>, '7', <FileTextOutlined />),
+        getItem(<Link to="/teacher/teacherstudent">교육생 조회</Link>, '8', <FileTextOutlined />)
     ]),
 
     getItem('학습 관리', 'sub3', <AppstoreAddOutlined />, [

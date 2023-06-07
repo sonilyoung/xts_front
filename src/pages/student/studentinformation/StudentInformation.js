@@ -14,7 +14,7 @@ import {
     useSelectUserCheckMutation
 } from '../../../hooks/api/StudentsManagement/StudentsManagement';
 
-import { PlusOutlined, EditFilled, DeleteFilled, ExclamationCircleFilled } from '@ant-design/icons';
+import { PlusOutlined, EditFilled, DeleteFilled, ExclamationCircleFilled, FileProtectOutlined } from '@ant-design/icons';
 
 // project import
 import MainCard from 'components/MainCard';
@@ -346,6 +346,23 @@ export const Studentinformation = () => {
                             미사용
                         </Tag>
                     )}
+                </>
+            )
+        },
+        {
+            title: '학격여부',
+            align: 'center',
+            render: (_, { userId }) => (
+                <>
+                    <Tooltip title="학격여부" color="#108ee9">
+                        <Button
+                            type="primary"
+                            style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                            icon={<FileProtectOutlined />}
+                        >
+                            학격여부
+                        </Button>
+                    </Tooltip>
                 </>
             )
         },
