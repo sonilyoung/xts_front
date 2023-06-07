@@ -29,11 +29,25 @@ import { useDropzone } from 'react-dropzone';
 // project import
 import MainCard from 'components/MainCard';
 
+import {
+    useSelectTheoryGroupListMutation,
+    useSelectTheoryListMutation,
+    useSelectTheoryMutation,
+    useInsertTheoryMutation,
+    useUpdateTheoryMutation,
+    useDeleteTheoryMutation
+} from '../../../hooks/api/TheoryGroupManagement/TheoryGroupManagement';
+
 export const TheoryInfo = () => {
     const { confirm } = Modal;
     const [form] = Form.useForm();
 
     const [loading, setLoading] = useState(false);
+    const [loading_L, setLoading_L] = useState(false);
+    const [loading_M, setLoading_M] = useState(false);
+    const [loading_S, setLoading_S] = useState(false);
+    const [itemContainer, setItemContainer] = useState({}); // 항목 컨테이너
+
     const [selectedRowKeys, setSelectedRowKeys] = useState([]); //셀렉트 박스 option Selected 값
     const [open, setOpen] = useState(false);
     const [dataEdit, setDataEdit] = useState(false); // Drawer 수정 우측폼 상태
@@ -58,6 +72,130 @@ export const TheoryInfo = () => {
     const [Quest_answer4_2, setQuest_answer4_2] = useState(''); // 이미지 + 사지선다형 오답
     const [Quest_answer4_3, setQuest_answer4_3] = useState(''); // 이미지 + 사지선다형 오답
     const [Quest_answer4_4, setQuest_answer4_4] = useState(''); // 이미지 + 사지선다형 오답
+
+    // ===============================
+    // Api 호출 Start
+    const [SelectTheoryGroupListApi] = useSelectTheoryGroupListMutation();
+
+    // 이론 교육 조회 ======================================================
+    const [SelectTheoryListApi] = useSelectTheoryListMutation();
+    const [selectTheoryListData, setSelectTheoryListData] = useState();
+    const handle_SelectTheoryList_Api = async () => {
+        const SelectTheoryListresponse = await SelectTheoryListApi({});
+        setSelectTheoryListData([
+            ...SelectTheoryListresponse?.data?.RET_DATA.map((d, i) => ({
+                key: d.questionId,
+                rowdata0: i + 1,
+                rowdata1: d.questionId, //문제아이디
+                rowdata2: d.studyLvl, //학습레벨
+                rowdata3: d.questionType, //사지선다(A), OX퀴즈(B), 이미지사지선다(C), 이미지+사지선다(D)
+                rowdata4: d.useYn, //사용여부
+                rowdata5: d.lageGroupCd, //대그룹코드
+                rowdata6: d.middleGroupCd, //중그룹코드
+                rowdata7: d.smallGroupCd, //소그룹코드
+                rowdata8: d.question, //질문
+                rowdata9: d.choice1, //선택지문1
+                rowdata10: d.choice2, //선택지문2
+                rowdata11: d.choice3, //선택지문3
+                rowdata12: d.choice4, //선택지문4
+                rowdata13: d.actionDiv, //정답
+                rowdata14: d.usinsertId, // 등록아이디
+                rowdata15: d.insertDate // 등록일자
+            }))
+        ]);
+        setLoading(false);
+    };
+
+    // 이론 교육 등록 ======================================================
+    const [InsertTheoryApi] = useInsertTheoryMutation(); // 등록 hooks api호출
+    const handel_InsertTheory_Api = async () => {
+        const InsertTheoryresponse = await InsertTheoryApi({
+            params: {
+                studyLvl: itemContainer.studyLvl,
+                questionType: itemContainer.questionType,
+                lageGroupCd: itemContainer.lageGroupCd,
+                middleGroupCd: itemContainer.middleGroupCd,
+                smallGroupCd: itemContainer.smallGroupCd,
+                question: itemContainer.question,
+                choice1: itemContainer.choice1,
+                choice2: itemContainer.choice2,
+                choice3: itemContainer.choice3,
+                choice4: itemContainer.choice4,
+                // actionDiv: itemContainer.actionDiv,
+                actionDiv: '1',
+                seYn: itemContainer.seYn
+            }
+        });
+
+        InsertTheoryresponse?.data?.RET_CODE === '0100'
+            ? Modal.success({
+                  content: '등록 완료',
+                  onOk() {
+                      setOpen(false);
+                      setDataEdit(false);
+                      form.resetFields();
+                      handel_selectModuleList_Api();
+                  }
+              })
+            : Modal.success({
+                  content: '등록 오류',
+                  onOk() {}
+              });
+    };
+
+    // 대분류 조회 ======================================================
+    const [lTheoryGroupData, setLTheoryGroupData] = useState();
+    const handle_L_TheoryGroup_Api = async () => {
+        const SelectTheoryGroupListresponse = await SelectTheoryGroupListApi({
+            groupType: 'L',
+            theoryParentGroupCd: ''
+        });
+        setLTheoryGroupData(
+            SelectTheoryGroupListresponse?.data?.RET_DATA?.map((l, i) => ({
+                value: l.theoryGroupCd,
+                label: l.theoryGroupName,
+                key: i
+            }))
+        );
+        setLoading_L(false);
+    };
+
+    // 중분류 조회 ======================================================
+    const [mTheoryGroupData, setMTheoryGroupData] = useState();
+    const handle_M_TheoryGroup_Api = async (procGroupCd) => {
+        const SelectTheoryGroupListresponse = await SelectTheoryGroupListApi({
+            groupType: 'M',
+            theoryParentGroupCd: procGroupCd
+        });
+        setMTheoryGroupData(
+            SelectTheoryGroupListresponse?.data?.RET_DATA?.map((m, i) => ({
+                value: m.theoryGroupCd,
+                label: m.theoryGroupName,
+                key: i
+            }))
+        );
+        setLoading_M(false);
+    };
+
+    // 소분류 조회 ======================================================
+    const [sTheoryGroupData, setSTheoryGroupData] = useState();
+    const handle_S_TheoryGroup_Api = async (procGroupCd) => {
+        const SelectTheoryGroupListresponse = await SelectTheoryGroupListApi({
+            groupType: 'S',
+            theoryParentGroupCd: procGroupCd
+        });
+        setSTheoryGroupData(
+            SelectTheoryGroupListresponse?.data?.RET_DATA?.map((s, i) => ({
+                value: s.theoryGroupCd,
+                label: s.theoryGroupName,
+                key: i
+            }))
+        );
+        setLoading_S(false);
+    };
+
+    // Api 호출 End
+    // ===============================
 
     // 이미지 업로드 Start
     // 이미지선다형 문제
@@ -173,64 +311,6 @@ export const TheoryInfo = () => {
     }
     // 제한 시간 Value 설정 End
 
-    const [dataSource, setDataSource] = useState([
-        {
-            key: '1',
-            rowdata0: '1',
-            rowdata1: 'S000001',
-            rowdata2: '사지선다형',
-            rowdata3: '2레벨',
-            rowdata4: '발전소 반입 금지 물품은 무엇입니까?',
-            rowdata5: '테스트',
-            rowdata6: '사용',
-            rowdata7: '2023-05-27'
-        },
-        {
-            key: '2',
-            rowdata0: '2',
-            rowdata1: 'S000002',
-            rowdata2: '사지선다형',
-            rowdata3: '3레벨',
-            rowdata4: 'What are the power plants bring prohihited goods?',
-            rowdata5: '관리자',
-            rowdata6: '사용',
-            rowdata7: '2023-05-27'
-        },
-        {
-            key: '3',
-            rowdata0: '3',
-            rowdata1: 'S000003',
-            rowdata2: '사지선다형',
-            rowdata3: '1레벨',
-            rowdata4: '테스트 입니다.',
-            rowdata5: '테스트',
-            rowdata6: '사용',
-            rowdata7: '2023-05-27'
-        },
-        {
-            key: '4',
-            rowdata0: '4',
-            rowdata1: 'S000004',
-            rowdata2: '사지선다형',
-            rowdata3: '1레벨',
-            rowdata4: '테스트 중입니다.',
-            rowdata5: '테스트',
-            rowdata6: '사용',
-            rowdata7: '2023-05-28'
-        },
-        {
-            key: '5',
-            rowdata0: '5',
-            rowdata1: 'S000005',
-            rowdata2: '사지선다형',
-            rowdata3: '2레벨',
-            rowdata4: '발전소 반입 금지 물품은 무엇입니까?',
-            rowdata5: '테스트',
-            rowdata6: '사용',
-            rowdata7: '2023-05-28'
-        }
-    ]);
-
     const defaultColumns = [
         {
             width: '80px',
@@ -245,46 +325,49 @@ export const TheoryInfo = () => {
         },
         {
             title: '문제타입',
-            dataIndex: 'rowdata2',
-            align: 'center'
+            dataIndex: 'rowdata3',
+            align: 'center',
+            render: (_, { rowdata3 }) => (
+                <>
+                    {' '}
+                    {rowdata3 === 'A'
+                        ? '사지선다'
+                        : rowdata3 === 'B'
+                        ? 'OX퀴즈'
+                        : rowdata3 === 'C'
+                        ? '이미지사지선다'
+                        : rowdata3 === 'D'
+                        ? '이미지+사지선다'
+                        : ''}
+                </>
+            )
         },
         {
             title: '학습레벨',
-            dataIndex: 'rowdata3',
-            align: 'center'
+            dataIndex: 'rowdata2',
+            align: 'center',
+            render: (_, { rowdata2 }) => <> {rowdata2 + 'Lv'} </>
         },
         {
             title: '질문',
-            dataIndex: 'rowdata4',
+            dataIndex: 'rowdata8',
             align: 'center'
         },
         {
             title: '출제자',
-            dataIndex: 'rowdata5',
+            dataIndex: 'rowdata14',
             align: 'center'
         },
         {
             title: '사용여부',
             key: 'tags',
-            dataIndex: 'rowdata6',
-            render: (_, { rowdata6 }) => (
-                <>
-                    {rowdata6 === '사용' ? (
-                        <Tag color={'green'} key={rowdata6}>
-                            사용
-                        </Tag>
-                    ) : (
-                        <Tag color={'volcano'} key={rowdata6}>
-                            미사용
-                        </Tag>
-                    )}
-                </>
-            ),
+            dataIndex: 'rowdata4',
+            render: (_, { rowdata4 }) => <>{rowdata4 === 'Y' ? <Tag color={'green'}>사용</Tag> : <Tag color={'volcano'}>미사용</Tag>}</>,
             align: 'center'
         },
         {
             title: '등록일자',
-            dataIndex: 'rowdata7',
+            dataIndex: 'rowdata15',
             align: 'center'
         },
         {
@@ -309,14 +392,14 @@ export const TheoryInfo = () => {
     ];
 
     const handleSave = (row) => {
-        const newData = [...dataSource];
+        const newData = [...selectTheoryListData];
         const index = newData.findIndex((item) => row.key === item.key);
         const item = newData[index];
         newData.splice(index, 1, {
             ...item,
             ...row
         });
-        setDataSource(newData);
+        setSelectTheoryListData(newData);
     };
 
     const columns = defaultColumns.map((col) => {
@@ -368,7 +451,6 @@ export const TheoryInfo = () => {
 
     // 추가 및 수정 처리
     const onAddSubmit = () => {
-        console.log(eduTypeIdVal, eduTypeNmVal, eduTypeDcVal, pointsStdIdVal, eduTypeYnVal);
         if (dataEdit === true) {
             Modal.success({
                 content: '수정 완료',
@@ -380,15 +462,7 @@ export const TheoryInfo = () => {
                 }
             });
         } else {
-            Modal.success({
-                content: '추가 완료',
-                onOk() {
-                    setOpen(false);
-                    setDataEdit(false);
-                    handleEduType();
-                    form.resetFields();
-                }
-            });
+            handel_InsertTheory_Api();
         }
     };
 
@@ -419,6 +493,13 @@ export const TheoryInfo = () => {
             });
         }
     };
+
+    useEffect(() => {
+        setLoading(true);
+        handle_SelectTheoryList_Api();
+        setLoading_L(true); // 대분류 로딩
+        handle_L_TheoryGroup_Api(); // 대분류 Api
+    }, []);
 
     return (
         <>
@@ -454,7 +535,7 @@ export const TheoryInfo = () => {
                     <Table
                         rowClassName={() => 'editable-row'}
                         bordered={true}
-                        dataSource={dataSource}
+                        dataSource={selectTheoryListData}
                         loading={loading}
                         columns={columns}
                         rowSelection={rowSelection}
@@ -465,7 +546,7 @@ export const TheoryInfo = () => {
             {/* 추가 폼 Start */}
             <Drawer
                 maskClosable={false}
-                title={`정보 관리 ${dataEdit === true ? '수정' : '추가'}`}
+                title={`교육 관리 ${dataEdit === true ? '수정' : '추가'}`}
                 onClose={onAddClose}
                 open={open}
                 width={500}
@@ -508,7 +589,7 @@ export const TheoryInfo = () => {
                         <Row gutter={24}>
                             <Col span={12}>
                                 <Form.Item
-                                    name="Level"
+                                    name="form00"
                                     label="학습 레벨"
                                     rules={[
                                         {
@@ -517,6 +598,7 @@ export const TheoryInfo = () => {
                                     ]}
                                 >
                                     <Select
+                                        name="studyLvl"
                                         defaultValue={{
                                             value: 0,
                                             label: '# 학습 레벨'
@@ -546,13 +628,17 @@ export const TheoryInfo = () => {
                                                 label: 'Level 5'
                                             }
                                         ]}
+                                        onChange={(e) => {
+                                            setItemContainer({ ...itemContainer, studyLvl: e });
+                                        }}
+                                        value={itemContainer?.studyLvl}
                                     />
                                 </Form.Item>
                             </Col>
 
                             <Col span={12}>
                                 <Form.Item
-                                    name="Question_Type"
+                                    name="form01"
                                     label="문제 타입"
                                     rules={[
                                         {
@@ -562,6 +648,7 @@ export const TheoryInfo = () => {
                                     initialValue={questionType}
                                 >
                                     <Select
+                                        name="questionType"
                                         style={{
                                             width: '100%'
                                         }}
@@ -571,124 +658,170 @@ export const TheoryInfo = () => {
                                                 label: '# 문제 타입 선택'
                                             },
                                             {
-                                                value: '1',
+                                                value: 'A',
                                                 label: '사지선다형'
                                             },
                                             {
-                                                value: '2',
+                                                value: 'B',
                                                 label: 'O/X형'
                                             },
                                             {
-                                                value: '3',
+                                                value: 'C',
                                                 label: '이미지선다형'
                                             },
                                             {
-                                                value: '4',
+                                                value: 'D',
                                                 label: '이미지+사지선다형'
                                             }
                                         ]}
-                                        onChange={(value) => {
-                                            form.resetFields();
+                                        onChange={(e) => {
+                                            setItemContainer({ ...itemContainer, questionType: e });
                                             setUploadedImages3([]);
                                             setUploadedImages4([]);
-                                            setQuestionType(value);
                                             form.setFieldsValue({
-                                                Question_Type: value
+                                                Question_Type: e
                                             });
                                         }}
-                                        value={questionType}
+                                        value={itemContainer?.questionType}
                                     />
                                 </Form.Item>
                             </Col>
                         </Row>
                         <Divider style={{ margin: '10px 0' }} />
-                        <Form.Item
-                            name="Level"
-                            label="문제 타입"
-                            rules={[
-                                {
-                                    required: true
-                                }
-                            ]}
-                        >
-                            <Row gutter={24}>
-                                <Col span={8}>
-                                    <Select
-                                        defaultValue={{
-                                            value: 0,
-                                            label: '# 대분류'
-                                        }}
-                                        style={{
-                                            width: '100%'
-                                        }}
-                                        options={[
-                                            {
-                                                value: '1',
-                                                label: '대분류'
-                                            }
-                                        ]}
-                                    />
-                                </Col>
-                                <Col span={8}>
-                                    <Select
-                                        defaultValue={{
-                                            value: 0,
-                                            label: '# 중분류'
-                                        }}
-                                        style={{
-                                            width: '100%'
-                                        }}
-                                        options={[
-                                            {
-                                                value: '1',
-                                                label: '중분류'
-                                            }
-                                        ]}
-                                    />
-                                </Col>
-                                <Col span={8}>
-                                    <Select
-                                        defaultValue={{
-                                            value: 0,
-                                            label: '# 소분류'
-                                        }}
-                                        style={{
-                                            width: '100%'
-                                        }}
-                                        options={[
-                                            {
-                                                value: '1',
-                                                label: '소분류'
-                                            }
-                                        ]}
-                                    />
-                                </Col>
-                            </Row>
-                            <Divider style={{ margin: '10px 0' }} />
-                            <Row gutter={24}>
-                                <Col span={24}>
-                                    <Form.Item
-                                        name="useYn"
-                                        label="사용여부"
-                                        rules={[
-                                            {
-                                                required: true
-                                            }
-                                        ]}
-                                    >
-                                        <Switch checkedChildren="사용" unCheckedChildren="미사용" style={{ width: '80px' }} />
-                                    </Form.Item>
-                                </Col>
-                            </Row>
-                        </Form.Item>
-                        {questionType === '1' ? (
+
+                        <Row gutter={24}>
+                            <Col span={8}>
+                                <Form.Item
+                                    name="form02"
+                                    label="대분류"
+                                    rules={[
+                                        {
+                                            required: true
+                                        }
+                                    ]}
+                                >
+                                    <Row>
+                                        <Col>
+                                            <Select
+                                                name="lageGroupCd"
+                                                defaultValue={{
+                                                    value: 0,
+                                                    label: '# 대분류'
+                                                }}
+                                                style={{
+                                                    width: '125px'
+                                                }}
+                                                loading={loading_L}
+                                                options={lTheoryGroupData}
+                                                onChange={(e) => {
+                                                    setItemContainer({ ...itemContainer, lageGroupCd: e });
+                                                    setLoading_M(true);
+                                                    handle_M_TheoryGroup_Api(e);
+                                                }}
+                                                value={itemContainer?.lageGroupCd}
+                                            />
+                                        </Col>
+                                    </Row>
+                                </Form.Item>
+                            </Col>
+                            <Col span={8}>
+                                <Form.Item
+                                    name="form03"
+                                    label="중분류"
+                                    rules={[
+                                        {
+                                            required: true
+                                        }
+                                    ]}
+                                >
+                                    <Row>
+                                        <Col>
+                                            <Select
+                                                name="middleGroupCd"
+                                                defaultValue={{
+                                                    value: 0,
+                                                    label: '# 중분류'
+                                                }}
+                                                style={{
+                                                    width: '125px'
+                                                }}
+                                                loading={loading_M}
+                                                options={mTheoryGroupData}
+                                                onChange={(e) => {
+                                                    setItemContainer({ ...itemContainer, middleGroupCd: e });
+                                                    setLoading_S(true);
+                                                    handle_S_TheoryGroup_Api(e);
+                                                }}
+                                            />
+                                        </Col>
+                                    </Row>
+                                </Form.Item>
+                            </Col>
+                            <Col span={8}>
+                                <Form.Item
+                                    name="form04"
+                                    label="소분류"
+                                    rules={[
+                                        {
+                                            required: true
+                                        }
+                                    ]}
+                                >
+                                    <Row>
+                                        <Col>
+                                            <Select
+                                                name="smallGroupCd"
+                                                defaultValue={{
+                                                    value: 0,
+                                                    label: '# 소분류'
+                                                }}
+                                                style={{
+                                                    width: '125px'
+                                                }}
+                                                loading={loading_S}
+                                                options={sTheoryGroupData}
+                                                onChange={(e) => {
+                                                    setItemContainer({ ...itemContainer, smallGroupCd: e });
+                                                }}
+                                            />
+                                        </Col>
+                                    </Row>
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                        <Divider style={{ margin: '10px 0' }} />
+                        <Row gutter={24}>
+                            <Col span={24}>
+                                <Form.Item name="form05" label="사용여부" initialValue={itemContainer?.useYn}>
+                                    <Row>
+                                        <Col>
+                                            <Radio.Group
+                                                name="useYn"
+                                                onChange={(e) => setItemContainer({ ...itemContainer, useYn: e.target.value })}
+                                                buttonStyle="solid"
+                                                value={itemContainer?.useYn}
+                                            >
+                                                <Radio.Button value="Y">
+                                                    <span style={{ padding: '0 10px' }}>사용</span>
+                                                </Radio.Button>
+                                                <span style={{ padding: '0 10px' }}></span>
+                                                <Radio.Button value="N">
+                                                    <span style={{ padding: '0 10px' }}>미사용</span>
+                                                </Radio.Button>
+                                            </Radio.Group>
+                                        </Col>
+                                    </Row>
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                        {itemContainer?.questionType === 'A' ? (
                             <>
                                 <Divider style={{ margin: '10px 0' }} />
                                 <Card bordered style={{ height: '110px' }}>
                                     <Row>
                                         <Col span={24}>
                                             <Form.Item
-                                                name="Quest_answer1"
+                                                name="formChk0"
                                                 label="질문"
                                                 rules={[
                                                     {
@@ -698,9 +831,10 @@ export const TheoryInfo = () => {
                                                 ]}
                                             >
                                                 <Input
+                                                    name="question"
                                                     placeholder="# 질문"
-                                                    value={Quest_answer1}
-                                                    onChange={(e) => setQuest_answer1(e.target.value)}
+                                                    value={itemContainer?.question}
+                                                    onChange={(e) => setItemContainer({ ...itemContainer, question: e.target.value })}
                                                 />
                                             </Form.Item>
                                         </Col>
@@ -711,7 +845,7 @@ export const TheoryInfo = () => {
                                     <Row gutter={24}>
                                         <Col span={12}>
                                             <Form.Item
-                                                name="Quest_answer1_1"
+                                                name="formChk1"
                                                 label="정답"
                                                 rules={[
                                                     {
@@ -720,16 +854,23 @@ export const TheoryInfo = () => {
                                                     }
                                                 ]}
                                             >
-                                                <Input
-                                                    placeholder="# 정답"
-                                                    value={Quest_answer1_1}
-                                                    onChange={(e) => setQuest_answer1_1(e.target.value)}
-                                                />
+                                                <Row>
+                                                    <Col>
+                                                        <Input
+                                                            name="choice1"
+                                                            placeholder="# 정답"
+                                                            value={itemContainer?.choice1}
+                                                            onChange={(e) => {
+                                                                setItemContainer({ ...itemContainer, choice1: e.target.value });
+                                                            }}
+                                                        />
+                                                    </Col>
+                                                </Row>
                                             </Form.Item>
                                         </Col>
                                         <Col span={12}>
                                             <Form.Item
-                                                name="Quest_answer1_2"
+                                                name="formChk2"
                                                 label="오답"
                                                 rules={[
                                                     {
@@ -738,18 +879,25 @@ export const TheoryInfo = () => {
                                                     }
                                                 ]}
                                             >
-                                                <Input
-                                                    placeholder="# 오답"
-                                                    value={Quest_answer1_2}
-                                                    onChange={(e) => setQuest_answer1_2(e.target.value)}
-                                                />
+                                                <Row>
+                                                    <Col>
+                                                        <Input
+                                                            name="choice2"
+                                                            placeholder="# 오답"
+                                                            value={itemContainer?.choice2}
+                                                            onChange={(e) => {
+                                                                setItemContainer({ ...itemContainer, choice2: e.target.value });
+                                                            }}
+                                                        />
+                                                    </Col>
+                                                </Row>
                                             </Form.Item>
                                         </Col>
                                     </Row>
                                     <Row gutter={24}>
                                         <Col span={12}>
                                             <Form.Item
-                                                name="Quest_answer1_3"
+                                                name="formChk3"
                                                 label="오답"
                                                 rules={[
                                                     {
@@ -758,16 +906,23 @@ export const TheoryInfo = () => {
                                                     }
                                                 ]}
                                             >
-                                                <Input
-                                                    placeholder="# 오답"
-                                                    value={Quest_answer1_3}
-                                                    onChange={(e) => setQuest_answer1_3(e.target.value)}
-                                                />
+                                                <Row>
+                                                    <Col>
+                                                        <Input
+                                                            name="choice3"
+                                                            placeholder="# 오답"
+                                                            value={itemContainer?.choice3}
+                                                            onChange={(e) => {
+                                                                setItemContainer({ ...itemContainer, choice3: e.target.value });
+                                                            }}
+                                                        />
+                                                    </Col>
+                                                </Row>
                                             </Form.Item>
                                         </Col>
                                         <Col span={12}>
                                             <Form.Item
-                                                name="Quest_answer1_4"
+                                                name="formChk4"
                                                 label="오답"
                                                 rules={[
                                                     {
@@ -776,24 +931,31 @@ export const TheoryInfo = () => {
                                                     }
                                                 ]}
                                             >
-                                                <Input
-                                                    placeholder="# 오답"
-                                                    value={Quest_answer1_4}
-                                                    onChange={(e) => setQuest_answer1_4(e.target.value)}
-                                                />
+                                                <Row>
+                                                    <Col>
+                                                        <Input
+                                                            name="choice4"
+                                                            placeholder="# 오답"
+                                                            value={itemContainer?.choice4}
+                                                            onChange={(e) => {
+                                                                setItemContainer({ ...itemContainer, choice4: e.target.value });
+                                                            }}
+                                                        />
+                                                    </Col>
+                                                </Row>
                                             </Form.Item>
                                         </Col>
                                     </Row>
                                 </Card>
                             </>
-                        ) : questionType === '2' ? ( //질문 : Quest_answer2, 정답 : Quest_answer2_1 ~ Quest_answer2_4
+                        ) : itemContainer?.questionType === 'B' ? ( //질문 : Quest_answer2, 정답 : Quest_answer2_1 ~ Quest_answer2_4
                             <>
                                 <Divider style={{ margin: '10px 0' }} />
                                 <Card bordered style={{ height: '110px' }}>
                                     <Row gutter={24}>
                                         <Col span={24}>
                                             <Form.Item
-                                                name="Quest_answer2"
+                                                name="formChk1"
                                                 label="질문"
                                                 rules={[
                                                     {
@@ -803,6 +965,7 @@ export const TheoryInfo = () => {
                                                 ]}
                                             >
                                                 <Input
+                                                    name="question"
                                                     placeholder="# 질문"
                                                     value={Quest_answer2}
                                                     onChange={(e) => setQuest_answer2(e.target.value)}
@@ -816,7 +979,7 @@ export const TheoryInfo = () => {
                                     <Row gutter={24}>
                                         <Col span={12}>
                                             <Form.Item
-                                                name="Quest_answer2_1"
+                                                name="formChk1"
                                                 label="정답"
                                                 rules={[
                                                     {
@@ -826,6 +989,7 @@ export const TheoryInfo = () => {
                                                 initialValue={Quest_answer2_1}
                                             >
                                                 <Radio.Group
+                                                    name="choice1"
                                                     onChange={(e) => setQuest_answer2_1(e.target.value)}
                                                     buttonStyle="solid"
                                                     defaultValue={Quest_answer2_1}
@@ -843,14 +1007,14 @@ export const TheoryInfo = () => {
                                     </Row>
                                 </Card>
                             </>
-                        ) : questionType === '3' ? ( //질문 : Quest_quest3, 정답 : Quest_answer3
+                        ) : itemContainer?.questionType === 'C' ? ( //질문 : Quest_quest3, 정답 : Quest_answer3
                             <>
                                 <Divider style={{ margin: '10px 0' }} />
                                 <Card bordered style={{ height: '110px' }}>
                                     <Row gutter={24}>
                                         <Col span={24}>
                                             <Form.Item
-                                                name="Quest_quest3"
+                                                name="formChk1"
                                                 label="질문"
                                                 rules={[
                                                     {
@@ -860,6 +1024,7 @@ export const TheoryInfo = () => {
                                                 ]}
                                             >
                                                 <Input
+                                                    name="question"
                                                     placeholder="# 질문"
                                                     value={Quest_answer3}
                                                     onChange={(e) => setQuest_answer3(e.target.value)}
@@ -930,14 +1095,12 @@ export const TheoryInfo = () => {
                                                                             alt={image3.name}
                                                                             style={{ width: '120px' }}
                                                                         />
-                                                                        {/* <p>{image3.name}</p>
-                                                                    <p>{image3.size} bytes</p>
-                                                                    <p>{image3.type}</p> */}
                                                                         <Form.Item
-                                                                            name={`imageanswer${index + 1}`}
+                                                                            name={`formChk${index + 1}`}
                                                                             style={{ marginTop: '6px' }}
                                                                         >
                                                                             <Radio.Button
+                                                                                name={`choice${index + 1}`}
                                                                                 checked={selectedImage3 === index}
                                                                                 onChange={() => handleImageSelect3(index)}
                                                                                 style={{ width: '120px' }}
@@ -956,14 +1119,14 @@ export const TheoryInfo = () => {
                                     </Col>
                                 </Row>
                             </>
-                        ) : questionType === '4' ? ( //질문 : Quest_quest4, 정답 : Quest_answer4
+                        ) : itemContainer?.questionType === 'D' ? ( //질문 : Quest_quest4, 정답 : Quest_answer4
                             <>
                                 <Divider style={{ margin: '10px 0' }} />
                                 <Card bordered style={{ height: '110px' }}>
                                     <Row gutter={24}>
                                         <Col span={24}>
                                             <Form.Item
-                                                name="Quest_answer4"
+                                                name="formChk"
                                                 label="질문"
                                                 rules={[
                                                     {
@@ -973,6 +1136,7 @@ export const TheoryInfo = () => {
                                                 ]}
                                             >
                                                 <Input
+                                                    name="question"
                                                     placeholder="# 질문"
                                                     value={Quest_answer4}
                                                     onChange={(e) => setQuest_answer4(e.target.value)}
@@ -1063,7 +1227,7 @@ export const TheoryInfo = () => {
                                                         <Row gutter={24}>
                                                             <Col span={12}>
                                                                 <Form.Item
-                                                                    name="Quest_answer4_1"
+                                                                    name="formChk1"
                                                                     label="정답"
                                                                     rules={[
                                                                         {
@@ -1073,6 +1237,7 @@ export const TheoryInfo = () => {
                                                                     ]}
                                                                 >
                                                                     <Input
+                                                                        name="choice1"
                                                                         placeholder="# 정답"
                                                                         value={Quest_answer4_1}
                                                                         onChange={(e) => setQuest_answer4_1(e.target.value)}
@@ -1081,7 +1246,7 @@ export const TheoryInfo = () => {
                                                             </Col>
                                                             <Col span={12}>
                                                                 <Form.Item
-                                                                    name="Quest_answer4_2"
+                                                                    name="formChk2"
                                                                     label="오답"
                                                                     rules={[
                                                                         {
@@ -1091,6 +1256,7 @@ export const TheoryInfo = () => {
                                                                     ]}
                                                                 >
                                                                     <Input
+                                                                        name="choice2"
                                                                         placeholder="# 오답"
                                                                         value={Quest_answer4_2}
                                                                         onChange={(e) => setQuest_answer4_2(e.target.value)}
@@ -1101,7 +1267,7 @@ export const TheoryInfo = () => {
                                                         <Row gutter={24}>
                                                             <Col span={12}>
                                                                 <Form.Item
-                                                                    name="Quest_answer4_3"
+                                                                    name="formChk2"
                                                                     label="오답"
                                                                     rules={[
                                                                         {
@@ -1111,6 +1277,7 @@ export const TheoryInfo = () => {
                                                                     ]}
                                                                 >
                                                                     <Input
+                                                                        name="choice3"
                                                                         placeholder="# 오답"
                                                                         value={Quest_answer4_3}
                                                                         onChange={(e) => setQuest_answer4_3(e.target.value)}
@@ -1119,7 +1286,7 @@ export const TheoryInfo = () => {
                                                             </Col>
                                                             <Col span={12}>
                                                                 <Form.Item
-                                                                    name="Quest_answer4_4"
+                                                                    name="formChk2"
                                                                     label="오답"
                                                                     rules={[
                                                                         {
@@ -1129,6 +1296,7 @@ export const TheoryInfo = () => {
                                                                     ]}
                                                                 >
                                                                     <Input
+                                                                        name="choice4"
                                                                         placeholder="# 오답"
                                                                         value={Quest_answer4_4}
                                                                         onChange={(e) => setQuest_answer4_4(e.target.value)}

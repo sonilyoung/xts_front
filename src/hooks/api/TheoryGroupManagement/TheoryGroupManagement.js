@@ -58,6 +58,51 @@ export const theoryGroupManagement = createApi({
                 method: 'POST',
                 body: body
             })
+        }),
+
+        // 이론 관리 > 교육관리 > 조회
+        selectTheoryList: builder.mutation({
+            query: (body) => ({
+                url: 'adm/theory/selectTheoryList.do',
+                method: 'POST',
+                body: body
+            })
+        }),
+
+        // 이론 관리 > 교육관리 > 상세
+        selectTheory: builder.mutation({
+            query: (body) => ({
+                url: 'adm/theory/selectTheory.do',
+                method: 'POST',
+                body: body
+            })
+        }),
+
+        // 이론 관리 > 교육관리 > 등록
+        insertTheory: builder.mutation({
+            query: (body) => ({
+                url: 'adm/theory/insertTheory.do',
+                method: 'POST',
+                body: body
+            })
+        }),
+
+        // 이론 관리 > 교육관리 > 수정
+        updateTheory: builder.mutation({
+            query: (body) => ({
+                url: 'adm/theory/updateTheory.do',
+                method: 'POST',
+                body: body
+            })
+        }),
+
+        // 이론 관리 > 교육관리 > 삭제
+        deleteTheory: builder.mutation({
+            query: (body) => ({
+                url: 'adm/theory/deleteTheory.do',
+                method: 'POST',
+                body: body
+            })
         })
     })
 });
@@ -67,5 +112,11 @@ export const {
     useSelectTheoryGroupMutation,
     useInsertTheoryGroupMutation,
     useUpdateTheoryGroupMutation,
-    useDeleteTheoryGroupMutation
+    useDeleteTheoryGroupMutation,
+
+    useSelectTheoryListMutation,
+    useSelectTheoryMutation,
+    useInsertTheoryMutation,
+    useUpdateTheoryMutation,
+    useDeleteTheoryMutation
 } = theoryGroupManagement;
