@@ -1099,14 +1099,18 @@ export const TheoryInfo = () => {
                                                                             name={`formChk${index + 1}`}
                                                                             style={{ marginTop: '6px' }}
                                                                         >
-                                                                            <Radio.Button
-                                                                                name={`choice${index + 1}`}
-                                                                                checked={selectedImage3 === index}
-                                                                                onChange={() => handleImageSelect3(index)}
-                                                                                style={{ width: '120px' }}
-                                                                            >
-                                                                                정답 선택
-                                                                            </Radio.Button>
+                                                                            <Row>
+                                                                                <Col>
+                                                                                    <Radio.Button
+                                                                                        name={`choice${index + 1}`}
+                                                                                        checked={selectedImage3 === index}
+                                                                                        onChange={() => handleImageSelect3(index)}
+                                                                                        style={{ width: '120px' }}
+                                                                                    >
+                                                                                        정답 선택
+                                                                                    </Radio.Button>
+                                                                                </Col>
+                                                                            </Row>
                                                                         </Form.Item>
                                                                     </Col>
                                                                 ))}
@@ -1225,10 +1229,10 @@ export const TheoryInfo = () => {
                                                             </Col>
                                                         </Row>
                                                         <Row gutter={24}>
-                                                            <Col span={12}>
+                                                            <Col span={24}>
                                                                 <Form.Item
                                                                     name="formChk1"
-                                                                    label="정답"
+                                                                    label="1"
                                                                     rules={[
                                                                         {
                                                                             required: true,
@@ -1236,39 +1240,30 @@ export const TheoryInfo = () => {
                                                                         }
                                                                     ]}
                                                                 >
-                                                                    <Input
-                                                                        name="choice1"
-                                                                        placeholder="# 정답"
-                                                                        value={Quest_answer4_1}
-                                                                        onChange={(e) => setQuest_answer4_1(e.target.value)}
-                                                                    />
-                                                                </Form.Item>
-                                                            </Col>
-                                                            <Col span={12}>
-                                                                <Form.Item
-                                                                    name="formChk2"
-                                                                    label="오답"
-                                                                    rules={[
-                                                                        {
-                                                                            required: true,
-                                                                            message: 'Please Enter Question.'
-                                                                        }
-                                                                    ]}
-                                                                >
-                                                                    <Input
-                                                                        name="choice2"
-                                                                        placeholder="# 오답"
-                                                                        value={Quest_answer4_2}
-                                                                        onChange={(e) => setQuest_answer4_2(e.target.value)}
-                                                                    />
+                                                                    <Space>
+                                                                        <Input
+                                                                            name="choice1"
+                                                                            placeholder="# 1"
+                                                                            value={Quest_answer4_1}
+                                                                            onChange={(e) => setQuest_answer4_1(e.target.value)}
+                                                                        />
+                                                                        <Radio.Button
+                                                                            name="actionDiv"
+                                                                            // checked={actionDiv === index}
+                                                                            // onChange={() => setActionDiv(index)}
+                                                                            // style={{ width: '100px' }}
+                                                                        >
+                                                                            정답 선택
+                                                                        </Radio.Button>
+                                                                    </Space>
                                                                 </Form.Item>
                                                             </Col>
                                                         </Row>
                                                         <Row gutter={24}>
-                                                            <Col span={12}>
+                                                            <Col span={24}>
                                                                 <Form.Item
                                                                     name="formChk2"
-                                                                    label="오답"
+                                                                    label="2"
                                                                     rules={[
                                                                         {
                                                                             required: true,
@@ -1276,18 +1271,30 @@ export const TheoryInfo = () => {
                                                                         }
                                                                     ]}
                                                                 >
-                                                                    <Input
-                                                                        name="choice3"
-                                                                        placeholder="# 오답"
-                                                                        value={Quest_answer4_3}
-                                                                        onChange={(e) => setQuest_answer4_3(e.target.value)}
-                                                                    />
+                                                                    <Space>
+                                                                        <Input
+                                                                            name="choice2"
+                                                                            placeholder="# 2"
+                                                                            value={Quest_answer4_2}
+                                                                            onChange={(e) => setQuest_answer4_2(e.target.value)}
+                                                                        />
+                                                                        <Radio.Button
+                                                                            name="actionDiv"
+                                                                            // checked={actionDiv === index}
+                                                                            // onChange={() => setActionDiv(index)}
+                                                                            // style={{ width: '100px' }}
+                                                                        >
+                                                                            정답 선택
+                                                                        </Radio.Button>
+                                                                    </Space>
                                                                 </Form.Item>
                                                             </Col>
-                                                            <Col span={12}>
+                                                        </Row>
+                                                        <Row gutter={24}>
+                                                            <Col span={24}>
                                                                 <Form.Item
                                                                     name="formChk2"
-                                                                    label="오답"
+                                                                    label="3"
                                                                     rules={[
                                                                         {
                                                                             required: true,
@@ -1295,12 +1302,53 @@ export const TheoryInfo = () => {
                                                                         }
                                                                     ]}
                                                                 >
-                                                                    <Input
-                                                                        name="choice4"
-                                                                        placeholder="# 오답"
-                                                                        value={Quest_answer4_4}
-                                                                        onChange={(e) => setQuest_answer4_4(e.target.value)}
-                                                                    />
+                                                                    <Space>
+                                                                        <Input
+                                                                            name="choice3"
+                                                                            placeholder="# 3"
+                                                                            value={Quest_answer4_3}
+                                                                            onChange={(e) => setQuest_answer4_3(e.target.value)}
+                                                                        />
+                                                                        <Radio.Button
+                                                                            name="actionDiv"
+                                                                            // checked={actionDiv === index}
+                                                                            // onChange={() => setActionDiv(index)}
+                                                                            // style={{ width: '100px' }}
+                                                                        >
+                                                                            정답 선택
+                                                                        </Radio.Button>
+                                                                    </Space>
+                                                                </Form.Item>
+                                                            </Col>
+                                                        </Row>
+                                                        <Row gutter={24}>
+                                                            <Col span={24}>
+                                                                <Form.Item
+                                                                    name="formChk2"
+                                                                    label="4"
+                                                                    rules={[
+                                                                        {
+                                                                            required: true,
+                                                                            message: 'Please Enter Question.'
+                                                                        }
+                                                                    ]}
+                                                                >
+                                                                    <Space>
+                                                                        <Input
+                                                                            name="choice4"
+                                                                            placeholder="# 4"
+                                                                            value={Quest_answer4_4}
+                                                                            onChange={(e) => setQuest_answer4_4(e.target.value)}
+                                                                        />
+                                                                        <Radio.Button
+                                                                            name="actionDiv"
+                                                                            // checked={actionDiv === index}
+                                                                            // onChange={() => setActionDiv(index)}
+                                                                            // style={{ width: '100px' }}
+                                                                        >
+                                                                            정답 선택
+                                                                        </Radio.Button>
+                                                                    </Space>
                                                                 </Form.Item>
                                                             </Col>
                                                         </Row>

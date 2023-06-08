@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
-import { useEffect, useState } from 'react';
-import { Tag, Col, Row, Button, Form, Tooltip, Space, DatePicker, Select } from 'antd';
+import { useEffect, useState, useRef } from 'react';
+import { Tag, Col, Row, Button, Form, Tooltip, Space, DatePicker, Select, Divider } from 'antd';
 
 // project import
 import MainCard from 'components/MainCard';
@@ -10,7 +10,7 @@ import weekday from 'dayjs/plugin/weekday';
 import localeData from 'dayjs/plugin/localeData';
 
 // 모듈 목록 조회
-import { useSelectModuleListMutation } from '../../../hooks/api/CurriculumManagement/CurriculumManagement';
+import { useSelectModuleMenuListMutation } from '../../../hooks/api/CurriculumManagement/CurriculumManagement';
 
 export const StudySch = (props) => {
     const [form] = Form.useForm();
@@ -18,7 +18,7 @@ export const StudySch = (props) => {
     dayjs.extend(localeData);
     const { RangePicker } = DatePicker;
 
-    const [loading, setLoading] = useState(false);
+    const rangePickerRef = useRef();
     const [procName, setProcName] = useState(props.ProcName);
     const [procSeq, setProcCd] = useState(props.ProcSeq);
     const [eduStartDate, setEduStartDate] = useState(props.EduStartDate);
@@ -28,11 +28,11 @@ export const StudySch = (props) => {
     // ===============================
     // Api 호출 Start
     // 모듈 목록 조회 ======================================================
-    const [selectModuleListApi] = useSelectModuleListMutation(); // 조회 hooks api호출
-    const [selectModuleListData, setSelectModuleListData] = useState([]); // 조회 Data 값
+    const [SelectModuleMenuListApi] = useSelectModuleMenuListMutation(); // 조회 hooks api호출
+    const [SelectModuleMenuListData, setSelectModuleMenuListData] = useState([]); // 조회 Data 값
     const handel_selectModuleList_Api = async () => {
-        const SelectModuleListresponse = await selectModuleListApi({});
-        setSelectModuleListData(SelectModuleListresponse?.data?.RET_DATA);
+        const SelectModuleMenuListresponse = await SelectModuleMenuListApi({});
+        setSelectModuleMenuListData(SelectModuleMenuListresponse?.data?.RET_DATA);
     };
 
     // Api 호출 End
@@ -40,28 +40,19 @@ export const StudySch = (props) => {
 
     // 총교육일수에 맞춰 일자입력 폼 설정 Start
     const initialTotStudyDateList = Array.from({ length: totStudyDate }, () => ({
-        totStudyDateListStart: '',
-        totStudyDateListEnd: ''
+        eduStartDate: eduStartDate,
+        eduEndDate: eduEndDate
     }));
     const [totStudyDateList, setTotStudyDateList] = useState(initialTotStudyDateList);
     // 총교육일수에 맞춰 일자입력 폼 설정 End
 
     // 총교육일수에 맞춰 모듈선택 폼 설정 Start
-    const initialTotModuleList = Array.from({ length: totStudyDate }, () => ({
-        module_ini: ''
-    }));
-    const [menuList, setMenuList] = useState(initialTotModuleList);
+    const initialTotModuleList = Array.from({ length: totStudyDate }, () => ({}));
+    const [moduleList, setModuleList] = useState(initialTotModuleList);
     // 총교육일수에 맞춰 모듈선택 폼 설정 End
 
-    // 총교육일수에 맞춰 메뉴선택 폼 설정 Start
-    const initialTotMenuList = Array.from({ length: totStudyDate }, () => ({
-        menu_ini: ''
-    }));
-    const [moduleList, setModuleList] = useState(initialTotMenuList);
-    // 총교육일수에 맞춰 메뉴선택 폼 설정 End
-
     const handel_Add = () => {
-        props.StudySet(totStudyDateList, moduleList, menuList);
+        props.StudySet(totStudyDateList, moduleList);
     };
 
     useEffect(() => {
@@ -103,10 +94,15 @@ export const StudySch = (props) => {
                         <Row gutter={24} key={index}>
                             <Col span={7}>
                                 <RangePicker
-                                    style={{ height: '88px' }}
+                                    ref={rangePickerRef}
+                                    style={{ height: '38px' }}
                                     name={`Day ${index + 1}`}
                                     id={`Day ${index + 1}`}
                                     defaultValue={[dayjs(eduStartDate, 'YYYY-MM-DD'), dayjs(eduEndDate, 'YYYY-MM-DD')]}
+                                    // value={{
+                                    //     start: dayjs(eduStartDate[index], 'YYYY-MM-DD'),
+                                    //     end: dayjs(eduEndDate[index], 'YYYY-MM-DD')
+                                    // }}
                                     onChange={(dates) => {
                                         const [start, end] = dates;
                                         setTotStudyDateList((prevList) => {
@@ -114,8 +110,8 @@ export const StudySch = (props) => {
                                                 if (i === index) {
                                                     return {
                                                         ...item,
-                                                        totStudyDateListStart: start.format('YYYY-MM-DD'),
-                                                        totStudyDateListEnd: end.format('YYYY-MM-DD')
+                                                        eduStartDate: start.format('YYYY-MM-DD'),
+                                                        eduEndDate: end.format('YYYY-MM-DD')
                                                     };
                                                 }
                                                 return item;
@@ -126,84 +122,34 @@ export const StudySch = (props) => {
                                     disabled={totStudyDate - 1 === index ? [false, true] : index === 0 ? [true, false] : [false, false]}
                                 />
                             </Col>
-                            <Col span={1}>&nbsp;</Col>
+                            <Col span={1}>
+                                <Divider />
+                            </Col>
                             <Col span={16}>
                                 <Form.Item name={`EduDay00${index + 1}`}>
-                                    <Select
-                                        placeholder="# 모듈 선택"
-                                        mode="multiple"
-                                        style={{
-                                            width: '100%'
-                                        }}
-                                        onChange={(e) => {
-                                            setModuleList((prevList) => {
-                                                const newList = [...prevList];
-                                                newList[index] = e;
-                                                return newList;
-                                            });
-                                        }}
-                                        options={[
-                                            {
-                                                value: '물품연습 모듈',
-                                                label: '물품연습 모듈'
-                                            },
-                                            {
-                                                value: '학습 모듈',
-                                                label: '학습 모듈'
-                                            },
-                                            {
-                                                value: 'AI강화학습 모듈',
-                                                label: 'AI강화학습 모듈'
-                                            },
-                                            {
-                                                value: '평가 모듈',
-                                                label: '평가 모듈'
-                                            }
-                                        ]}
-                                    />
-                                </Form.Item>
-
-                                <Form.Item name={`EduDay10${index + 1}`}>
-                                    <Select
-                                        placeholder="# 메뉴 선택"
-                                        mode="multiple"
-                                        style={{
-                                            width: '100%'
-                                        }}
-                                        onChange={(e) => {
-                                            setMenuList((prevList) => {
-                                                const newList = [...prevList];
-                                                newList[index] = e;
-                                                return newList;
-                                            });
-                                        }}
-                                        options={[
-                                            {
-                                                value: '물품연습',
-                                                label: '물품연습'
-                                            },
-                                            {
-                                                value: '학습',
-                                                label: '학습'
-                                            },
-                                            {
-                                                value: 'AI강화학습',
-                                                label: 'AI강화학습'
-                                            },
-                                            {
-                                                value: '평가',
-                                                label: '평가'
-                                            },
-                                            {
-                                                value: '이론1',
-                                                label: '이론1'
-                                            },
-                                            {
-                                                value: '이론2',
-                                                label: '이론2'
-                                            }
-                                        ]}
-                                    />
+                                    <Space.Compact size="large">
+                                        <Select
+                                            placeholder="# 메뉴 선택"
+                                            mode="multiple"
+                                            style={{
+                                                width: '560px',
+                                                fontSize: '16px'
+                                            }}
+                                            onChange={(e) => {
+                                                setModuleList((prevList) => {
+                                                    const newList = [...prevList];
+                                                    newList[index] = e;
+                                                    return newList;
+                                                });
+                                            }}
+                                            options={SelectModuleMenuListData.map((d) => ({
+                                                value: d.menuCd,
+                                                label:
+                                                    d.menuName +
+                                                    (d.moduleType === 'c' ? ' [Cut] ' : d.moduleType === 's' ? ' [Slide] ' : '')
+                                            }))}
+                                        />
+                                    </Space.Compact>
                                 </Form.Item>
                             </Col>
                         </Row>

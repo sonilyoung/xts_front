@@ -68,11 +68,8 @@ export const EduProcAdd = () => {
     // Data source Start
     const [itemContainer, setItemContainer] = useState({}); // 항목 컨테이너
     const [studyDayArry, setStudyDayArry] = useState([]); // 학습일수 배열
-    const [studentArry, setStudentArry] = useState([]); // 교육생 배열
+    const [moduleArry, setmoduleArry] = useState([]); //  모듈 배열
     const [procCdValue, setProcCdValue] = useState([]); // 교육생 정보 조회
-
-    const [menuList, setMenuList] = useState([]); // 메뉴 정보
-    const [moduleList, setModuleList] = useState([]); // 모듈 정보
 
     // Data source End
 
@@ -265,17 +262,20 @@ export const EduProcAdd = () => {
     const [InsertBaselineApi] = useInsertBaselineMutation(); // 등록 hooks api호출
     const handel_InsertBaseline_Api = async () => {
         const InsertBaselineresponse = await InsertBaselineApi({
-            moduleNm: itemContainer.moduleNm,
-            moduleDesc: itemContainer.moduleDesc,
+            procSeq: itemContainer.procSeq,
+            procName: itemContainer.procName,
+            eduStartDate: itemContainer.eduStartDate,
+            eduEndDate: itemContainer.eduEndDate,
+            totStudyDate: itemContainer.totStudyDate,
             studyLvl: itemContainer.studyLvl,
-            slideSpeed: itemContainer.slideSpeed,
-            moduleType: itemContainer.moduleType,
-            learningType: itemContainer.learningType,
-            failToPass: itemContainer.failToPass,
-            timeLimit: itemContainer.timeLimit,
-            useYn: itemContainer.useYn,
-            questionCnt: itemContainer.questionCnt,
-            bagList: bagList
+            limitPersonCnt: itemContainer.limitPersonCnt,
+            endingStdScore: itemContainer.endingStdScore,
+            practiceTotalScore: itemContainer.practiceTotalScore,
+            evaluationTotalScore: itemContainer.evaluationTotalScore,
+            theoryTotalScore: itemContainer.theoryTotalScore,
+            scheduleList: studyDayArry,
+            menuList: moduleArry,
+            userList: studentsList
         });
 
         InsertBaselineresponse?.data?.RET_CODE === '0100'
@@ -285,7 +285,7 @@ export const EduProcAdd = () => {
                       setOpen(false);
                       setDataEdit(false);
                       form.resetFields();
-                      handel_selectModuleList_Api();
+                      handel_SelectBaselineList_Api();
                   }
               })
             : Modal.success({
@@ -509,15 +509,7 @@ export const EduProcAdd = () => {
                 }
             });
         } else {
-            Modal.success({
-                content: '추가 완료',
-                onOk() {
-                    setOpen(false);
-                    setDataEdit(false);
-                    handleEduType();
-                    form.resetFields();
-                }
-            });
+            handel_InsertBaseline_Api();
         }
     };
 
@@ -643,10 +635,11 @@ export const EduProcAdd = () => {
     };
 
     // 학습일 설정 (일자, 모듈, 메뉴) 값
-    const handel_Study_Set = (totStudyDateList, moduleList, menuList) => {
-        console.log(totStudyDateList);
-        console.log(moduleList);
-        console.log(menuList);
+    const handel_Study_Set = (totStudyDateList, menuList) => {
+        // console.log(totStudyDateList);
+        // console.log(menuList);
+        setStudyDayArry(totStudyDateList);
+        setmoduleArry(menuList);
         setEduDayModalOpen(false);
     };
 
@@ -657,7 +650,7 @@ export const EduProcAdd = () => {
 
     return (
         <>
-            <MainCard title="학습과정 관리">
+            <MainCard title="차수 관리">
                 <Typography variant="body1">
                     <Row style={{ marginBottom: 16 }}>
                         <Col span={8}></Col>
@@ -708,13 +701,13 @@ export const EduProcAdd = () => {
                 extra={
                     <>
                         <Space>
-                            <Tooltip title="학습과정 취소" placement="bottom">
+                            <Tooltip title="차수 취소" placement="bottom">
                                 <Button onClick={onAddClose} style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}>
                                     취소
                                 </Button>
                             </Tooltip>
                             {dataEdit === true ? (
-                                <Tooltip title="학습과정 수정" placement="bottom" color="#108ee9">
+                                <Tooltip title="차수 수정" placement="bottom" color="#108ee9">
                                     <Button
                                         onClick={onAddSubmit}
                                         style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
@@ -724,7 +717,7 @@ export const EduProcAdd = () => {
                                     </Button>
                                 </Tooltip>
                             ) : (
-                                <Tooltip title="학습과정 추가" placement="bottom" color="#108ee9">
+                                <Tooltip title="차수 추가" placement="bottom" color="#108ee9">
                                     <Button
                                         onClick={onAddSubmit}
                                         style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
@@ -1072,8 +1065,6 @@ export const EduProcAdd = () => {
                     ProcName={itemContainer?.procName}
                     ProcSeq={itemContainer?.procSeq}
                     TotStudyDate={itemContainer?.totStudyDate}
-                    MenuList={menuList.slice()}
-                    ModuleList={moduleList.slice()}
                     EduStartDate={itemContainer?.eduStartDate}
                     EduEndDate={itemContainer?.eduEndDate}
                     StudySet={handel_Study_Set}

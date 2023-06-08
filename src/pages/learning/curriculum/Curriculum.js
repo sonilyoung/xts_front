@@ -505,232 +505,341 @@ export const Curriculum = () => {
                     <Form layout="vertical" form={form}>
                         <Row gutter={24}>
                             <Col span={24}>
-                                <Form.Item label="모듈명" initialValue={itemContainer?.moduleNm}>
-                                    <Input
-                                        name="moduleNm"
-                                        onChange={(e) => setItemContainer({ ...itemContainer, moduleNm: e.target.value })}
-                                        placeholder="# 모듈명"
-                                        value={itemContainer?.moduleNm}
-                                    />
+                                <Form.Item
+                                    name="form01"
+                                    label="모듈명"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: '※ 모듈명을 입력하세요'
+                                        }
+                                    ]}
+                                >
+                                    <Row>
+                                        <Col>
+                                            <Input
+                                                style={{
+                                                    width: '390px'
+                                                }}
+                                                name="moduleNm"
+                                                onChange={(e) => setItemContainer({ ...itemContainer, moduleNm: e.target.value })}
+                                                placeholder="# 모듈명"
+                                                value={itemContainer?.moduleNm}
+                                            />
+                                        </Col>
+                                    </Row>
                                 </Form.Item>
                             </Col>
                         </Row>
                         <Row gutter={24}>
                             <Col span={24}>
-                                <Form.Item label="모듈설명" initialValue={itemContainer?.moduleDesc}>
-                                    <Input
-                                        name="moduleDesc"
-                                        placeholder="# 모듈설명"
-                                        onChange={(e) => setItemContainer({ ...itemContainer, moduleDesc: e.target.value })}
-                                        value={itemContainer?.moduleDesc}
-                                    />
+                                <Form.Item
+                                    name="form02"
+                                    label="모듈설명"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: '※ 모듈설명을 입력하세요'
+                                        }
+                                    ]}
+                                >
+                                    <Row>
+                                        <Col>
+                                            <Input
+                                                style={{
+                                                    width: '390px'
+                                                }}
+                                                name="moduleDesc"
+                                                placeholder="# 모듈설명"
+                                                onChange={(e) => setItemContainer({ ...itemContainer, moduleDesc: e.target.value })}
+                                                value={itemContainer?.moduleDesc}
+                                            />
+                                        </Col>
+                                    </Row>
                                 </Form.Item>
                             </Col>
                         </Row>
                         <Divider style={{ margin: '10px 0' }} />
                         <Row gutter={24}>
                             <Col span={12}>
-                                <Form.Item label="모듈타입" initialValue={itemContainer?.moduleType}>
-                                    <Radio.Group
-                                        name="moduleType"
-                                        onChange={(e) => setItemContainer({ ...itemContainer, moduleType: e.target.value })}
-                                        buttonStyle="solid"
-                                        value={itemContainer?.moduleType}
-                                    >
-                                        <Radio.Button value="s">
-                                            <span style={{ padding: '0 3px' }}>Slide 방식</span>
-                                        </Radio.Button>
-                                        <span style={{ padding: '0 3px' }}></span>
-                                        <Radio.Button value="c">
-                                            <span style={{ padding: '0 3px' }}>Cut 방식</span>
-                                        </Radio.Button>
-                                    </Radio.Group>
+                                <Form.Item
+                                    name="form03"
+                                    label="모듈타입"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: '※ 모듈타입을 선택하세요'
+                                        }
+                                    ]}
+                                >
+                                    <Row>
+                                        <Col>
+                                            <Radio.Group
+                                                name="moduleType"
+                                                onChange={(e) => setItemContainer({ ...itemContainer, moduleType: e.target.value })}
+                                                buttonStyle="solid"
+                                                value={itemContainer?.moduleType}
+                                            >
+                                                <Radio.Button value="s">
+                                                    <span style={{ padding: '0 3px' }}>Slide 방식</span>
+                                                </Radio.Button>
+                                                <span style={{ padding: '0 3px' }}></span>
+                                                <Radio.Button value="c">
+                                                    <span style={{ padding: '0 3px' }}>Cut 방식</span>
+                                                </Radio.Button>
+                                            </Radio.Group>
+                                        </Col>
+                                    </Row>
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
                                 <Form.Item
+                                    name="form04"
                                     label="문제 속도"
                                     rules={[
                                         {
                                             required: true,
-                                            message: 'Please Enter Question Speed.'
+                                            message: '※ 문제 속도를 선택하세요'
                                         }
                                     ]}
-                                    initialValue={itemContainer?.slideSpeed}
                                 >
-                                    <Select
-                                        name="slideSpeed"
-                                        defaultValue={{
-                                            value: '',
-                                            label: '# 속도'
-                                        }}
-                                        style={{
-                                            width: '100%'
-                                        }}
-                                        value={itemContainer?.slideSpeed}
-                                        onChange={(e) => setItemContainer({ ...itemContainer, slideSpeed: e })}
-                                        options={[
-                                            {
-                                                value: '1',
-                                                label: '1'
-                                            },
-                                            {
-                                                value: '2',
-                                                label: '2'
-                                            },
-                                            {
-                                                value: '3',
-                                                label: '3'
-                                            },
-                                            {
-                                                value: '4',
-                                                label: '4'
-                                            },
-                                            {
-                                                value: '5',
-                                                label: '5'
-                                            }
-                                        ]}
-                                    />
+                                    <Row>
+                                        <Col>
+                                            <Select
+                                                name="slideSpeed"
+                                                defaultValue={{
+                                                    value: '',
+                                                    label: '# 속도'
+                                                }}
+                                                style={{
+                                                    width: '180px'
+                                                }}
+                                                value={itemContainer?.slideSpeed}
+                                                onChange={(e) => setItemContainer({ ...itemContainer, slideSpeed: e })}
+                                                options={[
+                                                    {
+                                                        value: '1',
+                                                        label: '1'
+                                                    },
+                                                    {
+                                                        value: '2',
+                                                        label: '2'
+                                                    },
+                                                    {
+                                                        value: '3',
+                                                        label: '3'
+                                                    },
+                                                    {
+                                                        value: '4',
+                                                        label: '4'
+                                                    },
+                                                    {
+                                                        value: '5',
+                                                        label: '5'
+                                                    }
+                                                ]}
+                                            />
+                                        </Col>
+                                    </Row>
                                 </Form.Item>
                             </Col>
                         </Row>
                         <Divider style={{ margin: '10px 0' }} />
                         <Row gutter={24}>
                             <Col span={12}>
-                                <Form.Item label="학습방식" initialValue={itemContainer?.learningType}>
-                                    <Radio.Group
-                                        name="learningType"
-                                        onChange={(e) => setItemContainer({ ...itemContainer, learningType: e.target.value })}
-                                        buttonStyle="solid"
-                                        value={itemContainer?.learningType}
-                                    >
-                                        <Radio.Button value="l">
-                                            <span style={{ padding: '0 10px' }}>학습</span>
-                                        </Radio.Button>
-                                        <span style={{ padding: '0 10px' }}></span>
-                                        <Radio.Button value="e">
-                                            <span style={{ padding: '0 10px' }}>평가</span>
-                                        </Radio.Button>
-                                    </Radio.Group>
-                                </Form.Item>
-                            </Col>
-                            <Col span={12}>
-                                <Form.Item label="금지물품 통과시 불합격 처리" initialValue={itemContainer?.failToPass}>
-                                    <Radio.Group
-                                        name="failToPass"
-                                        onChange={(e) => setItemContainer({ ...itemContainer, failToPass: e.target.value })}
-                                        buttonStyle="solid"
-                                        value={itemContainer?.failToPass}
-                                    >
-                                        <Radio.Button value="Y">
-                                            <span style={{ padding: '0 10px' }}>사용</span>
-                                        </Radio.Button>
-                                        <span style={{ padding: '0 10px' }}></span>
-                                        <Radio.Button value="N">
-                                            <span style={{ padding: '0 10px' }}>미사용</span>
-                                        </Radio.Button>
-                                    </Radio.Group>
-                                </Form.Item>
-                            </Col>
-                        </Row>
-                        <Divider style={{ margin: '10px 0' }} />
-                        <Row gutter={24}>
-                            <Col span={12}>
-                                <Form.Item label="난이도 레벨" initialValue={itemContainer?.studyLvl}>
-                                    <Select
-                                        name="studyLvl"
-                                        defaultValue={{
-                                            value: '',
-                                            label: '# 난이도레벨'
-                                        }}
-                                        style={{
-                                            width: '100%'
-                                        }}
-                                        value={itemContainer?.studyLvl}
-                                        onChange={(e) => setItemContainer({ ...itemContainer, studyLvl: e })}
-                                        options={[
-                                            {
-                                                value: '1',
-                                                label: 'Level 1'
-                                            },
-                                            {
-                                                value: '2',
-                                                label: 'Level 2'
-                                            },
-                                            {
-                                                value: '3',
-                                                label: 'Level 3'
-                                            },
-                                            {
-                                                value: '4',
-                                                label: 'Level 4'
-                                            },
-                                            {
-                                                value: '5',
-                                                label: 'Level 5'
-                                            }
-                                        ]}
-                                    />
-                                </Form.Item>
-                            </Col>
-                            <Col span={12}>
-                                <Form.Item label="제한시간" initialValue={itemContainer?.timeLimit}>
-                                    <Select
-                                        name="timeLimit"
-                                        defaultValue={{
-                                            value: '',
-                                            label: '# 제한시간'
-                                        }}
-                                        style={{
-                                            width: '100%'
-                                        }}
-                                        value={itemContainer?.timeLimit}
-                                        onChange={(e) => setItemContainer({ ...itemContainer, timeLimit: e })}
-                                        options={Minute_Opt}
-                                    />
-                                </Form.Item>
-                            </Col>
-                        </Row>
-                        {/* <Divider style={{ margin: '10px 0' }} />
-                        <Row gutter={24}>
-                            <Col span={24}>
                                 <Form.Item
-                                    name="questionCnt"
-                                    label="출제문제수"
+                                    name="form05"
+                                    label="학습방식"
                                     rules={[
                                         {
                                             required: true,
-                                            message: '출제문제수'
+                                            message: '※ 학습방식을 선택하세요'
                                         }
                                     ]}
                                 >
-                                    <Input
-                                        placeholder="# 출제문제수"
-                                        onChange={(e) => setQuestionCnt(e.target.value)}
-                                        value={questionCnt}
-                                    />
+                                    <Row>
+                                        <Col>
+                                            <Select
+                                                name="learningType"
+                                                defaultValue={{
+                                                    value: '',
+                                                    label: '# 학습방식'
+                                                }}
+                                                style={{
+                                                    width: '180px'
+                                                }}
+                                                value={itemContainer?.learningType}
+                                                onChange={(e) => setItemContainer({ ...itemContainer, learningType: e })}
+                                                options={[
+                                                    {
+                                                        value: 'l',
+                                                        label: '학습'
+                                                    },
+                                                    {
+                                                        value: 'e',
+                                                        label: '평가'
+                                                    },
+                                                    {
+                                                        value: 'ai',
+                                                        label: 'AI강화학습'
+                                                    },
+                                                    {
+                                                        value: 'as',
+                                                        label: '오답문제풀이'
+                                                    }
+                                                ]}
+                                            />
+                                        </Col>
+                                    </Row>
                                 </Form.Item>
                             </Col>
-                        </Row> */}
+                            <Col span={12}>
+                                <Form.Item
+                                    name="form06"
+                                    label="금지물품 통과시 불합격 처리"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: '※ 금지물품 통과시 불합격 처리를 선택하세요'
+                                        }
+                                    ]}
+                                >
+                                    <Row>
+                                        <Col>
+                                            <Radio.Group
+                                                name="failToPass"
+                                                onChange={(e) => setItemContainer({ ...itemContainer, failToPass: e.target.value })}
+                                                buttonStyle="solid"
+                                                value={itemContainer?.failToPass}
+                                            >
+                                                <Radio.Button value="Y">
+                                                    <span style={{ padding: '0 10px' }}>사용</span>
+                                                </Radio.Button>
+                                                <span style={{ padding: '0 10px' }}></span>
+                                                <Radio.Button value="N">
+                                                    <span style={{ padding: '0 10px' }}>미사용</span>
+                                                </Radio.Button>
+                                            </Radio.Group>
+                                        </Col>
+                                    </Row>
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                        <Divider style={{ margin: '10px 0' }} />
+                        <Row gutter={24}>
+                            <Col span={12}>
+                                <Form.Item
+                                    name="form07"
+                                    label="난이도 레벨"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: '※ 난이도 레벨을 선택하세요'
+                                        }
+                                    ]}
+                                >
+                                    <Row>
+                                        <Col>
+                                            <Select
+                                                name="studyLvl"
+                                                defaultValue={{
+                                                    value: '',
+                                                    label: '# 난이도레벨'
+                                                }}
+                                                style={{
+                                                    width: '180px'
+                                                }}
+                                                value={itemContainer?.studyLvl}
+                                                onChange={(e) => setItemContainer({ ...itemContainer, studyLvl: e })}
+                                                options={[
+                                                    {
+                                                        value: '1',
+                                                        label: 'Level 1'
+                                                    },
+                                                    {
+                                                        value: '2',
+                                                        label: 'Level 2'
+                                                    },
+                                                    {
+                                                        value: '3',
+                                                        label: 'Level 3'
+                                                    },
+                                                    {
+                                                        value: '4',
+                                                        label: 'Level 4'
+                                                    },
+                                                    {
+                                                        value: '5',
+                                                        label: 'Level 5'
+                                                    }
+                                                ]}
+                                            />
+                                        </Col>
+                                    </Row>
+                                </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                                <Form.Item
+                                    name="form08"
+                                    label="제한시간"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: '※ 제한시간을 선택하세요'
+                                        }
+                                    ]}
+                                >
+                                    <Row>
+                                        <Col>
+                                            <Select
+                                                name="timeLimit"
+                                                defaultValue={{
+                                                    value: '',
+                                                    label: '# 제한시간'
+                                                }}
+                                                style={{
+                                                    width: '180px'
+                                                }}
+                                                value={itemContainer?.timeLimit}
+                                                onChange={(e) => setItemContainer({ ...itemContainer, timeLimit: e })}
+                                                options={Minute_Opt}
+                                            />
+                                        </Col>
+                                    </Row>
+                                </Form.Item>
+                            </Col>
+                        </Row>
                         <Divider style={{ margin: '10px 0' }} />
                         <Row gutter={24}>
                             <Col span={24}>
-                                <Form.Item label="사용여부" initialValue={itemContainer?.useYn}>
-                                    <Radio.Group
-                                        name="useYn"
-                                        onChange={(e) => setItemContainer({ ...itemContainer, useYn: e.target.value })}
-                                        buttonStyle="solid"
-                                        value={itemContainer?.useYn}
-                                    >
-                                        <Radio.Button value="Y">
-                                            <span style={{ padding: '0 10px' }}>사용</span>
-                                        </Radio.Button>
-                                        <span style={{ padding: '0 10px' }}></span>
-                                        <Radio.Button value="N">
-                                            <span style={{ padding: '0 10px' }}>미사용</span>
-                                        </Radio.Button>
-                                    </Radio.Group>
+                                <Form.Item
+                                    name="form09"
+                                    label="사용여부"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: '※ 사용여부를 선택하세요'
+                                        }
+                                    ]}
+                                >
+                                    <Row>
+                                        <Col>
+                                            <Radio.Group
+                                                name="useYn"
+                                                onChange={(e) => setItemContainer({ ...itemContainer, useYn: e.target.value })}
+                                                buttonStyle="solid"
+                                                value={itemContainer?.useYn}
+                                            >
+                                                <Radio.Button value="Y">
+                                                    <span style={{ padding: '0 10px' }}>사용</span>
+                                                </Radio.Button>
+                                                <span style={{ padding: '0 10px' }}></span>
+                                                <Radio.Button value="N">
+                                                    <span style={{ padding: '0 10px' }}>미사용</span>
+                                                </Radio.Button>
+                                            </Radio.Group>
+                                        </Col>
+                                    </Row>
                                 </Form.Item>
                             </Col>
                         </Row>
