@@ -35,8 +35,8 @@ export const StudySchDetail = (props) => {
         const SelectBaselineEduDateListresponse = await SelectBaselineEduDateListApi({
             procCd: props.EduDayView
         });
-        console.log(SelectBaselineEduDateListresponse?.data?.RET_DATA);
-        setSelectBaselineEduDateListData(SelectBaselineEduDateListresponse?.data?.RET_DATA);
+        console.log(SelectBaselineEduDateListresponse?.data?.RET_DATA?.scheduleList);
+        setSelectBaselineEduDateListData(SelectBaselineEduDateListresponse?.data?.RET_DATA?.scheduleList);
     };
 
     // Api 호출 End
@@ -66,13 +66,16 @@ export const StudySchDetail = (props) => {
                                     </Tag>
                                 </Col>
                                 <Col span={15}>
-                                    <Tag
-                                        icon={<ReconciliationOutlined />}
-                                        color="#2db7f5"
-                                        style={{ padding: '10px 10px', borderRadius: '5px' }}
-                                    >
-                                        {d.menuNm} [{d.moduleType === 's' ? ' Slide ' : d.moduleType === 'c' ? ' Cut ' : ''}]
-                                    </Tag>
+                                    {selectBaselineEduDateListData[0].menuList[i]?.map((m, c) => (
+                                        <Tag
+                                            icon={<ReconciliationOutlined />}
+                                            color="#2db7f5"
+                                            style={{ padding: '10px 10px', borderRadius: '5px' }}
+                                            key={c}
+                                        >
+                                            {m.menuNm} {m.moduleType === 's' ? '[ Slide ]' : m.moduleType === 'c' ? '[ Cut ]' : ''}
+                                        </Tag>
+                                    ))}
                                 </Col>
                                 <Col span={3}>
                                     {d.learnYn === true ? (

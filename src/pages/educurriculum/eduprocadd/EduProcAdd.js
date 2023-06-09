@@ -998,7 +998,7 @@ export const EduProcAdd = () => {
                     </Button>
                 ]}
             >
-                <StudentSch StudentsCnt={Student_handleOk} StudentsList={studentsList.slice()} />
+                <StudentSch StudentsCnt={Student_handleOk} ProcCdValue={procCdValue} />
             </Modal>
             {/* 교육생 검색 Modal End */}
 

@@ -87,5 +87,5 @@ export const {
     useUpdateUserMutation,
     useDeleteUserMutation,
     useSelectUserCheckMutation,
-    useselectUserListPopMutation
+    useSelectUserListPopMutation
 } = studentsManagement;
