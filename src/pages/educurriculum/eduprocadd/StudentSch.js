@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { Typography } from '@mui/material';
 import { Table, Tag, Col, Row, Button } from 'antd';
-import { useSelectUserListMutation } from '../../../hooks/api/StudentsManagement/StudentsManagement';
+import { useselectUserListPopMutation } from '../../../hooks/api/StudentsManagement/StudentsManagement';
 
 // project import
 import MainCard from 'components/MainCard';
@@ -15,7 +15,7 @@ export const StudentSch = (props) => {
     // ===============================
     // Api 호출 Start
     // 조회 ======================================================
-    const [SelectUserListApi] = useSelectUserListMutation(); // 교육생 정보 hooks api호출
+    const [SelectUserListApi] = useselectUserListPopMutation(); // 교육생 정보 hooks api호출
     const [selectUserListData, setSelectUserListData] = useState(); // 교육생 정보 리스트 값
     const handle_SelectUserList_Api = async () => {
         const SelectUserListresponse = await SelectUserListApi({});

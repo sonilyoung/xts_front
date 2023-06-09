@@ -9,7 +9,7 @@ import { useSelectBaselineStuListMutation } from '../../../hooks/api/CurriculumM
 // project import
 import MainCard from 'components/MainCard';
 
-export const StudentDetil = (props) => {
+export const StudentDetail = (props) => {
     const [dataSource, setDataSource] = useState([]); // Table 데이터 값
     const [loading, setLoading] = useState(false);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]); //셀렉트 박스 option Selected 값
@@ -20,9 +20,8 @@ export const StudentDetil = (props) => {
     const [SelectBaselineStuListApi] = useSelectBaselineStuListMutation(); // 교육생 정보 hooks api호출
     const handle_SelectBaselineStuList_Api = async () => {
         const SelectBaselineStuListresponse = await SelectBaselineStuListApi({
-            procCd: props.procCdValue
+            procCd: props.ProcCdValue
         });
-        // console.log(SelectBaselineStuListresponse?.data?.RET_DATA);
         setDataSource([
             ...SelectBaselineStuListresponse?.data?.RET_DATA.map((d, i) => ({
                 key: d.userId,
@@ -149,7 +148,7 @@ export const StudentDetil = (props) => {
     useEffect(() => {
         setLoading(true);
         handle_SelectBaselineStuList_Api();
-    }, []);
+    }, [props.ProcCdValue]);
 
     return (
         <>
@@ -158,22 +157,11 @@ export const StudentDetil = (props) => {
                     <Table
                         columns={columns}
                         dataSource={dataSource}
-                        rowSelection={{ ...rowSelection }}
+                        // rowSelection={{ ...rowSelection }}
                         bordered={true}
                         onChange={onChange}
                         loading={loading}
                     />
-                    <Row style={{ width: '100%', margin: '10px 0px' }}>
-                        <Col span={3}>
-                            <Button
-                                type="primary"
-                                // onClick={QuestionsOk}
-                                style={{ width: '100px', borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
-                            >
-                                선택 완료 [{}]
-                            </Button>
-                        </Col>
-                    </Row>
                 </Typography>
             </MainCard>
         </>

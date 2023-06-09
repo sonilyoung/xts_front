@@ -3,15 +3,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Typography } from '@mui/material';
 import { Col, Row, Button, Form, Input, Select, Drawer, Table, Space, Tooltip, Modal, DatePicker, Tag, Badge, Card, Divider } from 'antd';
 import 'antd/dist/antd.css';
-import {
-    PlusOutlined,
-    EditFilled,
-    EyeOutlined,
-    DeleteFilled,
-    ExclamationCircleFilled,
-    ClockCircleOutlined,
-    CheckOutlined
-} from '@ant-design/icons';
+import { PlusOutlined, EditFilled, EyeOutlined, DeleteFilled, ExclamationCircleFilled } from '@ant-design/icons';
 
 // 학습과정 관리 : 조회, 상세, 등록, 등록-(커리큘럼 메뉴목록 조회), 수정, 삭제, 커리큘럼 교육생삭제, 학습일정 상세정보 팝업, 학습생 인원 상세정보 팝업
 import {
@@ -34,9 +26,10 @@ import MainCard from 'components/MainCard';
 import moment from 'moment';
 
 import { StudentSch } from 'pages/educurriculum/eduprocadd/StudentSch'; // 교육생 검색
-import { StudentDetil } from 'pages/educurriculum/eduprocadd/StudentDetil'; // 교육생 정보
+import { StudentDetail } from 'pages/educurriculum/eduprocadd/StudentDetail'; // 교육생 정보
 
 import { StudySch } from 'pages/educurriculum/eduprocadd/StudySch'; // 학습일 검색
+import { StudySchDetail } from 'pages/educurriculum/eduprocadd/StudySchDetail'; // 교육생 정보
 
 export const EduProcAdd = () => {
     const { confirm } = Modal;
@@ -48,7 +41,6 @@ export const EduProcAdd = () => {
 
     // Loading Start
     const [loading, setLoading] = useState(false);
-    const [loadingStudent, setLoadingStudent] = useState(false);
     // Loading End
 
     // Selected Start
@@ -71,11 +63,14 @@ export const EduProcAdd = () => {
     const [moduleArry, setmoduleArry] = useState([]); //  모듈 배열
     const [procCdValue, setProcCdValue] = useState([]); // 교육생 정보 조회
 
+    const [scheduleList, setScheduleList] = useState([]); // 상세 - 학습일(일자) 정보
+    const [menuList, setMenuList] = useState([]); // 상세 - 학습일(메뉴) 정보
+    const [stuList, setStuList] = useState([]); // 상세 - 교육생 정보
+
     // Data source End
 
     // Title Text Start
     const [eduDayViewTitle, setEduDayViewTitle] = useState();
-    const [studentViewTitle, setStudentViewTitle] = useState();
     // Title Text End
 
     // Edit State Start
@@ -132,45 +127,15 @@ export const EduProcAdd = () => {
             title: '차수',
             dataIndex: 'rowdata3',
             align: 'center',
-            render: (_, { rowdata2 }) => <> {rowdata2 === '0' ? '-' : rowdata2 + '차'} </>
+            render: (_, { rowdata3 }) => <> {rowdata3 === '0' ? '-' : rowdata3 + '차'} </>
         },
         {
             title: '교육기간',
             dataIndex: 'rowdata4',
             align: 'center'
         },
-        // {
-        //     title: '교육시작일',
-        //     dataIndex: 'rowdata5',
-        //     align: 'center'
-        // },
-        // {
-        //     title: '교육종료일',
-        //     dataIndex: 'rowdata6',
-        //     align: 'center'
-        // },
-
-        // {
-        //     title: '학습일',
-        //     dataIndex: 'rowdata4',
-        //     align: 'center',
-        //     render: (_, { rowdata1, rowdata2, rowdata4 }) => (
-        //         <>
-        //             <Tooltip title="학습일 정보" color="#108ee9">
-        //                 <Button
-        //                     type="primary"
-        //                     onClick={() => EduDayView_Modal(rowdata1, rowdata2)}
-        //                     style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
-        //                     icon={<EyeOutlined />}
-        //                 >
-        //                     {rowdata4}
-        //                 </Button>
-        //             </Tooltip>
-        //         </>
-        //     )
-        // },
         {
-            title: '총교육일수',
+            title: '총교육일정',
             dataIndex: 'rowdata7',
             align: 'center',
             render: (_, { rowdata1, rowdata7 }) => (
@@ -179,7 +144,7 @@ export const EduProcAdd = () => {
                         <Button
                             type="primary"
                             onClick={() => EduDayView_Modal(rowdata1)}
-                            style={{ borderRadius: '5px', width: '80px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                            style={{ borderRadius: '5px', width: '70px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
                             icon={<EyeOutlined />}
                         >
                             <span style={{ padding: '0 5px' }}>{rowdata7}</span>
@@ -198,7 +163,7 @@ export const EduProcAdd = () => {
                         <Button
                             type="primary"
                             onClick={() => StudentView_Modal(rowdata1)}
-                            style={{ borderRadius: '5px', width: '80px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                            style={{ borderRadius: '5px', width: '70px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
                             icon={<EyeOutlined />}
                         >
                             <span style={{ padding: '0 5px' }}>{rowdata8}</span>
@@ -295,28 +260,40 @@ export const EduProcAdd = () => {
     };
 
     // 상세 ======================================================
-    // useSelectBaselineMutation // 학습과정 관리 상세
-
-    // setBagList(SelectModuleresponse.data.RET_DATA.bagList);
-    // 수정 ======================================================
-
-    //useUpdateBaselineMutation // 학습과정 관리 수정
-    // 삭제 ======================================================
-
-    //useDeleteBaselineMutation // 학습과정 관리 삭제
-
-    // 커리큘럼 메뉴목록 조회
-    //useSelectModuleMenuListMutation
-
-    // 학습일정 상세정보 팝업 ======================================================
-    const [SelectBaselineEduDateListApi] = useSelectBaselineEduDateListMutation(); // 콘텐츠 정보 관리 hooks api호출
-    const [selectBaselineEduDateListData, setSelectBaselineEduDateListData] = useState(); // 콘텐츠 정보관리 리스트 상단 값
-    const handel_SelectBaselineEduDateList_Api = async (procCd) => {
-        const SelectBaselineEduDateListresponse = await SelectBaselineEduDateListApi({
+    // useSelectBaselineMutation // 차수 관리 상세
+    const [SelectBaselineApi] = useSelectBaselineMutation(); // 상세 hooks api호출
+    const handel_SelectBaseline_Api = async (procCd) => {
+        const SelectBaselineresponse = await SelectBaselineApi({
             procCd: procCd
         });
-        console.log(SelectBaselineEduDateListresponse?.data?.RET_DATA);
-        setSelectBaselineEduDateListData(SelectBaselineEduDateListresponse?.data?.RET_DATA);
+        console.log(SelectBaselineresponse.data.RET_DATA);
+        setItemContainer(SelectBaselineresponse.data.RET_DATA);
+        setScheduleList(SelectBaselineresponse.data.RET_DATA.scheduleList);
+        setMenuList(SelectBaselineresponse.data.RET_DATA.menuList);
+        setStuList(SelectBaselineresponse.data.RET_DATA.stuList);
+    };
+    // setBagList(SelectModuleresponse.data.RET_DATA.bagList);
+    // 수정 ======================================================
+    //useUpdateBaselineMutation // 차수 관리 수정
+
+    // 삭제 ======================================================
+    // // 차수 관리 삭제
+    const [DeleteBaselineApi] = useDeleteBaselineMutation(); // 삭제 hooks api호출
+    const handel_DeleteBaseline_Api = async (procCd) => {
+        const DeleteBaselineresponse = await DeleteBaselineApi({
+            procCdList: procCd
+        });
+        DeleteBaselineresponse?.data?.RET_CODE === '0300'
+            ? Modal.success({
+                  content: '삭제 완료',
+                  onOk() {
+                      handel_SelectBaselineList_Api();
+                  }
+              })
+            : Modal.success({
+                  content: '삭제 오류',
+                  onOk() {}
+              });
     };
 
     // Api 호출 End
@@ -365,38 +342,6 @@ export const EduProcAdd = () => {
         }
     ];
 
-    const [studentdataSourceSearch, setStudentdataSourceSearch] = useState([
-        {
-            rowdata0: '1',
-            rowdata1: '홍길동'
-        },
-        {
-            rowdata0: '2',
-            rowdata1: '김삿갓'
-        },
-        {
-            rowdata0: '3',
-            rowdata1: '테스터'
-        },
-        {
-            rowdata0: '4',
-            rowdata1: '아무개'
-        }
-    ]);
-    const studentColumnsSearch = [
-        {
-            width: '80px',
-            title: 'No.',
-            dataIndex: 'rowdata0',
-            align: 'center'
-        },
-        {
-            title: '학습생',
-            dataIndex: 'rowdata1',
-            align: 'center'
-        }
-    ];
-
     //차수 리스트 Start
     const handleSave = (row) => {
         const newData = [...selectBaselineListData];
@@ -425,33 +370,6 @@ export const EduProcAdd = () => {
     });
     // 차수 리스트 End
 
-    const StudenthandleSaveSearch = (row) => {
-        const newData = [...studentColumnsSearch];
-        const index = newData.findIndex((item) => row.key === item.key);
-        const item = newData[index];
-        newData.splice(index, 1, {
-            ...item,
-            ...row
-        });
-        setStudentColumnsSearch(newData);
-    };
-
-    const studentSearchcolumns = studentColumnsSearch.map((col) => {
-        if (!col.editable) {
-            return col;
-        }
-        return {
-            ...col,
-            onCell: (record) => ({
-                record,
-                dataIndex: col.dataIndex,
-                title: col.title,
-                StudenthandleSaveSearch
-            })
-        };
-    });
-    // 학습생 검색 End
-
     //체크 박스 이벤트 (학습생)
     const onSelectChangeStudentSearch = (newSelectedRowKeysSub) => {
         console.log('selectedRowKeysStudentSearch changed: ', newSelectedRowKeysSub);
@@ -478,12 +396,20 @@ export const EduProcAdd = () => {
 
     // 추가 버튼
     const handleAdd = () => {
+        setItemContainer(null);
+
+        setScheduleList(null);
+        setMenuList(null);
+        setStuList(null);
+
         setOpen(true);
         setDataEdit(false);
     };
 
-    // 추가 취소
+    // 추가 / 수정 취소
     const onAddClose = () => {
+        setItemContainer(null);
+        setProcCdValue(null);
         setOpen(false);
         setDataEdit(false);
         form.resetFields();
@@ -491,7 +417,8 @@ export const EduProcAdd = () => {
 
     // 수정 버튼
     const handleEdit = (EditKey) => {
-        console.log(EditKey);
+        handel_SelectBaseline_Api(EditKey);
+        setProcCdValue(EditKey);
         setDataEdit(true);
         setOpen(true);
     };
@@ -523,20 +450,13 @@ export const EduProcAdd = () => {
             confirm({
                 title: '선택한 항목을 삭제하시겠습니까?',
                 icon: <ExclamationCircleFilled />,
-                content: selectedRowKeys + ' 항목의 데이터',
                 okText: '예',
                 okType: 'danger',
                 cancelText: '아니오',
                 onOk() {
-                    Modal.success({
-                        content: '삭제완료'
-                    });
+                    handel_DeleteBaseline_Api(selectedRowKeys);
                 },
-                onCancel() {
-                    Modal.error({
-                        content: '삭제취소'
-                    });
-                }
+                onCancel() {}
             });
         }
     };
@@ -558,14 +478,7 @@ export const EduProcAdd = () => {
 
     // 학습 일정 설정 Start
     const EduDay_Modal = () => {
-        if (itemContainer.totStudyDate === '' || itemContainer.totStudyDate === undefined) {
-            Modal.error({
-                content: '총교육일수를 입력해주세요!',
-                onOk() {}
-            });
-        } else {
-            setEduDayModalOpen(true);
-        }
+        setEduDayModalOpen(true);
     };
     const EduDay_handleOk = () => {
         setEduDayModalOpen(false);
@@ -590,7 +503,6 @@ export const EduProcAdd = () => {
     const EduDayView_Modal = (rowdata1) => {
         setEduDayViewModalOpen(true);
         setEduDayViewTitle(rowdata1);
-        handel_SelectBaselineEduDateList_Api(rowdata1);
     };
     const EduDayView_handleOk = () => {
         setEduDayViewModalOpen(false);
@@ -605,39 +517,14 @@ export const EduProcAdd = () => {
         setStudentViewModalOpen(true);
         setProcCdValue(rowdata1);
     };
-    const StudentView_handleOk = () => {
-        setEduDayViewModalOpen(false);
-    };
+
+    // 교육생 인원 modal창 닫기
     const StudentView_handleCancel = () => {
         setStudentViewModalOpen(false);
-    };
-    // 학습생 일정 상세정보 End
-
-    const handleChange = (value) => {
-        console.log(`selected ${value}`);
-    };
-
-    const eduComplete = (txt) => {
-        confirm({
-            title: '학습완료 처리하시겠습까?',
-            icon: <ExclamationCircleFilled />,
-            // content: txt + ' 학습완료! ',
-            okText: '예',
-            okType: 'danger',
-            cancelText: '아니오',
-            onOk() {
-                Modal.success({
-                    content: '학습완료'
-                });
-            },
-            onCancel() {}
-        });
     };
 
     // 학습일 설정 (일자, 모듈, 메뉴) 값
     const handel_Study_Set = (totStudyDateList, menuList) => {
-        // console.log(totStudyDateList);
-        // console.log(menuList);
         setStudyDayArry(totStudyDateList);
         setmoduleArry(menuList);
         setEduDayModalOpen(false);
@@ -732,7 +619,16 @@ export const EduProcAdd = () => {
                 }
             >
                 <MainCard>
-                    <Form layout="vertical" form={form}>
+                    <Form
+                        layout="vertical"
+                        form={form}
+                        autoComplete="off"
+                        initialValues={{
+                            form04: {
+                                totStudyDate: '5'
+                            }
+                        }}
+                    >
                         <Row gutter={24}>
                             <Col span={24}>
                                 <Form.Item
@@ -744,17 +640,18 @@ export const EduProcAdd = () => {
                                             message: '차수명 입력'
                                         }
                                     ]}
-                                    style={{
-                                        width: '100%'
-                                    }}
                                 >
                                     <Row>
-                                        <Col span={24}>
+                                        <Col>
                                             <Input
+                                                style={{
+                                                    width: '443px'
+                                                }}
                                                 name="procName"
                                                 placeholder="# 차수명"
                                                 onChange={(e) => setItemContainer({ ...itemContainer, procName: e.target.value })}
                                                 value={itemContainer?.procName}
+                                                // key={itemContainer?.procName}
                                             />
                                         </Col>
                                     </Row>
@@ -774,18 +671,21 @@ export const EduProcAdd = () => {
                                     ]}
                                 >
                                     <Row>
-                                        <Col span={24}>
+                                        <Col>
                                             <Select
                                                 name="procSeq"
-                                                defaultValue={{
-                                                    value: 0,
-                                                    label: '# 차수 선택'
-                                                }}
                                                 style={{
-                                                    width: '100%'
+                                                    width: '443px'
                                                 }}
                                                 onChange={(e) => setItemContainer({ ...itemContainer, procSeq: e })}
-                                                value={itemContainer?.procSeq}
+                                                value={
+                                                    itemContainer?.procSeq === undefined || itemContainer?.procSeq === null
+                                                        ? {
+                                                              value: 0,
+                                                              label: '# 차수 선택'
+                                                          }
+                                                        : itemContainer?.procSeq
+                                                }
                                                 options={baseLineArr}
                                             />
                                         </Col>
@@ -802,28 +702,30 @@ export const EduProcAdd = () => {
                                     rules={[
                                         {
                                             required: true,
-                                            message: 'Please Enter EduData.'
+                                            message: '※ 교육기간'
                                         }
                                     ]}
                                 >
                                     <Row>
-                                        <Col span={24}>
+                                        <Col>
                                             <RangePicker
                                                 name="EduData"
-                                                defaultValue={dayjs(new Date())}
-                                                style={{ width: '100%' }}
+                                                style={{ width: '443px' }}
                                                 onChange={(dates) => {
                                                     const [start, end] = dates;
+                                                    const eduStartDate = start.format('YYYY-MM-DD');
+                                                    const eduEndDate = end.format('YYYY-MM-DD');
+                                                    const totStudyDays = dayjs(eduEndDate).diff(eduStartDate, 'days') + 1;
                                                     setItemContainer({
                                                         ...itemContainer,
-                                                        eduEndDate: end.format('YYYY-MM-DD'),
-                                                        ...itemContainer,
-                                                        eduStartDate: start.format('YYYY-MM-DD')
+                                                        eduStartDate,
+                                                        eduEndDate,
+                                                        totStudyDate: String(totStudyDays)
                                                     });
                                                 }}
                                                 value={[
-                                                    itemContainer?.eduStartDate ? moment(itemContainer.eduStartDate) : null,
-                                                    itemContainer?.eduEndDate ? moment(itemContainer.eduEndDate) : null
+                                                    itemContainer?.eduStartDate ? dayjs(itemContainer.eduStartDate) : dayjs(new Date()),
+                                                    itemContainer?.eduEndDate ? dayjs(itemContainer.eduEndDate) : ''
                                                 ]}
                                             />
                                         </Col>
@@ -840,17 +742,21 @@ export const EduProcAdd = () => {
                                     rules={[
                                         {
                                             required: true,
-                                            message: 'Please Enter quantity.'
+                                            message: '※ 총교육일수'
                                         }
                                     ]}
                                 >
                                     <Row>
-                                        <Col span={24}>
+                                        <Col>
                                             <Input
-                                                placeholder="# 일수"
+                                                placeholder="# 총교육일수"
                                                 name="totStudyDate"
-                                                onChange={(e) => setItemContainer({ ...itemContainer, totStudyDate: e.target.value })}
+                                                id="totStudyDate"
+                                                onChange={(e) => {
+                                                    setItemContainer({ ...itemContainer, totStudyDate: String(e.target.value) });
+                                                }}
                                                 value={itemContainer?.totStudyDate}
+                                                style={{ width: '443px' }}
                                             />
                                         </Col>
                                     </Row>
@@ -861,9 +767,10 @@ export const EduProcAdd = () => {
                         <Row gutter={24}>
                             <Col span={24}>
                                 <Button
-                                    style={{ marginBottom: '30px', width: '100%', height: '40px', borderRadius: '5px' }}
+                                    style={{ marginBottom: '30px', width: '100%', height: '52px', borderRadius: '5px' }}
                                     type="primary"
                                     onClick={EduDay_Modal}
+                                    disabled={!itemContainer?.eduStartDate || !itemContainer?.eduEndDate || !itemContainer?.totStudyDate}
                                 >
                                     학습일 설정
                                 </Button>
@@ -885,16 +792,19 @@ export const EduProcAdd = () => {
                                         <Col>
                                             <Select
                                                 name="endingStdScore"
-                                                defaultValue={{
-                                                    value: 0,
-                                                    label: '# 수료 기준점수'
-                                                }}
                                                 style={{
                                                     width: '210px'
                                                 }}
                                                 options={Scoreoptions}
                                                 onChange={(e) => setItemContainer({ ...itemContainer, endingStdScore: e })}
-                                                value={itemContainer?.endingStdScore}
+                                                value={
+                                                    itemContainer?.endingStdScore === undefined || itemContainer?.endingStdScore === null
+                                                        ? {
+                                                              value: 0,
+                                                              label: '# 수료 기준점수'
+                                                          }
+                                                        : itemContainer?.endingStdScore
+                                                }
                                             />
                                         </Col>
                                     </Row>
@@ -915,16 +825,20 @@ export const EduProcAdd = () => {
                                         <Col>
                                             <Select
                                                 name="theoryTotalScore"
-                                                defaultValue={{
-                                                    value: 0,
-                                                    label: '# 이론 가중치'
-                                                }}
                                                 style={{
                                                     width: '210px'
                                                 }}
                                                 options={Scoreoptions}
                                                 onChange={(e) => setItemContainer({ ...itemContainer, theoryTotalScore: e })}
-                                                value={itemContainer?.theoryTotalScore}
+                                                value={
+                                                    itemContainer?.theoryTotalScore === undefined ||
+                                                    itemContainer?.theoryTotalScore === null
+                                                        ? {
+                                                              value: 0,
+                                                              label: '# 이론 가중치'
+                                                          }
+                                                        : itemContainer?.theoryTotalScore
+                                                }
                                             />
                                         </Col>
                                     </Row>
@@ -945,19 +859,23 @@ export const EduProcAdd = () => {
                                     ]}
                                 >
                                     <Row>
-                                        <Col span={12}>
+                                        <Col>
                                             <Select
                                                 name="practiceTotalScore"
-                                                defaultValue={{
-                                                    value: 0,
-                                                    label: '# 실기 가중치'
-                                                }}
                                                 style={{
                                                     width: '210px'
                                                 }}
                                                 options={Scoreoptions}
                                                 onChange={(e) => setItemContainer({ ...itemContainer, practiceTotalScore: e })}
-                                                value={itemContainer?.practiceTotalScore}
+                                                value={
+                                                    itemContainer?.practiceTotalScore === undefined ||
+                                                    itemContainer?.practiceTotalScore === null
+                                                        ? {
+                                                              value: 0,
+                                                              label: '# 이론 가중치'
+                                                          }
+                                                        : itemContainer?.practiceTotalScore
+                                                }
                                             />
                                         </Col>
                                     </Row>
@@ -975,19 +893,23 @@ export const EduProcAdd = () => {
                                     ]}
                                 >
                                     <Row>
-                                        <Col span={12}>
+                                        <Col>
                                             <Select
                                                 name="evaluationTotalScore"
-                                                defaultValue={{
-                                                    value: 0,
-                                                    label: '# 평가 가중치'
-                                                }}
                                                 style={{
                                                     width: '210px'
                                                 }}
                                                 options={Scoreoptions}
                                                 onChange={(e) => setItemContainer({ ...itemContainer, evaluationTotalScore: e })}
-                                                value={itemContainer?.evaluationTotalScore}
+                                                value={
+                                                    itemContainer?.evaluationTotalScore === undefined ||
+                                                    itemContainer?.evaluationTotalScore === null
+                                                        ? {
+                                                              value: 0,
+                                                              label: '# 평가 가중치'
+                                                          }
+                                                        : itemContainer?.evaluationTotalScore
+                                                }
                                             />
                                         </Col>
                                     </Row>
@@ -1009,27 +931,10 @@ export const EduProcAdd = () => {
                                 </Col>
                             </Row>
                         </Card>
-                        {/* <Row gutter={24}>
-                            <Col span={24}>
-                                <Form.Item
-                                    name="EduStudentChk"
-                                    label="교육생 수"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: 'Please Enter quantity.'
-                                        }
-                                    ]}
-                                >
-                                    <Input placeholder="# 제한수" />
-                                </Form.Item>
-                            </Col>
-                        </Row> */}
-
                         <Row gutter={24}>
                             <Col span={24}>
                                 <Button
-                                    style={{ marginBottom: '30px', width: '100%', height: '40px', borderRadius: '5px' }}
+                                    style={{ marginBottom: '30px', width: '100%', height: '52px', borderRadius: '5px' }}
                                     type="primary"
                                     onClick={Student_Modal}
                                 >
@@ -1062,12 +967,14 @@ export const EduProcAdd = () => {
                 ]}
             >
                 <StudySch
-                    ProcName={itemContainer?.procName}
-                    ProcSeq={itemContainer?.procSeq}
+                    key={itemContainer?.totStudyDate}
                     TotStudyDate={itemContainer?.totStudyDate}
                     EduStartDate={itemContainer?.eduStartDate}
                     EduEndDate={itemContainer?.eduEndDate}
                     StudySet={handel_Study_Set}
+                    SetScheduleList={scheduleList}
+                    SetMenuList={menuList}
+                    SetStuList={stuList}
                 />
             </Modal>
             {/* 학습일자 설정 Modal End */}
@@ -1098,9 +1005,10 @@ export const EduProcAdd = () => {
             {/* 학습일자 상세정보 Modal Start */}
             <Modal
                 open={eduDayViewModalOpen}
-                onOk={EduDayView_handleOk}
-                onCancel={EduDayView_handleCancel}
-                width={700}
+                // onOk={EduDayView_handleOk}
+                // onCancel={EduDayView_handleCancel}
+                closable={false}
+                width={950}
                 style={{
                     left: 130,
                     zIndex: 999
@@ -1115,141 +1023,15 @@ export const EduProcAdd = () => {
                     </Button>
                 ]}
             >
-                <MainCard title="학습 일정 상세정보" style={{ marginTop: 30 }}>
-                    <Form layout="horizontal" form={form}>
-                        <Row gutter={24} style={{ marginBottom: 14 }}>
-                            <Col span={24} style={{ textAlign: 'center' }}>
-                                <Tag color="#108ee9" style={{ width: '100%', padding: '11px 0', borderRadius: '5px', fontSize: '14px' }}>
-                                    {eduDayViewTitle}
-                                </Tag>
-                            </Col>
-                        </Row>
-
-                        <Row gutter={24} style={{ lineHeight: '41px' }}>
-                            <Col span={4}>
-                                <Tag icon={<ClockCircleOutlined />} color="#108ee9" style={{ padding: '5px 18px', borderRadius: '5px' }}>
-                                    Day 1
-                                </Tag>
-                            </Col>
-                            <Col span={16}>
-                                <Tag icon={<ClockCircleOutlined />} color="#2db7f5" style={{ padding: '5px 12px' }}>
-                                    물품연습 모듈
-                                </Tag>
-                            </Col>
-                            <Col span={4}>
-                                <Tag
-                                    icon={<CheckOutlined />}
-                                    onClick={() => eduComplete('Day 1')}
-                                    color="#2db7f5"
-                                    style={{ padding: '5px 7px', cursor: 'pointer' }}
-                                >
-                                    학습완료
-                                </Tag>
-                            </Col>
-                        </Row>
-                        <Row gutter={24} style={{ lineHeight: '41px' }}>
-                            <Col span={4}>
-                                <Tag icon={<ClockCircleOutlined />} color="#108ee9" style={{ padding: '5px 18px', borderRadius: '5px' }}>
-                                    Day 2
-                                </Tag>
-                            </Col>
-                            <Col span={16}>
-                                <Tag icon={<ClockCircleOutlined />} style={{ padding: '5px 12px' }}>
-                                    학습 모듈
-                                </Tag>
-                                <Tag icon={<ClockCircleOutlined />} style={{ padding: '5px 12px' }}>
-                                    AI강화학습 모듈
-                                </Tag>
-                            </Col>
-                            <Col span={4}>
-                                <Tag
-                                    icon={<ClockCircleOutlined />}
-                                    onClick={() => eduComplete('Day 2')}
-                                    style={{ padding: '5px 7px', cursor: 'pointer' }}
-                                >
-                                    학습진행
-                                </Tag>
-                            </Col>
-                        </Row>
-                        <Row gutter={24} style={{ lineHeight: '41px' }}>
-                            <Col span={4}>
-                                <Tag icon={<ClockCircleOutlined />} color="#108ee9" style={{ padding: '5px 18px', borderRadius: '5px' }}>
-                                    Day 3
-                                </Tag>
-                            </Col>
-                            <Col span={16}>
-                                <Tag icon={<ClockCircleOutlined />} style={{ padding: '5px 12px' }}>
-                                    학습 모듈
-                                </Tag>
-                                <Tag icon={<ClockCircleOutlined />} style={{ padding: '5px 12px' }}>
-                                    AI강화학습 모듈
-                                </Tag>
-                            </Col>
-                            <Col span={4}>
-                                <Tag
-                                    icon={<ClockCircleOutlined />}
-                                    onClick={() => eduComplete('Day 3')}
-                                    style={{ padding: '5px 7px', cursor: 'pointer' }}
-                                >
-                                    학습진행
-                                </Tag>
-                            </Col>
-                        </Row>
-                        <Row gutter={24} style={{ lineHeight: '41px' }}>
-                            <Col span={4}>
-                                <Tag icon={<ClockCircleOutlined />} color="#108ee9" style={{ padding: '5px 18px', borderRadius: '5px' }}>
-                                    Day 4
-                                </Tag>
-                            </Col>
-                            <Col span={16}>
-                                <Tag icon={<ClockCircleOutlined />} style={{ padding: '5px 12px' }}>
-                                    학습 모듈
-                                </Tag>
-                                <Tag icon={<ClockCircleOutlined />} style={{ padding: '5px 12px' }}>
-                                    AI강화학습 모듈
-                                </Tag>
-                            </Col>
-                            <Col span={4}>
-                                <Tag
-                                    icon={<ClockCircleOutlined />}
-                                    onClick={() => eduComplete('Day 4')}
-                                    style={{ padding: '5px 7px', cursor: 'pointer' }}
-                                >
-                                    학습진행
-                                </Tag>
-                            </Col>
-                        </Row>
-                        <Row gutter={24} style={{ lineHeight: '41px' }}>
-                            <Col span={4}>
-                                <Tag icon={<ClockCircleOutlined />} color="#108ee9" style={{ padding: '5px 18px', borderRadius: '5px' }}>
-                                    Day 5
-                                </Tag>
-                            </Col>
-                            <Col span={16}>
-                                <Tag icon={<ClockCircleOutlined />} style={{ padding: '5px 12px' }}>
-                                    평가 모듈
-                                </Tag>
-                            </Col>
-                            <Col span={4}>
-                                <Tag
-                                    icon={<ClockCircleOutlined />}
-                                    onClick={() => eduComplete('Day 5')}
-                                    style={{ padding: '5px 7px', cursor: 'pointer' }}
-                                >
-                                    학습진행
-                                </Tag>
-                            </Col>
-                        </Row>
-                    </Form>
-                </MainCard>
+                <StudySchDetail EduDayView={eduDayViewTitle} />
             </Modal>
             {/* 학습일자 상세정보 Modal End */}
 
             {/* 교육생 상세정보 Modal Start */}
             <Modal
                 open={studentViewModalOpen}
-                onOk={StudentView_handleOk}
-                onCancel={StudentView_handleCancel}
+                // onOk={StudentView_handleOk}
+                closable={false}
                 width={1400}
                 style={{
                     left: 130,
@@ -1265,7 +1047,7 @@ export const EduProcAdd = () => {
                     </Button>
                 ]}
             >
-                <StudentDetil />
+                <StudentDetail ProcCdValue={procCdValue} />
             </Modal>
             {/* 교육생 상세정보 Modal End */}
         </>

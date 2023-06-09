@@ -67,6 +67,15 @@ export const studentsManagement = createApi({
                 method: 'POST',
                 body: body
             })
+        }),
+
+        // 교육생 검색
+        selectUserListPop: builder.mutation({
+            query: (body) => ({
+                url: '/adm/userMgr/selectUserListPop.do',
+                method: 'POST',
+                body: body
+            })
         })
     })
 });
@@ -77,5 +86,6 @@ export const {
     useInsertUserMutation,
     useUpdateUserMutation,
     useDeleteUserMutation,
-    useSelectUserCheckMutation
+    useSelectUserCheckMutation,
+    useselectUserListPopMutation
 } = studentsManagement;
