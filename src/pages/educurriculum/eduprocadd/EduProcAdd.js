@@ -266,13 +266,11 @@ export const EduProcAdd = () => {
         const SelectBaselineresponse = await SelectBaselineApi({
             procCd: procCd
         });
-        console.log(SelectBaselineresponse.data.RET_DATA);
         setItemContainer(SelectBaselineresponse.data.RET_DATA);
         setScheduleList(SelectBaselineresponse.data.RET_DATA.scheduleList);
         setMenuList(SelectBaselineresponse.data.RET_DATA.menuList);
-        setStuList(SelectBaselineresponse.data.RET_DATA.stuList);
+        setStuList(SelectBaselineresponse.data.RET_DATA.userList);
     };
-    // setBagList(SelectModuleresponse.data.RET_DATA.bagList);
     // 수정 ======================================================
     //useUpdateBaselineMutation // 차수 관리 수정
 
@@ -372,7 +370,7 @@ export const EduProcAdd = () => {
 
     //체크 박스 이벤트 (학습생)
     const onSelectChangeStudentSearch = (newSelectedRowKeysSub) => {
-        console.log('selectedRowKeysStudentSearch changed: ', newSelectedRowKeysSub);
+        //console.log('selectedRowKeysStudentSearch changed: ', newSelectedRowKeysSub);
         setSelectedRowKeysStudentSearch(newSelectedRowKeysSub);
     };
 
@@ -384,7 +382,7 @@ export const EduProcAdd = () => {
 
     //체크 박스 이벤트
     const onSelectChange = (newSelectedRowKeys) => {
-        console.log('selectedRowKeys changed: ', newSelectedRowKeys);
+        //console.log('selectedRowKeys changed: ', newSelectedRowKeys);
         setSelectedRowKeys(newSelectedRowKeys);
     };
 
@@ -463,7 +461,7 @@ export const EduProcAdd = () => {
 
     // 교육생 선택 완료 (Modal 닫기)
     const Student_handleOk = (Student_Value) => {
-        console.log('교육생 :', Student_Value);
+        //console.log('교육생 :', Student_Value);
         setStudentsList(Student_Value);
         setItemContainer({ ...itemContainer, limitPersonCnt: Student_Value.length });
         setStudentModalOpen(false);
@@ -974,7 +972,6 @@ export const EduProcAdd = () => {
                     StudySet={handel_Study_Set}
                     SetScheduleList={scheduleList}
                     SetMenuList={menuList}
-                    SetStuList={stuList}
                 />
             </Modal>
             {/* 학습일자 설정 Modal End */}
@@ -998,7 +995,7 @@ export const EduProcAdd = () => {
                     </Button>
                 ]}
             >
-                <StudentSch StudentsCnt={Student_handleOk} ProcCdValue={procCdValue} />
+                <StudentSch StudentsCnt={Student_handleOk} StudentValue={stuList} ProcCdValue={procCdValue} />
             </Modal>
             {/* 교육생 검색 Modal End */}
 

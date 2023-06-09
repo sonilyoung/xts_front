@@ -10,8 +10,9 @@ import MainCard from 'components/MainCard';
 export const StudentSch = (props) => {
     const [dataSource, setDataSource] = useState([]); // Table 데이터 값
     const [loading, setLoading] = useState(false);
-    const [selectedRowKeys, setSelectedRowKeys] = useState(); //셀렉트 박스 option Selected 값
+    const [selectedRowKeys, setSelectedRowKeys] = useState(props.StudentValue); //셀렉트 박스 option Selected 값
 
+    // console.log(props.StudentValue);
     // ===============================
     // Api 호출 Start
     // 조회 ======================================================
@@ -21,7 +22,7 @@ export const StudentSch = (props) => {
         const SelectUserListPopresponse = await SelectUserListPopApi({
             procCd: procCd
         });
-        console.log(SelectUserListPopresponse?.data?.RET_DATA);
+        // console.log(SelectUserListPopresponse?.data?.RET_DATA);
         setSelectUserListPopData(SelectUserListPopresponse?.data?.RET_DATA);
         setDataSource([
             ...SelectUserListPopresponse?.data?.RET_DATA.map((d, i) => ({
@@ -119,12 +120,12 @@ export const StudentSch = (props) => {
     ];
 
     const onChange = (pagination, filters, sorter, extra) => {
-        console.log('params', pagination, filters, sorter, extra);
+        // console.log('params', pagination, filters, sorter, extra);
     };
 
     //체크 박스 이벤트
     const onSelectChange = (newSelectedRowKeys) => {
-        console.log('selectedRowKeys changed: ', newSelectedRowKeys);
+        // console.log('selectedRowKeys changed: ', newSelectedRowKeys);
         setSelectedRowKeys(newSelectedRowKeys);
     };
 
