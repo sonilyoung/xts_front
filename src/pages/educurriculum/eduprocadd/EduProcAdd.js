@@ -617,16 +617,7 @@ export const EduProcAdd = () => {
                 }
             >
                 <MainCard>
-                    <Form
-                        layout="vertical"
-                        form={form}
-                        autoComplete="off"
-                        initialValues={{
-                            form04: {
-                                totStudyDate: '5'
-                            }
-                        }}
-                    >
+                    <Form layout="vertical" form={form} autoComplete="off">
                         <Row gutter={24}>
                             <Col span={24}>
                                 <Form.Item
@@ -649,7 +640,6 @@ export const EduProcAdd = () => {
                                                 placeholder="# 차수명"
                                                 onChange={(e) => setItemContainer({ ...itemContainer, procName: e.target.value })}
                                                 value={itemContainer?.procName}
-                                                // key={itemContainer?.procName}
                                             />
                                         </Col>
                                     </Row>
