@@ -31,11 +31,11 @@ import MainCard from 'components/MainCard';
 
 import {
     useSelectTheoryGroupListMutation,
-    useSelectTheoryListMutation,
-    useSelectTheoryMutation,
-    useInsertTheoryMutation,
-    useUpdateTheoryMutation,
-    useDeleteTheoryMutation
+    useSelectTheoryListMutation, // 이론 교육 조회
+    useSelectTheoryMutation, // 이론 교육 상세
+    useInsertTheoryMutation, // 이론 교육 등록
+    useUpdateTheoryMutation, // 이론 교육 수정
+    useDeleteTheoryMutation // 이론 교육 삭제
 } from '../../../hooks/api/TheoryGroupManagement/TheoryGroupManagement';
 
 export const TheoryInfo = () => {
@@ -47,15 +47,18 @@ export const TheoryInfo = () => {
     const [loading_M, setLoading_M] = useState(false);
     const [loading_S, setLoading_S] = useState(false);
     const [itemContainer, setItemContainer] = useState(null); // 항목 컨테이너
+    const [questionIdKey, setQuestionIdKey] = useState(null); // 선택 이론 교육 고유 key
+    const [command, setCommand] = useState('false'); // 이미지 업로드 여부
 
     const [selectedRowKeys, setSelectedRowKeys] = useState([]); //셀렉트 박스 option Selected 값
     const [open, setOpen] = useState(false);
     const [dataEdit, setDataEdit] = useState(false); // Drawer 수정 우측폼 상태
 
-    const [questionType, setQuestionType] = useState([]); // 문제 타입
-    const [uploadedImages3, setUploadedImages3] = useState([]); // 이미지선다형 이미지
+    const [questionType, setQuestionType] = useState(''); // 문제 타입
+    const [uploadedImages3, setUploadedImages3] = useState([null]); // 이미지선다형 이미지
     const [selectedImage3, setSelectedImage3] = useState([]);
-    const [uploadedImages4, setUploadedImages4] = useState([]); // 이미지 + 사지선다형 이미지
+    const [uploadedImages4, setUploadedImages4] = useState([null]); // 이미지 + 사지선다형 이미지
+    const [selectedImage4, setSelectedImage4] = useState([]);
 
     // ===============================
     // Api 호출 Start
@@ -110,26 +113,32 @@ export const TheoryInfo = () => {
         };
         formData.append('params', new Blob([JSON.stringify(params)], { type: 'application/json' }));
 
-        // questionType === 'C' || questionType === 'D'
-        //     ? Object.values(selectedImage3).forEach((image) => {
-        //           formData.append('files', image);
-        //       })
-        //     : '';
-        // console.log(formData);
-        const InsertTheoryResponse = await InsertTheoryApi({
-            formData
-        });
-
-        console.log(InsertTheoryResponse);
-
+        if (questionType == 'C') {
+            Object.values(selectedImage3).forEach((images3) => {
+                formData.append('files', images3);
+            });
+        } else if (questionType == 'D') {
+            Object.values(selectedImage4).forEach((images4) => {
+                formData.append('files', images4);
+            });
+        } else {
+        }
+        const InsertTheoryResponse = await InsertTheoryApi(formData);
         InsertTheoryResponse?.data?.RET_CODE === '0100'
             ? Modal.success({
                   content: '등록 완료',
                   onOk() {
                       setOpen(false);
                       setDataEdit(false);
+
                       form.resetFields();
-                      handel_selectModuleList_Api();
+                      setItemContainer(null);
+                      setSelectedImage3(null);
+                      setUploadedImages3(null);
+                      setSelectedImage4(null);
+                      setUploadedImages4(null);
+                      setCommand('false');
+                      handle_SelectTheoryList_Api();
                   }
               })
             : Modal.success({
@@ -138,6 +147,135 @@ export const TheoryInfo = () => {
               });
     };
 
+    // 이론 교육 상세 ======================================================
+
+    const [SelectTheoryApi] = useSelectTheoryMutation(); // 상세 hooks api호출
+    const handel_SelectTheory_Api = async (questionId) => {
+        const SelectTheoryresponse = await SelectTheoryApi({
+            questionId: questionId
+        });
+        console.log('상세:', SelectTheoryresponse?.data?.RET_DATA);
+        if (SelectTheoryresponse?.data?.RET_DATA?.questionType === 'C') {
+            setUploadedImages3([
+                {
+                    name: SelectTheoryresponse?.data?.RET_DATA?.choice1,
+                    base64Image: 'data:image/png;base64,' + SelectTheoryresponse?.data?.RET_DATA?.choiceImg1
+                },
+                {
+                    name: SelectTheoryresponse?.data?.RET_DATA?.choice2,
+                    base64Image: 'data:image/png;base64,' + SelectTheoryresponse?.data?.RET_DATA?.choiceImg2
+                },
+                {
+                    name: SelectTheoryresponse?.data?.RET_DATA?.choice3,
+                    base64Image: 'data:image/png;base64,' + SelectTheoryresponse?.data?.RET_DATA?.choiceImg3
+                },
+                {
+                    name: SelectTheoryresponse?.data?.RET_DATA?.choice4,
+                    base64Image: 'data:image/png;base64,' + SelectTheoryresponse?.data?.RET_DATA?.choiceImg4
+                }
+            ]);
+            setSelectedImage3([
+                {
+                    name: SelectTheoryresponse?.data?.RET_DATA?.multiPlusImgName,
+                    base64Image: 'data:image/png;base64,' + SelectTheoryresponse?.data?.RET_DATA?.multiPlusImg
+                }
+            ]);
+        } else if (SelectTheoryresponse?.data?.RET_DATA?.questionType === 'D') {
+            setUploadedImages4([
+                {
+                    name: SelectTheoryresponse?.data?.RET_DATA?.multiPlusImgName,
+                    base64Image: 'data:image/png;base64,' + SelectTheoryresponse?.data?.RET_DATA?.multiPlusImg
+                }
+            ]);
+            setSelectedImage4([
+                {
+                    name: SelectTheoryresponse?.data?.RET_DATA?.multiPlusImgName,
+                    base64Image: 'data:image/png;base64,' + SelectTheoryresponse?.data?.RET_DATA?.multiPlusImg
+                }
+            ]);
+        }
+        setItemContainer(SelectTheoryresponse.data.RET_DATA);
+    };
+    // 이론 교육 수정 ======================================================
+    const [UpdateTheoryApi] = useUpdateTheoryMutation(); // 수정 hooks api호출
+    const handel_UpdateTheory_Api = async () => {
+        console.log(command);
+        console.log(itemContainer.questionType);
+        let formData = new FormData();
+        const params = {
+            questionId: questionIdKey,
+            command: command,
+            studyLvl: itemContainer.studyLvl,
+            questionType: itemContainer.questionType,
+            lageGroupCd: itemContainer.lageGroupCd,
+            middleGroupCd: itemContainer.middleGroupCd,
+            smallGroupCd: itemContainer.smallGroupCd,
+            question: itemContainer.question,
+            choice1: itemContainer.choice1,
+            choice2: itemContainer.choice2,
+            choice3: itemContainer.choice3,
+            choice4: itemContainer.choice4,
+            actionDiv: itemContainer.actionDiv,
+            useYn: itemContainer.useYn
+        };
+        formData.append('params', new Blob([JSON.stringify(params)], { type: 'application/json' }));
+
+        if (command === true) {
+            if (questionType == 'C') {
+                Object.values(selectedImage3).forEach((images3) => {
+                    formData.append('files', images3);
+                });
+            } else if (questionType == 'D') {
+                Object.values(selectedImage4).forEach((images4) => {
+                    formData.append('files', images4);
+                });
+            } else {
+            }
+        } else {
+        }
+        const UpdateTheoryresponse = await UpdateTheoryApi(formData);
+        UpdateTheoryresponse?.data?.RET_CODE === '0100'
+            ? Modal.success({
+                  content: '수정 완료',
+                  onOk() {
+                      setOpen(false);
+                      setDataEdit(false);
+                      form.resetFields();
+                      setItemContainer(null);
+                      setSelectedImage3(null);
+                      setUploadedImages3(null);
+                      setSelectedImage4(null);
+                      setUploadedImages4(null);
+                      setCommand('false');
+                      handle_SelectTheoryList_Api();
+                  }
+              })
+            : Modal.success({
+                  content: '수정 오류',
+                  onOk() {}
+              });
+    };
+
+    // 이론 교육 삭제 ======================================================
+    const [DeleteTheoryApi] = useDeleteTheoryMutation(); // 삭제 hooks api호출
+    const handel_DeleteTheory_Api = async (questionId) => {
+        const DeleteTheoryresponse = await DeleteTheoryApi({
+            questionIdList: questionId
+        });
+        // console.log(DeleteTheoryresponse?.data);
+        DeleteTheoryresponse?.data?.RET_CODE === '0300'
+            ? Modal.success({
+                  content: '삭제 완료',
+                  onOk() {
+                      handle_SelectTheoryList_Api();
+                      setSelectedRowKeys(null);
+                  }
+              })
+            : Modal.success({
+                  content: '삭제 오류',
+                  onOk() {}
+              });
+    };
     // 대분류 조회 ======================================================
     const [lTheoryGroupData, setLTheoryGroupData] = useState();
     const handle_L_TheoryGroup_Api = async () => {
@@ -195,7 +333,6 @@ export const TheoryInfo = () => {
     // 이미지 업로드 Start
     // 이미지선다형 문제
     const handleDrop3 = (acceptedFiles3) => {
-        // console.log('파일객체 :', acceptedFiles3);
         const remainingSlots3 = 4 - uploadedImages3.length;
         const filesToUpload3 = acceptedFiles3.slice(0, remainingSlots3);
         filesToUpload3.forEach((file) => {
@@ -217,22 +354,18 @@ export const TheoryInfo = () => {
                 const base64Image = reader3.result;
                 const uploadedImage3 = {
                     name: file.name,
-                    size: file.size,
-                    type: file.type,
-                    base64Image: base64Image,
-                    localPath: file.path // 로컬 폴더 경로 추가
+                    // size: file.size,
+                    // type: file.type,
+                    base64Image: base64Image
+                    // localPath: file.path // 로컬 폴더 경로 추가
                 };
                 // 업로드된 이미지 추가
                 setUploadedImages3((prevImages3) => [...prevImages3, uploadedImage3]);
-
-                // const selectedImage3 =
-                //     // base64Image: base64Image,
-                //     file.path; // 로컬 폴더 경로 추가
-                // 업로드된 이미지 추가
             };
             reader3.readAsDataURL(file);
         });
         setSelectedImage3(filesToUpload3);
+        setCommand('true');
     };
     const {
         getRootProps: getRootProps3,
@@ -272,18 +405,19 @@ export const TheoryInfo = () => {
                 const base64Image = reader4.result;
                 const uploadedImage4 = {
                     name: file.name,
-                    size: file.size,
-                    type: file.type,
+                    // size: file.size,
+                    // type: file.type,
                     base64Image: base64Image
+                    // localPath: file.path // 로컬 폴더 경로 추가
                 };
                 // 업로드된 이미지 추가
                 setUploadedImages4((prevImages4) => [...prevImages4, uploadedImage4]);
-                console.log(uploadedImage4);
             };
             reader4.readAsDataURL(file);
         });
+        setSelectedImage4(filesToUpload4);
+        setCommand('true');
     };
-
     const {
         getRootProps: getRootProps4,
         getInputProps: getInputProps4,
@@ -426,13 +560,18 @@ export const TheoryInfo = () => {
         setOpen(false);
         setDataEdit(false);
         form.resetFields();
-        setUploadedImages3([]);
-        setUploadedImages4([]);
+        setItemContainer(null);
+        setSelectedImage3(null);
+        setUploadedImages3(null);
+        setSelectedImage4(null);
+        setUploadedImages4(null);
+        setCommand('false');
     };
 
     // 수정 버튼
     const handleEdit = (EditKey) => {
-        console.log(EditKey);
+        handel_SelectTheory_Api(EditKey);
+        setQuestionIdKey(EditKey);
         setDataEdit(true);
         setOpen(true);
     };
@@ -440,15 +579,7 @@ export const TheoryInfo = () => {
     // 추가 및 수정 처리
     const onAddSubmit = () => {
         if (dataEdit === true) {
-            Modal.success({
-                content: '수정 완료',
-                onOk() {
-                    setOpen(false);
-                    setDataEdit(false);
-                    handleEduType();
-                    form.resetFields();
-                }
-            });
+            handel_UpdateTheory_Api();
         } else {
             handel_InsertTheory_Api();
         }
@@ -464,19 +595,15 @@ export const TheoryInfo = () => {
             confirm({
                 title: '선택한 항목을 삭제하시겠습니까?',
                 icon: <ExclamationCircleFilled />,
-                content: selectedRowKeys + ' 항목의 데이터',
+                // content: selectedRowKeys + ' 항목의 데이터',
                 okText: '예',
                 okType: 'danger',
                 cancelText: '아니오',
                 onOk() {
-                    Modal.success({
-                        content: '삭제완료'
-                    });
+                    handel_DeleteTheory_Api(selectedRowKeys);
                 },
                 onCancel() {
-                    Modal.error({
-                        content: '삭제취소'
-                    });
+                    setSelectedRowKeys(null);
                 }
             });
         }
@@ -488,6 +615,12 @@ export const TheoryInfo = () => {
         setLoading_L(true); // 대분류 로딩
         handle_L_TheoryGroup_Api(); // 대분류 Api
     }, []);
+
+    useEffect(() => {
+        handle_L_TheoryGroup_Api(); // 대분류 Api
+        handle_M_TheoryGroup_Api(itemContainer?.lageGroupCd); // 대분류 Api
+        handle_S_TheoryGroup_Api(itemContainer?.middleGroupCd); // 대분류 Api
+    }, [questionIdKey]);
 
     return (
         <>
@@ -591,11 +724,15 @@ export const TheoryInfo = () => {
                                             <Select
                                                 name="questionType"
                                                 style={{ width: '540px' }}
-                                                defaultValue={{
-                                                    value: 0,
-                                                    label: '# 문제 타입 선택'
-                                                }}
+                                                // defaultValue={{
+                                                //     value: '',
+                                                //     label: '# 문제 타입 선택'
+                                                // }}
                                                 options={[
+                                                    {
+                                                        value: '',
+                                                        label: '# 문제 타입 선택'
+                                                    },
                                                     {
                                                         value: 'A',
                                                         label: '사지선다형'
@@ -620,7 +757,12 @@ export const TheoryInfo = () => {
                                                     setUploadedImages3([]);
                                                     setUploadedImages4([]);
                                                 }}
-                                                value={questionType}
+                                                value={
+                                                    itemContainer?.questionType === null || itemContainer?.questionType === undefined
+                                                        ? questionType
+                                                        : itemContainer?.questionType
+                                                }
+                                                disabled={dataEdit}
                                             />
                                         </Col>
                                     </Row>
@@ -820,7 +962,7 @@ export const TheoryInfo = () => {
                                 </Form.Item>
                             </Col>
                         </Row>
-                        {questionType === 'A' ? (
+                        {questionType === 'A' || itemContainer?.questionType === 'A' ? (
                             <>
                                 <Divider style={{ margin: '10px 0' }} />
                                 <Card bordered style={{ height: '110px' }}>
@@ -1041,7 +1183,7 @@ export const TheoryInfo = () => {
                                     </Row>
                                 </Card>
                             </>
-                        ) : questionType === 'B' ? ( //질문 : Quest_answer2, 정답 : Quest_answer2_1 ~ Quest_answer2_4
+                        ) : questionType === 'B' || itemContainer?.questionType === 'B' ? ( //질문 : Quest_answer2, 정답 : Quest_answer2_1 ~ Quest_answer2_4
                             <>
                                 <Divider style={{ margin: '10px 0' }} />
                                 <Card bordered style={{ height: '110px' }}>
@@ -1119,7 +1261,7 @@ export const TheoryInfo = () => {
                                     </Row>
                                 </Card>
                             </>
-                        ) : questionType === 'C' ? ( //질문 : Quest_quest3, 정답 : Quest_answer3
+                        ) : questionType === 'C' || itemContainer?.questionType === 'C' ? ( //질문 : Quest_quest3, 정답 : Quest_answer3
                             <>
                                 <Divider style={{ margin: '10px 0' }} />
                                 <Card bordered style={{ height: '110px' }}>
@@ -1162,14 +1304,14 @@ export const TheoryInfo = () => {
                                             }}
                                             size="large"
                                         >
-                                            {uploadedImages3.length === 0 ? (
+                                            {uploadedImages3?.length === 0 ? (
                                                 <Space wrap>
                                                     <Button
                                                         {...getRootProps3()}
                                                         className={`dropzone ${isDragActive3 ? 'active' : ''}`}
                                                         style={{ padding: '10px 160px', height: '150px' }}
                                                         size="large"
-                                                        disabled={uploadedImages3.length >= 4}
+                                                        disabled={uploadedImages3?.length >= 4}
                                                     >
                                                         <p>
                                                             <UploadOutlined />
@@ -1198,7 +1340,7 @@ export const TheoryInfo = () => {
                                                         </Row>
                                                         <Space style={{ textAlign: 'center' }}>
                                                             <Row gutter={24}>
-                                                                {uploadedImages3.map((image3, index) => (
+                                                                {uploadedImages3?.map((image3, index) => (
                                                                     <Col key={index} span={12}>
                                                                         <Form.Item
                                                                             name={`formChk${index + 1}`}
@@ -1256,7 +1398,7 @@ export const TheoryInfo = () => {
                                     </Col>
                                 </Row>
                             </>
-                        ) : questionType === 'D' ? ( //질문 : Quest_quest4, 정답 : Quest_answer4
+                        ) : questionType === 'D' || itemContainer?.questionType === 'D' ? ( //질문 : Quest_quest4, 정답 : Quest_answer4
                             <>
                                 <Divider style={{ margin: '10px 0' }} />
                                 <Card bordered style={{ height: '110px' }}>
@@ -1281,6 +1423,7 @@ export const TheoryInfo = () => {
                                                             onChange={(e) =>
                                                                 setItemContainer({ ...itemContainer, question: e.target.value })
                                                             }
+                                                            style={{ width: '490px' }}
                                                         />
                                                     </Col>
                                                 </Row>
@@ -1298,14 +1441,14 @@ export const TheoryInfo = () => {
                                             }}
                                             size="large"
                                         >
-                                            {uploadedImages4.length === 0 ? (
+                                            {uploadedImages4?.length === 0 ? (
                                                 <Space wrap>
                                                     <Button
                                                         {...getRootProps4()}
                                                         className={`dropzone ${isDragActive4 ? 'active' : ''}`}
-                                                        style={{ padding: '10px 85px', height: '150px' }}
+                                                        style={{ padding: '10px 160px', height: '150px' }}
                                                         size="large"
-                                                        disabled={uploadedImages4.length >= 1}
+                                                        disabled={uploadedImages4?.length >= 1}
                                                     >
                                                         <p>
                                                             <UploadOutlined />
@@ -1329,7 +1472,7 @@ export const TheoryInfo = () => {
                                                     <Card bordered>
                                                         <Space style={{ textAlign: 'center', marginBottom: '20px' }}>
                                                             <Row gutter={24}>
-                                                                {uploadedImages4.map((image4, index) => (
+                                                                {uploadedImages4?.map((image4, index) => (
                                                                     <React.Fragment key={index}>
                                                                         <Col span={12}>
                                                                             <img
@@ -1373,19 +1516,19 @@ export const TheoryInfo = () => {
                                                         </Row>
                                                         <Row gutter={24}>
                                                             <Col span={24}>
-                                                                <Form.Item
-                                                                    name="formChk1"
-                                                                    label="1"
-                                                                    rules={[
-                                                                        {
-                                                                            required: true,
-                                                                            message: 'Please Enter Question.'
-                                                                        }
-                                                                    ]}
-                                                                >
-                                                                    <Row>
-                                                                        <Col>
-                                                                            <Space>
+                                                                <Space>
+                                                                    <Form.Item
+                                                                        name="formChk1"
+                                                                        label="1"
+                                                                        rules={[
+                                                                            {
+                                                                                required: true,
+                                                                                message: 'Please Enter Question.'
+                                                                            }
+                                                                        ]}
+                                                                    >
+                                                                        <Row>
+                                                                            <Col>
                                                                                 <Input
                                                                                     name="choice1"
                                                                                     placeholder="# 1"
@@ -1395,43 +1538,51 @@ export const TheoryInfo = () => {
                                                                                             choice1: e.target.value
                                                                                         });
                                                                                     }}
-                                                                                    style={{ width: '250px' }}
+                                                                                    style={{ width: '404px' }}
                                                                                     value={itemContainer?.choice1}
                                                                                 />
-                                                                                <Radio.Button
-                                                                                    name="actionDiv"
-                                                                                    checked={itemContainer?.actionDiv === '1'}
-                                                                                    onChange={() =>
-                                                                                        setItemContainer({
-                                                                                            ...itemContainer,
-                                                                                            actionDiv: '1'
-                                                                                        })
-                                                                                    }
-                                                                                    // style={{ width: '100px' }}
-                                                                                >
-                                                                                    정답 선택
-                                                                                </Radio.Button>
-                                                                            </Space>
-                                                                        </Col>
-                                                                    </Row>
-                                                                </Form.Item>
+                                                                            </Col>
+                                                                        </Row>
+                                                                    </Form.Item>
+                                                                    <Radio.Button
+                                                                        name="actionDiv"
+                                                                        checked={itemContainer?.actionDiv === '1'}
+                                                                        onChange={() =>
+                                                                            setItemContainer({
+                                                                                ...itemContainer,
+                                                                                actionDiv: '1'
+                                                                            })
+                                                                        }
+                                                                        style={
+                                                                            itemContainer?.actionDiv === '1'
+                                                                                ? {
+                                                                                      marginTop: '7px',
+                                                                                      backgroundColor: '#1890ff',
+                                                                                      color: '#ffffff'
+                                                                                  }
+                                                                                : { marginTop: '7px' }
+                                                                        }
+                                                                    >
+                                                                        정답 선택
+                                                                    </Radio.Button>
+                                                                </Space>
                                                             </Col>
                                                         </Row>
                                                         <Row gutter={24}>
                                                             <Col span={24}>
-                                                                <Form.Item
-                                                                    name="formChk2"
-                                                                    label="2"
-                                                                    rules={[
-                                                                        {
-                                                                            required: true,
-                                                                            message: 'Please Enter Question.'
-                                                                        }
-                                                                    ]}
-                                                                >
-                                                                    <Row>
-                                                                        <Col>
-                                                                            <Space>
+                                                                <Space>
+                                                                    <Form.Item
+                                                                        name="formChk2"
+                                                                        label="2"
+                                                                        rules={[
+                                                                            {
+                                                                                required: true,
+                                                                                message: 'Please Enter Question.'
+                                                                            }
+                                                                        ]}
+                                                                    >
+                                                                        <Row>
+                                                                            <Col>
                                                                                 <Input
                                                                                     name="choice2"
                                                                                     placeholder="# 2"
@@ -1442,42 +1593,50 @@ export const TheoryInfo = () => {
                                                                                             choice2: e.target.value
                                                                                         });
                                                                                     }}
-                                                                                    style={{ width: '250px' }}
+                                                                                    style={{ width: '404px' }}
                                                                                 />
-                                                                                <Radio.Button
-                                                                                    name="actionDiv"
-                                                                                    checked={itemContainer?.actionDiv === '2'}
-                                                                                    onChange={() =>
-                                                                                        setItemContainer({
-                                                                                            ...itemContainer,
-                                                                                            actionDiv: '2'
-                                                                                        })
-                                                                                    }
-                                                                                    // style={{ width: '100px' }}
-                                                                                >
-                                                                                    정답 선택
-                                                                                </Radio.Button>
-                                                                            </Space>
-                                                                        </Col>
-                                                                    </Row>
-                                                                </Form.Item>
+                                                                            </Col>
+                                                                        </Row>
+                                                                    </Form.Item>
+                                                                    <Radio.Button
+                                                                        name="actionDiv"
+                                                                        checked={itemContainer?.actionDiv === '2'}
+                                                                        onChange={() =>
+                                                                            setItemContainer({
+                                                                                ...itemContainer,
+                                                                                actionDiv: '2'
+                                                                            })
+                                                                        }
+                                                                        style={
+                                                                            itemContainer?.actionDiv === '2'
+                                                                                ? {
+                                                                                      marginTop: '7px',
+                                                                                      backgroundColor: '#1890ff',
+                                                                                      color: '#ffffff'
+                                                                                  }
+                                                                                : { marginTop: '7px' }
+                                                                        }
+                                                                    >
+                                                                        정답 선택
+                                                                    </Radio.Button>
+                                                                </Space>
                                                             </Col>
                                                         </Row>
                                                         <Row gutter={24}>
                                                             <Col span={24}>
-                                                                <Form.Item
-                                                                    name="formChk2"
-                                                                    label="3"
-                                                                    rules={[
-                                                                        {
-                                                                            required: true,
-                                                                            message: 'Please Enter Question.'
-                                                                        }
-                                                                    ]}
-                                                                >
-                                                                    <Row>
-                                                                        <Col>
-                                                                            <Space>
+                                                                <Space>
+                                                                    <Form.Item
+                                                                        name="formChk2"
+                                                                        label="3"
+                                                                        rules={[
+                                                                            {
+                                                                                required: true,
+                                                                                message: 'Please Enter Question.'
+                                                                            }
+                                                                        ]}
+                                                                    >
+                                                                        <Row>
+                                                                            <Col>
                                                                                 <Input
                                                                                     name="choice3"
                                                                                     placeholder="# 3"
@@ -1488,71 +1647,87 @@ export const TheoryInfo = () => {
                                                                                             choice3: e.target.value
                                                                                         });
                                                                                     }}
-                                                                                    style={{ width: '250px' }}
+                                                                                    style={{ width: '404px' }}
                                                                                 />
-                                                                                <Radio.Button
-                                                                                    name="actionDiv"
-                                                                                    checked={itemContainer?.actionDiv === '3'}
-                                                                                    onChange={() =>
-                                                                                        setItemContainer({
-                                                                                            ...itemContainer,
-                                                                                            actionDiv: '3'
-                                                                                        })
-                                                                                    }
-                                                                                    // style={{ width: '100px' }}
-                                                                                >
-                                                                                    정답 선택
-                                                                                </Radio.Button>
-                                                                            </Space>
-                                                                        </Col>
-                                                                    </Row>
-                                                                </Form.Item>
+                                                                            </Col>
+                                                                        </Row>
+                                                                    </Form.Item>
+                                                                    <Radio.Button
+                                                                        name="actionDiv"
+                                                                        checked={itemContainer?.actionDiv === '3'}
+                                                                        onChange={() =>
+                                                                            setItemContainer({
+                                                                                ...itemContainer,
+                                                                                actionDiv: '3'
+                                                                            })
+                                                                        }
+                                                                        style={
+                                                                            itemContainer?.actionDiv === '3'
+                                                                                ? {
+                                                                                      marginTop: '7px',
+                                                                                      backgroundColor: '#1890ff',
+                                                                                      color: '#ffffff'
+                                                                                  }
+                                                                                : { marginTop: '7px' }
+                                                                        }
+                                                                    >
+                                                                        정답 선택
+                                                                    </Radio.Button>
+                                                                </Space>
                                                             </Col>
                                                         </Row>
                                                         <Row gutter={24}>
                                                             <Col span={24}>
-                                                                <Form.Item
-                                                                    name="formChk2"
-                                                                    label="4"
-                                                                    rules={[
-                                                                        {
-                                                                            required: true,
-                                                                            message: 'Please Enter Question.'
-                                                                        }
-                                                                    ]}
-                                                                >
-                                                                    <Row>
-                                                                        <Col>
-                                                                            <Space>
+                                                                <Space>
+                                                                    <Form.Item
+                                                                        name="formChk2"
+                                                                        label="4"
+                                                                        rules={[
+                                                                            {
+                                                                                required: true,
+                                                                                message: 'Please Enter Question.'
+                                                                            }
+                                                                        ]}
+                                                                    >
+                                                                        <Row>
+                                                                            <Col>
                                                                                 <Input
                                                                                     name="choice4"
                                                                                     placeholder="# 4"
-                                                                                    value={itemContainer.choice4}
+                                                                                    value={itemContainer?.choice4}
                                                                                     onChange={(e) => {
                                                                                         setItemContainer({
                                                                                             ...itemContainer,
                                                                                             choice4: e.target.value
                                                                                         });
                                                                                     }}
-                                                                                    style={{ width: '250px' }}
+                                                                                    style={{ width: '404px' }}
                                                                                 />
-                                                                                <Radio.Button
-                                                                                    name="actionDiv"
-                                                                                    checked={itemContainer?.actionDiv === '4'}
-                                                                                    onChange={() =>
-                                                                                        setItemContainer({
-                                                                                            ...itemContainer,
-                                                                                            actionDiv: '4'
-                                                                                        })
-                                                                                    }
-                                                                                    // style={{ width: '100px' }}
-                                                                                >
-                                                                                    정답 선택
-                                                                                </Radio.Button>
-                                                                            </Space>
-                                                                        </Col>
-                                                                    </Row>
-                                                                </Form.Item>
+                                                                            </Col>
+                                                                        </Row>
+                                                                    </Form.Item>
+                                                                    <Radio.Button
+                                                                        name="actionDiv"
+                                                                        checked={itemContainer?.actionDiv === '4'}
+                                                                        onChange={() =>
+                                                                            setItemContainer({
+                                                                                ...itemContainer,
+                                                                                actionDiv: '4'
+                                                                            })
+                                                                        }
+                                                                        style={
+                                                                            itemContainer?.actionDiv === '4'
+                                                                                ? {
+                                                                                      marginTop: '7px',
+                                                                                      backgroundColor: '#1890ff',
+                                                                                      color: '#ffffff'
+                                                                                  }
+                                                                                : { marginTop: '7px' }
+                                                                        }
+                                                                    >
+                                                                        정답 선택
+                                                                    </Radio.Button>
+                                                                </Space>
                                                             </Col>
                                                         </Row>
                                                     </Card>
