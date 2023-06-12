@@ -154,7 +154,6 @@ export const TheoryInfo = () => {
         const SelectTheoryresponse = await SelectTheoryApi({
             questionId: questionId
         });
-        console.log('상세:', SelectTheoryresponse?.data?.RET_DATA);
         if (SelectTheoryresponse?.data?.RET_DATA?.questionType === 'C') {
             setUploadedImages3([
                 {
@@ -199,8 +198,6 @@ export const TheoryInfo = () => {
     // 이론 교육 수정 ======================================================
     const [UpdateTheoryApi] = useUpdateTheoryMutation(); // 수정 hooks api호출
     const handel_UpdateTheory_Api = async () => {
-        console.log(command);
-        console.log(itemContainer.questionType);
         let formData = new FormData();
         const params = {
             questionId: questionIdKey,
@@ -220,12 +217,12 @@ export const TheoryInfo = () => {
         };
         formData.append('params', new Blob([JSON.stringify(params)], { type: 'application/json' }));
 
-        if (command === true) {
-            if (questionType == 'C') {
+        if (command === 'true') {
+            if (itemContainer.questionType == 'C') {
                 Object.values(selectedImage3).forEach((images3) => {
                     formData.append('files', images3);
                 });
-            } else if (questionType == 'D') {
+            } else if (itemContainer.questionType == 'D') {
                 Object.values(selectedImage4).forEach((images4) => {
                     formData.append('files', images4);
                 });
