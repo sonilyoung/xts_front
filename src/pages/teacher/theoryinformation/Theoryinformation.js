@@ -6,13 +6,12 @@ import locale from 'antd/es/date-picker/locale/ko_KR';
 const { RangePicker } = DatePicker;
 
 import {
-    useSelectUserListMutation,
-    useSelectUserMutation,
-    useInsertUserMutation,
-    useUpdateUserMutation,
-    useDeleteUserMutation,
-    useSelectUserCheckMutation
-} from '../../../hooks/api/StudentsManagement/StudentsManagement';
+    useSelectTheoryFileListMutation, // 이론교육 조회
+    useSelectTheoryFileMutation, // 이론교육 상세
+    useInsertTheoryFileMutation, // 이론교육 등록
+    useUpdateTheoryFileMutation, // 이론교육 수정
+    useDeleteTheoryFileMutation // 이론교육 삭제
+} from '../../../hooks/api/TeacherManagement/TeacherManagement';
 
 import { PlusOutlined, EditFilled, DeleteFilled, ExclamationCircleFilled } from '@ant-design/icons';
 
@@ -37,13 +36,13 @@ export const Theoryinformation = () => {
     // ===============================
     // Api 호출 Start
     // 조회 ======================================================
-    const [SelectUserListApi] = useSelectUserListMutation(); // 교육생 정보 hooks api호출
-    const [selectUserListData, setSelectUserListData] = useState(); // 교육생 정보 리스트 값
-    const handle_SelectUserList_Api = async () => {
-        const SelectUserListresponse = await SelectUserListApi({});
-        setSelectUserListData(SelectUserListresponse?.data?.RET_DATA);
+    const [SelectTheoryFileListApi] = useSelectTheoryFileListMutation(); // 교육생 정보 hooks api호출
+    const [SelectTheoryFileListData, setSelectUserListData] = useState(); // 교육생 정보 리스트 값
+    const handle_SelectTheoryFileList_Api = async () => {
+        const SelectTheoryFileListresponse = await SelectTheoryFileListApi({});
+        setSelectUserListData(SelectTheoryFileListresponse?.data?.RET_DATA);
         setDataSource([
-            ...SelectUserListresponse?.data?.RET_DATA.map((d, i) => ({
+            ...SelectTheoryFileListresponse?.data?.RET_DATA.map((d, i) => ({
                 key: d.userId,
                 userNo: i + 1,
                 userId: d.userId,
@@ -79,9 +78,9 @@ export const Theoryinformation = () => {
     };
 
     // 등록 ======================================================
-    const [InsertUserApi] = useInsertUserMutation(); // 교육생 정보 hooks api호출
-    const handle_InsertUser_Api = async () => {
-        const InsertUserresponse = await InsertUserApi({
+    const [InsertTheoryFileApi] = useInsertTheoryFileMutation(); // 교육생 정보 hooks api호출
+    const handle_InsertTheoryFile_Api = async () => {
+        const InsertTheoryFileresponse = await InsertTheoryFileApi({
             eduName: itemContainer.eduName, //                      교육과정명
             writeDate: itemContainer.writeDate, //                  입교신청일
             userId: itemContainer.userId, //                        아이디
@@ -123,23 +122,8 @@ export const Theoryinformation = () => {
             careerEndDate2: itemContainer.careerEndDate2,
             careerCompany2: itemContainer.careerCompany2,
             careerPosition2: itemContainer.careerPosition2
-            // career3: itemContainer.career3,
-            // careerStartDate3: itemContainer.careerStartDate3,
-            // careerEndDate3: itemContainer.careerEndDate3,
-            // careerCompany3: itemContainer.careerCompany3,
-            // careerPosition3: itemContainer.careerPosition3,
-            // career4: itemContainer.career4,
-            // careerStartDate4: itemContainer.careerStartDate4,
-            // careerEndDate4: itemContainer.careerEndDate4,
-            // careerCompany4: itemContainer.careerCompany4,
-            // careerPosition4: itemContainer.careerPosition4,
-            // career5: itemContainer.career5,
-            // careerStartDate5: itemContainer.careerStartDate5,
-            // careerEndDate5: itemContainer.careerEndDate5,
-            // careerCompany5: itemContainer.careerCompany5,
-            // careerPosition5: itemContainer.careerPosition5
         });
-        InsertUserresponse?.data?.RET_CODE === '0100'
+        InsertTheoryFileresponse?.data?.RET_CODE === '0100'
             ? Modal.success({
                   content: '등록 완료',
                   onOk() {
@@ -155,35 +139,19 @@ export const Theoryinformation = () => {
               });
     };
 
-    // 아이디 중복 체크 ===========================================
-    const [SelectUserCheckApi] = useSelectUserCheckMutation(); // 상세 hooks api호출
-    const handel_SelectUserCheck_Api = async (userId) => {
-        const SelectUserCheckresponse = await SelectUserCheckApi({
-            userId: userId
-        });
-        SelectUserCheckresponse.data.RET_CODE === '9996'
-            ? (setItemContainer({ ...itemContainer, userId: '' }),
-              setIdChk(false),
-              Modal.success({
-                  content: SelectUserCheckresponse.data.RET_DESC,
-                  onOk() {}
-              }))
-            : setIdChk(true);
-    };
-
     // 상세 ======================================================
-    const [SelectUserApi] = useSelectUserMutation(); // 상세 hooks api호출
-    const handel_SelectUser_Api = async (userId) => {
-        const SelectUserresponse = await SelectUserApi({
+    const [SelectTheoryFileApi] = useSelectTheoryFileMutation(); // 상세 hooks api호출
+    const handel_SelectTheoryFile_Api = async (userId) => {
+        const SelectTheoryFileresponse = await SelectTheoryFileApi({
             userId: userId
         });
-        setItemContainer(SelectUserresponse.data.RET_DATA);
+        setItemContainer(SelectTheoryFileresponse.data.RET_DATA);
     };
 
     // 수정 ======================================================
-    const [UpdateUserApi] = useUpdateUserMutation(); // 수정 hooks api호출
-    const handel_UpdateUser_Api = async () => {
-        const UpdateUserresponse = await UpdateUserApi({
+    const [UpdateTheoryFileApi] = useUpdateTheoryFileMutation(); // 수정 hooks api호출
+    const handel_UpdateTheoryFile_Api = async () => {
+        const UpdateTheoryFileresponse = await UpdateTheoryFileApi({
             useYn: itemContainer.useYn, //                          사용여부
             eduName: itemContainer.eduName, //                      교육과정명
             writeDate: itemContainer.writeDate, //                  입교신청일
@@ -226,32 +194,17 @@ export const Theoryinformation = () => {
             careerEndDate2: itemContainer.careerEndDate2,
             careerCompany2: itemContainer.careerCompany2,
             careerPosition2: itemContainer.careerPosition2
-            // career3: itemContainer.career3,
-            // careerStartDate3: itemContainer.careerStartDate3,
-            // careerEndDate3: itemContainer.careerEndDate3,
-            // careerCompany3: itemContainer.careerCompany3,
-            // careerPosition3: itemContainer.careerPosition3,
-            // career4: itemContainer.career4,
-            // careerStartDate4: itemContainer.careerStartDate4,
-            // careerEndDate4: itemContainer.careerEndDate4,
-            // careerCompany4: itemContainer.careerCompany4,
-            // careerPosition4: itemContainer.careerPosition4,
-            // career5: itemContainer.career5,
-            // careerStartDate5: itemContainer.careerStartDate5,
-            // careerEndDate5: itemContainer.careerEndDate5,
-            // careerCompany5: itemContainer.careerCompany5,
-            // careerPosition5: itemContainer.careerPosition5
         });
         console.log(userId);
-        console.log(UpdateUserresponse);
-        UpdateUserresponse?.data?.RET_CODE === '0100'
+        console.log(UpdateTheoryFileresponse);
+        UpdateTheoryFileresponse?.data?.RET_CODE === '0100'
             ? Modal.success({
                   content: '수정 완료',
                   onOk() {
                       setOpen(false);
                       setDataEdit(false);
                       form.resetFields();
-                      handle_SelectUserList_Api();
+                      handle_InsertTheoryFile_Api();
                   }
               })
             : Modal.success({
@@ -260,16 +213,16 @@ export const Theoryinformation = () => {
               });
     };
     // 삭제 ======================================================
-    const [DeleteUserApi] = useDeleteUserMutation(); // 삭제 hooks api호출
-    const handel_DeleteUser_Api = async (userIdList) => {
-        const DeleteUserresponse = await DeleteUserApi({
+    const [DeleteTheoryFileApi] = useDeleteTheoryFileMutation(); // 삭제 hooks api호출
+    const handel_DeleteTheoryFile_Api = async (userIdList) => {
+        const DeleteTheoryFileresponse = await DeleteTheoryFileApi({
             userIdList: userIdList
         });
-        DeleteUserresponse?.data?.RET_CODE === '0300'
+        DeleteTheoryFileresponse?.data?.RET_CODE === '0300'
             ? Modal.success({
                   content: '삭제 완료',
                   onOk() {
-                      handle_SelectUserList_Api();
+                      handle_InsertTheoryFile_Api();
                   }
               })
             : Modal.success({
@@ -380,7 +333,7 @@ export const Theoryinformation = () => {
 
     // 수정 버튼 클릭
     const handleEdit = (userId) => {
-        handel_SelectUser_Api(userId);
+        handel_SelectTheoryFile_Api(userId);
         setUserId(userId);
         form.resetFields();
         setDataEdit(true);
@@ -406,15 +359,10 @@ export const Theoryinformation = () => {
     // 추가 및 수정 처리
     const onAddSubmit = () => {
         if (dataEdit === true) {
-            handel_UpdateUser_Api();
+            handel_UpdateTheoryFile_Api();
         } else {
-            handle_InsertUser_Api();
+            handle_InsertTheoryFile_Api();
         }
-    };
-
-    // 아이디 중복 체크 버튼 클릭 이벤트
-    const handel_IdChk = (user_id) => {
-        handel_SelectUserCheck_Api(user_id);
     };
 
     // 삭제
@@ -432,7 +380,7 @@ export const Theoryinformation = () => {
                 okType: 'danger',
                 cancelText: '아니오',
                 onOk() {
-                    handel_DeleteUser_Api(selectedRowKeys);
+                    handel_DeleteTheoryFile_Api(selectedRowKeys);
                 },
                 onCancel() {}
             });
@@ -441,7 +389,7 @@ export const Theoryinformation = () => {
 
     useEffect(() => {
         setLoading(true);
-        handle_SelectUserList_Api();
+        handle_SelectTheoryFileList_Api();
     }, []);
 
     return (

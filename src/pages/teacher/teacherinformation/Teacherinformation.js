@@ -6,13 +6,13 @@ import locale from 'antd/es/date-picker/locale/ko_KR';
 const { RangePicker } = DatePicker;
 
 import {
-    useSelectUserListMutation,
-    useSelectUserMutation,
-    useInsertUserMutation,
-    useUpdateUserMutation,
-    useDeleteUserMutation,
-    useSelectUserCheckMutation
-} from '../../../hooks/api/StudentsManagement/StudentsManagement';
+    useSelectTeacherListMutation, // 조회
+    useSelectTeacherMutation, // 상세
+    useInsertTeacherMutation, // 등록
+    useUpdateTeacherMutation, // 수정
+    useDeleteTeacherMutation, // 삭제
+    useSelectTeacherCheckMutation // 아이디 체크
+} from '../../../hooks/api/TeacherManagement/TeacherManagement';
 
 import { PlusOutlined, EditFilled, DeleteFilled, ExclamationCircleFilled } from '@ant-design/icons';
 
@@ -37,13 +37,13 @@ export const Teacherinformation = () => {
     // ===============================
     // Api 호출 Start
     // 조회 ======================================================
-    const [SelectUserListApi] = useSelectUserListMutation(); // 강사 정보 hooks api호출
-    const [selectUserListData, setSelectUserListData] = useState(); // 강사 정보 리스트 값
-    const handle_SelectUserList_Api = async () => {
-        const SelectUserListresponse = await SelectUserListApi({});
-        setSelectUserListData(SelectUserListresponse?.data?.RET_DATA);
+    const [SelectTeacherListApi] = useSelectTeacherListMutation(); // 강사 정보 hooks api호출
+    const [selectTeacherListData, setSelectTeacherListData] = useState(); // 강사 정보 리스트 값
+    const handle_SelectTeacherList_Api = async () => {
+        const SelectTeacherListresponse = await SelectTeacherListApi({});
+        setSelectTeacherListData(SelectTeacherListresponse?.data?.RET_DATA);
         setDataSource([
-            ...SelectUserListresponse?.data?.RET_DATA.map((d, i) => ({
+            ...SelectTeacherListresponse?.data?.RET_DATA.map((d, i) => ({
                 key: d.userId,
                 userNo: i + 1,
                 userId: d.userId,
@@ -79,9 +79,9 @@ export const Teacherinformation = () => {
     };
 
     // 등록 ======================================================
-    const [InsertUserApi] = useInsertUserMutation(); // 강사 정보 hooks api호출
-    const handle_InsertUser_Api = async () => {
-        const InsertUserresponse = await InsertUserApi({
+    const [InsertTeacherApi] = useInsertTeacherMutation(); // 강사 정보 hooks api호출
+    const handle_InsertTeacher_Api = async () => {
+        const InsertTeacherresponse = await InsertTeacherApi({
             eduName: itemContainer.eduName, //                      교육과정명
             writeDate: itemContainer.writeDate, //                  입교신청일
             userId: itemContainer.userId, //                        아이디
@@ -123,23 +123,8 @@ export const Teacherinformation = () => {
             careerEndDate2: itemContainer.careerEndDate2,
             careerCompany2: itemContainer.careerCompany2,
             careerPosition2: itemContainer.careerPosition2
-            // career3: itemContainer.career3,
-            // careerStartDate3: itemContainer.careerStartDate3,
-            // careerEndDate3: itemContainer.careerEndDate3,
-            // careerCompany3: itemContainer.careerCompany3,
-            // careerPosition3: itemContainer.careerPosition3,
-            // career4: itemContainer.career4,
-            // careerStartDate4: itemContainer.careerStartDate4,
-            // careerEndDate4: itemContainer.careerEndDate4,
-            // careerCompany4: itemContainer.careerCompany4,
-            // careerPosition4: itemContainer.careerPosition4,
-            // career5: itemContainer.career5,
-            // careerStartDate5: itemContainer.careerStartDate5,
-            // careerEndDate5: itemContainer.careerEndDate5,
-            // careerCompany5: itemContainer.careerCompany5,
-            // careerPosition5: itemContainer.careerPosition5
         });
-        InsertUserresponse?.data?.RET_CODE === '0100'
+        InsertTeacherresponse?.data?.RET_CODE === '0100'
             ? Modal.success({
                   content: '등록 완료',
                   onOk() {
@@ -156,34 +141,34 @@ export const Teacherinformation = () => {
     };
 
     // 아이디 중복 체크 ===========================================
-    const [SelectUserCheckApi] = useSelectUserCheckMutation(); // 상세 hooks api호출
-    const handel_SelectUserCheck_Api = async (userId) => {
-        const SelectUserCheckresponse = await SelectUserCheckApi({
+    const [SelectTeacherCheckApi] = useSelectTeacherCheckMutation(); // 상세 hooks api호출
+    const handel_SelectTeacherCheck_Api = async (userId) => {
+        const SelectTeacherCheckresponse = await SelectTeacherCheckApi({
             userId: userId
         });
-        SelectUserCheckresponse.data.RET_CODE === '9996'
+        SelectTeacherCheckresponse.data.RET_CODE === '9996'
             ? (setItemContainer({ ...itemContainer, userId: '' }),
               setIdChk(false),
               Modal.success({
-                  content: SelectUserCheckresponse.data.RET_DESC,
+                  content: SelectTeacherCheckresponse.data.RET_DESC,
                   onOk() {}
               }))
             : setIdChk(true);
     };
 
     // 상세 ======================================================
-    const [SelectUserApi] = useSelectUserMutation(); // 상세 hooks api호출
-    const handel_SelectUser_Api = async (userId) => {
-        const SelectUserresponse = await SelectUserApi({
+    const [SelectTeacherApi] = useSelectTeacherMutation(); // 상세 hooks api호출
+    const handel_SelectTeacher_Api = async (userId) => {
+        const SelectTeacherresponse = await SelectTeacherApi({
             userId: userId
         });
-        setItemContainer(SelectUserresponse.data.RET_DATA);
+        setItemContainer(SelectTeacherresponse.data.RET_DATA);
     };
 
     // 수정 ======================================================
-    const [UpdateUserApi] = useUpdateUserMutation(); // 수정 hooks api호출
-    const handel_UpdateUser_Api = async () => {
-        const UpdateUserresponse = await UpdateUserApi({
+    const [UpdateTeacherApi] = useUpdateTeacherMutation(); // 수정 hooks api호출
+    const handel_UpdateTeacher_Api = async () => {
+        const UpdateTeacherresponse = await UpdateTeacherApi({
             useYn: itemContainer.useYn, //                          사용여부
             eduName: itemContainer.eduName, //                      교육과정명
             writeDate: itemContainer.writeDate, //                  입교신청일
@@ -226,32 +211,17 @@ export const Teacherinformation = () => {
             careerEndDate2: itemContainer.careerEndDate2,
             careerCompany2: itemContainer.careerCompany2,
             careerPosition2: itemContainer.careerPosition2
-            // career3: itemContainer.career3,
-            // careerStartDate3: itemContainer.careerStartDate3,
-            // careerEndDate3: itemContainer.careerEndDate3,
-            // careerCompany3: itemContainer.careerCompany3,
-            // careerPosition3: itemContainer.careerPosition3,
-            // career4: itemContainer.career4,
-            // careerStartDate4: itemContainer.careerStartDate4,
-            // careerEndDate4: itemContainer.careerEndDate4,
-            // careerCompany4: itemContainer.careerCompany4,
-            // careerPosition4: itemContainer.careerPosition4,
-            // career5: itemContainer.career5,
-            // careerStartDate5: itemContainer.careerStartDate5,
-            // careerEndDate5: itemContainer.careerEndDate5,
-            // careerCompany5: itemContainer.careerCompany5,
-            // careerPosition5: itemContainer.careerPosition5
         });
         console.log(userId);
-        console.log(UpdateUserresponse);
-        UpdateUserresponse?.data?.RET_CODE === '0100'
+        console.log(UpdateTeacherresponse);
+        UpdateTeacherresponse?.data?.RET_CODE === '0100'
             ? Modal.success({
                   content: '수정 완료',
                   onOk() {
                       setOpen(false);
                       setDataEdit(false);
                       form.resetFields();
-                      handle_SelectUserList_Api();
+                      handle_SelectTeacherList_Api();
                   }
               })
             : Modal.success({
@@ -260,16 +230,16 @@ export const Teacherinformation = () => {
               });
     };
     // 삭제 ======================================================
-    const [DeleteUserApi] = useDeleteUserMutation(); // 삭제 hooks api호출
-    const handel_DeleteUser_Api = async (userIdList) => {
-        const DeleteUserresponse = await DeleteUserApi({
+    const [DeleteTeacherApi] = useDeleteTeacherMutation(); // 삭제 hooks api호출
+    const handel_DeleteTeacher_Api = async (userIdList) => {
+        const DeleteTeacherresponse = await DeleteTeacherApi({
             userIdList: userIdList
         });
-        DeleteUserresponse?.data?.RET_CODE === '0300'
+        DeleteTeacherresponse?.data?.RET_CODE === '0300'
             ? Modal.success({
                   content: '삭제 완료',
                   onOk() {
-                      handle_SelectUserList_Api();
+                      handle_SelectTeacherList_Api();
                   }
               })
             : Modal.success({
@@ -354,7 +324,7 @@ export const Teacherinformation = () => {
 
     // 수정 버튼 클릭
     const handleEdit = (userId) => {
-        handel_SelectUser_Api(userId);
+        handel_SelectTeacher_Api(userId);
         setUserId(userId);
         form.resetFields();
         setDataEdit(true);
@@ -380,15 +350,15 @@ export const Teacherinformation = () => {
     // 추가 및 수정 처리
     const onAddSubmit = () => {
         if (dataEdit === true) {
-            handel_UpdateUser_Api();
+            handel_UpdateTeacher_Api();
         } else {
-            handle_InsertUser_Api();
+            handle_InsertTeacher_Api();
         }
     };
 
     // 아이디 중복 체크 버튼 클릭 이벤트
     const handel_IdChk = (user_id) => {
-        handel_SelectUserCheck_Api(user_id);
+        handel_SelectTeacherCheck_Api(user_id);
     };
 
     // 삭제
@@ -406,7 +376,7 @@ export const Teacherinformation = () => {
                 okType: 'danger',
                 cancelText: '아니오',
                 onOk() {
-                    handel_DeleteUser_Api(selectedRowKeys);
+                    handel_DeleteTeacher_Api(selectedRowKeys);
                 },
                 onCancel() {}
             });
@@ -415,7 +385,7 @@ export const Teacherinformation = () => {
 
     useEffect(() => {
         setLoading(true);
-        handle_SelectUserList_Api();
+        handle_SelectTeacherList_Api();
     }, []);
 
     return (

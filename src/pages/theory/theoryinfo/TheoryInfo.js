@@ -46,32 +46,16 @@ export const TheoryInfo = () => {
     const [loading_L, setLoading_L] = useState(false);
     const [loading_M, setLoading_M] = useState(false);
     const [loading_S, setLoading_S] = useState(false);
-    const [itemContainer, setItemContainer] = useState({}); // 항목 컨테이너
+    const [itemContainer, setItemContainer] = useState(null); // 항목 컨테이너
 
     const [selectedRowKeys, setSelectedRowKeys] = useState([]); //셀렉트 박스 option Selected 값
     const [open, setOpen] = useState(false);
     const [dataEdit, setDataEdit] = useState(false); // Drawer 수정 우측폼 상태
-    const [questionType, setQuestionType] = useState(''); // 문제 유형
 
-    const [Quest_answer1, setQuest_answer1] = useState(''); // 사지선다형 질문
-    const [Quest_answer1_1, setQuest_answer1_1] = useState(''); // 사지선다형 정답
-    const [Quest_answer1_2, setQuest_answer1_2] = useState(''); // 사지선다형 오답
-    const [Quest_answer1_3, setQuest_answer1_3] = useState(''); // 사지선다형 오답
-    const [Quest_answer1_4, setQuest_answer1_4] = useState(''); // 사지선다형 오답
-
-    const [Quest_answer2, setQuest_answer2] = useState(''); // O/X형 질문
-    const [Quest_answer2_1, setQuest_answer2_1] = useState(''); // O/X형 정답
-
-    const [Quest_answer3, setQuest_answer3] = useState(''); // O/X형 질문
+    const [questionType, setQuestionType] = useState([]); // 문제 타입
     const [uploadedImages3, setUploadedImages3] = useState([]); // 이미지선다형 이미지
-    const [selectedImage3, setSelectedImage3] = useState(null);
-
-    const [Quest_answer4, setQuest_answer4] = useState(''); // 이미지 + 사지선다형 질문
+    const [selectedImage3, setSelectedImage3] = useState([]);
     const [uploadedImages4, setUploadedImages4] = useState([]); // 이미지 + 사지선다형 이미지
-    const [Quest_answer4_1, setQuest_answer4_1] = useState(''); // 이미지 + 사지선다형 정답
-    const [Quest_answer4_2, setQuest_answer4_2] = useState(''); // 이미지 + 사지선다형 오답
-    const [Quest_answer4_3, setQuest_answer4_3] = useState(''); // 이미지 + 사지선다형 오답
-    const [Quest_answer4_4, setQuest_answer4_4] = useState(''); // 이미지 + 사지선다형 오답
 
     // ===============================
     // Api 호출 Start
@@ -109,25 +93,36 @@ export const TheoryInfo = () => {
     // 이론 교육 등록 ======================================================
     const [InsertTheoryApi] = useInsertTheoryMutation(); // 등록 hooks api호출
     const handel_InsertTheory_Api = async () => {
-        const InsertTheoryresponse = await InsertTheoryApi({
-            params: {
-                studyLvl: itemContainer.studyLvl,
-                questionType: itemContainer.questionType,
-                lageGroupCd: itemContainer.lageGroupCd,
-                middleGroupCd: itemContainer.middleGroupCd,
-                smallGroupCd: itemContainer.smallGroupCd,
-                question: itemContainer.question,
-                choice1: itemContainer.choice1,
-                choice2: itemContainer.choice2,
-                choice3: itemContainer.choice3,
-                choice4: itemContainer.choice4,
-                // actionDiv: itemContainer.actionDiv,
-                actionDiv: '1',
-                seYn: itemContainer.seYn
-            }
+        let formData = new FormData();
+        const params = {
+            studyLvl: itemContainer.studyLvl,
+            questionType: questionType,
+            lageGroupCd: itemContainer.lageGroupCd,
+            middleGroupCd: itemContainer.middleGroupCd,
+            smallGroupCd: itemContainer.smallGroupCd,
+            question: itemContainer.question,
+            choice1: itemContainer.choice1,
+            choice2: itemContainer.choice2,
+            choice3: itemContainer.choice3,
+            choice4: itemContainer.choice4,
+            actionDiv: itemContainer.actionDiv,
+            useYn: itemContainer.useYn
+        };
+        formData.append('params', new Blob([JSON.stringify(params)], { type: 'application/json' }));
+
+        // questionType === 'C' || questionType === 'D'
+        //     ? Object.values(selectedImage3).forEach((image) => {
+        //           formData.append('files', image);
+        //       })
+        //     : '';
+        // console.log(formData);
+        const InsertTheoryResponse = await InsertTheoryApi({
+            formData
         });
 
-        InsertTheoryresponse?.data?.RET_CODE === '0100'
+        console.log(InsertTheoryResponse);
+
+        InsertTheoryResponse?.data?.RET_CODE === '0100'
             ? Modal.success({
                   content: '등록 완료',
                   onOk() {
@@ -200,6 +195,7 @@ export const TheoryInfo = () => {
     // 이미지 업로드 Start
     // 이미지선다형 문제
     const handleDrop3 = (acceptedFiles3) => {
+        // console.log('파일객체 :', acceptedFiles3);
         const remainingSlots3 = 4 - uploadedImages3.length;
         const filesToUpload3 = acceptedFiles3.slice(0, remainingSlots3);
         filesToUpload3.forEach((file) => {
@@ -223,14 +219,20 @@ export const TheoryInfo = () => {
                     name: file.name,
                     size: file.size,
                     type: file.type,
-                    base64Image: base64Image
+                    base64Image: base64Image,
+                    localPath: file.path // 로컬 폴더 경로 추가
                 };
                 // 업로드된 이미지 추가
                 setUploadedImages3((prevImages3) => [...prevImages3, uploadedImage3]);
-                console.log(uploadedImage3);
+
+                // const selectedImage3 =
+                //     // base64Image: base64Image,
+                //     file.path; // 로컬 폴더 경로 추가
+                // 업로드된 이미지 추가
             };
             reader3.readAsDataURL(file);
         });
+        setSelectedImage3(filesToUpload3);
     };
     const {
         getRootProps: getRootProps3,
@@ -239,12 +241,6 @@ export const TheoryInfo = () => {
     } = useDropzone({
         onDrop: handleDrop3
     });
-
-    // 이미지 정답 라디오버튼 클릭
-    const handleImageSelect3 = (image) => {
-        console.log(image);
-        setSelectedImage3(image);
-    };
 
     // 이미지 삭제
     const handleImageDelete3 = (index) => {
@@ -303,13 +299,6 @@ export const TheoryInfo = () => {
         setUploadedImages4(updatedImages4);
     };
     // 이미지 업로드 End
-
-    // 제한 시간 Value 설정 Start
-    const Minute_Opt = [];
-    for (let i = 5; i <= 120; i += 5) {
-        Minute_Opt.push({ value: i.toString(), label: i.toString() + '분' });
-    }
-    // 제한 시간 Value 설정 End
 
     const defaultColumns = [
         {
@@ -432,14 +421,13 @@ export const TheoryInfo = () => {
         setDataEdit(false);
     };
 
-    // 추가 취소
+    // 추가, 수정 취소
     const onAddClose = () => {
         setOpen(false);
         setDataEdit(false);
         form.resetFields();
         setUploadedImages3([]);
         setUploadedImages4([]);
-        setQuestionType('');
     };
 
     // 수정 버튼
@@ -503,7 +491,7 @@ export const TheoryInfo = () => {
 
     return (
         <>
-            <MainCard title="정보 관리">
+            <MainCard title="교육 관리">
                 <Typography variant="body1">
                     <Row style={{ marginBottom: 16 }}>
                         <Col span={8}></Col>
@@ -549,7 +537,7 @@ export const TheoryInfo = () => {
                 title={`교육 관리 ${dataEdit === true ? '수정' : '추가'}`}
                 onClose={onAddClose}
                 open={open}
-                width={500}
+                width={650}
                 style={{ top: '60px' }}
                 extra={
                     <>
@@ -585,7 +573,60 @@ export const TheoryInfo = () => {
                 }
             >
                 <MainCard>
-                    <Form layout="vertical" form={form}>
+                    <Form layout="vertical" form={form} autoComplete="off">
+                        <Row gutter={24}>
+                            <Col span={24}>
+                                <Form.Item
+                                    name="form01"
+                                    label="문제 타입"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: '※ 문제 타입 선택'
+                                        }
+                                    ]}
+                                >
+                                    <Row>
+                                        <Col>
+                                            <Select
+                                                name="questionType"
+                                                style={{ width: '540px' }}
+                                                defaultValue={{
+                                                    value: 0,
+                                                    label: '# 문제 타입 선택'
+                                                }}
+                                                options={[
+                                                    {
+                                                        value: 'A',
+                                                        label: '사지선다형'
+                                                    },
+                                                    {
+                                                        value: 'B',
+                                                        label: 'O/X형'
+                                                    },
+                                                    {
+                                                        value: 'C',
+                                                        label: '이미지선다형'
+                                                    },
+                                                    {
+                                                        value: 'D',
+                                                        label: '이미지+사지선다형'
+                                                    }
+                                                ]}
+                                                onChange={(e) => {
+                                                    setQuestionType(e);
+                                                    form.resetFields();
+                                                    setItemContainer(null);
+                                                    setUploadedImages3([]);
+                                                    setUploadedImages4([]);
+                                                }}
+                                                value={questionType}
+                                            />
+                                        </Col>
+                                    </Row>
+                                </Form.Item>
+                            </Col>
+                        </Row>
                         <Row gutter={24}>
                             <Col span={12}>
                                 <Form.Item
@@ -593,206 +634,64 @@ export const TheoryInfo = () => {
                                     label="학습 레벨"
                                     rules={[
                                         {
-                                            required: true
+                                            required: true,
+                                            message: '차수명 입력'
                                         }
                                     ]}
                                 >
-                                    <Select
-                                        name="studyLvl"
-                                        defaultValue={{
-                                            value: 0,
-                                            label: '# 학습 레벨'
-                                        }}
-                                        style={{
-                                            width: '100%'
-                                        }}
-                                        options={[
-                                            {
-                                                value: '1',
-                                                label: 'Level 1'
-                                            },
-                                            {
-                                                value: '2',
-                                                label: 'Level 2'
-                                            },
-                                            {
-                                                value: '3',
-                                                label: 'Level 3'
-                                            },
-                                            {
-                                                value: '4',
-                                                label: 'Level 4'
-                                            },
-                                            {
-                                                value: '5',
-                                                label: 'Level 5'
-                                            }
-                                        ]}
-                                        onChange={(e) => {
-                                            setItemContainer({ ...itemContainer, studyLvl: e });
-                                        }}
-                                        value={itemContainer?.studyLvl}
-                                    />
+                                    <Row>
+                                        <Col>
+                                            <Select
+                                                name="studyLvl"
+                                                defaultValue={{
+                                                    value: 0,
+                                                    label: '# 학습 레벨'
+                                                }}
+                                                style={{
+                                                    width: '260px'
+                                                }}
+                                                options={[
+                                                    {
+                                                        value: '1',
+                                                        label: 'Level 1'
+                                                    },
+                                                    {
+                                                        value: '2',
+                                                        label: 'Level 2'
+                                                    },
+                                                    {
+                                                        value: '3',
+                                                        label: 'Level 3'
+                                                    },
+                                                    {
+                                                        value: '4',
+                                                        label: 'Level 4'
+                                                    },
+                                                    {
+                                                        value: '5',
+                                                        label: 'Level 5'
+                                                    }
+                                                ]}
+                                                onChange={(e) => {
+                                                    setItemContainer({ ...itemContainer, studyLvl: e });
+                                                }}
+                                                value={itemContainer?.studyLvl}
+                                            />
+                                        </Col>
+                                    </Row>
                                 </Form.Item>
                             </Col>
-
                             <Col span={12}>
                                 <Form.Item
-                                    name="form01"
-                                    label="문제 타입"
+                                    name="form05"
+                                    label="사용여부"
                                     rules={[
                                         {
-                                            required: true
-                                        }
-                                    ]}
-                                    initialValue={questionType}
-                                >
-                                    <Select
-                                        name="questionType"
-                                        style={{
-                                            width: '100%'
-                                        }}
-                                        options={[
-                                            {
-                                                value: '',
-                                                label: '# 문제 타입 선택'
-                                            },
-                                            {
-                                                value: 'A',
-                                                label: '사지선다형'
-                                            },
-                                            {
-                                                value: 'B',
-                                                label: 'O/X형'
-                                            },
-                                            {
-                                                value: 'C',
-                                                label: '이미지선다형'
-                                            },
-                                            {
-                                                value: 'D',
-                                                label: '이미지+사지선다형'
-                                            }
-                                        ]}
-                                        onChange={(e) => {
-                                            setItemContainer({ ...itemContainer, questionType: e });
-                                            setUploadedImages3([]);
-                                            setUploadedImages4([]);
-                                            form.setFieldsValue({
-                                                Question_Type: e
-                                            });
-                                        }}
-                                        value={itemContainer?.questionType}
-                                    />
-                                </Form.Item>
-                            </Col>
-                        </Row>
-                        <Divider style={{ margin: '10px 0' }} />
-
-                        <Row gutter={24}>
-                            <Col span={8}>
-                                <Form.Item
-                                    name="form02"
-                                    label="대분류"
-                                    rules={[
-                                        {
-                                            required: true
+                                            required: true,
+                                            message: '※ 사용여부 선택'
                                         }
                                     ]}
                                 >
-                                    <Row>
-                                        <Col>
-                                            <Select
-                                                name="lageGroupCd"
-                                                defaultValue={{
-                                                    value: 0,
-                                                    label: '# 대분류'
-                                                }}
-                                                style={{
-                                                    width: '125px'
-                                                }}
-                                                loading={loading_L}
-                                                options={lTheoryGroupData}
-                                                onChange={(e) => {
-                                                    setItemContainer({ ...itemContainer, lageGroupCd: e });
-                                                    setLoading_M(true);
-                                                    handle_M_TheoryGroup_Api(e);
-                                                }}
-                                                value={itemContainer?.lageGroupCd}
-                                            />
-                                        </Col>
-                                    </Row>
-                                </Form.Item>
-                            </Col>
-                            <Col span={8}>
-                                <Form.Item
-                                    name="form03"
-                                    label="중분류"
-                                    rules={[
-                                        {
-                                            required: true
-                                        }
-                                    ]}
-                                >
-                                    <Row>
-                                        <Col>
-                                            <Select
-                                                name="middleGroupCd"
-                                                defaultValue={{
-                                                    value: 0,
-                                                    label: '# 중분류'
-                                                }}
-                                                style={{
-                                                    width: '125px'
-                                                }}
-                                                loading={loading_M}
-                                                options={mTheoryGroupData}
-                                                onChange={(e) => {
-                                                    setItemContainer({ ...itemContainer, middleGroupCd: e });
-                                                    setLoading_S(true);
-                                                    handle_S_TheoryGroup_Api(e);
-                                                }}
-                                            />
-                                        </Col>
-                                    </Row>
-                                </Form.Item>
-                            </Col>
-                            <Col span={8}>
-                                <Form.Item
-                                    name="form04"
-                                    label="소분류"
-                                    rules={[
-                                        {
-                                            required: true
-                                        }
-                                    ]}
-                                >
-                                    <Row>
-                                        <Col>
-                                            <Select
-                                                name="smallGroupCd"
-                                                defaultValue={{
-                                                    value: 0,
-                                                    label: '# 소분류'
-                                                }}
-                                                style={{
-                                                    width: '125px'
-                                                }}
-                                                loading={loading_S}
-                                                options={sTheoryGroupData}
-                                                onChange={(e) => {
-                                                    setItemContainer({ ...itemContainer, smallGroupCd: e });
-                                                }}
-                                            />
-                                        </Col>
-                                    </Row>
-                                </Form.Item>
-                            </Col>
-                        </Row>
-                        <Divider style={{ margin: '10px 0' }} />
-                        <Row gutter={24}>
-                            <Col span={24}>
-                                <Form.Item name="form05" label="사용여부" initialValue={itemContainer?.useYn}>
                                     <Row>
                                         <Col>
                                             <Radio.Group
@@ -814,11 +713,118 @@ export const TheoryInfo = () => {
                                 </Form.Item>
                             </Col>
                         </Row>
-                        {itemContainer?.questionType === 'A' ? (
+                        <Divider style={{ margin: '10px 0' }} />
+
+                        <Row gutter={24}>
+                            <Col span={8}>
+                                <Form.Item
+                                    name="form02"
+                                    label="대분류"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: '※ 대분류 선택'
+                                        }
+                                    ]}
+                                >
+                                    <Row>
+                                        <Col>
+                                            <Select
+                                                name="lageGroupCd"
+                                                defaultValue={{
+                                                    value: 0,
+                                                    label: '# 대분류'
+                                                }}
+                                                style={{
+                                                    width: '165px'
+                                                }}
+                                                loading={loading_L}
+                                                options={lTheoryGroupData}
+                                                onChange={(e) => {
+                                                    setItemContainer({ ...itemContainer, lageGroupCd: e });
+                                                    setLoading_M(true);
+                                                    handle_M_TheoryGroup_Api(e);
+                                                }}
+                                                value={itemContainer?.lageGroupCd}
+                                            />
+                                        </Col>
+                                    </Row>
+                                </Form.Item>
+                            </Col>
+                            <Col span={8}>
+                                <Form.Item
+                                    name="form03"
+                                    label="중분류"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: '※ 중분류 선택'
+                                        }
+                                    ]}
+                                >
+                                    <Row>
+                                        <Col>
+                                            <Select
+                                                name="middleGroupCd"
+                                                defaultValue={{
+                                                    value: 0,
+                                                    label: '# 중분류'
+                                                }}
+                                                style={{
+                                                    width: '165px'
+                                                }}
+                                                loading={loading_M}
+                                                options={mTheoryGroupData}
+                                                onChange={(e) => {
+                                                    setItemContainer({ ...itemContainer, middleGroupCd: e });
+                                                    setLoading_S(true);
+                                                    handle_S_TheoryGroup_Api(e);
+                                                }}
+                                                value={itemContainer?.middleGroupCd}
+                                            />
+                                        </Col>
+                                    </Row>
+                                </Form.Item>
+                            </Col>
+                            <Col span={8}>
+                                <Form.Item
+                                    name="form04"
+                                    label="소분류"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: '※ 소분류 선택'
+                                        }
+                                    ]}
+                                >
+                                    <Row>
+                                        <Col>
+                                            <Select
+                                                name="smallGroupCd"
+                                                defaultValue={{
+                                                    value: 0,
+                                                    label: '# 소분류'
+                                                }}
+                                                style={{
+                                                    width: '165px'
+                                                }}
+                                                loading={loading_S}
+                                                options={sTheoryGroupData}
+                                                onChange={(e) => {
+                                                    setItemContainer({ ...itemContainer, smallGroupCd: e });
+                                                }}
+                                                value={itemContainer?.smallGroupCd}
+                                            />
+                                        </Col>
+                                    </Row>
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                        {questionType === 'A' ? (
                             <>
                                 <Divider style={{ margin: '10px 0' }} />
                                 <Card bordered style={{ height: '110px' }}>
-                                    <Row>
+                                    <Row gutter={24}>
                                         <Col span={24}>
                                             <Form.Item
                                                 name="formChk0"
@@ -826,16 +832,23 @@ export const TheoryInfo = () => {
                                                 rules={[
                                                     {
                                                         required: true,
-                                                        message: 'Please Enter Question.'
+                                                        message: '※ 질문 입력'
                                                     }
                                                 ]}
                                             >
-                                                <Input
-                                                    name="question"
-                                                    placeholder="# 질문"
-                                                    value={itemContainer?.question}
-                                                    onChange={(e) => setItemContainer({ ...itemContainer, question: e.target.value })}
-                                                />
+                                                <Row>
+                                                    <Col>
+                                                        <Input
+                                                            name="question"
+                                                            style={{ width: '490px' }}
+                                                            placeholder="# 질문"
+                                                            value={itemContainer?.question}
+                                                            onChange={(e) =>
+                                                                setItemContainer({ ...itemContainer, question: e.target.value })
+                                                            }
+                                                        />
+                                                    </Col>
+                                                </Row>
                                             </Form.Item>
                                         </Col>
                                     </Row>
@@ -843,112 +856,192 @@ export const TheoryInfo = () => {
                                 <p style={{ margin: '10px 0' }} />
                                 <Card bordered>
                                     <Row gutter={24}>
-                                        <Col span={12}>
-                                            <Form.Item
-                                                name="formChk1"
-                                                label="정답"
-                                                rules={[
-                                                    {
-                                                        required: true,
-                                                        message: 'Please Enter Question.'
+                                        <Col span={24}>
+                                            <Space>
+                                                <Form.Item
+                                                    name="formChk1"
+                                                    label="1"
+                                                    rules={[
+                                                        {
+                                                            required: true,
+                                                            message: '※ 1번 항목 입력'
+                                                        }
+                                                    ]}
+                                                >
+                                                    <Row>
+                                                        <Col>
+                                                            <Input
+                                                                name="choice1"
+                                                                placeholder="# 1"
+                                                                value={itemContainer?.choice1}
+                                                                onChange={(e) => {
+                                                                    setItemContainer({ ...itemContainer, choice1: e.target.value });
+                                                                }}
+                                                                style={{ width: '404px' }}
+                                                            />
+                                                        </Col>
+                                                    </Row>
+                                                </Form.Item>
+                                                <Radio.Button
+                                                    name="actionDiv"
+                                                    checked={itemContainer?.actionDiv === '1'}
+                                                    onChange={() => setItemContainer({ ...itemContainer, actionDiv: '1' })}
+                                                    style={
+                                                        itemContainer?.actionDiv === '1'
+                                                            ? {
+                                                                  marginTop: '7px',
+                                                                  backgroundColor: '#1890ff',
+                                                                  color: '#ffffff'
+                                                              }
+                                                            : { marginTop: '7px' }
                                                     }
-                                                ]}
-                                            >
-                                                <Row>
-                                                    <Col>
-                                                        <Input
-                                                            name="choice1"
-                                                            placeholder="# 정답"
-                                                            value={itemContainer?.choice1}
-                                                            onChange={(e) => {
-                                                                setItemContainer({ ...itemContainer, choice1: e.target.value });
-                                                            }}
-                                                        />
-                                                    </Col>
-                                                </Row>
-                                            </Form.Item>
-                                        </Col>
-                                        <Col span={12}>
-                                            <Form.Item
-                                                name="formChk2"
-                                                label="오답"
-                                                rules={[
-                                                    {
-                                                        required: true,
-                                                        message: 'Please Enter Question.'
-                                                    }
-                                                ]}
-                                            >
-                                                <Row>
-                                                    <Col>
-                                                        <Input
-                                                            name="choice2"
-                                                            placeholder="# 오답"
-                                                            value={itemContainer?.choice2}
-                                                            onChange={(e) => {
-                                                                setItemContainer({ ...itemContainer, choice2: e.target.value });
-                                                            }}
-                                                        />
-                                                    </Col>
-                                                </Row>
-                                            </Form.Item>
+                                                >
+                                                    정답 선택
+                                                </Radio.Button>
+                                            </Space>
                                         </Col>
                                     </Row>
                                     <Row gutter={24}>
-                                        <Col span={12}>
-                                            <Form.Item
-                                                name="formChk3"
-                                                label="오답"
-                                                rules={[
-                                                    {
-                                                        required: true,
-                                                        message: 'Please Enter Question.'
+                                        <Col span={24}>
+                                            <Space>
+                                                <Form.Item
+                                                    name="formChk2"
+                                                    label="2"
+                                                    rules={[
+                                                        {
+                                                            required: true,
+                                                            message: '※ 2번 항목 입력'
+                                                        }
+                                                    ]}
+                                                >
+                                                    <Row>
+                                                        <Col>
+                                                            <Input
+                                                                name="choice2"
+                                                                placeholder="# 2"
+                                                                value={itemContainer?.choice2}
+                                                                onChange={(e) => {
+                                                                    setItemContainer({ ...itemContainer, choice2: e.target.value });
+                                                                }}
+                                                                style={{ width: '404px' }}
+                                                            />
+                                                        </Col>
+                                                    </Row>
+                                                </Form.Item>
+                                                <Radio.Button
+                                                    name="actionDiv"
+                                                    checked={itemContainer?.actionDiv === '2'}
+                                                    onChange={() => setItemContainer({ ...itemContainer, actionDiv: '2' })}
+                                                    style={
+                                                        itemContainer?.actionDiv === '2'
+                                                            ? {
+                                                                  marginTop: '7px',
+                                                                  backgroundColor: '#1890ff',
+                                                                  color: '#ffffff'
+                                                              }
+                                                            : { marginTop: '7px' }
                                                     }
-                                                ]}
-                                            >
-                                                <Row>
-                                                    <Col>
-                                                        <Input
-                                                            name="choice3"
-                                                            placeholder="# 오답"
-                                                            value={itemContainer?.choice3}
-                                                            onChange={(e) => {
-                                                                setItemContainer({ ...itemContainer, choice3: e.target.value });
-                                                            }}
-                                                        />
-                                                    </Col>
-                                                </Row>
-                                            </Form.Item>
+                                                >
+                                                    정답 선택
+                                                </Radio.Button>
+                                            </Space>
                                         </Col>
-                                        <Col span={12}>
-                                            <Form.Item
-                                                name="formChk4"
-                                                label="오답"
-                                                rules={[
-                                                    {
-                                                        required: true,
-                                                        message: 'Please Enter Question.'
+                                    </Row>
+                                    <Row gutter={24}>
+                                        <Col span={24}>
+                                            <Space>
+                                                <Form.Item
+                                                    name="formChk3"
+                                                    label="3"
+                                                    rules={[
+                                                        {
+                                                            required: true,
+                                                            message: '※ 3번 항목 입력'
+                                                        }
+                                                    ]}
+                                                >
+                                                    <Row>
+                                                        <Col>
+                                                            <Input
+                                                                name="choice3"
+                                                                placeholder="# 3"
+                                                                value={itemContainer?.choice3}
+                                                                onChange={(e) => {
+                                                                    setItemContainer({ ...itemContainer, choice3: e.target.value });
+                                                                }}
+                                                                style={{ width: '404px' }}
+                                                            />
+                                                        </Col>
+                                                    </Row>
+                                                </Form.Item>
+                                                <Radio.Button
+                                                    name="actionDiv"
+                                                    checked={itemContainer?.actionDiv === '3'}
+                                                    onChange={() => setItemContainer({ ...itemContainer, actionDiv: '3' })}
+                                                    style={
+                                                        itemContainer?.actionDiv === '3'
+                                                            ? {
+                                                                  marginTop: '7px',
+                                                                  backgroundColor: '#1890ff',
+                                                                  color: '#ffffff'
+                                                              }
+                                                            : { marginTop: '7px' }
                                                     }
-                                                ]}
-                                            >
-                                                <Row>
-                                                    <Col>
-                                                        <Input
-                                                            name="choice4"
-                                                            placeholder="# 오답"
-                                                            value={itemContainer?.choice4}
-                                                            onChange={(e) => {
-                                                                setItemContainer({ ...itemContainer, choice4: e.target.value });
-                                                            }}
-                                                        />
-                                                    </Col>
-                                                </Row>
-                                            </Form.Item>
+                                                >
+                                                    정답 선택
+                                                </Radio.Button>
+                                            </Space>
+                                        </Col>
+                                    </Row>
+                                    <Row gutter={24}>
+                                        <Col span={24}>
+                                            <Space>
+                                                <Form.Item
+                                                    name="formChk4"
+                                                    label="4"
+                                                    rules={[
+                                                        {
+                                                            required: true,
+                                                            message: '※ 4번 항목 입력'
+                                                        }
+                                                    ]}
+                                                >
+                                                    <Row>
+                                                        <Col>
+                                                            <Input
+                                                                name="choice4"
+                                                                placeholder="# 4"
+                                                                value={itemContainer?.choice4}
+                                                                onChange={(e) => {
+                                                                    setItemContainer({ ...itemContainer, choice4: e.target.value });
+                                                                }}
+                                                                style={{ width: '404px' }}
+                                                            />
+                                                        </Col>
+                                                    </Row>
+                                                </Form.Item>
+                                                <Radio.Button
+                                                    name="actionDiv"
+                                                    checked={itemContainer?.actionDiv === '4'}
+                                                    onChange={() => setItemContainer({ ...itemContainer, actionDiv: '4' })}
+                                                    style={
+                                                        itemContainer?.actionDiv === '4'
+                                                            ? {
+                                                                  marginTop: '7px',
+                                                                  backgroundColor: '#1890ff',
+                                                                  color: '#ffffff'
+                                                              }
+                                                            : { marginTop: '7px' }
+                                                    }
+                                                >
+                                                    정답 선택
+                                                </Radio.Button>
+                                            </Space>
                                         </Col>
                                     </Row>
                                 </Card>
                             </>
-                        ) : itemContainer?.questionType === 'B' ? ( //질문 : Quest_answer2, 정답 : Quest_answer2_1 ~ Quest_answer2_4
+                        ) : questionType === 'B' ? ( //질문 : Quest_answer2, 정답 : Quest_answer2_1 ~ Quest_answer2_4
                             <>
                                 <Divider style={{ margin: '10px 0' }} />
                                 <Card bordered style={{ height: '110px' }}>
@@ -964,12 +1057,19 @@ export const TheoryInfo = () => {
                                                     }
                                                 ]}
                                             >
-                                                <Input
-                                                    name="question"
-                                                    placeholder="# 질문"
-                                                    value={Quest_answer2}
-                                                    onChange={(e) => setQuest_answer2(e.target.value)}
-                                                />
+                                                <Row>
+                                                    <Col>
+                                                        <Input
+                                                            name="question"
+                                                            placeholder="# 질문"
+                                                            style={{ width: '510px' }}
+                                                            value={itemContainer?.question}
+                                                            onChange={(e) =>
+                                                                setItemContainer({ ...itemContainer, question: e.target.value })
+                                                            }
+                                                        />
+                                                    </Col>
+                                                </Row>
                                             </Form.Item>
                                         </Col>
                                     </Row>
@@ -977,7 +1077,7 @@ export const TheoryInfo = () => {
                                 <p style={{ margin: '10px 0' }} />
                                 <Card bordered>
                                     <Row gutter={24}>
-                                        <Col span={12}>
+                                        <Col span={24}>
                                             <Form.Item
                                                 name="formChk1"
                                                 label="정답"
@@ -986,28 +1086,40 @@ export const TheoryInfo = () => {
                                                         required: true
                                                     }
                                                 ]}
-                                                initialValue={Quest_answer2_1}
                                             >
-                                                <Radio.Group
-                                                    name="choice1"
-                                                    onChange={(e) => setQuest_answer2_1(e.target.value)}
-                                                    buttonStyle="solid"
-                                                    defaultValue={Quest_answer2_1}
-                                                >
-                                                    <Radio.Button value="O">
-                                                        <span style={{ padding: '0 15px' }}>O</span>
-                                                    </Radio.Button>
-                                                    <span style={{ padding: '0 10px' }}></span>
-                                                    <Radio.Button value="X">
-                                                        <span style={{ padding: '0 15px' }}>X</span>
-                                                    </Radio.Button>
-                                                </Radio.Group>
+                                                <Row>
+                                                    <Col>
+                                                        <Radio.Group
+                                                            name="choice1"
+                                                            onChange={(e) =>
+                                                                setItemContainer({ ...itemContainer, actionDiv: e.target.value })
+                                                            }
+                                                            buttonStyle="solid"
+                                                            value={itemContainer?.actionDiv}
+                                                            style={{ textAlign: 'center' }}
+                                                        >
+                                                            <Radio.Button
+                                                                value="O"
+                                                                style={{ height: '80px', lineHeight: '80px', padding: '0 40px' }}
+                                                            >
+                                                                <span style={{ fontSize: '16px' }}>O</span>
+                                                            </Radio.Button>
+                                                            <span style={{ padding: '0 10px' }}></span>
+                                                            <Radio.Button
+                                                                value="X"
+                                                                style={{ height: '80px', lineHeight: '80px', padding: '0 40px' }}
+                                                            >
+                                                                <span style={{ fontSize: '16px' }}>X</span>
+                                                            </Radio.Button>
+                                                        </Radio.Group>
+                                                    </Col>
+                                                </Row>
                                             </Form.Item>
                                         </Col>
                                     </Row>
                                 </Card>
                             </>
-                        ) : itemContainer?.questionType === 'C' ? ( //질문 : Quest_quest3, 정답 : Quest_answer3
+                        ) : questionType === 'C' ? ( //질문 : Quest_quest3, 정답 : Quest_answer3
                             <>
                                 <Divider style={{ margin: '10px 0' }} />
                                 <Card bordered style={{ height: '110px' }}>
@@ -1023,12 +1135,19 @@ export const TheoryInfo = () => {
                                                     }
                                                 ]}
                                             >
-                                                <Input
-                                                    name="question"
-                                                    placeholder="# 질문"
-                                                    value={Quest_answer3}
-                                                    onChange={(e) => setQuest_answer3(e.target.value)}
-                                                />
+                                                <Row>
+                                                    <Col>
+                                                        <Input
+                                                            name="question"
+                                                            placeholder="# 질문"
+                                                            style={{ width: '510px' }}
+                                                            value={itemContainer?.question}
+                                                            onChange={(e) =>
+                                                                setItemContainer({ ...itemContainer, question: e.target.value })
+                                                            }
+                                                        />
+                                                    </Col>
+                                                </Row>
                                             </Form.Item>
                                         </Col>
                                     </Row>
@@ -1048,14 +1167,14 @@ export const TheoryInfo = () => {
                                                     <Button
                                                         {...getRootProps3()}
                                                         className={`dropzone ${isDragActive3 ? 'active' : ''}`}
-                                                        style={{ padding: '10px 85px', height: '150px' }}
+                                                        style={{ padding: '10px 160px', height: '150px' }}
                                                         size="large"
                                                         disabled={uploadedImages3.length >= 4}
                                                     >
                                                         <p>
                                                             <UploadOutlined />
                                                         </p>
-                                                        <input {...getInputProps3()} />
+                                                        <input {...getInputProps3()} type="file" />
                                                         {isDragActive3 ? (
                                                             <p>이미지를 여기에 놓아주세요...</p>
                                                         ) : (
@@ -1081,31 +1200,45 @@ export const TheoryInfo = () => {
                                                             <Row gutter={24}>
                                                                 {uploadedImages3.map((image3, index) => (
                                                                     <Col key={index} span={12}>
-                                                                        <Button
-                                                                            name="Quest_answer3"
-                                                                            type="danger"
-                                                                            icon={<DeleteOutlined />}
-                                                                            onClick={() => handleImageDelete3(index)}
-                                                                            style={{ marginBottom: '6px' }}
-                                                                        >
-                                                                            {image3.name}
-                                                                        </Button>
-                                                                        <img
-                                                                            src={image3.base64Image}
-                                                                            alt={image3.name}
-                                                                            style={{ width: '120px' }}
-                                                                        />
                                                                         <Form.Item
                                                                             name={`formChk${index + 1}`}
                                                                             style={{ marginTop: '6px' }}
                                                                         >
                                                                             <Row>
                                                                                 <Col>
+                                                                                    <Button
+                                                                                        name="Quest_answer3"
+                                                                                        type="danger"
+                                                                                        icon={<DeleteOutlined />}
+                                                                                        onClick={() => handleImageDelete3(index)}
+                                                                                        style={{ marginBottom: '6px' }}
+                                                                                    >
+                                                                                        {image3.name}
+                                                                                    </Button>
+                                                                                    <img
+                                                                                        src={image3.base64Image}
+                                                                                        alt={image3.name}
+                                                                                        style={{ width: '120px' }}
+                                                                                    />
                                                                                     <Radio.Button
                                                                                         name={`choice${index + 1}`}
-                                                                                        checked={selectedImage3 === index}
-                                                                                        onChange={() => handleImageSelect3(index)}
-                                                                                        style={{ width: '120px' }}
+                                                                                        onChange={() =>
+                                                                                            setItemContainer({
+                                                                                                ...itemContainer,
+                                                                                                actionDiv: index + 1
+                                                                                            })
+                                                                                        }
+                                                                                        style={
+                                                                                            itemContainer?.actionDiv === index + 1
+                                                                                                ? {
+                                                                                                      width: '120px',
+                                                                                                      top: '10px',
+                                                                                                      backgroundColor: '#1890ff',
+                                                                                                      color: '#ffffff'
+                                                                                                  }
+                                                                                                : { width: '120px', top: '10px' }
+                                                                                        }
+                                                                                        value={itemContainer?.actionDiv}
                                                                                     >
                                                                                         정답 선택
                                                                                     </Radio.Button>
@@ -1123,7 +1256,7 @@ export const TheoryInfo = () => {
                                     </Col>
                                 </Row>
                             </>
-                        ) : itemContainer?.questionType === 'D' ? ( //질문 : Quest_quest4, 정답 : Quest_answer4
+                        ) : questionType === 'D' ? ( //질문 : Quest_quest4, 정답 : Quest_answer4
                             <>
                                 <Divider style={{ margin: '10px 0' }} />
                                 <Card bordered style={{ height: '110px' }}>
@@ -1139,12 +1272,18 @@ export const TheoryInfo = () => {
                                                     }
                                                 ]}
                                             >
-                                                <Input
-                                                    name="question"
-                                                    placeholder="# 질문"
-                                                    value={Quest_answer4}
-                                                    onChange={(e) => setQuest_answer4(e.target.value)}
-                                                />
+                                                <Row>
+                                                    <Col>
+                                                        <Input
+                                                            name="question"
+                                                            placeholder="# 질문"
+                                                            value={itemContainer?.question}
+                                                            onChange={(e) =>
+                                                                setItemContainer({ ...itemContainer, question: e.target.value })
+                                                            }
+                                                        />
+                                                    </Col>
+                                                </Row>
                                             </Form.Item>
                                         </Col>
                                     </Row>
@@ -1207,15 +1346,19 @@ export const TheoryInfo = () => {
                                                                             }}
                                                                         >
                                                                             <Form.Item name={`imageanswer${index + 1}`}>
-                                                                                <Button
-                                                                                    type="danger"
-                                                                                    icon={<DeleteOutlined />}
-                                                                                    onClick={() => handleImageDelete4(index)}
-                                                                                    alt="삭제"
-                                                                                    title="삭제"
-                                                                                >
-                                                                                    {image4.name}
-                                                                                </Button>
+                                                                                <Row>
+                                                                                    <Col>
+                                                                                        <Button
+                                                                                            type="danger"
+                                                                                            icon={<DeleteOutlined />}
+                                                                                            onClick={() => handleImageDelete4(index)}
+                                                                                            alt="삭제"
+                                                                                            title="삭제"
+                                                                                        >
+                                                                                            {image4.name}
+                                                                                        </Button>
+                                                                                    </Col>
+                                                                                </Row>
                                                                             </Form.Item>
                                                                         </Col>
                                                                     </React.Fragment>
@@ -1240,22 +1383,37 @@ export const TheoryInfo = () => {
                                                                         }
                                                                     ]}
                                                                 >
-                                                                    <Space>
-                                                                        <Input
-                                                                            name="choice1"
-                                                                            placeholder="# 1"
-                                                                            value={Quest_answer4_1}
-                                                                            onChange={(e) => setQuest_answer4_1(e.target.value)}
-                                                                        />
-                                                                        <Radio.Button
-                                                                            name="actionDiv"
-                                                                            // checked={actionDiv === index}
-                                                                            // onChange={() => setActionDiv(index)}
-                                                                            // style={{ width: '100px' }}
-                                                                        >
-                                                                            정답 선택
-                                                                        </Radio.Button>
-                                                                    </Space>
+                                                                    <Row>
+                                                                        <Col>
+                                                                            <Space>
+                                                                                <Input
+                                                                                    name="choice1"
+                                                                                    placeholder="# 1"
+                                                                                    onChange={(e) => {
+                                                                                        setItemContainer({
+                                                                                            ...itemContainer,
+                                                                                            choice1: e.target.value
+                                                                                        });
+                                                                                    }}
+                                                                                    style={{ width: '250px' }}
+                                                                                    value={itemContainer?.choice1}
+                                                                                />
+                                                                                <Radio.Button
+                                                                                    name="actionDiv"
+                                                                                    checked={itemContainer?.actionDiv === '1'}
+                                                                                    onChange={() =>
+                                                                                        setItemContainer({
+                                                                                            ...itemContainer,
+                                                                                            actionDiv: '1'
+                                                                                        })
+                                                                                    }
+                                                                                    // style={{ width: '100px' }}
+                                                                                >
+                                                                                    정답 선택
+                                                                                </Radio.Button>
+                                                                            </Space>
+                                                                        </Col>
+                                                                    </Row>
                                                                 </Form.Item>
                                                             </Col>
                                                         </Row>
@@ -1271,22 +1429,37 @@ export const TheoryInfo = () => {
                                                                         }
                                                                     ]}
                                                                 >
-                                                                    <Space>
-                                                                        <Input
-                                                                            name="choice2"
-                                                                            placeholder="# 2"
-                                                                            value={Quest_answer4_2}
-                                                                            onChange={(e) => setQuest_answer4_2(e.target.value)}
-                                                                        />
-                                                                        <Radio.Button
-                                                                            name="actionDiv"
-                                                                            // checked={actionDiv === index}
-                                                                            // onChange={() => setActionDiv(index)}
-                                                                            // style={{ width: '100px' }}
-                                                                        >
-                                                                            정답 선택
-                                                                        </Radio.Button>
-                                                                    </Space>
+                                                                    <Row>
+                                                                        <Col>
+                                                                            <Space>
+                                                                                <Input
+                                                                                    name="choice2"
+                                                                                    placeholder="# 2"
+                                                                                    value={itemContainer?.choice2}
+                                                                                    onChange={(e) => {
+                                                                                        setItemContainer({
+                                                                                            ...itemContainer,
+                                                                                            choice2: e.target.value
+                                                                                        });
+                                                                                    }}
+                                                                                    style={{ width: '250px' }}
+                                                                                />
+                                                                                <Radio.Button
+                                                                                    name="actionDiv"
+                                                                                    checked={itemContainer?.actionDiv === '2'}
+                                                                                    onChange={() =>
+                                                                                        setItemContainer({
+                                                                                            ...itemContainer,
+                                                                                            actionDiv: '2'
+                                                                                        })
+                                                                                    }
+                                                                                    // style={{ width: '100px' }}
+                                                                                >
+                                                                                    정답 선택
+                                                                                </Radio.Button>
+                                                                            </Space>
+                                                                        </Col>
+                                                                    </Row>
                                                                 </Form.Item>
                                                             </Col>
                                                         </Row>
@@ -1302,22 +1475,37 @@ export const TheoryInfo = () => {
                                                                         }
                                                                     ]}
                                                                 >
-                                                                    <Space>
-                                                                        <Input
-                                                                            name="choice3"
-                                                                            placeholder="# 3"
-                                                                            value={Quest_answer4_3}
-                                                                            onChange={(e) => setQuest_answer4_3(e.target.value)}
-                                                                        />
-                                                                        <Radio.Button
-                                                                            name="actionDiv"
-                                                                            // checked={actionDiv === index}
-                                                                            // onChange={() => setActionDiv(index)}
-                                                                            // style={{ width: '100px' }}
-                                                                        >
-                                                                            정답 선택
-                                                                        </Radio.Button>
-                                                                    </Space>
+                                                                    <Row>
+                                                                        <Col>
+                                                                            <Space>
+                                                                                <Input
+                                                                                    name="choice3"
+                                                                                    placeholder="# 3"
+                                                                                    value={itemContainer?.choice3}
+                                                                                    onChange={(e) => {
+                                                                                        setItemContainer({
+                                                                                            ...itemContainer,
+                                                                                            choice3: e.target.value
+                                                                                        });
+                                                                                    }}
+                                                                                    style={{ width: '250px' }}
+                                                                                />
+                                                                                <Radio.Button
+                                                                                    name="actionDiv"
+                                                                                    checked={itemContainer?.actionDiv === '3'}
+                                                                                    onChange={() =>
+                                                                                        setItemContainer({
+                                                                                            ...itemContainer,
+                                                                                            actionDiv: '3'
+                                                                                        })
+                                                                                    }
+                                                                                    // style={{ width: '100px' }}
+                                                                                >
+                                                                                    정답 선택
+                                                                                </Radio.Button>
+                                                                            </Space>
+                                                                        </Col>
+                                                                    </Row>
                                                                 </Form.Item>
                                                             </Col>
                                                         </Row>
@@ -1333,22 +1521,37 @@ export const TheoryInfo = () => {
                                                                         }
                                                                     ]}
                                                                 >
-                                                                    <Space>
-                                                                        <Input
-                                                                            name="choice4"
-                                                                            placeholder="# 4"
-                                                                            value={Quest_answer4_4}
-                                                                            onChange={(e) => setQuest_answer4_4(e.target.value)}
-                                                                        />
-                                                                        <Radio.Button
-                                                                            name="actionDiv"
-                                                                            // checked={actionDiv === index}
-                                                                            // onChange={() => setActionDiv(index)}
-                                                                            // style={{ width: '100px' }}
-                                                                        >
-                                                                            정답 선택
-                                                                        </Radio.Button>
-                                                                    </Space>
+                                                                    <Row>
+                                                                        <Col>
+                                                                            <Space>
+                                                                                <Input
+                                                                                    name="choice4"
+                                                                                    placeholder="# 4"
+                                                                                    value={itemContainer.choice4}
+                                                                                    onChange={(e) => {
+                                                                                        setItemContainer({
+                                                                                            ...itemContainer,
+                                                                                            choice4: e.target.value
+                                                                                        });
+                                                                                    }}
+                                                                                    style={{ width: '250px' }}
+                                                                                />
+                                                                                <Radio.Button
+                                                                                    name="actionDiv"
+                                                                                    checked={itemContainer?.actionDiv === '4'}
+                                                                                    onChange={() =>
+                                                                                        setItemContainer({
+                                                                                            ...itemContainer,
+                                                                                            actionDiv: '4'
+                                                                                        })
+                                                                                    }
+                                                                                    // style={{ width: '100px' }}
+                                                                                >
+                                                                                    정답 선택
+                                                                                </Radio.Button>
+                                                                            </Space>
+                                                                        </Col>
+                                                                    </Row>
                                                                 </Form.Item>
                                                             </Col>
                                                         </Row>
