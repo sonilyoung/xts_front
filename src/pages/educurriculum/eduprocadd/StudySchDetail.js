@@ -53,7 +53,7 @@ export const StudySchDetail = (props) => {
                     <Row gutter={24} style={{ marginBottom: 14 }}>
                         <Col span={24} style={{ textAlign: 'center' }}>
                             <Tag color="#108ee9" style={{ width: '100%', padding: '11px 0', borderRadius: '5px', fontSize: '14px' }}>
-                                {`[${selectBaselineEduDateListData[0].procYear}년] ${selectBaselineEduDateListData[0].procNm} - ${selectBaselineEduDateListData[0].procSeq}차`}
+                                {`[${selectBaselineEduDateListData[0]?.procYear}년] ${selectBaselineEduDateListData[0]?.procNm} - ${selectBaselineEduDateListData[0]?.procSeq}차`}
                             </Tag>
                         </Col>
                     </Row>
