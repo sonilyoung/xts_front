@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
 import { Typography } from '@mui/material';
-import { Table, Tag, Tooltip, Button } from 'antd';
+import { Table, Tag, Tooltip, Button, Descriptions, Modal, Progress } from 'antd';
 
 import { useSelectUserListMutation } from '../../../hooks/api/StudentsManagement/StudentsManagement';
 
@@ -9,12 +9,15 @@ import { FileProtectOutlined } from '@ant-design/icons';
 
 // project import
 import MainCard from 'components/MainCard';
+import { Space } from '../../../../node_modules/antd/lib/index';
 
 export const Teacherstudent = () => {
+    const { confirm } = Modal;
     const [dataSource, setDataSource] = useState([]); // Table 데이터 값
     const [loading, setLoading] = useState(false);
 
     const [selectedRowKeys, setSelectedRowKeys] = useState([]); //셀렉트 박스 option Selected 값
+    const [evalOpen, setEvalOpen] = useState(false);
 
     // ===============================
     // Api 호출 Start
@@ -72,6 +75,7 @@ export const Teacherstudent = () => {
             align: 'center'
         },
         {
+            width: '170px',
             title: '교육생 ID',
             dataIndex: 'userId',
             sorter: (a, b) => a.userId.length - b.userId.length,
@@ -79,6 +83,7 @@ export const Teacherstudent = () => {
             align: 'center'
         },
         {
+            width: '170px',
             title: '교육생 명',
             dataIndex: 'userNm',
             sorter: (a, b) => a.userNm.length - b.userNm.length,
@@ -86,31 +91,50 @@ export const Teacherstudent = () => {
             align: 'center'
         },
         {
+            width: '180px',
             title: '기관',
             dataIndex: 'company',
             align: 'center'
         },
+        // {
+        //     width: '110px',
+        //     title: '부서',
+        //     dataIndex: 'dept',
+        //     align: 'center'
+        // },
+        // {
+        //     width: '110px',
+        //     title: '직위',
+        //     dataIndex: 'position',
+        //     align: 'center'
+        // },
         {
-            width: '110px',
-            title: '부서',
-            dataIndex: 'dept',
-            align: 'center'
-        },
-        {
-            width: '110px',
-            title: '직위',
-            dataIndex: 'position',
-            align: 'center'
-        },
-        {
+            width: '170px',
             title: '교육 구분',
             dataIndex: 'eduName',
             align: 'center'
         },
         {
-            title: '입교 신청일',
+            width: '100px',
+            title: '평가 가중치',
             dataIndex: 'writeDate',
-            align: 'center'
+            align: 'center',
+            render: (_, { userId }) => (
+                <>
+                    <Space>
+                        <Tooltip title="XBT" color="#108ee9">
+                            <Button
+                                type="primary"
+                                style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                icon={<FileProtectOutlined />}
+                                onClick={() => setEvalOpen(true)}
+                            >
+                                66점
+                            </Button>
+                        </Tooltip>
+                    </Space>
+                </>
+            )
         },
         {
             width: '85px',
@@ -132,21 +156,10 @@ export const Teacherstudent = () => {
             )
         },
         {
+            width: '140px',
             title: '학격여부',
             align: 'center',
-            render: (_, { userId }) => (
-                <>
-                    <Tooltip title="학격여부" color="#108ee9">
-                        <Button
-                            type="primary"
-                            style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
-                            icon={<FileProtectOutlined />}
-                        >
-                            학격여부
-                        </Button>
-                    </Tooltip>
-                </>
-            )
+            render: (_, { useYn }) => <>{useYn === 'Y' ? '합격' : '불합격'}</>
         },
         {
             width: '110px',
@@ -155,6 +168,11 @@ export const Teacherstudent = () => {
             align: 'center'
         }
     ];
+
+    // Modal 닫기
+    const handleCancel = () => {
+        setEvalOpen(false);
+    };
 
     const onChange = (pagination, filters, sorter, extra) => {
         console.log('params', pagination, filters, sorter, extra);
@@ -192,6 +210,82 @@ export const Teacherstudent = () => {
                     />
                 </Typography>
             </MainCard>
+
+            {/* 평가, 가중치 점수 - XBT평가, 이론평가, 실습평가 */}
+            <Modal
+                open={evalOpen}
+                closable={false}
+                width={600}
+                style={{
+                    left: 130,
+                    zIndex: 999
+                }}
+                footer={[
+                    <Button
+                        type="primary"
+                        onClick={handleCancel}
+                        style={{ width: '100px', borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                    >
+                        Close
+                    </Button>
+                ]}
+            >
+                <Descriptions title="※ XBT 평가" layout="vertical" bordered column={5}>
+                    <Descriptions.Item style={{ textAlign: 'center' }} label="평가명">
+                        XBT 평가
+                    </Descriptions.Item>
+                    <Descriptions.Item style={{ textAlign: 'center' }} label="정답">
+                        3
+                    </Descriptions.Item>
+                    <Descriptions.Item style={{ textAlign: 'center' }} label="오답">
+                        2
+                    </Descriptions.Item>
+                    <Descriptions.Item style={{ textAlign: 'center' }} label="평점">
+                        30
+                    </Descriptions.Item>
+                    <Descriptions.Item style={{ textAlign: 'center' }} label="가중치">
+                        20
+                    </Descriptions.Item>
+                </Descriptions>
+                <br />
+                <br />
+                <Descriptions title="※ 이론 평가" layout="vertical" bordered column={5}>
+                    <Descriptions.Item style={{ textAlign: 'center' }} label="평가명">
+                        이론 평가
+                    </Descriptions.Item>
+                    <Descriptions.Item style={{ textAlign: 'center' }} label="정답">
+                        35
+                    </Descriptions.Item>
+                    <Descriptions.Item style={{ textAlign: 'center' }} label="오답">
+                        10
+                    </Descriptions.Item>
+                    <Descriptions.Item style={{ textAlign: 'center' }} label="평점">
+                        77
+                    </Descriptions.Item>
+                    <Descriptions.Item style={{ textAlign: 'center' }} label="가중치">
+                        20
+                    </Descriptions.Item>
+                </Descriptions>
+                <br />
+                <br />
+                <Descriptions title="※ 실습 평가" layout="vertical" bordered column={5}>
+                    <Descriptions.Item style={{ textAlign: 'center' }} label="평가명">
+                        실습 평가
+                    </Descriptions.Item>
+                    <Descriptions.Item style={{ textAlign: 'center' }} label="정답">
+                        8
+                    </Descriptions.Item>
+                    <Descriptions.Item style={{ textAlign: 'center' }} label="오답">
+                        2
+                    </Descriptions.Item>
+                    <Descriptions.Item style={{ textAlign: 'center' }} label="평점">
+                        80
+                    </Descriptions.Item>
+                    <Descriptions.Item style={{ textAlign: 'center' }} label="가중치">
+                        26
+                    </Descriptions.Item>
+                </Descriptions>
+            </Modal>
         </>
     );
 };

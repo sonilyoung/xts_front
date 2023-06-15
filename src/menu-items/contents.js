@@ -132,8 +132,8 @@ export const theoryinformation = {
     children: [
         {
             id: '/teacher/theoryinformation',
-            title: '강사 관리 > 이론 관리',
-            subtitle: '이론 관리',
+            title: '강사 관리 > 이론강의 정보조회',
+            subtitle: '이론강의 정보조회',
             type: 'item',
             url: '/teacher/theoryinformation',
             icon: icons.ProjectOutlined,
