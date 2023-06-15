@@ -266,10 +266,10 @@ export const EduProcAdd = () => {
         const SelectBaselineresponse = await SelectBaselineApi({
             procCd: procCd
         });
-        setItemContainer(SelectBaselineresponse.data.RET_DATA);
-        setScheduleList(SelectBaselineresponse.data.RET_DATA.scheduleList);
-        setMenuList(SelectBaselineresponse.data.RET_DATA.menuList);
-        setStuList(SelectBaselineresponse.data.RET_DATA.userList);
+        setItemContainer(SelectBaselineresponse?.data?.RET_DATA);
+        setScheduleList(SelectBaselineresponse?.data?.RET_DATA?.scheduleList);
+        setMenuList(SelectBaselineresponse?.data?.RET_DATA?.menuList);
+        setStuList(SelectBaselineresponse?.data?.RET_DATA?.userList);
     };
     // 수정 ======================================================
     //useUpdateBaselineMutation // 차수 관리 수정
@@ -801,11 +801,11 @@ export const EduProcAdd = () => {
                             <Col span={12}>
                                 <Form.Item
                                     name="form06"
-                                    label="이론 가중치"
+                                    label="이론평가 가중치(%)"
                                     rules={[
                                         {
                                             required: true,
-                                            message: '※ 이론 가중치 선택'
+                                            message: '※ 이론평가 가중치 선택'
                                         }
                                     ]}
                                 >
@@ -823,7 +823,7 @@ export const EduProcAdd = () => {
                                                     itemContainer?.theoryTotalScore === null
                                                         ? {
                                                               value: 0,
-                                                              label: '# 이론 가중치'
+                                                              label: '# 이론평가 가중치(%)'
                                                           }
                                                         : itemContainer?.theoryTotalScore
                                                 }
@@ -838,11 +838,11 @@ export const EduProcAdd = () => {
                             <Col span={12}>
                                 <Form.Item
                                     name="form07"
-                                    label="실기 가중치"
+                                    label="실기평가 가중치(%)"
                                     rules={[
                                         {
                                             required: true,
-                                            message: '※ 실기 가중치 선택'
+                                            message: '※ 실기평가 가중치 선택'
                                         }
                                     ]}
                                 >
@@ -851,7 +851,7 @@ export const EduProcAdd = () => {
                                             <Select
                                                 name="practiceTotalScore"
                                                 style={{
-                                                    width: '210px'
+                                                    width: '190px'
                                                 }}
                                                 options={Scoreoptions}
                                                 onChange={(e) => setItemContainer({ ...itemContainer, practiceTotalScore: e })}
@@ -860,11 +860,12 @@ export const EduProcAdd = () => {
                                                     itemContainer?.practiceTotalScore === null
                                                         ? {
                                                               value: 0,
-                                                              label: '# 이론 가중치'
+                                                              label: '# 실기평가 가중치(%)'
                                                           }
                                                         : itemContainer?.practiceTotalScore
                                                 }
-                                            />
+                                            />{' '}
+                                            %
                                         </Col>
                                     </Row>
                                 </Form.Item>
@@ -872,11 +873,11 @@ export const EduProcAdd = () => {
                             <Col span={12}>
                                 <Form.Item
                                     name="form08"
-                                    label="평가 가중치"
+                                    label="XBT 평가 가중치(%)"
                                     rules={[
                                         {
                                             required: true,
-                                            message: '※ 평가 가중치 선택'
+                                            message: '※ XBT 평가 가중치 선택'
                                         }
                                     ]}
                                 >
@@ -885,7 +886,7 @@ export const EduProcAdd = () => {
                                             <Select
                                                 name="evaluationTotalScore"
                                                 style={{
-                                                    width: '210px'
+                                                    width: '190px'
                                                 }}
                                                 options={Scoreoptions}
                                                 onChange={(e) => setItemContainer({ ...itemContainer, evaluationTotalScore: e })}
@@ -894,11 +895,12 @@ export const EduProcAdd = () => {
                                                     itemContainer?.evaluationTotalScore === null
                                                         ? {
                                                               value: 0,
-                                                              label: '# 평가 가중치'
+                                                              label: '# XBT 평가 가중치(%)'
                                                           }
                                                         : itemContainer?.evaluationTotalScore
                                                 }
-                                            />
+                                            />{' '}
+                                            %
                                         </Col>
                                     </Row>
                                 </Form.Item>
@@ -960,8 +962,8 @@ export const EduProcAdd = () => {
                     EduStartDate={itemContainer?.eduStartDate}
                     EduEndDate={itemContainer?.eduEndDate}
                     StudySet={handel_Study_Set}
-                    SetScheduleList={scheduleList}
-                    SetMenuList={menuList}
+                    SetScheduleList={scheduleList === null || scheduleList === undefined ? '' : scheduleList}
+                    SetMenuList={menuList === null || menuList === undefined ? '' : menuList}
                 />
             </Modal>
             {/* 학습일자 설정 Modal End */}
