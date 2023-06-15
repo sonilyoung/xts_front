@@ -1,7 +1,9 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
-import { Typography } from '@mui/material';
-import { Table, Tag, Tooltip, Button, Descriptions, Modal, Progress } from 'antd';
+// import { Typography } from '@mui/material';
+import { Typography, Table, Tag, Tooltip, Button, Descriptions, Modal, Input, Divider } from 'antd';
+
+const { Title } = Typography;
 
 import { useSelectUserListMutation } from '../../../hooks/api/StudentsManagement/StudentsManagement';
 
@@ -215,7 +217,7 @@ export const Teacherstudent = () => {
             <Modal
                 open={evalOpen}
                 closable={false}
-                width={600}
+                width={1100}
                 style={{
                     left: 130,
                     zIndex: 999
@@ -230,61 +232,130 @@ export const Teacherstudent = () => {
                     </Button>
                 ]}
             >
-                <Descriptions title="※ XBT 평가" layout="vertical" bordered column={5}>
-                    <Descriptions.Item style={{ textAlign: 'center' }} label="평가명">
-                        XBT 평가
-                    </Descriptions.Item>
-                    <Descriptions.Item style={{ textAlign: 'center' }} label="정답">
-                        3
-                    </Descriptions.Item>
-                    <Descriptions.Item style={{ textAlign: 'center' }} label="오답">
-                        2
-                    </Descriptions.Item>
-                    <Descriptions.Item style={{ textAlign: 'center' }} label="평점">
-                        30
-                    </Descriptions.Item>
-                    <Descriptions.Item style={{ textAlign: 'center' }} label="가중치">
-                        20
-                    </Descriptions.Item>
-                </Descriptions>
+                <Space>
+                    <Descriptions title="※ XBT 평가" layout="vertical" bordered column={5}>
+                        <Descriptions.Item style={{ textAlign: 'center', width: '190px' }} label="평가명">
+                            XBT 평가
+                        </Descriptions.Item>
+                        <Descriptions.Item style={{ textAlign: 'center' }} label="문항수">
+                            10
+                        </Descriptions.Item>
+                        <Descriptions.Item style={{ textAlign: 'center' }} label="정답">
+                            8
+                        </Descriptions.Item>
+                        <Descriptions.Item style={{ textAlign: 'center' }} label="오답">
+                            2
+                        </Descriptions.Item>
+                        <Descriptions.Item style={{ textAlign: 'center' }} label="평점">
+                            80
+                        </Descriptions.Item>
+                    </Descriptions>
+                    <Title level={1} style={{ marginTop: '65px', marginLeft: '30px' }}>
+                        X
+                    </Title>
+                    <Descriptions layout="vertical" bordered style={{ marginTop: '45px', marginLeft: '30px' }}>
+                        <Descriptions.Item style={{ textAlign: 'center' }} label="XBT 평가 가중치(%) ">
+                            30%
+                        </Descriptions.Item>
+                    </Descriptions>
+                    <Title level={1} style={{ marginTop: '65px', marginLeft: '30px' }}>
+                        =
+                    </Title>
+                    <Descriptions layout="vertical" bordered style={{ marginTop: '45px', marginLeft: '30px' }}>
+                        <Descriptions.Item style={{ textAlign: 'center' }} label="XBT 평가 최종 점수">
+                            32
+                        </Descriptions.Item>
+                    </Descriptions>
+                </Space>
                 <br />
                 <br />
-                <Descriptions title="※ 이론 평가" layout="vertical" bordered column={5}>
-                    <Descriptions.Item style={{ textAlign: 'center' }} label="평가명">
-                        이론 평가
-                    </Descriptions.Item>
-                    <Descriptions.Item style={{ textAlign: 'center' }} label="정답">
-                        35
-                    </Descriptions.Item>
-                    <Descriptions.Item style={{ textAlign: 'center' }} label="오답">
-                        10
-                    </Descriptions.Item>
-                    <Descriptions.Item style={{ textAlign: 'center' }} label="평점">
-                        77
-                    </Descriptions.Item>
-                    <Descriptions.Item style={{ textAlign: 'center' }} label="가중치">
-                        20
-                    </Descriptions.Item>
-                </Descriptions>
+                <br />
+                <Space>
+                    <Descriptions title="※ 이론 평가" layout="vertical" bordered column={5}>
+                        <Descriptions.Item style={{ textAlign: 'center', width: '190px' }} label="평가명">
+                            이론 평가
+                        </Descriptions.Item>
+                        <Descriptions.Item style={{ textAlign: 'center' }} label="문항수">
+                            45
+                        </Descriptions.Item>
+                        <Descriptions.Item style={{ textAlign: 'center' }} label="정답">
+                            35
+                        </Descriptions.Item>
+                        <Descriptions.Item style={{ textAlign: 'center' }} label="오답">
+                            10
+                        </Descriptions.Item>
+                        <Descriptions.Item style={{ textAlign: 'center' }} label="평점">
+                            78
+                        </Descriptions.Item>
+                    </Descriptions>
+                    <Title level={1} style={{ marginTop: '65px', marginLeft: '30px' }}>
+                        X
+                    </Title>
+                    <Descriptions layout="vertical" bordered style={{ marginTop: '45px', marginLeft: '30px' }}>
+                        <Descriptions.Item style={{ textAlign: 'center' }} label="이론 평가 가중치(%) ">
+                            40%
+                        </Descriptions.Item>
+                    </Descriptions>
+                    <Title level={1} style={{ marginTop: '65px', marginLeft: '30px' }}>
+                        =
+                    </Title>
+                    <Descriptions layout="vertical" bordered style={{ marginTop: '45px', marginLeft: '30px' }}>
+                        <Descriptions.Item style={{ textAlign: 'center' }} label="XBT 평가 최종 점수">
+                            31
+                        </Descriptions.Item>
+                    </Descriptions>
+                </Space>
                 <br />
                 <br />
-                <Descriptions title="※ 실습 평가" layout="vertical" bordered column={5}>
-                    <Descriptions.Item style={{ textAlign: 'center' }} label="평가명">
-                        실습 평가
-                    </Descriptions.Item>
-                    <Descriptions.Item style={{ textAlign: 'center' }} label="정답">
-                        8
-                    </Descriptions.Item>
-                    <Descriptions.Item style={{ textAlign: 'center' }} label="오답">
-                        2
-                    </Descriptions.Item>
-                    <Descriptions.Item style={{ textAlign: 'center' }} label="평점">
-                        80
-                    </Descriptions.Item>
-                    <Descriptions.Item style={{ textAlign: 'center' }} label="가중치">
-                        26
-                    </Descriptions.Item>
-                </Descriptions>
+                <br />
+                <Space>
+                    <Descriptions title="※ 실습 평가" layout="vertical" bordered column={3}>
+                        <Descriptions.Item style={{ textAlign: 'center', width: '190px' }} label="평가명">
+                            실습 평가
+                        </Descriptions.Item>
+                        <Descriptions.Item style={{ textAlign: 'center' }} label="점수">
+                            <Input
+                                name="choice"
+                                placeholder="※ 실습 평가 점수"
+                                // value={itemContainer?.choice4}
+                                // onChange={(e) => {
+                                //     setItemContainer({
+                                //         ...itemContainer,
+                                //         choice4: e.target.value
+                                //     });
+                                // }}
+                                style={{ width: '145px' }}
+                            />
+                        </Descriptions.Item>
+                        <Descriptions.Item style={{ textAlign: 'center' }} label="저장">
+                            <Tooltip title="저장" placement="bottom" color="#108ee9">
+                                <Button
+                                    // onClick={onAddSubmit}
+                                    style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                    type="primary"
+                                >
+                                    저장
+                                </Button>
+                            </Tooltip>
+                        </Descriptions.Item>
+                    </Descriptions>
+                    <Title level={1} style={{ marginTop: '65px', marginLeft: '30px' }}>
+                        X
+                    </Title>
+                    <Descriptions layout="vertical" bordered style={{ marginTop: '45px', marginLeft: '30px' }}>
+                        <Descriptions.Item style={{ textAlign: 'center' }} label="실습 평가 가중치(%) ">
+                            30%
+                        </Descriptions.Item>
+                    </Descriptions>
+                    <Title level={1} style={{ marginTop: '65px', marginLeft: '30px' }}>
+                        =
+                    </Title>
+                    <Descriptions layout="vertical" bordered style={{ marginTop: '45px', marginLeft: '30px' }}>
+                        <Descriptions.Item style={{ textAlign: 'center' }} label="XBT 평가 최종 점수">
+                            -
+                        </Descriptions.Item>
+                    </Descriptions>
+                </Space>
             </Modal>
         </>
     );
