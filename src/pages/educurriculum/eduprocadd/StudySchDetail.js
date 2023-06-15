@@ -88,7 +88,7 @@ export const StudySchDetail = (props) => {
                                         <Tooltip title="교육일정이 완료 되었습니다.">
                                             <Tag
                                                 icon={<CheckOutlined />}
-                                                onClick={() => eduComplete('Day 1')}
+                                                // onClick={() => eduComplete('Day 1')}
                                                 color="#2db7f5"
                                                 style={{ padding: '10px 10px', borderRadius: '5px' }}
                                             >
