@@ -12,17 +12,23 @@ export const StudentSch = (props) => {
     const [loading, setLoading] = useState(false);
     const [selectedRowKeys, setSelectedRowKeys] = useState(props.StudentValue); //셀렉트 박스 option Selected 값
 
-    // console.log(props.StudentValue);
+    console.log(props.StudentValue);
     // ===============================
     // Api 호출 Start
     // 조회 ======================================================
     const [SelectUserListPopApi] = useSelectUserListPopMutation(); // 교육생 정보 hooks api호출
     const [selectUserListPopData, setSelectUserListPopData] = useState(); // 교육생 정보 리스트 값
-    const handle_SelectUserListPop_Api = async (procCd) => {
+    const handle_SelectUserListPop_Api = async (procCdValue) => {
+        const params = {};
+        if (procCdValue) {
+            params.procCd = procCdValue;
+        }
         const SelectUserListPopresponse = await SelectUserListPopApi({
-            procCd: procCd
+            params
         });
-        // console.log(SelectUserListPopresponse?.data?.RET_DATA);
+
+        console.log(procCdValue);
+        console.log(SelectUserListPopresponse?.data?.RET_DATA);
         setSelectUserListPopData(SelectUserListPopresponse?.data?.RET_DATA);
         setDataSource([
             ...SelectUserListPopresponse?.data?.RET_DATA.map((d, i) => ({

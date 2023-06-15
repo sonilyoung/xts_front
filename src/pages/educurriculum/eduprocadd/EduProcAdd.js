@@ -10,11 +10,8 @@ import {
     useSelectBaselineListMutation, // 학습과정 관리 조회
     useSelectBaselineMutation, // 학습과정 관리 상세
     useInsertBaselineMutation, // 학습과정 관리 등록
-    useSelectModuleMenuListMutation, // 학습과정 관리 등록-(커리큘럼 메뉴목록 조회)
     useUpdateBaselineMutation, // 학습과정 관리 수정
-    useDeleteBaselineMutation, // 학습과정 관리 삭제
-    useDeleteBaselineStudentMutation, // 학습과정 관리 커리큘럼 교육생 삭제
-    useSelectBaselineEduDateListMutation // 학습과정 관리 학습일정 상세정보 팝업
+    useDeleteBaselineMutation // 학습과정 관리 삭제
 } from '../../../hooks/api/CurriculumManagement/CurriculumManagement';
 
 import dayjs from 'dayjs';
@@ -23,7 +20,6 @@ import localeData from 'dayjs/plugin/localeData';
 
 // project import
 import MainCard from 'components/MainCard';
-import moment from 'moment';
 
 import { StudentSch } from 'pages/educurriculum/eduprocadd/StudentSch'; // 교육생 검색
 import { StudentDetail } from 'pages/educurriculum/eduprocadd/StudentDetail'; // 교육생 정보
@@ -46,7 +42,6 @@ export const EduProcAdd = () => {
     // Selected Start
     const [selectedRowKeys, setSelectedRowKeys] = useState([]); //셀렉트 박스 option Selected 값
     const [selectedRowKeysStudentSearch, setSelectedRowKeysStudentSearch] = useState([]); //셀렉트 박스 option Selected 값
-    const [studentsList, setStudentsList] = useState([]); // 교육생 목록 배열
     // Selected End
 
     // Modal창 Start
@@ -59,13 +54,10 @@ export const EduProcAdd = () => {
 
     // Data source Start
     const [itemContainer, setItemContainer] = useState({}); // 항목 컨테이너
+    const [procCdValue, setProcCdValue] = useState([]); // 차수관리 아이디
     const [studyDayArry, setStudyDayArry] = useState([]); // 학습일수 배열
-    const [moduleArry, setmoduleArry] = useState([]); //  모듈 배열
-    const [procCdValue, setProcCdValue] = useState([]); // 교육생 정보 조회
-
-    const [scheduleList, setScheduleList] = useState([]); // 상세 - 학습일(일자) 정보
-    const [menuList, setMenuList] = useState([]); // 상세 - 학습일(메뉴) 정보
-    const [stuList, setStuList] = useState([]); // 상세 - 교육생 정보
+    const [moduleArry, setModuleArry] = useState([]); //  모듈 배열
+    const [stuList, setStuList] = useState([]); // 상세 - 교육생 배열 정보
 
     // Data source End
 
@@ -240,7 +232,7 @@ export const EduProcAdd = () => {
             theoryTotalScore: itemContainer.theoryTotalScore,
             scheduleList: studyDayArry,
             menuList: moduleArry,
-            userList: studentsList
+            userList: stuList
         });
 
         InsertBaselineresponse?.data?.RET_CODE === '0100'
@@ -266,13 +258,48 @@ export const EduProcAdd = () => {
         const SelectBaselineresponse = await SelectBaselineApi({
             procCd: procCd
         });
+        console.log(SelectBaselineresponse?.data?.RET_DATA);
         setItemContainer(SelectBaselineresponse?.data?.RET_DATA);
-        setScheduleList(SelectBaselineresponse?.data?.RET_DATA?.scheduleList);
-        setMenuList(SelectBaselineresponse?.data?.RET_DATA?.menuList);
+        setStudyDayArry(SelectBaselineresponse?.data?.RET_DATA?.scheduleList);
+        setModuleArry(SelectBaselineresponse?.data?.RET_DATA?.menuList);
         setStuList(SelectBaselineresponse?.data?.RET_DATA?.userList);
     };
-    // 수정 ======================================================
-    //useUpdateBaselineMutation // 차수 관리 수정
+    // 차수 관리 수정 ======================================================
+    const [UpdateBaselineApi] = useUpdateBaselineMutation(); // 수정 hooks api호출
+    const handel_UpdateBaseline_Api = async () => {
+        const UpdateBaselineresponse = await UpdateBaselineApi({
+            procCd: procCdValue,
+            procSeq: itemContainer.procSeq,
+            procName: itemContainer.procName,
+            eduStartDate: itemContainer.eduStartDate,
+            eduEndDate: itemContainer.eduEndDate,
+            totStudyDate: itemContainer.totStudyDate,
+            studyLvl: itemContainer.studyLvl,
+            limitPersonCnt: itemContainer.limitPersonCnt,
+            endingStdScore: itemContainer.endingStdScore,
+            practiceTotalScore: itemContainer.practiceTotalScore,
+            evaluationTotalScore: itemContainer.evaluationTotalScore,
+            theoryTotalScore: itemContainer.theoryTotalScore,
+            scheduleList: studyDayArry,
+            menuList: moduleArry,
+            userList: stuList
+        });
+
+        UpdateBaselineresponse?.data?.RET_CODE === '0100'
+            ? Modal.success({
+                  content: '수정 완료',
+                  onOk() {
+                      setOpen(false);
+                      setDataEdit(false);
+                      form.resetFields();
+                      handel_SelectBaselineList_Api();
+                  }
+              })
+            : Modal.success({
+                  content: '수정 오류',
+                  onOk() {}
+              });
+    };
 
     // 삭제 ======================================================
     // // 차수 관리 삭제
@@ -395,11 +422,9 @@ export const EduProcAdd = () => {
     // 추가 버튼
     const handleAdd = () => {
         setItemContainer(null);
-
-        setScheduleList(null);
-        setMenuList(null);
+        setStudyDayArry(null);
+        setModuleArry(null);
         setStuList(null);
-
         setOpen(true);
         setDataEdit(false);
     };
@@ -424,15 +449,7 @@ export const EduProcAdd = () => {
     // 추가 및 수정 처리
     const onAddSubmit = () => {
         if (dataEdit === true) {
-            Modal.success({
-                content: '수정 완료',
-                onOk() {
-                    setOpen(false);
-                    setDataEdit(false);
-                    handleEduType();
-                    form.resetFields();
-                }
-            });
+            handel_UpdateBaseline_Api();
         } else {
             handel_InsertBaseline_Api();
         }
@@ -461,17 +478,9 @@ export const EduProcAdd = () => {
 
     // 교육생 선택 완료 (Modal 닫기)
     const Student_handleOk = (Student_Value) => {
-        //console.log('교육생 :', Student_Value);
-        setStudentsList(Student_Value);
+        setStuList(Student_Value);
         setItemContainer({ ...itemContainer, limitPersonCnt: Student_Value.length });
         setStudentModalOpen(false);
-    };
-
-    const onRangeDayChange = (date, dateString) => {
-        // setStartEdudate(dateString[0]);
-        setEndEdudate(dateString[1]);
-        // console.log('Start : ' + dateString[0]);
-        // console.log('End : ' + dateString[1]);
     };
 
     // 학습 일정 설정 Start
@@ -502,9 +511,7 @@ export const EduProcAdd = () => {
         setEduDayViewModalOpen(true);
         setEduDayViewTitle(rowdata1);
     };
-    const EduDayView_handleOk = () => {
-        setEduDayViewModalOpen(false);
-    };
+
     const EduDayView_handleCancel = () => {
         setEduDayViewModalOpen(false);
     };
@@ -522,10 +529,12 @@ export const EduProcAdd = () => {
     };
 
     // 학습일 설정 (일자, 모듈, 메뉴) 값
-    const handel_Study_Set = (totStudyDateList, menuList) => {
+    const handel_Study_Set = (totStudyDateList, menuListSet) => {
         setStudyDayArry(totStudyDateList);
-        setmoduleArry(menuList);
+        setModuleArry(menuListSet);
         setEduDayModalOpen(false);
+        // console.log(totStudyDateList);
+        // console.log(menuListSet);
     };
 
     useEffect(() => {
@@ -814,7 +823,7 @@ export const EduProcAdd = () => {
                                             <Select
                                                 name="theoryTotalScore"
                                                 style={{
-                                                    width: '210px'
+                                                    width: '190px'
                                                 }}
                                                 options={Scoreoptions}
                                                 onChange={(e) => setItemContainer({ ...itemContainer, theoryTotalScore: e })}
@@ -827,7 +836,8 @@ export const EduProcAdd = () => {
                                                           }
                                                         : itemContainer?.theoryTotalScore
                                                 }
-                                            />
+                                            />{' '}
+                                            %
                                         </Col>
                                     </Row>
                                 </Form.Item>
@@ -957,13 +967,13 @@ export const EduProcAdd = () => {
                 ]}
             >
                 <StudySch
-                    key={itemContainer?.totStudyDate}
+                    key={procCdValue}
                     TotStudyDate={itemContainer?.totStudyDate}
                     EduStartDate={itemContainer?.eduStartDate}
                     EduEndDate={itemContainer?.eduEndDate}
                     StudySet={handel_Study_Set}
-                    SetScheduleList={scheduleList === null || scheduleList === undefined ? '' : scheduleList}
-                    SetMenuList={menuList === null || menuList === undefined ? '' : menuList}
+                    SetScheduleList={studyDayArry}
+                    SetMenuList={moduleArry}
                 />
             </Modal>
             {/* 학습일자 설정 Modal End */}
@@ -994,8 +1004,6 @@ export const EduProcAdd = () => {
             {/* 학습일자 상세정보 Modal Start */}
             <Modal
                 open={eduDayViewModalOpen}
-                // onOk={EduDayView_handleOk}
-                // onCancel={EduDayView_handleCancel}
                 closable={false}
                 width={950}
                 style={{
@@ -1026,17 +1034,9 @@ export const EduProcAdd = () => {
                     left: 130,
                     zIndex: 999
                 }}
-                footer={[
-                    <Button
-                        type="primary"
-                        onClick={StudentView_handleCancel}
-                        style={{ width: '100px', borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
-                    >
-                        Close
-                    </Button>
-                ]}
+                footer={null}
             >
-                <StudentDetail ProcCdValue={procCdValue} />
+                <StudentDetail ProcCdValue={procCdValue} Closed={StudentView_handleCancel} />
             </Modal>
             {/* 교육생 상세정보 Modal End */}
         </>

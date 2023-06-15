@@ -78,7 +78,7 @@ export const StudySchDetail = (props) => {
                                     ))}
                                 </Col>
                                 <Col span={3}>
-                                    {d.learnYn === true ? (
+                                    {d.learnYn === 'true' ? (
                                         <Tooltip title={`${d.eduStartDate} ~ ${d.eduEndDate} 교육진행 기간 중`}>
                                             <Tag icon={<ClockCircleOutlined />} style={{ padding: '10px 10px', borderRadius: '5px' }}>
                                                 교육진행

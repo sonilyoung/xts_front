@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
-import { useEffect, useState, useRef } from 'react';
-import { Tag, Col, Row, Button, Form, Tooltip, Space, DatePicker, Select, Divider } from 'antd';
+import { useEffect, useState } from 'react';
+import { Tag, Col, Row, Form, Tooltip, Space, DatePicker, Select, Divider } from 'antd';
 
 // project import
 import MainCard from 'components/MainCard';
@@ -16,12 +16,12 @@ export const StudySch = (props) => {
     dayjs.extend(weekday);
     dayjs.extend(localeData);
     const { RangePicker } = DatePicker;
-    const rangePickerRef = useRef();
+
     const [eduStartDate, setEduStartDate] = useState(props.EduStartDate);
     const [eduEndDate, setEduEndDate] = useState(props.EduEndDate);
     const [totStudyDate, setTotStudyDate] = useState(props.TotStudyDate);
     const [scheduleSet, setScheduleListSet] = useState(props.SetScheduleList);
-    const [menuSet, setMenuListSet] = useState(props.SetMenuList);
+    const [menuListSet, setMenuListSet] = useState(props.SetMenuList);
 
     // ===============================
     // Api 호출 Start
@@ -41,17 +41,18 @@ export const StudySch = (props) => {
         eduStartDate: eduStartDate,
         eduEndDate: eduEndDate
     }));
-    const [totStudyDateList, setTotStudyDateList] = useState(initialTotStudyDateList);
+    const [totStudyDateList, setTotStudyDateList] = useState(!scheduleSet ? initialTotStudyDateList : scheduleSet);
     // 총교육일수에 맞춰 일자입력 폼 설정 End
 
     const handel_Add = () => {
-        props.StudySet(totStudyDateList, moduleList);
+        props.StudySet(totStudyDateList, menuListSet);
     };
 
     useEffect(() => {
         handel_selectModuleList_Api(); // 조회
     }, []);
 
+    console.log(scheduleSet);
     return (
         <>
             <MainCard title="학습 일정별 학습과정 설정" style={{ marginTop: 30 }}>
@@ -82,26 +83,19 @@ export const StudySch = (props) => {
                             </Space>
                         </Col>
                     </Row>
-
-                    {Array.from({ length: totStudyDate }, (_, index) => (
-                        <>
+                    {Array.from(totStudyDateList, (_, index) => (
+                        <div key={index}>
                             <Divider style={{ margin: '10px 0' }} />
                             <Row gutter={24} key={index}>
                                 <Col span={7}>
                                     <RangePicker
-                                        ref={rangePickerRef}
                                         style={{ height: '38px' }}
                                         name={`Day ${index + 1}`}
                                         id={`Day ${index + 1}`}
-                                        // value={[dayjs(eduStartDate, 'YYYY-MM-DD'), dayjs(eduEndDate, 'YYYY-MM-DD')]}
-                                        value={
-                                            scheduleSet === null || scheduleSet === undefined
-                                                ? [dayjs(eduStartDate, 'YYYY-MM-DD'), dayjs(eduEndDate, 'YYYY-MM-DD')]
-                                                : [
-                                                      dayjs(scheduleSet[index].eduStartDate, 'YYYY-MM-DD'),
-                                                      dayjs(scheduleSet[index].eduEndDate, 'YYYY-MM-DD')
-                                                  ]
-                                        }
+                                        value={[
+                                            dayjs(totStudyDateList[index].eduStartDate, 'YYYY-MM-DD'),
+                                            dayjs(totStudyDateList[index].eduEndDate, 'YYYY-MM-DD')
+                                        ]}
                                         onChange={(dates) => {
                                             const [start, end] = dates;
                                             setTotStudyDateList((prevList) => {
@@ -118,7 +112,13 @@ export const StudySch = (props) => {
                                                 return newList;
                                             });
                                         }}
-                                        disabled={totStudyDate - 1 === index ? [false, true] : index === 0 ? [true, false] : [false, false]}
+                                        disabled={
+                                            totStudyDateList.length - 1 === index
+                                                ? [false, true]
+                                                : index === 0
+                                                ? [true, false]
+                                                : [false, false]
+                                        }
                                     />
                                 </Col>
                                 <Col span={1}></Col>
@@ -132,9 +132,8 @@ export const StudySch = (props) => {
                                                 fontSize: '16px'
                                             }}
                                             onChange={(e) => {
-                                                // setModuleList((prevList) => {
                                                 setMenuListSet((prevList) => {
-                                                    const newList = [...prevList];
+                                                    const newList = Array.from(prevList || []);
                                                     newList[index] = e;
                                                     return newList;
                                                 });
@@ -145,12 +144,16 @@ export const StudySch = (props) => {
                                                     d.menuName +
                                                     (d.moduleType === 'c' ? ' [Cut] ' : d.moduleType === 's' ? ' [Slide] ' : '')
                                             }))}
-                                            value={menuSet[index]}
+                                            value={
+                                                menuListSet === null || menuListSet === undefined || menuListSet === ''
+                                                    ? ''
+                                                    : menuListSet[index]
+                                            }
                                         />
                                     </Space.Compact>
                                 </Col>
                             </Row>
-                        </>
+                        </div>
                     ))}
                 </Form>
             </MainCard>

@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
 import { Typography } from '@mui/material';
-import { Table, Tag, Col, Row, Button } from 'antd';
+import { Table, Tag, Button } from 'antd';
 
 // 학습과정 관리 학습생 인원 상세정보 팝업
 import { useSelectBaselineStuListMutation } from '../../../hooks/api/CurriculumManagement/CurriculumManagement';
@@ -13,6 +13,7 @@ export const StudentDetail = (props) => {
     const [dataSource, setDataSource] = useState([]); // Table 데이터 값
     const [loading, setLoading] = useState(false);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]); //셀렉트 박스 option Selected 값
+    const [procCdValue, setProcCdValue] = useState();
 
     // ===============================
     // Api 호출 Start
@@ -20,7 +21,7 @@ export const StudentDetail = (props) => {
     const [SelectBaselineStuListApi] = useSelectBaselineStuListMutation(); // 교육생 정보 hooks api호출
     const handle_SelectBaselineStuList_Api = async () => {
         const SelectBaselineStuListresponse = await SelectBaselineStuListApi({
-            procCd: props.ProcCdValue
+            procCd: procCdValue
         });
         setDataSource([
             ...SelectBaselineStuListresponse?.data?.RET_DATA.map((d, i) => ({
@@ -145,24 +146,31 @@ export const StudentDetail = (props) => {
         onChange: onSelectChange
     };
 
+    const handleCancel = () => {
+        setProcCdValue();
+        props.Closed();
+    };
+
     useEffect(() => {
+        setProcCdValue(props.ProcCdValue);
         setLoading(true);
         handle_SelectBaselineStuList_Api();
-    }, [props.ProcCdValue]);
+    }, [procCdValue]);
 
     return (
         <>
             <MainCard title="교육생 정보조회">
                 <Typography variant="body1">
-                    <Table
-                        columns={columns}
-                        dataSource={dataSource}
-                        // rowSelection={{ ...rowSelection }}
-                        bordered={true}
-                        onChange={onChange}
-                        loading={loading}
-                    />
+                    <Table columns={columns} dataSource={dataSource} bordered={true} onChange={onChange} loading={loading} />
                 </Typography>
+
+                <Button
+                    type="primary"
+                    onClick={handleCancel}
+                    style={{ float: 'right', margin: '10px 0', width: '100px', borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                >
+                    Close
+                </Button>
             </MainCard>
         </>
     );
