@@ -231,12 +231,12 @@ export const Theoryinformation = () => {
                     {record?.files?.map((f, i) => (
                         <Tooltip title={f.originalFileName} key={i}>
                             <a
-                                href={`${f.filePath}/${f.saveFileName}`}
+                                href={`${decodeURIComponent(`${f.filePath}/${f.saveFileName}`)}`}
                                 target="_blank"
                                 onClick={(e) => {
                                     e.preventDefault();
                                     window.open(
-                                        `/path/to/pdfjs.viewer.html?file=${encodeURIComponent(`${f.filePath}/${f.saveFileName}`)}`,
+                                        `${decodeURIComponent(`${f.filePath}/${f.saveFileName}`)}`,
                                         'PDFViewer',
                                         'width=1000,height=800'
                                     );
