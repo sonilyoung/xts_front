@@ -9,7 +9,7 @@ import dayjs from 'dayjs';
 import weekday from 'dayjs/plugin/weekday';
 import localeData from 'dayjs/plugin/localeData';
 
-import { ClockCircleOutlined, CheckOutlined, ReconciliationOutlined } from '@ant-design/icons';
+import { ClockCircleOutlined, CheckOutlined, ReconciliationOutlined, PushpinOutlined } from '@ant-design/icons';
 // 모듈 목록 조회
 import { useSelectBaselineEduDateListMutation } from '../../../hooks/api/CurriculumManagement/CurriculumManagement';
 
@@ -69,7 +69,7 @@ export const StudySchDetail = (props) => {
                                     {d.menuList[0]?.map((m, c) => (
                                         <Tag
                                             icon={<ReconciliationOutlined />}
-                                            color="#2db7f5"
+                                            color={d.learnYn === 'true' ? '#4ae100' : d.learnYn === 'false' ? '#aeb1ac' : ''}
                                             style={{ padding: '10px 10px', borderRadius: '5px' }}
                                             key={c}
                                         >
@@ -80,21 +80,37 @@ export const StudySchDetail = (props) => {
                                 <Col span={3}>
                                     {d.learnYn === 'true' ? (
                                         <Tooltip title={`${d.eduStartDate} ~ ${d.eduEndDate} 교육진행 기간 중`}>
-                                            <Tag icon={<ClockCircleOutlined />} style={{ padding: '10px 10px', borderRadius: '5px' }}>
+                                            <Tag
+                                                icon={<ClockCircleOutlined />}
+                                                color={'#4ae100'}
+                                                style={{ padding: '10px 10px', borderRadius: '5px' }}
+                                            >
                                                 교육진행
                                             </Tag>
                                         </Tooltip>
-                                    ) : (
+                                    ) : d.learnYn === 'false' ? (
                                         <Tooltip title="교육일정이 완료 되었습니다.">
                                             <Tag
                                                 icon={<CheckOutlined />}
-                                                // onClick={() => eduComplete('Day 1')}
-                                                color="#2db7f5"
+                                                color="#aeb1ac"
                                                 style={{ padding: '10px 10px', borderRadius: '5px' }}
                                             >
                                                 교육완료
                                             </Tag>
                                         </Tooltip>
+                                    ) : d.learnYn === 'future' ? (
+                                        <Tooltip title="교육이 예정 되어 있습니다.">
+                                            <Tag
+                                                icon={<PushpinOutlined />}
+                                                // onClick={() => eduComplete('Day 1')}
+                                                color=""
+                                                style={{ padding: '10px 10px', borderRadius: '5px' }}
+                                            >
+                                                교육예정
+                                            </Tag>
+                                        </Tooltip>
+                                    ) : (
+                                        ''
                                     )}
                                 </Col>
                             </Row>

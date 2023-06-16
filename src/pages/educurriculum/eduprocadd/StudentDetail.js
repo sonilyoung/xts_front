@@ -13,7 +13,6 @@ export const StudentDetail = (props) => {
     const [dataSource, setDataSource] = useState([]); // Table 데이터 값
     const [loading, setLoading] = useState(false);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]); //셀렉트 박스 option Selected 값
-    const [procCdValue, setProcCdValue] = useState();
 
     // ===============================
     // Api 호출 Start
@@ -21,7 +20,7 @@ export const StudentDetail = (props) => {
     const [SelectBaselineStuListApi] = useSelectBaselineStuListMutation(); // 교육생 정보 hooks api호출
     const handle_SelectBaselineStuList_Api = async () => {
         const SelectBaselineStuListresponse = await SelectBaselineStuListApi({
-            procCd: procCdValue
+            procCd: props.ProcCdValue
         });
         setDataSource([
             ...SelectBaselineStuListresponse?.data?.RET_DATA.map((d, i) => ({
@@ -146,16 +145,10 @@ export const StudentDetail = (props) => {
         onChange: onSelectChange
     };
 
-    const handleCancel = () => {
-        setProcCdValue();
-        props.Closed();
-    };
-
     useEffect(() => {
-        setProcCdValue(props.ProcCdValue);
         setLoading(true);
         handle_SelectBaselineStuList_Api();
-    }, [procCdValue]);
+    }, [props.ProcCdValue]);
 
     return (
         <>
@@ -163,14 +156,6 @@ export const StudentDetail = (props) => {
                 <Typography variant="body1">
                     <Table columns={columns} dataSource={dataSource} bordered={true} onChange={onChange} loading={loading} />
                 </Typography>
-
-                <Button
-                    type="primary"
-                    onClick={handleCancel}
-                    style={{ float: 'right', margin: '10px 0', width: '100px', borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
-                >
-                    Close
-                </Button>
             </MainCard>
         </>
     );

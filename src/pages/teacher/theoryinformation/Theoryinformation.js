@@ -31,7 +31,15 @@ import {
     useDeleteTheoryFileMutation // 이론교육 삭제
 } from '../../../hooks/api/TeacherManagement/TeacherManagement';
 
-import { PlusOutlined, EditFilled, DeleteFilled, ExclamationCircleFilled, DeleteOutlined, UploadOutlined } from '@ant-design/icons';
+import {
+    PlusOutlined,
+    EditFilled,
+    DeleteFilled,
+    ExclamationCircleFilled,
+    DeleteOutlined,
+    UploadOutlined,
+    FilePdfOutlined
+} from '@ant-design/icons';
 import { useDropzone } from 'react-dropzone';
 
 // project import
@@ -47,7 +55,7 @@ export const Theoryinformation = () => {
     const [dataEdit, setDataEdit] = useState(false); // Drawer 수정 우측폼 상태
 
     const [selectedRowKeys, setSelectedRowKeys] = useState([]); //셀렉트 박스 option Selected 값
-    const [theoryNo, setTheoryNo] = useState([]); // 선택한 이론강의 아이디 값
+    const [theoryNoKey, setTheoryNoKey] = useState([]); // 선택한 이론강의 아이디 값
 
     const [command, setCommand] = useState('false'); // PDF파일 업로드 여부
     const [uploadedFiles, setUploadedFiles] = useState([]); // PDF파일 업로드 값
@@ -65,14 +73,18 @@ export const Theoryinformation = () => {
         const SelectTheoryFileListresponse = await SelectTheoryFileListApi({});
         console.log(SelectTheoryFileListresponse?.data?.RET_DATA);
         setSelectTheoryFileListData(SelectTheoryFileListresponse?.data?.RET_DATA);
+        console.log(SelectTheoryFileListresponse?.data?.RET_DATA);
         setDataSource([
             ...SelectTheoryFileListresponse?.data?.RET_DATA.map((d, i) => ({
                 key: d.theoryNo,
                 Num: i + 1,
+                eduCode: d.eduCode,
                 theoryNo: d.theoryNo,
                 title: d.title,
+                files: d.files,
                 contents: d.contents,
-                useYn: d.useYn
+                useYn: d.useYn,
+                insertDate: d.insertDate
             }))
         ]);
         setLoading(false);
@@ -82,19 +94,19 @@ export const Theoryinformation = () => {
     const [InsertTheoryFileApi] = useInsertTheoryFileMutation(); // 교육생 정보 hooks api호출
     const handle_InsertTheoryFile_Api = async () => {
         let formData = new FormData();
-        Object.values(selectedFiles).forEach((Theoryfiles) => {
-            formData.append('files', Theoryfiles);
-        });
         const params = {
-            title: itemContainer.studyLvl,
-            contents: contents,
+            eduCode: itemContainer.eduCode,
+            title: itemContainer.title,
+            contents: itemContainer.contents,
             useYn: itemContainer.useYn
         };
         formData.append('params', new Blob([JSON.stringify(params)], { type: 'application/json' }));
 
-        const InsertTheoryFileresponse = await InsertTheoryFileApi({
-            formData
+        Object.values(selectedFiles).forEach((Theoryfiles) => {
+            formData.append('files', Theoryfiles);
         });
+
+        const InsertTheoryFileresponse = await InsertTheoryFileApi(formData);
         InsertTheoryFileresponse?.data?.RET_CODE === '0100'
             ? Modal.success({
                   content: '등록 완료',
@@ -102,7 +114,7 @@ export const Theoryinformation = () => {
                       setOpen(false);
                       setDataEdit(false);
                       form.resetFields();
-                      handle_SelectUserList_Api();
+                      handle_SelectTheoryFileList_Api();
                   }
               })
             : Modal.success({
@@ -113,10 +125,11 @@ export const Theoryinformation = () => {
 
     // 상세 ======================================================
     const [SelectTheoryFileApi] = useSelectTheoryFileMutation(); // 상세 hooks api호출
-    const handel_SelectTheoryFile_Api = async (userId) => {
+    const handel_SelectTheoryFile_Api = async (theoryNo) => {
         const SelectTheoryFileresponse = await SelectTheoryFileApi({
             theoryNo: theoryNo
         });
+        console.log(SelectTheoryFileresponse.data.RET_DATA);
         setItemContainer(SelectTheoryFileresponse.data.RET_DATA);
     };
 
@@ -128,9 +141,10 @@ export const Theoryinformation = () => {
             formData.append('files', Theoryfiles);
         });
         const params = {
-            theoryNo: theoryNo,
+            theoryNo: theoryNoKey,
+            eduCode: itemContainer.eduCode,
             title: itemContainer.title,
-            contents: contents,
+            contents: itemContainer.contents,
             useYn: itemContainer.useYn
         };
         formData.append('params', new Blob([JSON.stringify(params)], { type: 'application/json' }));
@@ -176,34 +190,64 @@ export const Theoryinformation = () => {
         {
             width: '70px',
             title: 'No',
-            dataIndex: 'userNo',
-            sorter: (a, b) => a.name.length - b.name.length,
+            dataIndex: 'Num',
+            sorter: (a, b) => a.Num.length - b.Num.length,
             ellipsis: true,
             align: 'center'
         },
+        // {
+        //     title: '이론 강의ID',
+        //     dataIndex: 'theoryNo',
+        //     sorter: (a, b) => a.name.length - b.name.length,
+        //     ellipsis: true,
+        //     align: 'center'
+        // },
         {
-            title: '이론 강의ID',
-            dataIndex: 'userId',
-            sorter: (a, b) => a.name.length - b.name.length,
+            title: '이론 과정',
+            dataIndex: 'eduCode',
+            sorter: (a, b) => a.eduCode.length - b.eduCode.length,
             ellipsis: true,
-            align: 'center'
+            align: 'center',
+            render: (_, { eduCode }) => <>{eduCode === '1' ? '보안검색요원 초기교육' : '항공경비요원 초기교육'}</>
         },
         {
             title: '이론 강의명',
-            dataIndex: 'userNm',
-            sorter: (a, b) => a.chinese - b.chinese,
+            dataIndex: 'title',
+            sorter: (a, b) => a.title - b.title,
             ellipsis: true,
             align: 'center'
         },
         {
             title: '이론 강의내용',
-            dataIndex: 'company',
+            dataIndex: 'contents',
             align: 'center'
         },
         {
             title: '이론 강의파일',
-            dataIndex: 'dept',
-            align: 'center'
+            dataIndex: 'files',
+            align: 'center',
+            render: (_, record) => (
+                <>
+                    {record?.files?.map((f, i) => (
+                        <Tooltip title={f.originalFileName} key={i}>
+                            <a
+                                href={`${f.filePath}/${f.saveFileName}`}
+                                target="_blank"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    window.open(
+                                        `/path/to/pdfjs.viewer.html?file=${encodeURIComponent(`${f.filePath}/${f.saveFileName}`)}`,
+                                        'PDFViewer',
+                                        'width=1000,height=800'
+                                    );
+                                }}
+                            >
+                                <FilePdfOutlined style={{ fontSize: '25px', margin: '0 5px' }} />
+                            </a>
+                        </Tooltip>
+                    ))}
+                </>
+            )
         },
         {
             width: '85px',
@@ -320,9 +364,9 @@ export const Theoryinformation = () => {
     };
 
     // 수정 버튼 클릭
-    const handleEdit = (userId) => {
-        handel_SelectTheoryFile_Api(userId);
-        setUserId(userId);
+    const handleEdit = (theoryNo) => {
+        handel_SelectTheoryFile_Api(theoryNo);
+        setTheoryNoKey(theoryNo);
         form.resetFields();
         setDataEdit(true);
         setIdChk(true);
@@ -474,24 +518,23 @@ export const Theoryinformation = () => {
                                             message: '교육과정명'
                                         }
                                     ]}
-                                    initialValue={itemContainer?.eduName}
                                 >
                                     <Select
-                                        name="eduName"
+                                        name="eduCode"
                                         defaultValue="# 교육과정"
                                         style={{
                                             width: '100%'
                                         }}
-                                        onChange={(e) => setItemContainer({ ...itemContainer, eduName: e })}
-                                        value={itemContainer?.eduName}
+                                        onChange={(e) => setItemContainer({ ...itemContainer, eduCode: e })}
+                                        value={itemContainer?.eduCode}
                                         options={[
                                             {
                                                 label: '보안검색요원 초기교육',
-                                                value: '보안검색요원 초기교육'
+                                                value: '1'
                                             },
                                             {
                                                 label: '항공경비요원 초기교육',
-                                                value: '항공경비요원 초기교육'
+                                                value: '2'
                                             }
                                         ]}
                                     />

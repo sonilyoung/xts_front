@@ -1,7 +1,25 @@
 /* eslint-disable no-unused-vars */
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Typography } from '@mui/material';
-import { Col, Row, Button, Form, Input, Select, Drawer, Table, Space, Tooltip, Modal, DatePicker, Tag, Badge, Card, Divider } from 'antd';
+import {
+    Col,
+    Row,
+    Button,
+    Form,
+    Input,
+    Select,
+    Drawer,
+    Table,
+    Space,
+    Tooltip,
+    Modal,
+    DatePicker,
+    Descriptions,
+    Badge,
+    Card,
+    Divider,
+    Tag
+} from 'antd';
 import 'antd/dist/antd.css';
 import { PlusOutlined, EditFilled, EyeOutlined, DeleteFilled, ExclamationCircleFilled } from '@ant-design/icons';
 
@@ -326,22 +344,6 @@ export const EduProcAdd = () => {
 
     const Scoreoptions = [
         {
-            value: '10',
-            label: '10'
-        },
-        {
-            value: '20',
-            label: '20'
-        },
-        {
-            value: '30',
-            label: '30'
-        },
-        {
-            value: '40',
-            label: '40'
-        },
-        {
             value: '50',
             label: '50'
         },
@@ -590,7 +592,7 @@ export const EduProcAdd = () => {
                 title={`학습과정 ${dataEdit === true ? '수정' : '추가'}`}
                 onClose={onAddClose}
                 open={open}
-                width={550}
+                width={600}
                 style={{ top: '60px' }}
                 extra={
                     <>
@@ -820,24 +822,22 @@ export const EduProcAdd = () => {
                                 >
                                     <Row>
                                         <Col>
-                                            <Select
+                                            <Input
                                                 name="theoryTotalScore"
-                                                style={{
-                                                    width: '190px'
+                                                addonAfter="%"
+                                                onChange={(e) => {
+                                                    const value = parseInt(e.target.value);
+                                                    if (!isNaN(value) && value <= 100) {
+                                                        setItemContainer({ ...itemContainer, theoryTotalScore: value });
+                                                    }
                                                 }}
-                                                options={Scoreoptions}
-                                                onChange={(e) => setItemContainer({ ...itemContainer, theoryTotalScore: e })}
                                                 value={
                                                     itemContainer?.theoryTotalScore === undefined ||
                                                     itemContainer?.theoryTotalScore === null
-                                                        ? {
-                                                              value: 0,
-                                                              label: '# 이론평가 가중치(%)'
-                                                          }
+                                                        ? 0
                                                         : itemContainer?.theoryTotalScore
                                                 }
-                                            />{' '}
-                                            %
+                                            />
                                         </Col>
                                     </Row>
                                 </Form.Item>
@@ -858,24 +858,22 @@ export const EduProcAdd = () => {
                                 >
                                     <Row>
                                         <Col>
-                                            <Select
+                                            <Input
                                                 name="practiceTotalScore"
-                                                style={{
-                                                    width: '190px'
+                                                addonAfter="%"
+                                                onChange={(e) => {
+                                                    const value = parseInt(e.target.value);
+                                                    if (!isNaN(value) && value <= 100) {
+                                                        setItemContainer({ ...itemContainer, practiceTotalScore: value });
+                                                    }
                                                 }}
-                                                options={Scoreoptions}
-                                                onChange={(e) => setItemContainer({ ...itemContainer, practiceTotalScore: e })}
                                                 value={
                                                     itemContainer?.practiceTotalScore === undefined ||
                                                     itemContainer?.practiceTotalScore === null
-                                                        ? {
-                                                              value: 0,
-                                                              label: '# 실기평가 가중치(%)'
-                                                          }
+                                                        ? 0
                                                         : itemContainer?.practiceTotalScore
                                                 }
-                                            />{' '}
-                                            %
+                                            />
                                         </Col>
                                     </Row>
                                 </Form.Item>
@@ -893,33 +891,62 @@ export const EduProcAdd = () => {
                                 >
                                     <Row>
                                         <Col>
-                                            <Select
+                                            <Input
                                                 name="evaluationTotalScore"
-                                                style={{
-                                                    width: '190px'
+                                                addonAfter="%"
+                                                onChange={(e) => {
+                                                    const value = parseInt(e.target.value);
+                                                    if (!isNaN(value) && value <= 100) {
+                                                        setItemContainer({ ...itemContainer, evaluationTotalScore: value });
+                                                    }
                                                 }}
-                                                options={Scoreoptions}
-                                                onChange={(e) => setItemContainer({ ...itemContainer, evaluationTotalScore: e })}
                                                 value={
                                                     itemContainer?.evaluationTotalScore === undefined ||
                                                     itemContainer?.evaluationTotalScore === null
-                                                        ? {
-                                                              value: 0,
-                                                              label: '# XBT 평가 가중치(%)'
-                                                          }
+                                                        ? 0
                                                         : itemContainer?.evaluationTotalScore
                                                 }
-                                            />{' '}
-                                            %
+                                            />
                                         </Col>
                                     </Row>
                                 </Form.Item>
                             </Col>
                         </Row>
+                        <Row gutter={24}>
+                            <Col span={24}>
+                                <Descriptions title="" layout="vertical" bordered column={4}>
+                                    <Descriptions.Item label="이론 평가" style={{ textAlign: 'center' }}>
+                                        <Tag color="default" style={{ padding: '5px 10px', borderRadius: '8px' }}>
+                                            {itemContainer?.theoryTotalScore || 0}%
+                                        </Tag>
+                                    </Descriptions.Item>
+                                    <Descriptions.Item label="실기 평가" style={{ textAlign: 'center' }}>
+                                        <Tag color="default" style={{ padding: '5px 10px', borderRadius: '8px' }}>
+                                            {' '}
+                                            {itemContainer?.practiceTotalScore || 0}%
+                                        </Tag>
+                                    </Descriptions.Item>
+                                    <Descriptions.Item label="XBT 평가" style={{ textAlign: 'center' }}>
+                                        <Tag color="default" style={{ padding: '5px 10px', borderRadius: '8px' }}>
+                                            {' '}
+                                            {itemContainer?.evaluationTotalScore || 0}%
+                                        </Tag>
+                                    </Descriptions.Item>
+                                    <Descriptions.Item label="가중치 비율(%)" style={{ textAlign: 'center' }}>
+                                        <Tag color="processing" style={{ padding: '5px 10px', borderRadius: '8px' }}>
+                                            {parseInt(itemContainer?.theoryTotalScore || 0) +
+                                                parseInt(itemContainer?.practiceTotalScore || 0) +
+                                                parseInt(itemContainer?.evaluationTotalScore || 0)}
+                                            %
+                                        </Tag>
+                                    </Descriptions.Item>
+                                </Descriptions>
+                            </Col>
+                        </Row>
 
                         <Divider style={{ margin: '10px 0' }} />
-                        <Card bordered style={{ textAlign: 'center', margin: '20px 0' }}>
-                            <Row>
+                        <Card bordered style={{ textAlign: 'center' }}>
+                            <Row gutter={24}>
                                 <Col span={24}>
                                     <div>교육생 수</div>
                                     <Badge
@@ -1034,9 +1061,21 @@ export const EduProcAdd = () => {
                     left: 130,
                     zIndex: 999
                 }}
-                footer={null}
+                footer={[
+                    <Button
+                        type="primary"
+                        onClick={StudentView_handleCancel}
+                        style={{
+                            width: '100px',
+                            borderRadius: '5px',
+                            boxShadow: '2px 3px 0px 0px #dbdbdb'
+                        }}
+                    >
+                        Close
+                    </Button>
+                ]}
             >
-                <StudentDetail ProcCdValue={procCdValue} Closed={StudentView_handleCancel} />
+                <StudentDetail ProcCdValue={procCdValue} />
             </Modal>
             {/* 교육생 상세정보 Modal End */}
         </>

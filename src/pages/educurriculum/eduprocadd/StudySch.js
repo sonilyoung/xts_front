@@ -51,8 +51,6 @@ export const StudySch = (props) => {
     useEffect(() => {
         handel_selectModuleList_Api(); // 조회
     }, []);
-
-    console.log(scheduleSet);
     return (
         <>
             <MainCard title="학습 일정별 학습과정 설정" style={{ marginTop: 30 }}>
