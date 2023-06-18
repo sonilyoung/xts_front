@@ -238,7 +238,8 @@ export const Theoryinformation = () => {
                                     window.open(
                                         `${decodeURIComponent(`${f.filePath}/${f.saveFileName}`)}`,
                                         'PDFViewer',
-                                        'width=1000,height=800'
+                                        // 'width=1000,height=800'
+                                        `width=${window.innerWidth - 60},height=${window.innerHeight},left=20,top=20`
                                     );
                                 }}
                             >
