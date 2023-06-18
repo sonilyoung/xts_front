@@ -117,7 +117,7 @@ export const Theoryinformation = () => {
                       handle_SelectTheoryFileList_Api();
                   }
               })
-            : Modal.success({
+            : Modal.error({
                   content: '등록 오류',
                   onOk() {}
               });
@@ -160,7 +160,7 @@ export const Theoryinformation = () => {
                       handle_InsertTheoryFile_Api();
                   }
               })
-            : Modal.success({
+            : Modal.error({
                   content: '수정 오류',
                   onOk() {}
               });
@@ -178,7 +178,7 @@ export const Theoryinformation = () => {
                       handle_InsertTheoryFile_Api();
                   }
               })
-            : Modal.success({
+            : Modal.error({
                   content: '삭제 오류',
                   onOk() {}
               });
@@ -238,7 +238,8 @@ export const Theoryinformation = () => {
                                     window.open(
                                         `${decodeURIComponent(`${f.filePath}/${f.saveFileName}`)}`,
                                         'PDFViewer',
-                                        'width=1000,height=800'
+                                        // 'width=1000,height=800'
+                                        `width=${window.innerWidth - 60},height=${window.innerHeight},left=20,top=20`
                                     );
                                 }}
                             >

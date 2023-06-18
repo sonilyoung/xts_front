@@ -125,6 +125,12 @@ export const StudySch = (props) => {
                                         <Select
                                             placeholder="# 메뉴 선택"
                                             mode="multiple"
+                                            showArrow
+                                            value={
+                                                menuListSet === null || menuListSet === undefined || menuListSet === ''
+                                                    ? []
+                                                    : menuListSet[index]
+                                            }
                                             style={{
                                                 width: '560px',
                                                 fontSize: '16px'
@@ -142,11 +148,6 @@ export const StudySch = (props) => {
                                                     d.menuName +
                                                     (d.moduleType === 'c' ? ' [Cut] ' : d.moduleType === 's' ? ' [Slide] ' : '')
                                             }))}
-                                            value={
-                                                menuListSet === null || menuListSet === undefined || menuListSet === ''
-                                                    ? ''
-                                                    : menuListSet[index]
-                                            }
                                         />
                                     </Space.Compact>
                                 </Col>

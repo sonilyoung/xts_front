@@ -92,7 +92,7 @@ export const XrayPoint = () => {
                       handle_SelectPointStdList_Api();
                   }
               })
-            : Modal.success({
+            : Modal.error({
                   content: '등록 오류',
                   onOk() {}
               });
@@ -127,7 +127,7 @@ export const XrayPoint = () => {
                       handle_SelectPointStdList_Api();
                   }
               })
-            : Modal.success({
+            : Modal.error({
                   content: '수정 오류',
                   onOk() {}
               });
@@ -146,7 +146,7 @@ export const XrayPoint = () => {
                       handle_SelectPointStdList_Api();
                   }
               })
-            : Modal.success({
+            : Modal.error({
                   content: '삭제 오류',
                   onOk() {}
               });
@@ -320,7 +320,7 @@ export const XrayPoint = () => {
                       form.resetFields();
                   }
               })
-            : Modal.success({
+            : Modal.error({
                   content: '수정 오류',
                   onOk() {}
               });

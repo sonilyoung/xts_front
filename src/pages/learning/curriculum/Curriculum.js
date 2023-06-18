@@ -222,7 +222,7 @@ export const Curriculum = () => {
                       handel_selectModuleList_Api();
                   }
               })
-            : Modal.success({
+            : Modal.error({
                   content: '등록 오류',
                   onOk() {}
               });
@@ -267,7 +267,7 @@ export const Curriculum = () => {
                       handel_selectModuleList_Api();
                   }
               })
-            : Modal.success({
+            : Modal.error({
                   content: '수정 오류',
                   onOk() {}
               });
@@ -286,7 +286,7 @@ export const Curriculum = () => {
                       handel_selectModuleList_Api();
                   }
               })
-            : Modal.success({
+            : Modal.error({
                   content: '삭제 오류',
                   onOk() {}
               });

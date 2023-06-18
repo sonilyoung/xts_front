@@ -141,7 +141,7 @@ export const TheoryInfo = () => {
                       handle_SelectTheoryList_Api();
                   }
               })
-            : Modal.success({
+            : Modal.error({
                   content: '등록 오류',
                   onOk() {}
               });
@@ -247,7 +247,7 @@ export const TheoryInfo = () => {
                       handle_SelectTheoryList_Api();
                   }
               })
-            : Modal.success({
+            : Modal.error({
                   content: '수정 오류',
                   onOk() {}
               });
@@ -268,7 +268,7 @@ export const TheoryInfo = () => {
                       setSelectedRowKeys(null);
                   }
               })
-            : Modal.success({
+            : Modal.error({
                   content: '삭제 오류',
                   onOk() {}
               });
