@@ -83,7 +83,7 @@ export const TheoryGroup_M = ({ ...props }) => {
                       handle_SelectTheoryGroupList_Api(procGroupCdData);
                   }
               })
-            : Modal.success({
+            : Modal.error({
                   content: '등록 오류',
                   onOk() {}
               });
@@ -110,7 +110,7 @@ export const TheoryGroup_M = ({ ...props }) => {
                       handle_SelectTheoryGroupList_Api(procGroupCdData);
                   }
               })
-            : Modal.success({
+            : Modal.error({
                   content: '수정 오류',
                   onOk() {}
               });
@@ -129,7 +129,7 @@ export const TheoryGroup_M = ({ ...props }) => {
                       handle_SelectTheoryGroupList_Api(props.procGroupCd_M);
                   }
               })
-            : Modal.success({
+            : Modal.error({
                   content: '삭제 오류',
                   onOk() {}
               });

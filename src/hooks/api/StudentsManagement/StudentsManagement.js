@@ -76,6 +76,33 @@ export const studentsManagement = createApi({
                 method: 'POST',
                 body: body
             })
+        }),
+
+        // 강사관리 - 교육생 정보조회
+        selectBaselineUserList: builder.mutation({
+            query: (body) => ({
+                url: '/adm/userMgr/selectBaselineUserList.do',
+                method: 'POST',
+                body: body
+            })
+        }),
+
+        // 교육생 평가 가중치 팝업 정보조회
+        selectBaselineUser: builder.mutation({
+            query: (body) => ({
+                url: '/adm/userMgr/selectBaselineUser.do',
+                method: 'POST',
+                body: body
+            })
+        }),
+
+        // 교육생 실기점수 업데이트
+        updateBaselineUser: builder.mutation({
+            query: (body) => ({
+                url: '/adm/userMgr/updateBaselineUser.do',
+                method: 'POST',
+                body: body
+            })
         })
     })
 });
@@ -87,5 +114,8 @@ export const {
     useUpdateUserMutation,
     useDeleteUserMutation,
     useSelectUserCheckMutation,
-    useSelectUserListPopMutation
+    useSelectUserListPopMutation,
+    useSelectBaselineUserListMutation,
+    useSelectBaselineUserMutation,
+    useUpdateBaselineUserMutation
 } = studentsManagement;

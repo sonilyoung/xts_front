@@ -1,68 +1,91 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
-// import { Typography } from '@mui/material';
-import { Typography, Table, Tag, Tooltip, Button, Descriptions, Modal, Input, Divider } from 'antd';
-
+import { Typography, Table, Tag, Tooltip, Button, Descriptions, Modal, Input, Space } from 'antd';
 const { Title } = Typography;
 
-import { useSelectUserListMutation } from '../../../hooks/api/StudentsManagement/StudentsManagement';
+import {
+    useSelectBaselineUserListMutation,
+    useSelectBaselineUserMutation,
+    useUpdateBaselineUserMutation
+} from '../../../hooks/api/StudentsManagement/StudentsManagement';
 
 import { FileProtectOutlined } from '@ant-design/icons';
 
 // project import
 import MainCard from 'components/MainCard';
-import { Space } from '../../../../node_modules/antd/lib/index';
 
 export const Teacherstudent = () => {
     const { confirm } = Modal;
     const [dataSource, setDataSource] = useState([]); // Table 데이터 값
     const [loading, setLoading] = useState(false);
-
-    const [selectedRowKeys, setSelectedRowKeys] = useState([]); //셀렉트 박스 option Selected 값
+    const [practiceScore, setPracticeScore] = useState(''); // 실습 점수
+    const [procCdChk, setProcCdChk] = useState(''); // 실습 점수
+    const [userIdChk, setUserIdChk] = useState(''); // 실습 점수
     const [evalOpen, setEvalOpen] = useState(false);
 
     // ===============================
     // Api 호출 Start
     // 조회 ======================================================
-    const [SelectUserListApi] = useSelectUserListMutation(); // 교육생 정보 hooks api호출
-    const [selectUserListData, setSelectUserListData] = useState(); // 교육생 정보 리스트 값
-    const handle_SelectUserList_Api = async () => {
-        const SelectUserListresponse = await SelectUserListApi({});
-        setSelectUserListData(SelectUserListresponse?.data?.RET_DATA);
+    const [SelectBaselineUserListApi] = useSelectBaselineUserListMutation(); // 교육생 정보 hooks api호출
+    const handle_SelectBaselineUserList_Api = async () => {
+        const SelectBaselineUserListResponse = await SelectBaselineUserListApi({});
         setDataSource([
-            ...SelectUserListresponse?.data?.RET_DATA.map((d, i) => ({
-                key: d.userId,
+            ...SelectBaselineUserListResponse?.data?.RET_DATA.map((d, i) => ({
+                key: i,
                 userNo: i + 1,
+                procCd: d.procCd, //차수시퀀스
+                procYear: d.procYear, //차수년도
+                procSeq: d.procSeq, //차수
+                procNm: d.procNm, //차수명
                 userId: d.userId,
                 userNm: d.userNm,
-                userPw: d.userPw,
-                userPhoto: d.userPhoto,
-                iauthCd: d.iauthCd,
-                authNm: d.authNm,
-                company: d.company,
-                dept: d.dept,
-                position: d.position,
-                trainingDiv: d.trainingDiv,
-                telNo: d.telNo,
-                hpNo: d.hpNo,
-                email: d.email,
-                eduName: d.eduName,
-                writeDate: d.writeDate,
-                loginStart: d.loginStart,
-                loginLast: d.loginLast,
-                loginError: d.loginError,
-                pwPrior: d.pwPrior,
-                pwChange: d.pwChange,
-                pwUpdate: d.pwUpdate,
-                pwPeriod: d.pwPeriod,
-                useYn: d.useYn,
-                insertId: d.insertId,
-                insertDate: d.insertDate,
-                updateId: d.updateId,
-                updateDate: d.updateDate
+                compNm: d.compNm, //회사명
+                gainScore: d.gainScore, //총 획득점수
+                passYn: d.passYn, //합격 불합격 여부 (Y 합격 N 불합격 ING 진행중)
+                eduStartDate: d.eduStartDate, //교육시작일
+                eduEndDate: d.eduEndDate, //교육종료일
+                endingYn: d.endingYn //완료여부 (Y 완료 N 미완료 ING 진행중)
             }))
         ]);
         setLoading(false);
+    };
+
+    // 평가 가중치 팝업 정보조회 ======================================================
+    const [SelectBaselineUserApi] = useSelectBaselineUserMutation(); // 교육생 정보 hooks api호출
+    const [evaluationInfoData, setEvaluationInfoData] = useState(); // XBT 평가 정보
+    const [theoryInfoData, setTheoryInfoData] = useState(); // 이론 평가 정보
+    const [practiceInfoData, setPracticeInfoData] = useState(); // 실습 평가 정보
+    const handle_SelectBaselineUser_Api = async (procCd, userId) => {
+        const SelectBaselineUserResponse = await SelectBaselineUserApi({
+            procCd: procCd,
+            userId: userId
+        });
+        setEvaluationInfoData(SelectBaselineUserResponse?.data?.RET_DATA?.evaluationInfo);
+        setTheoryInfoData(SelectBaselineUserResponse?.data?.RET_DATA?.theoryInfo);
+        setPracticeInfoData(SelectBaselineUserResponse?.data?.RET_DATA?.practiceInfo);
+    };
+
+    // 교육생 실기점수 업데이트  ======================================================
+    const [UpdateBaselineUserApi] = useUpdateBaselineUserMutation(); // 교육생 정보 hooks api호출
+    const handle_UpdateBaselineUser_Api = async () => {
+        const UpdateBaselineUserResponse = await UpdateBaselineUserApi({
+            procCd: procCdChk,
+            userId: userIdChk,
+            practiceScore: practiceScore
+        });
+        if (UpdateBaselineUserResponse?.data?.RET_CODE === '0100') {
+            Modal.success({
+                content: '실습 점수 저장 완료',
+                onOk() {
+                    handle_SelectBaselineUser_Api(procCdChk, userIdChk);
+                }
+            });
+        } else {
+            Modal.error({
+                content: UpdateBaselineUserResponse?.data?.RET_DESC,
+                onOk() {}
+            });
+        }
     };
 
     // Api 호출 End
@@ -77,61 +100,57 @@ export const Teacherstudent = () => {
             align: 'center'
         },
         {
-            width: '170px',
+            width: '110px',
+            title: '차수',
+            dataIndex: 'procSeq',
+            sorter: (a, b) => a.procSeq - b.procSeq,
+            ellipsis: true,
+            align: 'center',
+            render: (_, { procYear, procSeq }) => <>{`${procYear}년 - ${procSeq}차`}</>
+        },
+        {
+            title: '차수명',
+            dataIndex: 'procNm',
+            sorter: (a, b) => a.procNm.localeCompare(b.procNm, 'ko', { sensitivity: 'base' }),
+            ellipsis: true,
+            align: 'center'
+        },
+        {
             title: '교육생 ID',
             dataIndex: 'userId',
-            sorter: (a, b) => a.userId.length - b.userId.length,
+            // sorter: (a, b) => a.userId.length - b.userId.length,
+            sorter: (a, b) => a.userId.localeCompare(b.userId, 'ko', { sensitivity: 'base' }),
             ellipsis: true,
             align: 'center'
         },
         {
-            width: '170px',
             title: '교육생 명',
             dataIndex: 'userNm',
-            sorter: (a, b) => a.userNm.length - b.userNm.length,
+            sorter: (a, b) => a.userNm.localeCompare(b.userNm, 'ko', { sensitivity: 'base' }),
             ellipsis: true,
             align: 'center'
         },
         {
-            width: '180px',
             title: '기관',
-            dataIndex: 'company',
-            align: 'center'
-        },
-        // {
-        //     width: '110px',
-        //     title: '부서',
-        //     dataIndex: 'dept',
-        //     align: 'center'
-        // },
-        // {
-        //     width: '110px',
-        //     title: '직위',
-        //     dataIndex: 'position',
-        //     align: 'center'
-        // },
-        {
-            width: '170px',
-            title: '교육 구분',
-            dataIndex: 'eduName',
+            dataIndex: 'compNm',
             align: 'center'
         },
         {
-            width: '100px',
+            width: '140px',
             title: '평가 가중치',
-            dataIndex: 'writeDate',
+            dataIndex: 'gainScore',
             align: 'center',
-            render: (_, { userId }) => (
+            render: (_, { gainScore, procCd, userId }) => (
                 <>
                     <Space>
-                        <Tooltip title="XBT" color="#108ee9">
+                        <Tooltip title="평가 가중치" color="#108ee9">
                             <Button
                                 type="primary"
                                 style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
                                 icon={<FileProtectOutlined />}
-                                onClick={() => setEvalOpen(true)}
+                                onClick={() => handle_Score(procCd, userId)}
                             >
-                                66점
+                                {gainScore === '0' || gainScore === null || gainScore === undefined ? '0' : gainScore}
                             </Button>
                         </Tooltip>
                     </Space>
@@ -139,41 +158,82 @@ export const Teacherstudent = () => {
             )
         },
         {
-            width: '85px',
-            title: '사용여부',
-            dataIndex: 'useYn',
+            width: '100px',
+            title: '학격여부',
             align: 'center',
-            render: (_, { useYn }) => (
+            render: (_, { passYn }) => (
                 <>
-                    {useYn === 'Y' ? (
-                        <Tag color={'green'} key={useYn}>
-                            사용
+                    {passYn === 'Y' ? (
+                        <Tag color="#2db7f5" style={{ padding: '5px 12px', borderRadius: '5px' }}>
+                            합격
+                        </Tag>
+                    ) : passYn === 'N' ? (
+                        <Tag color="#f50" style={{ padding: '5px 12px', borderRadius: '5px' }}>
+                            불합격
+                        </Tag>
+                    ) : passYn === 'ING' ? (
+                        <Tag color="#108ee9" style={{ padding: '5px 12px', borderRadius: '5px' }}>
+                            진행중
                         </Tag>
                     ) : (
-                        <Tag color={'volcano'} key={useYn}>
-                            미사용
-                        </Tag>
+                        <Tag>-</Tag>
                     )}
                 </>
             )
         },
         {
-            width: '140px',
-            title: '학격여부',
+            width: '110px',
+            title: '교육시작일',
             align: 'center',
-            render: (_, { useYn }) => <>{useYn === 'Y' ? '합격' : '불합격'}</>
+            dataIndex: 'eduStartDate'
         },
         {
             width: '110px',
-            title: '등록일자',
-            dataIndex: 'insertDate',
-            align: 'center'
+            title: '교육종료일',
+            align: 'center',
+            dataIndex: 'eduEndDate'
+        },
+        {
+            width: '110px',
+            title: '교육완료여부',
+            dataIndex: 'useYn',
+            align: 'center',
+            render: (_, { endingYn }) => (
+                <>
+                    {endingYn === 'Y' ? (
+                        <Tag color="#2db7f5" style={{ padding: '5px 12px', borderRadius: '5px' }}>
+                            완료
+                        </Tag>
+                    ) : endingYn === 'N' ? (
+                        <Tag color="#f50" style={{ padding: '5px 12px', borderRadius: '5px' }}>
+                            미완료
+                        </Tag>
+                    ) : endingYn === 'ING' ? (
+                        <Tag color="#108ee9" style={{ padding: '5px 12px', borderRadius: '5px' }}>
+                            교육중
+                        </Tag>
+                    ) : (
+                        <Tag>-</Tag>
+                    )}
+                </>
+            )
         }
     ];
 
+    const handle_Score = (procCd, userId) => {
+        setEvalOpen(true);
+        setProcCdChk(procCd);
+        setUserIdChk(userId);
+        handle_SelectBaselineUser_Api(procCd, userId);
+    };
+
+    const handel_practiceScore = () => {
+        handle_UpdateBaselineUser_Api();
+    };
     // Modal 닫기
     const handleCancel = () => {
         setEvalOpen(false);
+        setPracticeScore(null);
     };
 
     const onChange = (pagination, filters, sorter, extra) => {
@@ -181,35 +241,16 @@ export const Teacherstudent = () => {
         //setSortedInfo(sorter);
     };
 
-    //체크 박스 이벤트
-    const onSelectChange = (newSelectedRowKeys) => {
-        console.log('selectedRowKeys changed: ', newSelectedRowKeys);
-        setSelectedRowKeys(newSelectedRowKeys);
-    };
-
-    //체크 박스 선택
-    const rowSelection = {
-        selectedRowKeys,
-        onChange: onSelectChange
-    };
-
     useEffect(() => {
         setLoading(true);
-        handle_SelectUserList_Api();
+        handle_SelectBaselineUserList_Api();
     }, []);
 
     return (
         <>
             <MainCard title="교육생 정보조회">
                 <Typography variant="body1">
-                    <Table
-                        columns={columns}
-                        dataSource={dataSource}
-                        rowSelection={{ ...rowSelection }}
-                        bordered={true}
-                        onChange={onChange}
-                        loading={loading}
-                    />
+                    <Table columns={columns} dataSource={dataSource} bordered={true} onChange={onChange} loading={loading} />
                 </Typography>
             </MainCard>
 
@@ -235,35 +276,35 @@ export const Teacherstudent = () => {
                 <Space>
                     <Descriptions title="※ XBT 평가" layout="vertical" bordered column={5}>
                         <Descriptions.Item style={{ textAlign: 'center', width: '190px' }} label="평가명">
-                            XBT 평가
+                            {evaluationInfoData?.procNm || '-'}
                         </Descriptions.Item>
                         <Descriptions.Item style={{ textAlign: 'center' }} label="문항수">
-                            10
+                            {evaluationInfoData?.questionCnt || '-'}
                         </Descriptions.Item>
                         <Descriptions.Item style={{ textAlign: 'center' }} label="정답">
-                            8
+                            {evaluationInfoData?.rightCnt || '-'}
                         </Descriptions.Item>
                         <Descriptions.Item style={{ textAlign: 'center' }} label="오답">
-                            2
+                            {evaluationInfoData?.wrongCnt || '-'}
                         </Descriptions.Item>
-                        <Descriptions.Item style={{ textAlign: 'center' }} label="평점">
-                            80
+                        <Descriptions.Item style={{ textAlign: 'center', fontWeight: 'bold' }} label="평점">
+                            {evaluationInfoData?.evaluationScore || '-'}
                         </Descriptions.Item>
                     </Descriptions>
                     <Title level={1} style={{ marginTop: '65px', marginLeft: '30px' }}>
                         X
                     </Title>
                     <Descriptions layout="vertical" bordered style={{ marginTop: '45px', marginLeft: '30px' }}>
-                        <Descriptions.Item style={{ textAlign: 'center' }} label="XBT 평가 가중치(%) ">
-                            30%
+                        <Descriptions.Item style={{ textAlign: 'center', fontWeight: 'bold' }} label="XBT 평가 가중치(%) ">
+                            {evaluationInfoData?.evaluationTotalScore || '0'}%
                         </Descriptions.Item>
                     </Descriptions>
                     <Title level={1} style={{ marginTop: '65px', marginLeft: '30px' }}>
                         =
                     </Title>
                     <Descriptions layout="vertical" bordered style={{ marginTop: '45px', marginLeft: '30px' }}>
-                        <Descriptions.Item style={{ textAlign: 'center' }} label="XBT 평가 최종 점수">
-                            32
+                        <Descriptions.Item style={{ textAlign: 'center', fontWeight: 'bold' }} label="XBT 평가 최종 점수">
+                            <space style={{ color: '#108ee9' }}>{evaluationInfoData?.gainScore || '-'}</space>
                         </Descriptions.Item>
                     </Descriptions>
                 </Space>
@@ -273,64 +314,62 @@ export const Teacherstudent = () => {
                 <Space>
                     <Descriptions title="※ 이론 평가" layout="vertical" bordered column={5}>
                         <Descriptions.Item style={{ textAlign: 'center', width: '190px' }} label="평가명">
-                            이론 평가
+                            {theoryInfoData?.procNm || '-'}
                         </Descriptions.Item>
                         <Descriptions.Item style={{ textAlign: 'center' }} label="문항수">
-                            45
+                            {theoryInfoData?.questionCnt || '-'}
                         </Descriptions.Item>
                         <Descriptions.Item style={{ textAlign: 'center' }} label="정답">
-                            35
+                            {theoryInfoData?.rightCnt || '-'}
                         </Descriptions.Item>
                         <Descriptions.Item style={{ textAlign: 'center' }} label="오답">
-                            10
+                            {theoryInfoData?.wrongCnt || '-'}
                         </Descriptions.Item>
-                        <Descriptions.Item style={{ textAlign: 'center' }} label="평점">
-                            78
+                        <Descriptions.Item style={{ textAlign: 'center', fontWeight: 'bold' }} label="평점">
+                            {theoryInfoData?.theoryScore || '-'}
                         </Descriptions.Item>
                     </Descriptions>
                     <Title level={1} style={{ marginTop: '65px', marginLeft: '30px' }}>
                         X
                     </Title>
                     <Descriptions layout="vertical" bordered style={{ marginTop: '45px', marginLeft: '30px' }}>
-                        <Descriptions.Item style={{ textAlign: 'center' }} label="이론 평가 가중치(%) ">
-                            40%
+                        <Descriptions.Item style={{ textAlign: 'center', fontWeight: 'bold' }} label="이론 평가 가중치(%) ">
+                            {theoryInfoData?.theoryTotalScore || '0'}%
                         </Descriptions.Item>
                     </Descriptions>
                     <Title level={1} style={{ marginTop: '65px', marginLeft: '30px' }}>
                         =
                     </Title>
                     <Descriptions layout="vertical" bordered style={{ marginTop: '45px', marginLeft: '30px' }}>
-                        <Descriptions.Item style={{ textAlign: 'center' }} label="XBT 평가 최종 점수">
-                            31
+                        <Descriptions.Item style={{ textAlign: 'center', fontWeight: 'bold' }} label="XBT 평가 최종 점수">
+                            <space style={{ color: '#108ee9' }}>{theoryInfoData?.gainScore || '-'}</space>
                         </Descriptions.Item>
                     </Descriptions>
                 </Space>
                 <br />
                 <br />
                 <br />
+                {/* setPracticeInfoData(SelectBaselineUserResponse?.data?.RET_DATA?.practiceInfo); */}
                 <Space>
                     <Descriptions title="※ 실습 평가" layout="vertical" bordered column={3}>
                         <Descriptions.Item style={{ textAlign: 'center', width: '190px' }} label="평가명">
-                            실습 평가
+                            {practiceInfoData?.procNm || '-'}
                         </Descriptions.Item>
                         <Descriptions.Item style={{ textAlign: 'center' }} label="점수">
                             <Input
                                 name="choice"
                                 placeholder="※ 실습 평가 점수"
-                                // value={itemContainer?.choice4}
-                                // onChange={(e) => {
-                                //     setItemContainer({
-                                //         ...itemContainer,
-                                //         choice4: e.target.value
-                                //     });
-                                // }}
+                                value={practiceScore === null ? practiceInfoData?.practiceScore : practiceScore}
+                                onChange={(e) => {
+                                    setPracticeScore(e.target.value);
+                                }}
                                 style={{ width: '145px' }}
                             />
                         </Descriptions.Item>
                         <Descriptions.Item style={{ textAlign: 'center' }} label="저장">
                             <Tooltip title="저장" placement="bottom" color="#108ee9">
                                 <Button
-                                    // onClick={onAddSubmit}
+                                    onClick={() => handel_practiceScore()}
                                     style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
                                     type="primary"
                                 >
@@ -343,16 +382,16 @@ export const Teacherstudent = () => {
                         X
                     </Title>
                     <Descriptions layout="vertical" bordered style={{ marginTop: '45px', marginLeft: '30px' }}>
-                        <Descriptions.Item style={{ textAlign: 'center' }} label="실습 평가 가중치(%) ">
-                            30%
+                        <Descriptions.Item style={{ textAlign: 'center', fontWeight: 'bold' }} label="실습 평가 가중치(%) ">
+                            {practiceInfoData?.practiceTotalScore || '0'}%
                         </Descriptions.Item>
                     </Descriptions>
                     <Title level={1} style={{ marginTop: '65px', marginLeft: '30px' }}>
                         =
                     </Title>
                     <Descriptions layout="vertical" bordered style={{ marginTop: '45px', marginLeft: '30px' }}>
-                        <Descriptions.Item style={{ textAlign: 'center' }} label="XBT 평가 최종 점수">
-                            -
+                        <Descriptions.Item style={{ textAlign: 'center', fontWeight: 'bold' }} label="XBT 평가 최종 점수">
+                            <space style={{ color: '#108ee9' }}>{practiceInfoData?.gainScore || '-'}</space>
                         </Descriptions.Item>
                     </Descriptions>
                 </Space>
