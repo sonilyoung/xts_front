@@ -237,6 +237,7 @@ export const Curriculum = () => {
 
         setItemContainer(SelectModuleresponse.data.RET_DATA);
         setBagList(SelectModuleresponse.data.RET_DATA.bagList);
+        console.log(SelectModuleresponse.data.RET_DATA);
     };
 
     // 수정 ======================================================
@@ -877,8 +878,9 @@ export const Curriculum = () => {
             <Modal
                 open={questionsModalOpen}
                 closable={false}
-                width={1200}
+                width={1500}
                 style={{
+                    top: 90,
                     left: 130,
                     zIndex: 999
                 }}

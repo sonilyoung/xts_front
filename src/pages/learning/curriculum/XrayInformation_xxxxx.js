@@ -1,8 +1,8 @@
 /* eslint-disable*/
 import React, { useEffect, useState } from 'react';
 import { Typography } from '@mui/material';
-import { Row, Col, Table, Button, Select, Form, Modal, Divider, Transfer } from 'antd';
-import difference from 'lodash/difference';
+import { Row, Col, Table, Button, Select, Form, Modal, Divider, Tag } from 'antd';
+
 // 학습모듈 관리 - 랜덤추출, 물품팝업조회, 모듈에 등록된 문제목록 가져오기
 import {
     useSelectModuleRandomMutation, // 랜덤추출
@@ -15,16 +15,19 @@ import MainCard from 'components/MainCard';
 
 export const XrayInformation = (props) => {
     const { confirm } = Modal;
-    const [form] = Form.useForm();
     const [randemBoxOpen, setRandemBoxOpen] = useState(false);
-    const [targetKeys, setTargetKeys] = useState();
-    const [disabled, setDisabled] = useState(false);
+
+    const [selectedRowKeys, setSelectedRowKeys] = useState(props.BagList); //셀렉트 박스 option Selected 값(상단)
+
     const [loading, setLoading] = useState(false);
-    const [mockData, setMockData] = useState([]);
+    const [form] = Form.useForm();
 
     const [randemLevel, setRandemLevel] = useState(0); // 난이도 레벨
     const [randemlimit, setRandemlimit] = useState(5); // 출제 문항수
 
+    // ===============================
+    // Api 호출 Start
+    // console.log(selectedRowKeys);
     // 물품팝업조회 ======================================================
     const [selectModuleXrayPopListApi] = useSelectModuleXrayPopListMutation(); // 물품팝업조회 hooks api호출
     const [selectModuleXrayPopListData, setSelectModuleXrayPopListData] = useState(); // 물품팝업조회 Data 값
@@ -32,19 +35,29 @@ export const XrayInformation = (props) => {
     const handle_SelectModuleXrayPopList_Api = async () => {
         const selectModuleXrayPopListresponse = await selectModuleXrayPopListApi({});
         // console.log(selectModuleXrayPopListresponse?.data?.RET_DATA);
-
-        setMockData([
+        setSelectModuleXrayPopListData([
             ...selectModuleXrayPopListresponse?.data?.RET_DATA.map((d, i) => ({
                 key: d.bagScanId,
+                rowdataNo: i,
                 rowdata0: i + 1,
                 rowdata1: d.bagScanId /*가방촬영id*/,
                 rowdata2: d.unitId /*물품id*/,
                 rowdata3: d.unitName /*물품명*/,
                 rowdata4: d.openYn /*개봉여부*/,
                 rowdata5: d.passYn /*통과여부*/,
-                rowdata6: d.actionDivName /*action구분*/,
-                rowdata7: d.studyLvl /*학습Level*/,
-                rowdata8: d.actionDiv /*action구분*/
+                rowdata6: d.actionDivName,
+                rowdata7: d.actionDiv /*action구분*/,
+                rowdata8: d.studyLvl /*학습Level*/,
+                rowdata9: d.useYn /*사용여부*/,
+                rowdata10: d.frontUseYn /*정면사용여부*/,
+                rowdata11: d.sideUseYn /*측면사용여부*/,
+                rowdata12: d.decipMachineCd /*판독기기코드*/,
+                rowdata13: d.duplexYn /*양방향여부*/,
+                rowdata14: d.seq /*순번*/,
+                rowdata15: d.insertDate /*등록일시*/,
+                rowdata16: d.insertId /*등록자*/,
+                rowdata17: d.updateDate /*수정일시*/,
+                rowdata18: d.updateId /*수정자*/
             }))
         ]);
         setLoading(false);
@@ -61,141 +74,161 @@ export const XrayInformation = (props) => {
                 studyLvl: randemLevel,
                 questionCnt: randemlimit
             });
-            setMockData([
+            // setSelectModuleXrayPopListData(selectModuleXrayPopListresponse?.data?.RET_DATA);
+            setSelectModuleXrayPopListData([
                 ...selectModuleXrayPopListresponse?.data?.RET_DATA.map((d, i) => ({
                     key: d.bagScanId,
+                    rowdataNo: i,
                     rowdata0: i + 1,
                     rowdata1: d.bagScanId /*가방촬영id*/,
                     rowdata2: d.unitId /*물품id*/,
                     rowdata3: d.unitName /*물품명*/,
                     rowdata4: d.openYn /*개봉여부*/,
                     rowdata5: d.passYn /*통과여부*/,
-                    rowdata6: d.actionDivName /*action구분*/,
-                    rowdata7: d.studyLvl /*학습Level*/,
-                    rowdata8: d.actionDiv /*action구분*/
+                    rowdata6: d.actionDivName,
+                    rowdata7: d.actionDiv /*action구분*/,
+                    rowdata8: d.studyLvl /*학습Level*/,
+                    rowdata9: d.useYn /*사용여부*/,
+                    rowdata10: d.frontUseYn /*정면사용여부*/,
+                    rowdata11: d.sideUseYn /*측면사용여부*/,
+                    rowdata12: d.decipMachineCd /*판독기기코드*/,
+                    rowdata13: d.duplexYn /*양방향여부*/,
+                    rowdata14: d.seq /*순번*/,
+                    rowdata15: d.insertDate /*등록일시*/,
+                    rowdata16: d.insertId /*등록자*/,
+                    rowdata17: d.updateDate /*수정일시*/,
+                    rowdata18: d.updateId /*수정자*/
                 }))
             ]);
             setLoading(false);
         }
     };
+    // 모듈에 등록된 문제목록 가져오기 ======================================================
+    const [selectModuleQuestionApi] = useSelectModuleQuestionMutation(); // 모듈에 등록된 문제목록 가져오기 hooks api호출
+    const [selectModuleQuestionData, setSelectModuleQuestionData] = useState(); // 모듈에 등록된 문제목록 가져오기 Data 값
 
-    const TableTransfer = ({ leftColumns, rightColumns, ...restProps }) => (
-        <Transfer {...restProps}>
-            {({ direction, filteredItems, onItemSelectAll, onItemSelect, selectedKeys: listSelectedKeys, disabled: listDisabled }) => {
-                const columns = direction === 'left' ? leftColumns : rightColumns;
-                const rowSelection = {
-                    getCheckboxProps: (item) => ({
-                        disabled: listDisabled || item.disabled
-                    }),
-                    onSelectAll(selected, selectedRows) {
-                        const treeSelectedKeys = selectedRows.filter((item) => !item.disabled).map(({ key }) => key);
-                        const diffKeys = selected
-                            ? difference(treeSelectedKeys, listSelectedKeys)
-                            : difference(listSelectedKeys, treeSelectedKeys);
-                        onItemSelectAll(diffKeys, selected);
-                    },
-                    onSelect({ key }, selected) {
-                        onItemSelect(key, selected);
-                    },
-                    selectedRowKeys: listSelectedKeys
+    // Api 호출 End
+    // ===============================
+
+    // 상단 테이블 Title
+    const defaultColumns = [
+        {
+            width: '90px',
+            title: 'No',
+            dataIndex: 'rowdata0',
+            align: 'center'
+        },
+        {
+            width: '120px',
+            title: '가방촬영ID',
+            dataIndex: 'rowdata1',
+            align: 'center'
+        },
+        {
+            width: '120px',
+            title: '물품ID',
+            dataIndex: 'rowdata2',
+            align: 'center'
+        },
+        {
+            title: '정답물품',
+            dataIndex: 'rowdata3',
+            align: 'center'
+        },
+        {
+            width: '80px',
+            title: '개봉여부',
+            dataIndex: 'rowdata4',
+            align: 'center'
+        },
+        {
+            width: '80px',
+            title: '통과여부',
+            dataIndex: 'rowdata5',
+            align: 'center'
+        },
+        {
+            width: '80px',
+            title: 'Action구분',
+            dataIndex: 'rowdata6',
+            align: 'center',
+            render: (_, { rowdata6 }) => <>{rowdata6}</>
+        },
+        {
+            width: '100px',
+            title: '난이도 Level',
+            dataIndex: 'rowdata8',
+            align: 'center',
+            render: (_, { rowdata8 }) => <> {rowdata8 + 'Lv'} </>
+        },
+        {
+            width: '80px',
+            title: '사용여부',
+            dataIndex: 'rowdata9',
+            align: 'center',
+            render: (_, { rowdata9 }) => (
+                <>
+                    {rowdata9 === 'Y' ? (
+                        <Tag color={'green'} key={rowdata9}>
+                            사용
+                        </Tag>
+                    ) : (
+                        <Tag color={'volcano'} key={rowdata9}>
+                            미사용
+                        </Tag>
+                    )}
+                </>
+            )
+        }
+    ];
+
+    // 출제 문제항 Arr Start
+    const questionsArr = [];
+    for (let i = 5; i <= 100; i += 5) {
+        questionsArr.push({ value: i.toString(), label: i.toString() + ' 문항' });
+    }
+    // 출제 문제항 Arr End
+
+    // 타이틀 컬럼  = 데이터 컬럼 Index세팅
+    const handleSave = (row) => {
+        const newData = [...selectModuleXrayPopListData];
+        const index = newData.findIndex((item) => row.key === item.key);
+        const item = newData[index];
+        newData.splice(index, 1, {
+            ...item,
+            ...row
+        });
+        setSelectModuleXrayPopListData(newData);
+    };
+
+    const columns = defaultColumns.map((col) => {
+        return {
+            ...col,
+            onCell: (record) => {
+                return {
+                    record,
+                    dataIndex: col.dataIndex,
+                    title: col.title,
+                    handleSave
                 };
-                return (
-                    <>
-                        <Table
-                            rowSelection={rowSelection}
-                            columns={columns}
-                            dataSource={filteredItems}
-                            size="middle"
-                            style={{
-                                marginBottom: '10px',
-                                padding: '0 10px',
-                                pointerEvents: listDisabled ? 'none' : undefined
-                            }}
-                            onRow={({ key, disabled: itemDisabled }) => ({
-                                onClick: () => {
-                                    if (itemDisabled || listDisabled) return;
-                                    onItemSelect(key, !listSelectedKeys.includes(key));
-                                }
-                            })}
-                        />
-                    </>
-                );
-            }}
-        </Transfer>
-    );
+            }
+        };
+    });
 
-    const originTargetKeys = props.BagList.map((item) => item.key);
-    const leftTableColumns = [
-        {
-            title: '가방촬영ID',
-            dataIndex: 'rowdata1',
-            align: 'center'
-        },
-        {
-            title: '정답물품',
-            dataIndex: 'rowdata3',
-            align: 'center'
-        },
-        {
-            title: '개봉여부',
-            dataIndex: 'rowdata4',
-            align: 'center'
-        },
-        {
-            title: '통과여부',
-            dataIndex: 'rowdata5',
-            align: 'center'
-        },
-        {
-            title: 'Action구분',
-            dataIndex: 'rowdata6',
-            align: 'center',
-            render: (_, { rowdata6 }) => <>{rowdata6}</>
-        },
-        {
-            title: '난이도 Level',
-            dataIndex: 'rowdata7',
-            align: 'center',
-            render: (_, { rowdata7 }) => <> {rowdata7 + 'Lv'} </>
-        }
-    ];
-    const rightTableColumns = [
-        {
-            title: '가방촬영ID',
-            dataIndex: 'rowdata1',
-            align: 'center'
-        },
-        {
-            title: '정답물품',
-            dataIndex: 'rowdata3',
-            align: 'center'
-        },
-        {
-            title: '개봉여부',
-            dataIndex: 'rowdata4',
-            align: 'center'
-        },
-        {
-            title: '통과여부',
-            dataIndex: 'rowdata5',
-            align: 'center'
-        },
-        {
-            title: 'Action구분',
-            dataIndex: 'rowdata6',
-            align: 'center',
-            render: (_, { rowdata6 }) => <>{rowdata6}</>
-        },
-        {
-            title: '난이도 Level',
-            dataIndex: 'rowdata7',
-            align: 'center',
-            render: (_, { rowdata7 }) => <> {rowdata7 + 'Lv'} </>
-        }
-    ];
+    //체크 박스 이벤트 (상단)
+    const onSelectChange = (newSelectedRowKeys) => {
+        console.log('selectedRowKeys changed: ', newSelectedRowKeys);
+        setSelectedRowKeys(newSelectedRowKeys);
+    };
+
+    //체크 박스 선택 (상단)
+    const rowSelection = {
+        selectedRowKeys,
+        onChange: onSelectChange
+    };
 
     const QuestionsOk = () => {
-        props.QuestionCnt(targetKeys);
+        props.QuestionCnt(selectedRowKeys);
     };
 
     // 랜덤박스 오픈
@@ -211,59 +244,47 @@ export const XrayInformation = (props) => {
         setRandemBoxOpen(false);
     };
 
-    // 출제 문제항 Arr Start
-    const questionsArr = [];
-    for (let i = 5; i <= 100; i += 5) {
-        questionsArr.push({ value: i.toString(), label: i.toString() + ' 문항' });
-    }
-    // 출제 문제항 Arr End
-
-    const onChange = (nextTargetKeys) => {
-        setTargetKeys(nextTargetKeys);
-    };
-
     useEffect(() => {
         setLoading(true); // 로딩 호출
         handle_SelectModuleXrayPopList_Api(); // 그룹 api 호출
     }, []);
+
     return (
         <>
-            <TableTransfer
-                dataSource={mockData}
-                targetKeys={targetKeys}
-                disabled={disabled}
-                showSearch={true}
-                onChange={onChange}
-                filterOption={(inputValue, item) => item.title.indexOf(inputValue) !== -1 || item.tag.indexOf(inputValue) !== -1}
-                leftColumns={leftTableColumns}
-                rightColumns={rightTableColumns}
-            />
-            <Row style={{ marginTop: '15px' }}>
-                <Col span={12}>
-                    <Button
-                        type="primary"
-                        danger
-                        onClick={Questions_Randem}
-                        style={{
-                            width: '100px',
-                            borderRadius: '5px',
-                            boxShadow: '2px 3px 0px 0px #dbdbdb'
-                        }}
-                    >
-                        랜덤 선택
-                    </Button>
-                </Col>
-
-                <Col span={12}>
-                    <Button
-                        type="primary"
-                        onClick={QuestionsOk}
-                        style={{ marginLeft: '20px', width: '100px', borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
-                    >
-                        선택 완료 [{targetKeys?.length}]
-                    </Button>
-                </Col>
-            </Row>
+            <MainCard title="출제 문항">
+                <Typography variant="body1">
+                    <Table
+                        size="middle"
+                        bordered={true}
+                        dataSource={selectModuleXrayPopListData}
+                        loading={loading}
+                        columns={columns}
+                        rowSelection={rowSelection}
+                        // pagination={false}
+                    />
+                    <Row style={{ width: '100%', margin: '10px 0px' }}>
+                        <Col span={3}>
+                            <Button
+                                type="primary"
+                                onClick={QuestionsOk}
+                                style={{ width: '100px', borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                            >
+                                선택 완료 [{selectedRowKeys?.length}]
+                            </Button>
+                        </Col>
+                        <Col span={3}>
+                            <Button
+                                type="primary"
+                                danger
+                                onClick={Questions_Randem}
+                                style={{ marginLeft: '20px', width: '100px', borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                            >
+                                랜덤 선택
+                            </Button>
+                        </Col>
+                    </Row>
+                </Typography>
+            </MainCard>
 
             {/* 랜덤박스 Modal Start */}
             <Modal
