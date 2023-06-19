@@ -22,37 +22,25 @@ export const StudentDetail = (props) => {
         const SelectBaselineStuListresponse = await SelectBaselineStuListApi({
             procCd: props.ProcCdValue
         });
+        console.log(SelectBaselineStuListresponse?.data?.RET_DATA);
         setDataSource([
             ...SelectBaselineStuListresponse?.data?.RET_DATA.map((d, i) => ({
                 key: d.userId,
                 userNo: i + 1,
+                // compNm: "2",
+                // deptNm: "교육훈련실",
+                // endingYn: 'N',
+                // gainScore: '0',
+                // insertDate: '2023-06-18',
+                // insertId: 'admin',
+                // passYn: 'ING',
+                // procCd: 61,
+                procNm: d.procNm,
+                // procSeq: '1',
+                // procYear: '2023',
+                // studentNo: 110,
                 userId: d.userId,
-                userNm: d.userNm,
-                userPw: d.userPw,
-                userPhoto: d.userPhoto,
-                iauthCd: d.iauthCd,
-                authNm: d.authNm,
-                company: d.company,
-                dept: d.dept,
-                position: d.position,
-                trainingDiv: d.trainingDiv,
-                telNo: d.telNo,
-                hpNo: d.hpNo,
-                email: d.email,
-                eduName: d.eduName,
-                writeDate: d.writeDate,
-                loginStart: d.loginStart,
-                loginLast: d.loginLast,
-                loginError: d.loginError,
-                pwPrior: d.pwPrior,
-                pwChange: d.pwChange,
-                pwUpdate: d.pwUpdate,
-                pwPeriod: d.pwPeriod,
-                useYn: d.useYn,
-                insertId: d.insertId,
-                insertDate: d.insertDate,
-                updateId: d.updateId,
-                updateDate: d.updateDate
+                userNm: d.userNm
             }))
         ]);
         setLoading(false);
@@ -82,51 +70,50 @@ export const StudentDetail = (props) => {
             ellipsis: true,
             align: 'center'
         },
+        // {
+        //     title: '기관',
+        //     dataIndex: 'company',
+        //     align: 'center'
+        // },
+        // {
+        //     title: '부서',
+        //     dataIndex: 'dept',
+        //     align: 'center'
+        // },
+        // {
+        //     title: '직위',
+        //     dataIndex: 'position',
+        //     align: 'center'
+        // },
         {
-            title: '기관',
-            dataIndex: 'company',
-            align: 'center'
-        },
-        {
-            title: '부서',
-            dataIndex: 'dept',
-            align: 'center'
-        },
-        {
-            title: '직위',
-            dataIndex: 'position',
-            align: 'center'
-        },
-        {
-            width: '170px',
             title: '교육 구분',
-            dataIndex: 'eduName',
+            dataIndex: 'procNm',
             align: 'center'
-        },
-        {
-            title: '입교 신청일',
-            dataIndex: 'writeDate',
-            align: 'center'
-        },
-        {
-            width: '85px',
-            title: '사용여부',
-            dataIndex: 'useYn',
-            align: 'center',
-            render: (_, { useYn }) => (
-                <>
-                    {useYn === 'Y' ? (
-                        <Tag color={'green'} key={useYn}>
-                            사용
-                        </Tag>
-                    ) : (
-                        <Tag color={'volcano'} key={useYn}>
-                            미사용
-                        </Tag>
-                    )}
-                </>
-            )
         }
+        // {
+        //     title: '입교 신청일',
+        //     dataIndex: 'writeDate',
+        //     align: 'center'
+        // }
+        // {
+        //     width: '85px',
+        //     title: '사용여부',
+        //     dataIndex: 'useYn',
+        //     align: 'center',
+        //     render: (_, { useYn }) => (
+        //         <>
+        //             {useYn === 'Y' ? (
+        //                 <Tag color={'green'} key={useYn}>
+        //                     사용
+        //                 </Tag>
+        //             ) : (
+        //                 <Tag color={'volcano'} key={useYn}>
+        //                     미사용
+        //                 </Tag>
+        //             )}
+        //         </>
+        //     )
+        // }
     ];
 
     const onChange = (pagination, filters, sorter, extra) => {
@@ -154,7 +141,7 @@ export const StudentDetail = (props) => {
         <>
             <MainCard title="교육생 정보조회">
                 <Typography variant="body1">
-                    <Table columns={columns} dataSource={dataSource} bordered={true} onChange={onChange} loading={loading} />
+                    <Table columns={columns} size="middle" dataSource={dataSource} bordered={true} onChange={onChange} loading={loading} />
                 </Typography>
             </MainCard>
         </>

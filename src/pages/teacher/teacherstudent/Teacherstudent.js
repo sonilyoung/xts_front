@@ -341,7 +341,7 @@ export const Teacherstudent = () => {
                         =
                     </Title>
                     <Descriptions layout="vertical" bordered style={{ marginTop: '45px', marginLeft: '30px' }}>
-                        <Descriptions.Item style={{ textAlign: 'center', fontWeight: 'bold' }} label="XBT 평가 최종 점수">
+                        <Descriptions.Item style={{ textAlign: 'center', fontWeight: 'bold' }} label="이론 평가 최종 점수">
                             <space style={{ color: '#108ee9' }}>{theoryInfoData?.gainScore || '-'}</space>
                         </Descriptions.Item>
                     </Descriptions>
@@ -390,7 +390,7 @@ export const Teacherstudent = () => {
                         =
                     </Title>
                     <Descriptions layout="vertical" bordered style={{ marginTop: '45px', marginLeft: '30px' }}>
-                        <Descriptions.Item style={{ textAlign: 'center', fontWeight: 'bold' }} label="XBT 평가 최종 점수">
+                        <Descriptions.Item style={{ textAlign: 'center', fontWeight: 'bold' }} label="실습 평가 최종 점수">
                             <space style={{ color: '#108ee9' }}>{practiceInfoData?.gainScore || '-'}</space>
                         </Descriptions.Item>
                     </Descriptions>

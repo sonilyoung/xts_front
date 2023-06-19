@@ -645,7 +645,7 @@ export const EduProcAdd = () => {
                                         <Col>
                                             <Input
                                                 style={{
-                                                    width: '443px'
+                                                    width: '490px'
                                                 }}
                                                 name="procName"
                                                 placeholder="# 차수명"
@@ -674,7 +674,7 @@ export const EduProcAdd = () => {
                                             <Select
                                                 name="procSeq"
                                                 style={{
-                                                    width: '443px'
+                                                    width: '490px'
                                                 }}
                                                 onChange={(e) => setItemContainer({ ...itemContainer, procSeq: e })}
                                                 value={
@@ -709,7 +709,7 @@ export const EduProcAdd = () => {
                                         <Col>
                                             <RangePicker
                                                 name="EduData"
-                                                style={{ width: '443px' }}
+                                                style={{ width: '490px' }}
                                                 onChange={(dates) => {
                                                     const [start, end] = dates;
                                                     const eduStartDate = start.format('YYYY-MM-DD');
@@ -755,7 +755,7 @@ export const EduProcAdd = () => {
                                                     setItemContainer({ ...itemContainer, totStudyDate: String(e.target.value) });
                                                 }}
                                                 value={itemContainer?.totStudyDate}
-                                                style={{ width: '443px' }}
+                                                style={{ width: '490px' }}
                                             />
                                         </Col>
                                     </Row>
@@ -1056,7 +1056,7 @@ export const EduProcAdd = () => {
                 open={studentViewModalOpen}
                 // onOk={StudentView_handleOk}
                 closable={false}
-                width={1400}
+                width={700}
                 style={{
                     left: 130,
                     zIndex: 999

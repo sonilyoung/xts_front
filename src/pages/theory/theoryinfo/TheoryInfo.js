@@ -439,11 +439,13 @@ export const TheoryInfo = () => {
             align: 'center'
         },
         {
+            width: '90px',
             title: '문제ID',
             dataIndex: 'rowdata1',
             align: 'center'
         },
         {
+            width: '90px',
             title: '문제타입',
             dataIndex: 'rowdata3',
             align: 'center',
@@ -463,6 +465,7 @@ export const TheoryInfo = () => {
             )
         },
         {
+            width: '90px',
             title: '학습레벨',
             dataIndex: 'rowdata2',
             align: 'center',
@@ -474,11 +477,13 @@ export const TheoryInfo = () => {
             align: 'center'
         },
         {
+            width: '90px',
             title: '출제자',
             dataIndex: 'rowdata14',
             align: 'center'
         },
         {
+            width: '80px',
             title: '사용여부',
             key: 'tags',
             dataIndex: 'rowdata4',
@@ -486,12 +491,13 @@ export const TheoryInfo = () => {
             align: 'center'
         },
         {
+            width: '100px',
             title: '등록일자',
             dataIndex: 'rowdata15',
             align: 'center'
         },
         {
-            width: '150px',
+            width: '120px',
             title: '수정',
             render: (_, { key }) => (
                 <>
@@ -657,6 +663,7 @@ export const TheoryInfo = () => {
                         loading={loading}
                         columns={columns}
                         rowSelection={rowSelection}
+                        size="middle"
                     />
                 </Typography>
             </MainCard>

@@ -203,7 +203,7 @@ export const Xrayinformation = () => {
             )
         },
         {
-            width: '200px',
+            width: '90px',
             title: '가방촬영ID',
             dataIndex: 'rowdata1',
             align: 'center',
@@ -216,7 +216,7 @@ export const Xrayinformation = () => {
             )
         },
         {
-            width: '200px',
+            width: '90px',
             title: '물품ID',
             dataIndex: 'rowdata2',
             align: 'center',
@@ -241,7 +241,7 @@ export const Xrayinformation = () => {
             )
         },
         {
-            width: '100px',
+            width: '90px',
             title: '개봉여부',
             dataIndex: 'rowdata4',
             align: 'center',
@@ -254,7 +254,7 @@ export const Xrayinformation = () => {
             )
         },
         {
-            width: '100px',
+            width: '90px',
             title: '통과여부',
             dataIndex: 'rowdata5',
             align: 'center',
@@ -267,7 +267,7 @@ export const Xrayinformation = () => {
             )
         },
         {
-            width: '200px',
+            width: '90px',
             title: 'Action구분',
             dataIndex: 'rowdata6',
             align: 'center',
@@ -382,19 +382,18 @@ export const Xrayinformation = () => {
             align: 'center'
         },
         {
-            width: '200px',
+            width: '90px',
             title: '가방촬영ID',
             dataIndex: 'rowdata1',
             align: 'center'
         },
         {
-            width: '200px',
+            width: '90px',
             title: '물품ID',
             dataIndex: 'rowdata2',
             align: 'center'
         },
         {
-            width: '200px',
             title: '물품명칭',
             dataIndex: 'rowdata3',
             align: 'center'
@@ -405,25 +404,25 @@ export const Xrayinformation = () => {
             align: 'center'
         },
         {
-            width: '200px',
+            width: '90px',
             title: '개봉여부',
             dataIndex: 'rowdata4',
             align: 'center'
         },
         {
-            width: '200px',
+            width: '90px',
             title: '통과여부',
             dataIndex: 'rowdata5',
             align: 'center'
         },
         {
-            width: '200px',
+            width: '90px',
             title: 'Action구분',
             dataIndex: 'rowdata6',
             align: 'center'
         },
         {
-            width: '100px',
+            width: '90px',
             title: 'Seq',
             dataIndex: 'rowdata13',
             align: 'center',
@@ -492,7 +491,7 @@ export const Xrayinformation = () => {
             )
         },
         {
-            width: '200px',
+            width: '150px',
             title: '정답물품',
             dataIndex: 'rowdata16',
             align: 'center',

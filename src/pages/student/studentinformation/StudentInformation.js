@@ -515,6 +515,7 @@ export const Studentinformation = () => {
                         bordered={true}
                         onChange={onChange}
                         loading={loading}
+                        size="middle"
                     />
                 </Typography>
             </MainCard>
