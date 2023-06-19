@@ -27,12 +27,8 @@ export const XrayInformation = (props) => {
 
     // 물품팝업조회 ======================================================
     const [selectModuleXrayPopListApi] = useSelectModuleXrayPopListMutation(); // 물품팝업조회 hooks api호출
-    const [selectModuleXrayPopListData, setSelectModuleXrayPopListData] = useState(); // 물품팝업조회 Data 값
-    // 데이터 값 선언
     const handle_SelectModuleXrayPopList_Api = async () => {
         const selectModuleXrayPopListresponse = await selectModuleXrayPopListApi({});
-        // console.log(selectModuleXrayPopListresponse?.data?.RET_DATA);
-
         setMockData([
             ...selectModuleXrayPopListresponse?.data?.RET_DATA.map((d, i) => ({
                 key: d.bagScanId,
@@ -52,7 +48,6 @@ export const XrayInformation = (props) => {
 
     // 랜덤추출 ======================================================
     const [selectModuleRandomApi] = useSelectModuleRandomMutation(); // 랜덤추출 hooks api호출
-    // 랜덤 데이터 값 선언
     const handle_selectModuleRandom_Api = async (randemLevel, randemlimit) => {
         if (randemLevel === '0') {
             handle_SelectModuleXrayPopList_Api();
@@ -124,7 +119,6 @@ export const XrayInformation = (props) => {
         </Transfer>
     );
 
-    const originTargetKeys = props.BagList.map((item) => item.key);
     const leftTableColumns = [
         {
             title: '가방촬영ID',
@@ -205,8 +199,6 @@ export const XrayInformation = (props) => {
 
     // 랜덤 추출
     const Questions_handleRandem = () => {
-        console.log('난이도 레벨 : ', randemLevel);
-        console.log('출제 문항수 : ', randemlimit);
         handle_selectModuleRandom_Api(randemLevel, randemlimit);
         setRandemBoxOpen(false);
     };
@@ -224,6 +216,8 @@ export const XrayInformation = (props) => {
 
     useEffect(() => {
         setLoading(true); // 로딩 호출
+        setTargetKeys(props.BagList);
+
         handle_SelectModuleXrayPopList_Api(); // 그룹 api 호출
     }, []);
     return (
