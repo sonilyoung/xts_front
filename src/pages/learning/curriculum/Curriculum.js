@@ -54,7 +54,7 @@ export const Curriculum = () => {
     // const [timeLimit, setTimeLimit] = useState(''); // 제한시간 항목
     // const [questionCnt, setQuestionCnt] = useState(''); // 출제문제수 항목
     // const [useYn, setUseYn] = useState('Y'); // 사용여부 항목
-    const [bagList, setBagList] = useState([]); // 출제문항 목록 배열
+    const [bagList, setBagList] = useState([null]); // 출제문항 목록 배열
 
     const [itemContainer, setItemContainer] = useState({}); // 항목 컨테이너
 
@@ -237,7 +237,6 @@ export const Curriculum = () => {
 
         setItemContainer(SelectModuleresponse.data.RET_DATA);
         setBagList(SelectModuleresponse.data.RET_DATA.bagList);
-        console.log(SelectModuleresponse.data.RET_DATA);
     };
 
     // 수정 ======================================================
@@ -348,7 +347,7 @@ export const Curriculum = () => {
 
     //체크 박스 이벤트
     const onSelectChange = (newSelectedRowKeys) => {
-        console.log('selectedRowKeys changed: ', newSelectedRowKeys);
+        // console.log('selectedRowKeys changed: ', newSelectedRowKeys);
         setSelectedRowKeys(newSelectedRowKeys);
     };
 

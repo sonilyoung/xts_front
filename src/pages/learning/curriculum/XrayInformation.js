@@ -216,10 +216,9 @@ export const XrayInformation = (props) => {
 
     useEffect(() => {
         setLoading(true); // 로딩 호출
-        setTargetKeys(props.BagList);
-
+        setTargetKeys(props.BagList === undefined ? '' : props.BagList);
         handle_SelectModuleXrayPopList_Api(); // 그룹 api 호출
-    }, []);
+    }, [props.BagList]);
     return (
         <>
             <TableTransfer
