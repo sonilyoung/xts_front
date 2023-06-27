@@ -17,12 +17,12 @@ export const StudySch = (props) => {
     dayjs.extend(localeData);
     const { RangePicker } = DatePicker;
 
-    const [eduStartDate, setEduStartDate] = useState(props.EduStartDate);
-    const [eduEndDate, setEduEndDate] = useState(props.EduEndDate);
-    const [totStudyDate, setTotStudyDate] = useState(props.TotStudyDate);
+    // const [eduStartDate, setEduStartDate] = useState(props.EduStartDate);
+    // const [eduEndDate, setEduEndDate] = useState(props.EduEndDate);
+    // const [totStudyDate, setTotStudyDate] = useState(props.TotStudyDate);
     const [scheduleSet, setScheduleListSet] = useState(props.SetScheduleList);
     const [menuListSet, setMenuListSet] = useState(props.SetMenuList);
-
+    const [totStudyDateList, setTotStudyDateList] = useState({ eduStartDate: null, eduEndDate: null });
     // ===============================
     // Api 호출 Start
     // 모듈 목록 조회 ======================================================
@@ -36,14 +36,6 @@ export const StudySch = (props) => {
     // Api 호출 End
     // ===============================
 
-    // 총교육일수에 맞춰 일자입력 폼 설정 Start
-    const initialTotStudyDateList = Array.from({ length: totStudyDate }, () => ({
-        eduStartDate: eduStartDate,
-        eduEndDate: eduEndDate
-    }));
-    const [totStudyDateList, setTotStudyDateList] = useState(!scheduleSet ? initialTotStudyDateList : scheduleSet);
-    // 총교육일수에 맞춰 일자입력 폼 설정 End
-
     const handel_Add = () => {
         props.StudySet(totStudyDateList, menuListSet);
     };
@@ -51,6 +43,15 @@ export const StudySch = (props) => {
     useEffect(() => {
         handel_selectModuleList_Api(); // 조회
     }, []);
+
+    useEffect(() => {
+        const initialTotStudyDateList = Array.from({ length: props.TotStudyDate }, () => ({
+            eduStartDate: props.EduStartDate,
+            eduEndDate: props.EduEndDate
+        }));
+        setTotStudyDateList(initialTotStudyDateList);
+    }, [props.TotStudyDate, props.EduStartDate, props.EduEndDate]);
+
     return (
         <>
             <MainCard title="학습 일정별 학습과정 설정" style={{ marginTop: 30 }}>
@@ -82,6 +83,7 @@ export const StudySch = (props) => {
                         </Col>
                     </Row>
                     {Array.from(totStudyDateList, (_, index) => (
+                        // {/* {Array.from({ length: props.TotStudyDate }, (_, index) => ( */}
                         <div key={index}>
                             <Divider style={{ margin: '10px 0' }} />
                             <Row gutter={24} key={index}>
