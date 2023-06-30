@@ -18,21 +18,12 @@ export const StudentSch = (props) => {
     // 조회 ======================================================
     const [SelectUserListPopApi] = useSelectUserListPopMutation(); // 교육생 정보 hooks api호출
     const [selectUserListPopData, setSelectUserListPopData] = useState(); // 교육생 정보 리스트 값
+
     const handle_SelectUserListPop_Api = async () => {
-        //by 손일영 등록화면에서 procCd가 배열로 넘어오면 오류남
-        let targetProcCd;
-        if (props.ProcCdValue.length <= 0) {
-            targetProcCd = '';
-        } else {
-            targetProcCd = props.ProcCdValue;
-        }
         const SelectUserListPopresponse = await SelectUserListPopApi({
-            // procCd: props.ProcCdValue
-            //procCd: targetProcCd
-            targetProcCd
+            ...(props.ProcCdValue && { procCd: props.ProcCdValue })
         });
 
-        // console.log(SelectUserListPopresponse?.data?.RET_DATA);
         setSelectUserListPopData(SelectUserListPopresponse?.data?.RET_DATA);
         setDataSource([
             ...SelectUserListPopresponse?.data?.RET_DATA.map((d, i) => ({

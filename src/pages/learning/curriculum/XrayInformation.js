@@ -197,6 +197,13 @@ export const XrayInformation = (props) => {
         setRandemBoxOpen(true);
     };
 
+    // 랜덤박스 오픈
+    const Randem_handleclose = () => {
+        setRandemLevel(null);
+        setRandemlimit(null);
+        setRandemBoxOpen(false);
+    };
+
     // 랜덤 추출
     const Questions_handleRandem = () => {
         handle_selectModuleRandom_Api(randemLevel, randemlimit);
@@ -261,6 +268,7 @@ export const XrayInformation = (props) => {
             {/* 랜덤박스 Modal Start */}
             <Modal
                 open={randemBoxOpen}
+                onCancel={Randem_handleclose}
                 width={400}
                 style={{
                     top: 250,

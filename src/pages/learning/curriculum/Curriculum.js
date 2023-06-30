@@ -956,10 +956,10 @@ export const Curriculum = () => {
                     복사 대상 모듈명 : {moduleNm}
                 </Card>
 
-                <Card title="모듈 복사 명을 입력하세요" size="small">
+                <Card title="모듈 복사명을 입력하세요" size="small">
                     <Input
                         style={{
-                            width: '363px'
+                            width: '100%'
                         }}
                         name="moduleNm"
                         onChange={(e) => setCopyModuleNm(e.target.value)}

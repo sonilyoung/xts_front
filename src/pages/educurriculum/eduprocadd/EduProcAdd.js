@@ -692,43 +692,6 @@ export const EduProcAdd = () => {
                                 </Form.Item>
                             </Col>
                         </Row>
-
-                        <Row gutter={24}>
-                            <Col span={24}>
-                                <Form.Item
-                                    name="form22"
-                                    label="모듈"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: '모듈 선택'
-                                        }
-                                    ]}
-                                >
-                                    <Row>
-                                        <Col>
-                                            <Select
-                                                name="procSeq"
-                                                style={{
-                                                    width: '490px'
-                                                }}
-                                                onChange={(e) => setItemContainer({ ...itemContainer, procSeq: e })}
-                                                value={
-                                                    itemContainer?.procSeq === undefined || itemContainer?.procSeq === null
-                                                        ? {
-                                                              value: 0,
-                                                              label: '# 모듈 선택'
-                                                          }
-                                                        : itemContainer?.procSeq
-                                                }
-                                                options={baseLineArr}
-                                            />
-                                        </Col>
-                                    </Row>
-                                </Form.Item>
-                            </Col>
-                        </Row>
-
                         <Row gutter={24}>
                             <Col span={24}>
                                 <Form.Item
@@ -828,7 +791,7 @@ export const EduProcAdd = () => {
                                             <Select
                                                 name="endingStdScore"
                                                 style={{
-                                                    width: '210px'
+                                                    width: '236px'
                                                 }}
                                                 options={Scoreoptions}
                                                 onChange={(e) => setItemContainer({ ...itemContainer, endingStdScore: e })}
@@ -958,13 +921,11 @@ export const EduProcAdd = () => {
                                     </Descriptions.Item>
                                     <Descriptions.Item label="실기 평가" style={{ textAlign: 'center' }}>
                                         <Tag color="default" style={{ padding: '5px 10px', borderRadius: '8px' }}>
-                                            {' '}
                                             {itemContainer?.practiceTotalScore || 0}%
                                         </Tag>
                                     </Descriptions.Item>
                                     <Descriptions.Item label="XBT 평가" style={{ textAlign: 'center' }}>
                                         <Tag color="default" style={{ padding: '5px 10px', borderRadius: '8px' }}>
-                                            {' '}
                                             {itemContainer?.evaluationTotalScore || 0}%
                                         </Tag>
                                     </Descriptions.Item>
@@ -1014,7 +975,7 @@ export const EduProcAdd = () => {
                 open={eduDayModalOpen}
                 onOk={EduDay_handleOk}
                 onCancel={EduDay_handleCancel}
-                width={950}
+                width={1250}
                 style={{
                     left: 130,
                     zIndex: 999
@@ -1068,7 +1029,7 @@ export const EduProcAdd = () => {
             <Modal
                 open={eduDayViewModalOpen}
                 closable={false}
-                width={950}
+                width={1250}
                 style={{
                     left: 130,
                     zIndex: 999

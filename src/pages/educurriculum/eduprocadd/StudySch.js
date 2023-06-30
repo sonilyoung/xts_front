@@ -1,6 +1,8 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
-import { Tag, Col, Row, Form, Tooltip, Space, DatePicker, Select, Divider } from 'antd';
+import { Tag, Col, Row, Form, Tooltip, Space, DatePicker, Select, Divider, Card, Typography } from 'antd';
+
+const { Title, Paragraph, Text, Link } = Typography;
 
 // project import
 import MainCard from 'components/MainCard';
@@ -82,12 +84,65 @@ export const StudySch = (props) => {
                             </Space>
                         </Col>
                     </Row>
+                    <Row gutter={[24, 8]}>
+                        <Col span={6}>
+                            <Card
+                                style={{
+                                    width: '100%',
+                                    height: '50px',
+                                    marginBottom: '5px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    textAlign: 'center',
+                                    background: '#a7a9ad',
+                                    color: '#ffffff'
+                                }}
+                            >
+                                일자 설정
+                            </Card>
+                        </Col>
+                        <Col span={6}>
+                            <Card
+                                style={{
+                                    width: '100%',
+                                    height: '50px',
+                                    marginBottom: '5px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    textAlign: 'center',
+                                    background: '#a7a9ad',
+                                    color: '#ffffff'
+                                }}
+                            >
+                                모듈 설정
+                            </Card>
+                        </Col>
+                        <Col span={12}>
+                            <Card
+                                style={{
+                                    width: '100%',
+                                    height: '50px',
+                                    marginBottom: '5px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    textAlign: 'center',
+                                    background: '#a7a9ad',
+                                    color: '#ffffff'
+                                }}
+                            >
+                                메뉴 설정
+                            </Card>
+                        </Col>
+                    </Row>
                     {Array.from(totStudyDateList, (_, index) => (
                         // {/* {Array.from({ length: props.TotStudyDate }, (_, index) => ( */}
                         <div key={index}>
                             <Divider style={{ margin: '10px 0' }} />
-                            <Row gutter={24} key={index}>
-                                <Col span={7}>
+                            <Row gutter={[24, 8]} key={index}>
+                                <Col span={6}>
                                     <RangePicker
                                         style={{ height: '38px' }}
                                         name={`Day ${index + 1}`}
@@ -121,8 +176,27 @@ export const StudySch = (props) => {
                                         }
                                     />
                                 </Col>
-                                <Col span={1}></Col>
-                                <Col span={16}>
+                                <Col span={6}>
+                                    <Select
+                                        placeholder="# 모듈 선택"
+                                        name="modules"
+                                        showArrow
+                                        style={{
+                                            width: '100%'
+                                        }}
+                                        // options={Scoreoptions}
+                                        // onChange={(e) => setItemContainer({ ...itemContainer, endingStdScore: e })}
+                                        // value={
+                                        //     itemContainer?.endingStdScore === undefined || itemContainer?.endingStdScore === null
+                                        //         ? {
+                                        //               value: 0,
+                                        //               label: '# 수료 기준점수'
+                                        //           }
+                                        //         : itemContainer?.endingStdScore
+                                        // }
+                                    />
+                                </Col>
+                                <Col span={12}>
                                     <Space.Compact size="large">
                                         <Select
                                             placeholder="# 메뉴 선택"
