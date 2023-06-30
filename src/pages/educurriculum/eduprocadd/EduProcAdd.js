@@ -696,6 +696,42 @@ export const EduProcAdd = () => {
                         <Row gutter={24}>
                             <Col span={24}>
                                 <Form.Item
+                                    name="form22"
+                                    label="모듈"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: '모듈 선택'
+                                        }
+                                    ]}
+                                >
+                                    <Row>
+                                        <Col>
+                                            <Select
+                                                name="procSeq"
+                                                style={{
+                                                    width: '490px'
+                                                }}
+                                                onChange={(e) => setItemContainer({ ...itemContainer, procSeq: e })}
+                                                value={
+                                                    itemContainer?.procSeq === undefined || itemContainer?.procSeq === null
+                                                        ? {
+                                                              value: 0,
+                                                              label: '# 모듈 선택'
+                                                          }
+                                                        : itemContainer?.procSeq
+                                                }
+                                                options={baseLineArr}
+                                            />
+                                        </Col>
+                                    </Row>
+                                </Form.Item>
+                            </Col>
+                        </Row>
+
+                        <Row gutter={24}>
+                            <Col span={24}>
+                                <Form.Item
                                     name="form03"
                                     label="교육기간"
                                     rules={[
