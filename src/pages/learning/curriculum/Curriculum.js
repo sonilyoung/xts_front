@@ -539,6 +539,7 @@ export const Curriculum = () => {
                     </>
                 }
             >
+                {localStorage.getItem('LoginId')}
                 <MainCard>
                     <Form layout="vertical" form={form}>
                         <Row gutter={24}>
@@ -952,6 +953,7 @@ export const Curriculum = () => {
                     zIndex: 999
                 }}
             >
+                {localStorage.getItem('LoginId')}
                 <Card size="small" style={{ marginBottom: '20px', background: '#a7a9ad', color: '#ffffff' }}>
                     복사 대상 모듈명 : {moduleNm}
                 </Card>

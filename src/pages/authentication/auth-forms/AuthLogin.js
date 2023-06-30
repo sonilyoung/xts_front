@@ -76,9 +76,10 @@ const AuthLogin = () => {
         if (userLoginResponse.data.RET_CODE === '0000') {
             const jwtToken = userLoginResponse.data.RET_DATA.accessToken;
             userToken.setItem(jwtToken);
+            localStorage.setItem('LoginId', values.Adminid);
 
             if (true) {
-                if (saveIDFlag) localStorage.setItem(LS_KEY_ID, values.id);
+                if (saveIDFlag) localStorage.setItem(LS_KEY_ID, values.Adminid);
             }
 
             messageApi.open({

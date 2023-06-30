@@ -627,6 +627,7 @@ export const EduProcAdd = () => {
                     </>
                 }
             >
+                {localStorage.getItem('LoginId')}
                 <MainCard>
                     <Form layout="vertical" form={form} autoComplete="off">
                         <Row gutter={24}>
