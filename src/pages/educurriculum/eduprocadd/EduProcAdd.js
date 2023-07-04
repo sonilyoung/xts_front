@@ -1030,7 +1030,12 @@ export const EduProcAdd = () => {
                     </Button>
                 ]}
             >
-                <StudentSch StudentsCnt={Student_handleOk} StudentValue={stuList} ProcCdValue={procCdValue} />
+                {procCdValue === '' ? (
+                    <StudentSch StudentsCnt={Student_handleOk} />
+                ) : (
+                    <StudentSch StudentsCnt={Student_handleOk} StudentValue={stuList} ProcCdValue={procCdValue} />
+                )}
+                {/* <StudentSch StudentsCnt={Student_handleOk} StudentValue={stuList} procCdValue === '' ? '' : ProcCdValue={procCdValue} /> */}
             </Modal>
             {/* 교육생 검색 Modal End */}
 

@@ -10,9 +10,8 @@ import MainCard from 'components/MainCard';
 export const StudentSch = (props) => {
     const [dataSource, setDataSource] = useState([]); // Table 데이터 값
     const [loading, setLoading] = useState(false);
-    const [selectedRowKeys, setSelectedRowKeys] = useState(props.StudentValue); //셀렉트 박스 option Selected 값
+    const [selectedRowKeys, setSelectedRowKeys] = useState([]); //셀렉트 박스 option Selected 값
 
-    // console.log(props.StudentValue);
     // ===============================
     // Api 호출 Start
     // 조회 ======================================================
@@ -20,7 +19,9 @@ export const StudentSch = (props) => {
     const [selectUserListPopData, setSelectUserListPopData] = useState(); // 교육생 정보 리스트 값
 
     const handle_SelectUserListPop_Api = async () => {
-        const SelectUserListPopresponse = await SelectUserListPopApi(props.ProcCdValue === null ? {} : { procCd: props.ProcCdValue });
+        setSelectedRowKeys(props.StudentValue);
+        const selectUserListPopApiParams = props.ProcCdValue.length <= 0 ? {} : { procCd: props.ProcCdValue };
+        const SelectUserListPopresponse = await SelectUserListPopApi(selectUserListPopApiParams);
 
         setSelectUserListPopData(SelectUserListPopresponse?.data?.RET_DATA);
         setDataSource([
@@ -141,7 +142,7 @@ export const StudentSch = (props) => {
     useEffect(() => {
         setLoading(true);
         handle_SelectUserListPop_Api();
-    }, [props.ProcCdValue]);
+    }, [props.ProcCdValue, props.StudentValue]);
 
     return (
         <>
