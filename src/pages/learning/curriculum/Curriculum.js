@@ -29,7 +29,8 @@ import {
     useInsertModuleMutation, // 등록
     useSelectModuleMutation, // 상세
     useUpdateModuleMutation, // 수정
-    useDeleteModuleMutation // 삭제
+    useDeleteModuleMutation, // 삭제
+    useInsertModuleCopyMutation // 모듈 복사
 } from '../../../hooks/api/CurriculumManagement/CurriculumManagement';
 
 // project import
@@ -303,6 +304,28 @@ export const Curriculum = () => {
                   onOk() {}
               });
     };
+
+    // 모듈 복사 ======================================================
+    const [InsertModuleCopyApi] = useInsertModuleCopyMutation(); // 삭제 hooks api호출
+    const handel_InsertModuleCopy_Api = async (targetModuleId, moduleNm) => {
+        const InsertModuleCopyresponse = await InsertModuleCopyApi({
+            targetModuleId: targetModuleId,
+            moduleNm: moduleNm,
+            userId: localStorage.getItem('LoginId')
+        });
+        InsertModuleCopyresponse?.data?.RET_CODE === '0100'
+            ? Modal.success({
+                  content: '복사 완료',
+                  onOk() {
+                      handel_selectModuleList_Api();
+                  }
+              })
+            : Modal.error({
+                  content: '복사 오류',
+                  onOk() {}
+              });
+    };
+
     // Api 호출 End
     // ===============================
 
@@ -365,12 +388,12 @@ export const Curriculum = () => {
 
     // 모듈 복사 Modal 복사처리
     const copy_handle = () => {
-        console.log(copyModuleNm);
         setConfirmLoading(true);
         setTimeout(() => {
+            handel_InsertModuleCopy_Api(moduleId, copyModuleNm);
             setModulecopyModalOpen(false);
             setConfirmLoading(false);
-        }, 1000);
+        }, 800);
         setCopyModuleNm('');
     };
 
@@ -539,7 +562,6 @@ export const Curriculum = () => {
                     </>
                 }
             >
-                {localStorage.getItem('LoginId')}
                 <MainCard>
                     <Form layout="vertical" form={form}>
                         <Row gutter={24}>

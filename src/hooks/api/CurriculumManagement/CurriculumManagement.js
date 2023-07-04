@@ -81,6 +81,15 @@ export const curriculumManagement = createApi({
             })
         }),
 
+        // 모듈복사
+        insertModuleCopy: builder.mutation({
+            query: (body) => ({
+                url: 'adm/learningMgr/insertModuleCopy.do',
+                method: 'POST',
+                body: body
+            })
+        }),
+
         // 학습과정 관리 > 조회
         selectBaselineList: builder.mutation({
             query: (body) => ({
@@ -106,7 +115,7 @@ export const curriculumManagement = createApi({
             })
         }),
         // 학습과정 관리 > 등록 - (커리큘럼 메뉴목록 조회)
-        selectModuleMenuList: builder.mutation({
+        selectMenuList: builder.mutation({
             query: (body) => ({
                 url: 'adm/system/selectModuleMenuList.do',
                 method: 'POST',
@@ -245,11 +254,12 @@ export const {
     useDeleteModuleMutation, // 학습모듈 관리 > 삭제
     useSelectModuleXrayPopListMutation, // 학습모듈 관리 > 물품팝업조회
     useSelectModuleQuestionMutation, // 학습모듈 관리 > 모듈에 등록된 문제목록 가져오기
+    useInsertModuleCopyMutation, // 학습모듈 관리 > 모듈 복사
 
     useSelectBaselineListMutation, // 학습과정 관리 조회
     useSelectBaselineMutation, // 학습과정 관리 상세
     useInsertBaselineMutation, // 학습과정 관리 등록
-    useSelectModuleMenuListMutation, // 학습과정 관리 등록-(커리큘럼 메뉴목록 조회)
+    useSelectMenuListMutation, // 학습과정 관리 등록-(커리큘럼 메뉴목록 조회)
     useUpdateBaselineMutation, // 학습과정 관리 수정
     useDeleteBaselineMutation, // 학습과정 관리 삭제
     useDeleteBaselineStudentMutation, // 학습과정 관리 커리큘럼 교육생삭제

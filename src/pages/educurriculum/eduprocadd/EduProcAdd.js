@@ -74,6 +74,7 @@ export const EduProcAdd = () => {
     const [itemContainer, setItemContainer] = useState({}); // 항목 컨테이너
     const [procCdValue, setProcCdValue] = useState([]); // 차수관리 아이디
     const [studyDayArry, setStudyDayArry] = useState([]); // 학습일수 배열
+    const [menuArry, setMenuArry] = useState([]); //  메뉴 배열
     const [moduleArry, setModuleArry] = useState([]); //  모듈 배열
     const [stuList, setStuList] = useState([]); // 상세 - 교육생 배열 정보
 
@@ -249,8 +250,10 @@ export const EduProcAdd = () => {
             evaluationTotalScore: itemContainer.evaluationTotalScore,
             theoryTotalScore: itemContainer.theoryTotalScore,
             scheduleList: studyDayArry,
-            menuList: moduleArry,
+            menuList: menuArry,
+            moduleList: moduleArry,
             userList: stuList
+            // userId: localStorage.getItem('LoginId')
         });
 
         InsertBaselineresponse?.data?.RET_CODE === '0100'
@@ -279,7 +282,8 @@ export const EduProcAdd = () => {
         console.log(SelectBaselineresponse?.data?.RET_DATA);
         setItemContainer(SelectBaselineresponse?.data?.RET_DATA);
         setStudyDayArry(SelectBaselineresponse?.data?.RET_DATA?.scheduleList);
-        setModuleArry(SelectBaselineresponse?.data?.RET_DATA?.menuList);
+        setMenuArry(SelectBaselineresponse?.data?.RET_DATA?.menuList);
+        setModuleArry(SelectBaselineresponse?.data?.RET_DATA?.moduleList);
         setStuList(SelectBaselineresponse?.data?.RET_DATA?.userList);
     };
     // 차수 관리 수정 ======================================================
@@ -299,7 +303,8 @@ export const EduProcAdd = () => {
             evaluationTotalScore: itemContainer.evaluationTotalScore,
             theoryTotalScore: itemContainer.theoryTotalScore,
             scheduleList: studyDayArry,
-            menuList: moduleArry,
+            menuList: menuArry,
+            moduleList: moduleArry,
             userList: stuList
         });
 
@@ -425,6 +430,7 @@ export const EduProcAdd = () => {
     const handleAdd = () => {
         setItemContainer(null);
         setStudyDayArry(null);
+        setMenuArry(null);
         setModuleArry(null);
         setStuList(null);
         setOpen(true);
@@ -531,12 +537,14 @@ export const EduProcAdd = () => {
     };
 
     // 학습일 설정 (일자, 모듈, 메뉴) 값
-    const handel_Study_Set = (totStudyDateList, menuListSet) => {
+    const handel_Study_Set = (totStudyDateList, menuListSet, moduleListSet) => {
         setStudyDayArry(totStudyDateList);
-        setModuleArry(menuListSet);
+        setMenuArry(menuListSet);
+        setModuleArry(moduleListSet);
         setEduDayModalOpen(false);
         // console.log(totStudyDateList);
-        // console.log(menuListSet);
+        console.log(menuListSet);
+        console.log(moduleListSet);
     };
 
     useEffect(() => {
@@ -627,7 +635,6 @@ export const EduProcAdd = () => {
                     </>
                 }
             >
-                {localStorage.getItem('LoginId')}
                 <MainCard>
                     <Form layout="vertical" form={form} autoComplete="off">
                         <Row gutter={24}>
@@ -998,7 +1005,8 @@ export const EduProcAdd = () => {
                     EduEndDate={itemContainer?.eduEndDate}
                     StudySet={handel_Study_Set}
                     SetScheduleList={studyDayArry}
-                    SetMenuList={moduleArry}
+                    SetMenuList={menuArry}
+                    SetModuleList={moduleArry}
                 />
             </Modal>
             {/* 학습일자 설정 Modal End */}

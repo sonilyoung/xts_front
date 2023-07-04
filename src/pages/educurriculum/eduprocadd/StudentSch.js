@@ -20,9 +20,7 @@ export const StudentSch = (props) => {
     const [selectUserListPopData, setSelectUserListPopData] = useState(); // 교육생 정보 리스트 값
 
     const handle_SelectUserListPop_Api = async () => {
-        const SelectUserListPopresponse = await SelectUserListPopApi({
-            ...(props.ProcCdValue && { procCd: props.ProcCdValue })
-        });
+        const SelectUserListPopresponse = await SelectUserListPopApi(props.ProcCdValue === null ? {} : { procCd: props.ProcCdValue });
 
         setSelectUserListPopData(SelectUserListPopresponse?.data?.RET_DATA);
         setDataSource([
