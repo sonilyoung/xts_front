@@ -20,7 +20,8 @@ export const StudentSch = (props) => {
 
     const handle_SelectUserListPop_Api = async () => {
         setSelectedRowKeys(props.StudentValue);
-        const selectUserListPopApiParams = props.ProcCdValue.length <= 0 ? {} : { procCd: props.ProcCdValue };
+        const selectUserListPopApiParams =
+            props.ProcCdValue === undefined || props.ProcCdValue === null ? {} : { procCd: props.ProcCdValue };
         const SelectUserListPopresponse = await SelectUserListPopApi(selectUserListPopApiParams);
 
         setSelectUserListPopData(SelectUserListPopresponse?.data?.RET_DATA);
