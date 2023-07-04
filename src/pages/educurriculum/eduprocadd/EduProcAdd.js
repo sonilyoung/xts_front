@@ -543,8 +543,8 @@ export const EduProcAdd = () => {
         setModuleArry(moduleListSet);
         setEduDayModalOpen(false);
         // console.log(totStudyDateList);
-        console.log(menuListSet);
-        console.log(moduleListSet);
+        // console.log(menuListSet);
+        // console.log(moduleListSet);
     };
 
     useEffect(() => {
