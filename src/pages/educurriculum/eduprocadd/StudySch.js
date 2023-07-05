@@ -19,8 +19,8 @@ export const StudySch = (props) => {
     dayjs.extend(localeData);
     const { RangePicker } = DatePicker;
 
-    const [menuListSet, setMenuListSet] = useState(props.SetMenuList);
-    const [moduleListSet, setModuleListSet] = useState(props.SetModuleList);
+    const [menuListSet, setMenuListSet] = useState();
+    const [moduleListSet, setModuleListSet] = useState();
     const [totStudyDateList, setTotStudyDateList] = useState({ eduStartDate: null, eduEndDate: null });
     // ===============================
     // Api 호출 Start
@@ -55,17 +55,14 @@ export const StudySch = (props) => {
     }, []);
 
     useEffect(() => {
-        const initialModuleList = Array.from({ length: parseInt(props.TotStudyDate) }, () => {
-            props.SetModuleList;
-        });
-        setModuleListSet(initialModuleList);
-
-        const initialTotStudyDateList = Array.from({ length: props.TotStudyDate }, () => ({
-            eduStartDate: props.EduStartDate,
-            eduEndDate: props.EduEndDate
+        const initialTotStudyDateList = Array.from({ length: props.TotStudyDate }, (_, index) => ({
+            eduStartDate: props.SetScheduleList[index].eduStartDate,
+            eduEndDate: props.SetScheduleList[index].eduEndDate
         }));
         setTotStudyDateList(initialTotStudyDateList);
-    }, [props.TotStudyDate, props.EduStartDate, props.EduEndDate]);
+        setModuleListSet(props.SetModuleList);
+        setMenuListSet(props.SetMenuList);
+    }, [props.TotStudyDate, props.EduStartDate, props.EduEndDate, props.SetModuleList, props.SetMenuList]);
 
     return (
         <>

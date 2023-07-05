@@ -68,7 +68,7 @@ export const Curriculum = () => {
                 key: d.moduleId,
                 rowdata0: i + 1, // 시퀀스
                 rowdata1: d.moduleNm, // 모듈명
-                rowdata2: d.studyLvl, // 난이도레벨
+                rowdata2: d.studyLvl, // 난이도레벨F
                 rowdata3: d.slideSpeed, // 슬라이드스피드
                 rowdata4: d.questionCnt, // 출제문제수
                 rowdata5: d.moduleType, // 모듈타입
@@ -222,7 +222,8 @@ export const Curriculum = () => {
             timeLimit: itemContainer.timeLimit,
             useYn: itemContainer.useYn,
             questionCnt: itemContainer.questionCnt,
-            bagList: bagList
+            bagList: bagList,
+            userId: localStorage.getItem('LoginId')
         });
 
         SelectModuleListresponse?.data?.RET_CODE === '0100'
@@ -975,7 +976,6 @@ export const Curriculum = () => {
                     zIndex: 999
                 }}
             >
-                {localStorage.getItem('LoginId')}
                 <Card size="small" style={{ marginBottom: '20px', background: '#a7a9ad', color: '#ffffff' }}>
                     복사 대상 모듈명 : {moduleNm}
                 </Card>

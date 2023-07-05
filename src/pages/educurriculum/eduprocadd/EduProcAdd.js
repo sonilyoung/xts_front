@@ -21,7 +21,7 @@ import {
     Tag
 } from 'antd';
 import 'antd/dist/antd.css';
-import { PlusOutlined, EditFilled, EyeOutlined, DeleteFilled, ExclamationCircleFilled } from '@ant-design/icons';
+import { PlusOutlined, EditFilled, EyeOutlined, DeleteFilled, ExclamationCircleFilled, CopyOutlined } from '@ant-design/icons';
 
 // 학습과정 관리 : 조회, 상세, 등록, 등록-(커리큘럼 메뉴목록 조회), 수정, 삭제, 커리큘럼 교육생삭제, 학습일정 상세정보 팝업, 학습생 인원 상세정보 팝업
 import {
@@ -55,6 +55,8 @@ export const EduProcAdd = () => {
 
     // Loading Start
     const [loading, setLoading] = useState(false);
+    const [confirmLoading, setConfirmLoading] = useState(false); // 복사 버튼 로딩
+
     // Loading End
 
     // Selected Start
@@ -68,15 +70,19 @@ export const EduProcAdd = () => {
     const [studentModalOpen, setStudentModalOpen] = useState(false); // 학습생 검색 Modal창
     const [eduDayViewModalOpen, setEduDayViewModalOpen] = useState(false); // 학습일정 상세정보 Modal창
     const [studentViewModalOpen, setStudentViewModalOpen] = useState(false); // 학습생 상세정보 Modal창
+    const [educurriculumModalOpen, setEducurriculumModalOpen] = useState(false); // 차수 복사 Modal창
     // Modal창 End
 
     // Data source Start
     const [itemContainer, setItemContainer] = useState({}); // 항목 컨테이너
-    const [procCdValue, setProcCdValue] = useState([]); // 차수관리 아이디
+    const [copyItemContainer, setCopyItemContainer] = useState(); // 복사 항목 컨테이너
+    const [procCdValue, setProcCdValue] = useState(); // 차수관리 아이디
+    const [copyProcCd, setCopyProcCd] = useState(); // 복사 차수 아이디
+    const [copyProcNm, setCopyProcNm] = useState(); // 복사 차수 명
     const [studyDayArry, setStudyDayArry] = useState([]); // 학습일수 배열
     const [menuArry, setMenuArry] = useState([]); //  메뉴 배열
     const [moduleArry, setModuleArry] = useState([]); //  모듈 배열
-    const [stuList, setStuList] = useState([]); // 상세 - 교육생 배열 정보
+    const [stuList, setStuList] = useState(); // 상세 - 교육생 배열 정보
 
     // Data source End
 
@@ -216,18 +222,36 @@ export const EduProcAdd = () => {
         {
             width: '90px',
             title: '수정',
-            render: (_, { key }) => (
+            render: (_, { key, rowdata2, rowdata3 }) => (
                 <>
-                    <Tooltip title="수정" color="#108ee9">
-                        <Button
-                            type="primary"
-                            onClick={() => handleEdit(key)}
-                            style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
-                            icon={<EditFilled />}
-                        >
-                            수정
-                        </Button>
-                    </Tooltip>
+                    <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+                        <Tooltip title="수정" color="#108ee9">
+                            <Button
+                                type="primary"
+                                onClick={() => handleEdit(key)}
+                                style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                icon={<EditFilled />}
+                            >
+                                수정
+                            </Button>
+                        </Tooltip>
+                        <Tooltip title="복사" color="#f6951d">
+                            <Button
+                                type="default"
+                                onClick={() => handleCopy(key, rowdata2, rowdata3)}
+                                style={{
+                                    backgroundColor: '#f6951d',
+                                    borderColor: '#f6951d',
+                                    color: '#ffffff',
+                                    borderRadius: '5px',
+                                    boxShadow: '2px 3px 0px 0px #dbdbdb'
+                                }}
+                                icon={<CopyOutlined />}
+                            >
+                                복사
+                            </Button>
+                        </Tooltip>
+                    </div>
                 </>
             ),
             align: 'center'
@@ -252,8 +276,8 @@ export const EduProcAdd = () => {
             scheduleList: studyDayArry,
             menuList: menuArry,
             moduleList: moduleArry,
-            userList: stuList
-            // userId: localStorage.getItem('LoginId')
+            userList: stuList,
+            userId: localStorage.getItem('LoginId')
         });
 
         InsertBaselineresponse?.data?.RET_CODE === '0100'
@@ -279,11 +303,11 @@ export const EduProcAdd = () => {
         const SelectBaselineresponse = await SelectBaselineApi({
             procCd: procCd
         });
-        console.log(SelectBaselineresponse?.data?.RET_DATA);
+        // console.log(SelectBaselineresponse?.data?.RET_DATA);
         setItemContainer(SelectBaselineresponse?.data?.RET_DATA);
         setStudyDayArry(SelectBaselineresponse?.data?.RET_DATA?.scheduleList);
         setMenuArry(SelectBaselineresponse?.data?.RET_DATA?.menuList);
-        setModuleArry(SelectBaselineresponse?.data?.RET_DATA?.moduleList);
+        setModuleArry(SelectBaselineresponse?.data?.RET_DATA?.modulesList);
         setStuList(SelectBaselineresponse?.data?.RET_DATA?.userList);
     };
     // 차수 관리 수정 ======================================================
@@ -463,6 +487,30 @@ export const EduProcAdd = () => {
         }
     };
 
+    // 복사 버튼
+    const handleCopy = (procCd, procName, procSeq) => {
+        setCopyProcCd(procCd);
+        setCopyProcNm(procName + ' - ' + procSeq + '차');
+        form.resetFields();
+        setEducurriculumModalOpen(true);
+    };
+
+    // 모듈 복사 Modal 닫기
+    const copy_handlecancel = () => {
+        setEducurriculumModalOpen(false);
+    };
+
+    // 복사 Modal 복사처리
+    const copy_handle = () => {
+        setConfirmLoading(true);
+        setTimeout(() => {
+            //     handel_InsertModuleCopy_Api(moduleId, copyModuleNm);
+            setEducurriculumModalOpen(false);
+            setConfirmLoading(false);
+        }, 800);
+        setCopyItemContainer('');
+    };
+
     // 삭제
     const handleDel = () => {
         if (selectedRowKeys == '') {
@@ -636,6 +684,9 @@ export const EduProcAdd = () => {
                 }
             >
                 <MainCard>
+                    {console.log('studyDayArry', studyDayArry)}
+                    {console.log('menuArry', menuArry)}
+                    {console.log('moduleArry', moduleArry)}
                     <Form layout="vertical" form={form} autoComplete="off">
                         <Row gutter={24}>
                             <Col span={24}>
@@ -1031,11 +1082,10 @@ export const EduProcAdd = () => {
                 ]}
             >
                 {procCdValue === '' ? (
-                    <StudentSch StudentsCnt={Student_handleOk} />
+                    <StudentSch StudentsCnt={Student_handleOk} StudentValue="0" ProcCdValue="0" />
                 ) : (
                     <StudentSch StudentsCnt={Student_handleOk} StudentValue={stuList} ProcCdValue={procCdValue} />
                 )}
-                {/* <StudentSch StudentsCnt={Student_handleOk} StudentValue={stuList} procCdValue === '' ? '' : ProcCdValue={procCdValue} /> */}
             </Modal>
             {/* 교육생 검색 Modal End */}
 
@@ -1089,6 +1139,50 @@ export const EduProcAdd = () => {
                 <StudentDetail ProcCdValue={procCdValue} />
             </Modal>
             {/* 교육생 상세정보 Modal End */}
+
+            {/* 차수 복사 Modal Start */}
+            <Modal
+                title="차수 복사"
+                closable={false}
+                open={educurriculumModalOpen}
+                onCancel={copy_handlecancel}
+                confirmLoading={confirmLoading}
+                onOk={copy_handle}
+                width={500}
+                okText="복사"
+                cancelText="취소"
+                style={{
+                    top: 90,
+                    left: 130,
+                    zIndex: 999
+                }}
+            >
+                <Card size="small" style={{ marginBottom: '20px', background: '#a7a9ad', color: '#ffffff' }}>
+                    복사 대상 차수 : {copyProcNm}
+                </Card>
+
+                <Card title="교육기간을 선택하세요" size="small">
+                    <RangePicker
+                        name="CopyEduData"
+                        style={{ width: '430px' }}
+                        onChange={(dates) => {
+                            const [copystart, copyend] = dates;
+                            const copyEduStartDate = copystart.format('YYYY-MM-DD');
+                            const copyEduEndDate = copyend.format('YYYY-MM-DD');
+                            setCopyItemContainer({
+                                ...copyItemContainer,
+                                copyEduStartDate,
+                                copyEduEndDate
+                            });
+                        }}
+                        value={[
+                            copyItemContainer?.copyEduStartDate ? dayjs(copyItemContainer.copyEduStartDate) : dayjs(new Date()),
+                            copyItemContainer?.copyEduEndDate ? dayjs(copyItemContainer.copyEduEndDate) : ''
+                        ]}
+                    />
+                </Card>
+            </Modal>
+            {/* 차수 복사 Modal End */}
         </>
     );
 };
