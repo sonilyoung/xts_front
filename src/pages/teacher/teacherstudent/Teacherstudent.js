@@ -29,13 +29,16 @@ export const Teacherstudent = () => {
     const [procCdChk, setProcCdChk] = useState(''); // 실습 점수
     const [userIdChk, setUserIdChk] = useState(''); // 실습 점수
     const [evalOpen, setEvalOpen] = useState(false);
+    const [searchval, setSearchval] = useState();
 
     // ===============================
     // Api 호출 Start
     // 조회 ======================================================
     const [SelectBaselineUserListApi] = useSelectBaselineUserListMutation(); // 교육생 정보 hooks api호출
     const handle_SelectBaselineUserList_Api = async () => {
-        const SelectBaselineUserListResponse = await SelectBaselineUserListApi({});
+        const SelectBaselineUserListResponse = await SelectBaselineUserListApi({
+            searchval: searchval
+        });
         setDataSource([
             ...SelectBaselineUserListResponse?.data?.RET_DATA.map((d, i) => ({
                 key: i,
@@ -255,12 +258,15 @@ export const Teacherstudent = () => {
         //setSortedInfo(sorter);
     };
 
-    const onSearch = (value) => console.log(value);
+    const onSearch = (value) => {
+        setSearchval(value);
+        // setDataSource(null);
+    };
 
     useEffect(() => {
         setLoading(true);
         handle_SelectBaselineUserList_Api();
-    }, []);
+    }, [searchval]);
 
     return (
         <>
