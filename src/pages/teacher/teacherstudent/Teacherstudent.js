@@ -1,16 +1,23 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
-import { Typography, Table, Tag, Tooltip, Button, Descriptions, Modal, Input, Space } from 'antd';
-const { Title } = Typography;
-
+import { Typography, Table, Tag, Tooltip, Button, Descriptions, Modal, Input, Space, Card } from 'antd';
 import {
     useSelectBaselineUserListMutation,
     useSelectBaselineUserMutation,
     useUpdateBaselineUserMutation
 } from '../../../hooks/api/StudentsManagement/StudentsManagement';
 
-import { FileProtectOutlined } from '@ant-design/icons';
-
+import { FileProtectOutlined, AudioOutlined } from '@ant-design/icons';
+const { Title } = Typography;
+const { Search } = Input;
+const suffix = (
+    <AudioOutlined
+        style={{
+            fontSize: 16,
+            color: '#1677ff'
+        }}
+    />
+);
 // project import
 import MainCard from 'components/MainCard';
 
@@ -109,6 +116,7 @@ export const Teacherstudent = () => {
             render: (_, { procYear, procSeq }) => <>{`${procYear}년 - ${procSeq}차`}</>
         },
         {
+            width: '210px',
             title: '차수명',
             dataIndex: 'procNm',
             sorter: (a, b) => a.procNm.localeCompare(b.procNm, 'ko', { sensitivity: 'base' }),
@@ -116,18 +124,24 @@ export const Teacherstudent = () => {
             align: 'center'
         },
         {
+            width: '120px',
             title: '교육생 ID',
             dataIndex: 'userId',
-            // sorter: (a, b) => a.userId.length - b.userId.length,
             sorter: (a, b) => a.userId.localeCompare(b.userId, 'ko', { sensitivity: 'base' }),
             ellipsis: true,
             align: 'center'
         },
         {
+            width: '120px',
             title: '교육생 명',
             dataIndex: 'userNm',
             sorter: (a, b) => a.userNm.localeCompare(b.userNm, 'ko', { sensitivity: 'base' }),
             ellipsis: true,
+            align: 'center'
+        },
+        {
+            title: '교육 구분',
+            dataIndex: '',
             align: 'center'
         },
         {
@@ -136,7 +150,7 @@ export const Teacherstudent = () => {
             align: 'center'
         },
         {
-            width: '140px',
+            width: '100px',
             title: '평가 가중치',
             dataIndex: 'gainScore',
             align: 'center',
@@ -182,17 +196,17 @@ export const Teacherstudent = () => {
             )
         },
         {
-            width: '110px',
-            title: '교육시작일',
+            width: '200px',
+            title: '교육일',
             align: 'center',
-            dataIndex: 'eduStartDate'
+            dataIndex: 'eduStartDate',
+            render: (_, { eduStartDate, eduEndDate }) => (
+                <div>
+                    {eduStartDate} ~ {eduEndDate}
+                </div>
+            )
         },
-        {
-            width: '110px',
-            title: '교육종료일',
-            align: 'center',
-            dataIndex: 'eduEndDate'
-        },
+
         {
             width: '110px',
             title: '교육완료여부',
@@ -237,9 +251,11 @@ export const Teacherstudent = () => {
     };
 
     const onChange = (pagination, filters, sorter, extra) => {
-        console.log('params', pagination, filters, sorter, extra);
+        //console.log('params', pagination, filters, sorter, extra);
         //setSortedInfo(sorter);
     };
+
+    const onSearch = (value) => console.log(value);
 
     useEffect(() => {
         setLoading(true);
@@ -250,6 +266,20 @@ export const Teacherstudent = () => {
         <>
             <MainCard title="교육생 정보조회">
                 <Typography variant="body1">
+                    {/* <Space style={{ justifyContent: 'flex-end' }} size="small"> */}
+                    <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                        <Input.Search
+                            placeholder="※ 통합 검색 (차수명, 교육생ID, 교육생명, 교육구분, 기관)"
+                            style={{ width: 450, fontSize: '12px' }}
+                            onSearch={onSearch}
+                            allowClear
+                            enterButton
+                            size="large"
+                            className="custom-search-input"
+                        />
+                        {/* </Space> */}
+                    </div>
+                    <Descriptions style={{ marginTop: '20px' }}></Descriptions>
                     <Table columns={columns} dataSource={dataSource} bordered={true} onChange={onChange} loading={loading} />
                 </Typography>
             </MainCard>

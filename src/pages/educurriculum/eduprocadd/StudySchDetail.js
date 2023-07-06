@@ -35,7 +35,7 @@ export const StudySchDetail = (props) => {
         const SelectBaselineEduDateListresponse = await SelectBaselineEduDateListApi({
             procCd: props.EduDayView
         });
-        console.log(SelectBaselineEduDateListresponse?.data?.RET_DATA?.scheduleList);
+        // console.log(SelectBaselineEduDateListresponse?.data?.RET_DATA?.scheduleList);
         setSelectBaselineEduDateListData(SelectBaselineEduDateListresponse?.data?.RET_DATA?.scheduleList);
     };
 
@@ -67,7 +67,7 @@ export const StudySchDetail = (props) => {
                                 </Col>
                                 <Col span={4} style={{ textAlign: 'center' }}>
                                     <Tag icon={<ClockCircleOutlined />} style={{ padding: '10px 10px', borderRadius: '5px' }}>
-                                        모듈명 모듈명 모듈명 모듈명
+                                        {d.moduleNm}
                                     </Tag>
                                 </Col>
                                 <Col span={12} style={{ paddingLeft: '40px' }}>

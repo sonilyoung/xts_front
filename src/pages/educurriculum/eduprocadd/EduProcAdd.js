@@ -23,13 +23,14 @@ import {
 import 'antd/dist/antd.css';
 import { PlusOutlined, EditFilled, EyeOutlined, DeleteFilled, ExclamationCircleFilled, CopyOutlined } from '@ant-design/icons';
 
-// 학습과정 관리 : 조회, 상세, 등록, 등록-(커리큘럼 메뉴목록 조회), 수정, 삭제, 커리큘럼 교육생삭제, 학습일정 상세정보 팝업, 학습생 인원 상세정보 팝업
+// 차수 관리 : 조회, 상세, 등록, 등록-(커리큘럼 메뉴목록 조회), 수정, 삭제, 커리큘럼 교육생삭제, 학습일정 상세정보 팝업, 학습생 인원 상세정보 팝업, 차수 복사
 import {
-    useSelectBaselineListMutation, // 학습과정 관리 조회
-    useSelectBaselineMutation, // 학습과정 관리 상세
-    useInsertBaselineMutation, // 학습과정 관리 등록
-    useUpdateBaselineMutation, // 학습과정 관리 수정
-    useDeleteBaselineMutation // 학습과정 관리 삭제
+    useSelectBaselineListMutation, // 차수 관리 조회
+    useSelectBaselineMutation, // 차수 관리 상세
+    useInsertBaselineMutation, // 차수 관리 등록
+    useUpdateBaselineMutation, // 차수 관리 수정
+    useDeleteBaselineMutation, // 차수 관리 삭제
+    useInsertBaselineCopyMutation // 차수 관리 차수 복사
 } from '../../../hooks/api/CurriculumManagement/CurriculumManagement';
 
 import dayjs from 'dayjs';
@@ -79,9 +80,9 @@ export const EduProcAdd = () => {
     const [procCdValue, setProcCdValue] = useState(); // 차수관리 아이디
     const [copyProcCd, setCopyProcCd] = useState(); // 복사 차수 아이디
     const [copyProcNm, setCopyProcNm] = useState(); // 복사 차수 명
-    const [studyDayArry, setStudyDayArry] = useState([]); // 학습일수 배열
-    const [menuArry, setMenuArry] = useState([]); //  메뉴 배열
-    const [moduleArry, setModuleArry] = useState([]); //  모듈 배열
+    const [studyDayArry, setStudyDayArry] = useState(); // 학습일수 배열
+    const [menuArry, setMenuArry] = useState(); //  메뉴 배열
+    const [moduleArry, setModuleArry] = useState(); //  모듈 배열
     const [stuList, setStuList] = useState(); // 상세 - 교육생 배열 정보
 
     // Data source End
@@ -122,7 +123,10 @@ export const EduProcAdd = () => {
                 rowdata8: d.limitPersonCnt, // 제한인원수
                 rowdata9: d.endingStdScore, // 수료기준점수
                 rowdata10: d.timeDiff, // 진행된학습일
-                rowdata11: d.totTimeDiff // 총학습일
+                rowdata11: d.totTimeDiff, // 총학습일
+                rowdata12: d.theoryTotalScore, // 이론기준점수
+                rowdata13: d.practiceTotalScore, // 실기기준점수
+                rowdata14: d.evaluationTotalScore // 평가기준점수
             }))
         ]);
         setLoading(false);
@@ -190,37 +194,72 @@ export const EduProcAdd = () => {
             )
         },
         {
-            title: '수료기준점수',
+            title: (
+                <div>
+                    수료
+                    <br />
+                    기준점수
+                </div>
+            ),
             dataIndex: 'rowdata9',
             align: 'center'
         },
         {
-            title: '이론가중치',
-            dataIndex: 'rowdata9',
+            title: (
+                <div>
+                    이론
+                    <br />
+                    가중치
+                </div>
+            ),
+            dataIndex: 'rowdata12',
             align: 'center'
         },
         {
-            title: '실기가중치',
-            dataIndex: 'rowdata9',
+            title: (
+                <div>
+                    실기
+                    <br />
+                    가중치
+                </div>
+            ),
+            dataIndex: 'rowdata13',
             align: 'center'
         },
         {
-            title: '평가가중치',
-            dataIndex: 'rowdata9',
+            title: (
+                <div>
+                    평가
+                    <br />
+                    가중치
+                </div>
+            ),
+            dataIndex: 'rowdata14',
             align: 'center'
         },
         {
-            title: '진행된학습일',
+            title: (
+                <div>
+                    진행된
+                    <br />
+                    학습일
+                </div>
+            ),
             dataIndex: 'rowdata10',
             align: 'center'
         },
         {
-            title: '총학습일',
+            title: (
+                <div>
+                    총
+                    <br />
+                    학습일
+                </div>
+            ),
             dataIndex: 'rowdata11',
             align: 'center'
         },
         {
-            width: '90px',
             title: '수정',
             render: (_, { key, rowdata2, rowdata3 }) => (
                 <>
@@ -368,6 +407,30 @@ export const EduProcAdd = () => {
               });
     };
 
+    // 차수 복사 ======================================================
+    const [InsertBaselineCopyApi] = useInsertBaselineCopyMutation(); // 삭제 hooks api호출
+    const handel_InsertBaselineCopy_Api = async () => {
+        const InsertBaselineCopyresponse = await InsertBaselineCopyApi({
+            targetProcCd: copyProcCd,
+            procName: copyItemContainer.copyprocName,
+            procSeq: parseInt(copyItemContainer.copyprocSeq),
+            eduStartDate: copyItemContainer.copyEduStartDate,
+            eduEndDate: copyItemContainer.copyEduEndDate,
+            userId: localStorage.getItem('LoginId')
+        });
+        InsertBaselineCopyresponse?.data?.RET_CODE === '0100'
+            ? Modal.success({
+                  content: '복사 완료',
+                  onOk() {
+                      handel_SelectBaselineList_Api();
+                  }
+              })
+            : Modal.error({
+                  content: '복사 오류',
+                  onOk() {}
+              });
+    };
+
     // Api 호출 End
     // ===============================
 
@@ -491,12 +554,15 @@ export const EduProcAdd = () => {
     const handleCopy = (procCd, procName, procSeq) => {
         setCopyProcCd(procCd);
         setCopyProcNm(procName + ' - ' + procSeq + '차');
+        setCopyItemContainer({ ...copyItemContainer, copyprocSeq: parseInt(procSeq) + 1, ...copyItemContainer, copyprocName: procName });
+
         form.resetFields();
         setEducurriculumModalOpen(true);
     };
 
     // 모듈 복사 Modal 닫기
     const copy_handlecancel = () => {
+        setCopyItemContainer(null);
         setEducurriculumModalOpen(false);
     };
 
@@ -504,11 +570,11 @@ export const EduProcAdd = () => {
     const copy_handle = () => {
         setConfirmLoading(true);
         setTimeout(() => {
-            //     handel_InsertModuleCopy_Api(moduleId, copyModuleNm);
+            handel_InsertBaselineCopy_Api();
             setEducurriculumModalOpen(false);
             setConfirmLoading(false);
         }, 800);
-        setCopyItemContainer('');
+        setCopyItemContainer(null);
     };
 
     // 삭제
@@ -590,9 +656,6 @@ export const EduProcAdd = () => {
         setMenuArry(menuListSet);
         setModuleArry(moduleListSet);
         setEduDayModalOpen(false);
-        // console.log(totStudyDateList);
-        // console.log(menuListSet);
-        // console.log(moduleListSet);
     };
 
     useEffect(() => {
@@ -684,9 +747,6 @@ export const EduProcAdd = () => {
                 }
             >
                 <MainCard>
-                    {console.log('studyDayArry', studyDayArry)}
-                    {console.log('menuArry', menuArry)}
-                    {console.log('moduleArry', moduleArry)}
                     <Form layout="vertical" form={form} autoComplete="off">
                         <Row gutter={24}>
                             <Col span={24}>
@@ -1158,10 +1218,33 @@ export const EduProcAdd = () => {
                 }}
             >
                 <Card size="small" style={{ marginBottom: '20px', background: '#a7a9ad', color: '#ffffff' }}>
-                    복사 대상 차수 : {copyProcNm}
+                    # 복사 대상 차수 : {copyProcNm}
                 </Card>
 
-                <Card title="교육기간을 선택하세요" size="small">
+                <Card title="# 차수 복사명을 입력하세요" size="small" style={{ marginBottom: '10px' }}>
+                    <Space>
+                        <Input
+                            style={{
+                                width: '340px'
+                            }}
+                            name="CopyprocName"
+                            onChange={(e) => setCopyItemContainer({ ...copyItemContainer, copyprocName: e.target.value })}
+                            placeholder="# 차수명"
+                            value={copyItemContainer?.copyprocName}
+                        />
+                        <Input
+                            name="CopyprocSeq"
+                            style={{
+                                width: '80px',
+                                textAlign: 'center'
+                            }}
+                            onChange={(e) => setCopyItemContainer({ ...copyItemContainer, copyprocSeq: e.target.value })}
+                            value={copyItemContainer?.copyprocSeq}
+                            addonAfter="차"
+                        />
+                    </Space>
+                </Card>
+                <Card title="# 교육기간을 선택하세요" size="small">
                     <RangePicker
                         name="CopyEduData"
                         style={{ width: '430px' }}
