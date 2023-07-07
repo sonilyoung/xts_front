@@ -30,7 +30,8 @@ import {
     useDeleteXrayContentsMutation, //xray컨텐츠삭제
     useInsertXrayUnitMutation, //xray컨텐츠 물품등록
     useDeleteXrayUnitMutation, //xray컨텐츠 물품삭제
-    useSelectUnitPopupListMutation //물품팝업리스트
+    useSelectUnitPopupListMutation, //물품팝업리스트
+    useSelectImgMutation
 } from '../../../hooks/api/ContentsManagement/ContentsManagement';
 
 import { PlusOutlined, EditFilled, DeleteFilled, UploadOutlined, MinusCircleOutlined, ExclamationCircleFilled } from '@ant-design/icons';
@@ -52,6 +53,7 @@ export const Xrayinformation = () => {
     const [insertXrayUnit] = useInsertXrayUnitMutation(); // xray컨텐츠 물품등록 hooks api호출
     const [deleteXrayUnit] = useDeleteXrayUnitMutation(); // xray컨텐츠 물품삭제 hooks api호출
     const [selectUnitPopupList] = useSelectUnitPopupListMutation(); // xray컨텐츠 물품삭제 hooks api호출
+    const [SelectImgApi] = useSelectImgMutation();// 이미지조회 api 정보
 
     const [unitPopupList, setUnitPopupList] = useState([]);
     const [targetUnitPopupList, setTargetUnitPopupList] = useState([]);
@@ -61,7 +63,10 @@ export const Xrayinformation = () => {
     const [dataSource, setDataSource] = useState([]); // 상단 Table 데이터 값
     const [dataSourceSub, setDataSourceSub] = useState([]); // 하단 Table 데이터 값
     const [dataSourcePop, setDataSourcePop] = useState([]); // 단품팝업목록
+    const [updateDataSource, setUpdateDataSource] = useState([]); // 상단 Table 수정값
+
     const [bagScanId, setBagScanId] = useState('');
+    //const [command, setCommand] = useState('');
 
     const [loading, setLoading] = useState(false);
     const [loadingSub, setLoadingSub] = useState(false);
@@ -71,6 +76,10 @@ export const Xrayinformation = () => {
     const [dataEdit, setDataEdit] = useState(false); // Drawer 수정 우측폼 상태
     const [open, setOpen] = useState(false); // Drawer 추가 우측폼 상태
     const [onSearchItem, setOnSearchItem] = useState(false); // 물품명칭 언어추가 Modal
+
+    //실사이미지
+    const [imgReal,	setimgReal]	=	useState('');
+
 
     // 데이터 값 선언
     const handleXrayinformation = async () => {
@@ -103,6 +112,15 @@ export const Xrayinformation = () => {
         setLoading(false);
     };
 
+    //이미지 정보 가져오기
+    const selectImg = async (targetId, command) => {
+        const SelectImgResponse = await SelectImgApi({
+            bagScanId: targetId,
+            command: command
+        }); // 비동기 함수 호출    
+        setimgReal(SelectImgResponse?.data?.RET_DATA.imgReal);
+    };
+
     const handleXrayinformationSub = async (Select_bagScanId) => {
         const XrayinformationresponseSub = await getXrayinformationSubList({
             bagScanId: Select_bagScanId
@@ -125,7 +143,8 @@ export const Xrayinformation = () => {
                 rowdata14: s.insertDate /*등록일시*/,
                 rowdata15: s.insertId /*등록자*/,
                 rowdata16: s.answerItem /*정답물품*/,
-                rowdata18: s.unitDesc /*물품설명*/
+                rowdata18: s.unitDesc /*물품설명*/,
+                rowdata19: ''
             }))
         ]);
         setLoadingSub(false);
@@ -215,6 +234,17 @@ export const Xrayinformation = () => {
                 </div>
             )
         },
+        {
+            width: '200px',
+            title: '이미지',
+            dataIndex: 'rowdata1',
+            align: 'center',
+            render: () => (
+                <div style={{ cursor: 'pointer' }}>
+                    <img onClick={()=>handleImgPop()} src={'data:image/png;base64,' + imgReal} width={100} height={100} alt="real image" />
+                </div>
+            )
+        },        
         {
             width: '90px',
             title: '물품ID',
@@ -437,12 +467,6 @@ export const Xrayinformation = () => {
                     }}
                     //onChange={handleChange}
                     onChange={(seq) => {
-                        console.log('rowdata1:', rowdata1);
-                        console.log('rowdata2:', rowdata2);
-                        console.log('rowdata13:', rowdata13);
-
-                        console.log('정답:', seq.value);
-                        console.log('setBagScanId:', bagScanId);
                         var arrTemp = [];
                         //var tempTarget = targetUnitPopupList.find(v => v.unitScanId === rowdata1);
                         //Object.preventExtensions(tempTarget);
@@ -450,11 +474,9 @@ export const Xrayinformation = () => {
                             console.log('타겟:', t);
                             if (t.unitScanId === rowdata1) {
                                 //object copy
-                                console.log('확인1');
                                 const tempTargetAdd = { ...t, seq: seq.value };
                                 arrTemp.push(tempTargetAdd);
                             } else {
-                                console.log('확인2');
                                 arrTemp.push(t);
                             }
                         });
@@ -506,12 +528,6 @@ export const Xrayinformation = () => {
                     }}
                     //onChange={handleChange}
                     onChange={(selectedAnswerItem) => {
-                        console.log('rowdata1:', rowdata1);
-                        console.log('rowdata2:', rowdata2);
-                        console.log('rowdata16:', rowdata16);
-
-                        console.log('정답:', selectedAnswerItem.value);
-                        console.log('setBagScanId:', bagScanId);
                         var arrTemp = [];
                         //var tempTarget = targetUnitPopupList.find(v => v.unitScanId === rowdata1);
                         //Object.preventExtensions(tempTarget);
@@ -711,15 +727,32 @@ export const Xrayinformation = () => {
     // 수정 (상단)
     const handleEdit = async () => {
         setLoading(true);
+
+        console.log('수정 selectedRowKeys:', selectedRowKeys);
+
+
+
         if (selectedRowKeys == '') {
             Modal.error({
                 content: '수정할 항목을 선택해주세요.'
             });
         } else {
-            console.log('수정 xrayinformationList:', xrayinformationList);
 
+            var arrTemp = [];
+            xrayinformationList.forEach(function (t) {
+                selectedRowKeys.forEach(function (tg) {
+                    //console.log(tg);
+                    if (t.bagScanId === tg) {
+                        //object copy
+                        arrTemp.push(t);
+                    }
+                });             
+
+            });            
+
+            console.log('수정 arrTemp:', arrTemp);
             const response = await updateXrayContents({
-                paramList: xrayinformationList
+                paramList: arrTemp
             });
             setLoading(false);
 
@@ -1058,7 +1091,10 @@ export const Xrayinformation = () => {
                                         handleXrayinformationSub(record.rowdata0);
                                     }
                                 }*/
-
+                                onClick: () => {
+                                    console.log('click:', record.rowdata1);
+                                    selectImg(record.rowdata1, "403", record.rowdata0);
+                                },
                                 onDoubleClick: () => {
                                     console.log('click:', record.rowdata1);
                                     if (record.rowdata0 !== bagScanId) {
