@@ -272,7 +272,7 @@ export const contentsManagement = createApi({
         }),
 
         //xray컨텐츠 이미지업로드(이미지)
-        xrayImageUpload: builder.mutation({
+        selectImg: builder.mutation({
             query: (body) => ({
                 url: 'file/xrayImageUpload.do',
                 method: 'POST',
@@ -312,5 +312,5 @@ export const {
     useSelectUnitPopupListMutation, //물품팝업리스트
     useSelectXrayImgContentsMutation, //xray컨텐츠 이미지상세정보가져오기
     useUpdateXrayContentsImgMutation, //xray컨텐츠 이미지업로드(db)
-    useXrayImageUploadMutation, //xray컨텐츠 이미지업로드(db)
+    useSelectImgMutation, //xray컨텐츠 이미지업로드(db)
 } = contentsManagement;
