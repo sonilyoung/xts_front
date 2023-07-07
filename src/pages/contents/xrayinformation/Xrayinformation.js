@@ -76,6 +76,7 @@ export const Xrayinformation = () => {
     const [dataEdit, setDataEdit] = useState(false); // Drawer 수정 우측폼 상태
     const [open, setOpen] = useState(false); // Drawer 추가 우측폼 상태
     const [onSearchItem, setOnSearchItem] = useState(false); // 물품명칭 언어추가 Modal
+    const [onImgPop, setOnImgPop] = useState(false); // 이미지팝업
 
     //실사이미지
     const [imgReal,	setimgReal]	=	useState('');
@@ -112,13 +113,15 @@ export const Xrayinformation = () => {
         setLoading(false);
     };
 
-    //이미지 정보 가져오기
+    //이미지팝업 정보 가져오기
     const selectImg = async (targetId, command) => {
         const SelectImgResponse = await SelectImgApi({
             bagScanId: targetId,
             command: command
         }); // 비동기 함수 호출    
-        setimgReal(SelectImgResponse?.data?.RET_DATA.imgReal);
+        //setimgReal(SelectImgResponse?.data?.RET_DATA.imgReal);
+        setOnImgPop(true);
+        setPopupimg(SelectImgResponse?.data?.RET_DATA.imgReal);       
     };
 
     const handleXrayinformationSub = async (Select_bagScanId) => {
@@ -206,6 +209,29 @@ export const Xrayinformation = () => {
         return <td {...restProps}>{childNode}</td>;
     };
 
+    const [popupimg, setPopupimg] = useState('');
+
+    const handelImgPop = (targetBagScanId, command) => {
+        console.log('targetBagScanId:', targetBagScanId);	
+        selectImg(targetBagScanId, command);
+    }    
+    
+    //이미지팝업창 오픈
+    const handleImgPop = (e) => {
+        setOnImgPop(true);
+        setPopupimg(e);	
+    }
+    //이미지팝업창
+    const Unit_ModalOk = () => {
+        setOnImgPop(false);
+        form.resetFields();
+    };
+    //이미지팝업창
+    const Unit_ModalCancel = () => {
+        setOnImgPop(false);
+        form.resetFields();
+    };    
+
     // 상단 테이블 Title
     const defaultColumns = [
         {
@@ -235,13 +261,22 @@ export const Xrayinformation = () => {
             )
         },
         {
-            width: '200px',
-            title: '이미지',
+            width: '90px',
+            title: '가방촬영ID',
             dataIndex: 'rowdata1',
             align: 'center',
-            render: () => (
+            render: (rowdata1) => (
                 <div style={{ cursor: 'pointer' }}>
-                    <img onClick={()=>handleImgPop()} src={'data:image/png;base64,' + imgReal} width={100} height={100} alt="real image" />
+                    <Tooltip title="수정" color="#108ee9">
+                        <Button
+                            type="primary"
+                            onClick={() => handelImgPop(rowdata1, "403")}
+                            style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                            icon={<EditFilled />}
+                        >
+                            이미지
+                        </Button>
+                    </Tooltip>
                 </div>
             )
         },        
@@ -258,6 +293,7 @@ export const Xrayinformation = () => {
                 </div>
             )
         },
+        /*
         {
             title: '정답물품',
             dataIndex: 'rowdata3',
@@ -269,7 +305,7 @@ export const Xrayinformation = () => {
                     </Tooltip>
                 </div>
             )
-        },
+        },*/
         {
             width: '90px',
             title: '개봉여부',
@@ -301,13 +337,52 @@ export const Xrayinformation = () => {
             title: 'Action구분',
             dataIndex: 'rowdata6',
             align: 'center',
-            render: (text) => (
-                <div style={{ cursor: 'pointer' }}>
-                    <Tooltip title="Double Click">
-                        <div>{text}</div>
-                    </Tooltip>
-                </div>
-            )
+            render: (_, { rowdata1, rowdataNo}) =>
+                dataSource.length >= 1 ? (
+                    <Select
+                        labelInValue
+                        style={{
+                            width: '100%'
+                        }}
+                        //onChange={handleChange}
+                        defaultValue={xrayinformationList[rowdataNo]?.actionDiv}
+                        onChange={(e) => {
+                            var arrTemp = [];
+                            xrayinformationList.forEach(function (t) {
+                                if (t.bagScanId === rowdata1) {
+                                    //object copy
+                                    const tempTargetAdd = { ...t, actionDiv: e.value };
+                                    arrTemp.push(tempTargetAdd);
+                                } else {
+                                    arrTemp.push(t);
+                                }
+                            });
+                            setXrayinformationList(arrTemp);
+                        }}
+                        options={[
+                            {
+                                value: '0',
+                                label: '0'
+                            },
+                            {
+                                value: '1',
+                                label: '1'
+                            },
+                            {
+                                value: '2',
+                                label: '2'
+                            },
+                            {
+                                value: '3',
+                                label: '3'
+                            },
+                            {
+                                value: '4',
+                                label: '4'
+                            }
+                        ]}
+                    />
+                ) : null
         },
         {
             width: '100px',
@@ -512,6 +587,7 @@ export const Xrayinformation = () => {
                 />
             )
         },
+        /*
         {
             width: '150px',
             title: '정답물품',
@@ -563,6 +639,7 @@ export const Xrayinformation = () => {
                 />
             )
         }
+        */
     ];
 
     // 팝업 테이블 title
@@ -700,7 +777,7 @@ export const Xrayinformation = () => {
         setSelectedRowKeysSub(newSelectedRowKeysSub);
     };
 
-    //체크 박스 이벤트 (하단)
+    //체크 박스 이벤트 (팝업)
     const onSelectChangePop = (selectedKeyPop) => {
         console.log('selectedKeyPop changed: ', selectedKeyPop);
         setSelectedKeyPop(selectedKeyPop);
@@ -1034,7 +1111,13 @@ export const Xrayinformation = () => {
             <MainCard title="정보 관리">
                 <Typography variant="body1">
                     <Row style={{ marginBottom: '5px' }}>
-                        <Col span={8}></Col>
+                        <Col span={8}>
+                            0 | 개봉/금지 | OPEN / Prohibited <br/>
+                            1 | 미개봉/금지 | CLOSE / Prohibited <br/>
+                            2 | 개봉/제한 | OPEN / Restricted <br/>
+                            3 | 개봉/통과 | OPEN / PASS <br/>
+                            4 | 미개봉/통과 | CLOSE / PASS
+                        </Col>
                         <Col span={8} offset={8} style={{ textAlign: 'right' }}>
                             <Space>
                                 <Tooltip title="추가">
@@ -1091,10 +1174,7 @@ export const Xrayinformation = () => {
                                         handleXrayinformationSub(record.rowdata0);
                                     }
                                 }*/
-                                onClick: () => {
-                                    console.log('click:', record.rowdata1);
-                                    selectImg(record.rowdata1, "403", record.rowdata0);
-                                },
+
                                 onDoubleClick: () => {
                                     console.log('click:', record.rowdata1);
                                     if (record.rowdata0 !== bagScanId) {
@@ -1109,61 +1189,69 @@ export const Xrayinformation = () => {
                             y: 245
                         }}
                     />
-                    {/*<Skeleton loading={loadingSub} active>*/}
-                    <Row style={{ marginTop: '20px', marginBottom: '5px' }}>
-                        <Col span={8}></Col>
-                        <Col span={8} offset={8} style={{ textAlign: 'right' }}>
-                            <Space>
-                                <Tooltip title="물품추가">
-                                    <Button
-                                        type="success"
-                                        onClick={() => handleUnitPoupList()}
-                                        style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
-                                        icon={<PlusOutlined />}
-                                    >
-                                        물품추가
-                                    </Button>
-                                </Tooltip>
 
-                                <Tooltip title="물품저장">
-                                    <Button
-                                        type="primary"
-                                        onClick={handleSaveSub}
-                                        style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
-                                        icon={<EditFilled />}
-                                    >
-                                        물품저장
-                                    </Button>
-                                </Tooltip>
-                                <Tooltip title="물품삭제">
-                                    <Button
-                                        type="danger"
-                                        onClick={handleDelSub}
-                                        style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
-                                        icon={<DeleteFilled />}
-                                    >
-                                        물품삭제
-                                    </Button>
-                                </Tooltip>
-                            </Space>
-                        </Col>
-                    </Row>
-                    <Table
-                        size="small"
-                        components={components}
-                        rowClassName={() => 'editable-row'}
-                        bordered={true}
-                        dataSource={dataSourceSub}
-                        columns={columnsSub}
-                        loading={loadingSub}
-                        rowSelection={rowSelectionSub}
-                        pagination={false}
-                        scroll={{
-                            y: 300
-                        }}
-                    />
                     {/*</Skeleton>*/}
                 </Typography>
+            </MainCard>
+
+            <MainCard>
+                {/*<Skeleton loading={loadingSub} active>*/}
+                <Row style={{ marginTop: '20px', marginBottom: '5px' }}>
+                    <Col span={8}></Col>
+                    <Col span={8} offset={8} style={{ textAlign: 'right' }}>
+                        <Space>
+                            <Tooltip title="물품추가">
+                                <Button
+                                    type="success"
+                                    onClick={() => handleUnitPoupList()}
+                                    style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                    icon={<PlusOutlined />}
+                                >
+                                    물품추가
+                                </Button>
+                            </Tooltip>
+
+                            <Tooltip title="물품저장">
+                                <Button
+                                    type="primary"
+                                    onClick={handleSaveSub}
+                                    style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                    icon={<EditFilled />}
+                                >
+                                    물품저장
+                                </Button>
+                            </Tooltip>
+                            <Tooltip title="물품삭제">
+                                <Button
+                                    type="danger"
+                                    onClick={handleDelSub}
+                                    style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                    icon={<DeleteFilled />}
+                                >
+                                    물품삭제
+                                </Button>
+                            </Tooltip>
+                        </Space>
+                    </Col>
+                </Row>                
+                <Form layout="vertical" name="tableSub" form={form} >
+                    <Form.Item>
+                        <Table
+                            size="small"
+                            rowClassName={() => 'editable-row'}
+                            components={components}
+                            bordered={true}
+                            dataSource={dataSourceSub}
+                            columns={columnsSub}
+                            loading={loadingSub}
+                            rowSelection={rowSelectionSub}
+                            pagination={true}
+                            scroll={{
+                                y: 300
+                            }}
+                        />
+                    </Form.Item>
+                </Form>
             </MainCard>
 
             {/* Xray 가방 추가 폼 Start */}
@@ -1216,6 +1304,10 @@ export const Xrayinformation = () => {
                     </>
                 }
             >
+
+
+
+
                 <MainCard>
                     <Form name="Unit_Add" layout="vertical" form={form}>
                         <Divider style={{ margin: '10px 0' }} />
@@ -1404,7 +1496,7 @@ export const Xrayinformation = () => {
                                 columns={columnsPop}
                                 loading={loadingPop}
                                 rowSelection={rowSelectionPop}
-                                pagination={false}
+                                pagination={true}
                                 scroll={{
                                     y: 300
                                 }}
@@ -1413,8 +1505,42 @@ export const Xrayinformation = () => {
                     </Form>
                 </MainCard>
             </Modal>
-
             {/* 물품추가 Modal End */}
+
+            {/* 이미지팝업 Modal Start */}
+            <Modal
+                open={onImgPop}
+                onOk={Unit_ModalOk}
+                onCancel={Unit_ModalCancel}
+                title="물품추가"
+                width={650}
+                style={{
+                    left: 130,
+                    zIndex: 999
+                }}
+                footer={[
+                    <Button
+                        type="primary"
+                        onClick={Unit_ModalCancel}
+                        style={{ width: '100px', borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                    >
+                        close
+                    </Button>
+                ]}
+            >
+                <MainCard>
+                    <Form layout="vertical" name="Unit_Language_Add" form={form} onFinish={Unit_LanguageAdd}>
+                        <Form.Item>
+                            <Row >
+                                <Col style={{ textAlign: 'center', padding: '0 10px' }}>
+                                    <img src={'data:image/png;base64,'+ popupimg} />
+                                </Col>
+                            </Row>
+                        </Form.Item>
+                    </Form>
+                </MainCard>
+            </Modal>
+
         </>
     );
 };
