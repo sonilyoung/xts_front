@@ -1,6 +1,10 @@
 /* eslint-disable*/
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Typography } from '@mui/material';
+// assets
+import { SearchOutlined } from '@ant-design/icons';
+// material-ui
+import { Box, FormControl, InputAdornment, OutlinedInput } from '@mui/material';
 import {
     Col,
     Row,
@@ -81,6 +85,15 @@ export const Xrayinformation = () => {
     //실사이미지
     const [imgReal,	setimgReal]	=	useState('');
 
+    const [searchtext, setSearchtext] = useState('');
+
+    // 통합검색 엔터처리
+    const searchEnter = (e) => {
+        if (e.key === 'Enter') {
+            console.log(searchtext);
+            handleSelectUnitPopupList(searchtext);
+        }
+    };    
 
     // 데이터 값 선언
     const handleXrayinformation = async () => {
@@ -131,7 +144,7 @@ export const Xrayinformation = () => {
         setXrayinformationSubList(XrayinformationresponseSub?.data?.RET_DATA);
         setDataSourceSub([
             ...XrayinformationresponseSub?.data?.RET_DATA.map((s, i) => ({
-                key: s.bagScanId,
+                key: s.bagConstNo,
                 rowdataNo: i,
                 rowdata0: i + 1,
                 rowdata1: s.bagScanId /*가방촬영id*/,
@@ -151,6 +164,7 @@ export const Xrayinformation = () => {
         ]);
         setLoadingSub(false);
     };
+
 
     const [popupimg, setPopupimg] = useState('');
 
@@ -489,12 +503,17 @@ export const Xrayinformation = () => {
                         //var tempTarget = targetUnitPopupList.find(v => v.unitScanId === rowdata1);
                         //Object.preventExtensions(tempTarget);
                         targetUnitPopupList.forEach(function (t) {
-                            console.log('타겟:', t);
-                            if (t.unitScanId === rowdata1) {
+
+                            console.log('unitId:', t.unitId );
+                            console.log('rowdata2:', rowdata2);
+
+                            if (t.unitId === rowdata2) {
+                                console.log('1');
                                 //object copy
                                 const tempTargetAdd = { ...t, seq: seq.value };
                                 arrTemp.push(tempTargetAdd);
                             } else {
+                                console.log('2');
                                 arrTemp.push(t);
                             }
                         });
@@ -503,7 +522,7 @@ export const Xrayinformation = () => {
                         //setTargetUnitPopupList([...targetUnitPopupList, arrTemp]);
 
                         setTargetUnitPopupList(arrTemp);
-                        console.log('targetUnitPopupList:', targetUnitPopupList);
+                        console.log('targetUnitPopupList:', arrTemp);
                     }}
                     options={[
                         {
@@ -809,6 +828,28 @@ export const Xrayinformation = () => {
         }
     };
 
+    // 삭제 (하단)
+    const onDeleteBottomSubmit = async () => {
+        setLoading(true);
+        console.log('삭제:', selectedRowKeysSub);
+
+        const response = await deleteXrayUnit({
+            bagConstList: selectedRowKeysSub
+        });
+        setLoading(false);
+
+        if (response?.data?.RET_CODE === '0000' || response?.data?.RET_CODE === '0100') {
+            Modal.success({
+                content: response?.data?.RET_DESC
+            });
+        } else {
+            Modal.success({
+                content: response?.data?.RET_DESC
+            });
+        }
+        handleXrayinformationSub(bagScanId); // 그룹 api 호출
+    };       
+
     const onSaveSubmit = async () => {
         setLoading(true);
         //params.unitScanId = targetUnitPopupList[0].unitScanId;
@@ -931,14 +972,12 @@ export const Xrayinformation = () => {
                 okType: 'danger',
                 cancelText: '아니오',
                 onOk() {
-                    Modal.success({
-                        content: '삭제완료'
-                    });
+                    onDeleteBottomSubmit();
                 },
                 onCancel() {
-                    Modal.error({
-                        content: '삭제취소'
-                    });
+                    //Modal.error({
+                    //content: '삭제취소'
+                    //});
                 }
             });
         }
@@ -983,8 +1022,8 @@ export const Xrayinformation = () => {
     };
 
     //물품팝업리스트
-    const handleSelectUnitPopupList = async () => {
-        const popupList = await selectUnitPopupList({ languageCode: 'kr' });
+    const handleSelectUnitPopupList = async (searchval) => {
+        const popupList = await selectUnitPopupList({ languageCode: 'kr', searchval: searchval });
         setUnitPopupList(popupList?.data?.RET_DATA);
         setTargetUnitPopupList(popupList?.data?.RET_DATA);
         setDataSourcePop([
@@ -1170,7 +1209,7 @@ export const Xrayinformation = () => {
                         </Space>
                     </Col>
                 </Row>                
-                <Form layout="vertical" name="tableSub" form={form} >
+                <Form layout="vertical" name="tableSub" >
                     <Form.Item>
                         <Table
                             size="small"
@@ -1420,6 +1459,32 @@ export const Xrayinformation = () => {
                 ]}
             >
                 <MainCard>
+
+                    <Row gutter={24}>
+                        <Box sx={{ width: '100%', ml: { xs: 0, md: 1 } }}>
+                            <FormControl sx={{ width: { xs: '100%', md: 224 } }}>
+                                <OutlinedInput
+                                    size="small"
+                                    id="header-search"
+                                    startAdornment={
+                                        <InputAdornment position="start" sx={{ mr: -0.5 }}>
+                                            <SearchOutlined />
+                                        </InputAdornment>
+                                    }
+                                    aria-describedby="header-search-text"
+                                    inputProps={{
+                                        'aria-label': 'weight'
+                                    }}
+                                    value={searchtext}
+                                    onChange={(e) => setSearchtext(e.target.value)}
+                                    onKeyPress={searchEnter}
+                                    placeholder="Search..."
+                                />
+                            </FormControl>
+                        </Box>                            
+                    </Row>
+
+                        
                     <Form layout="vertical" name="Unit_Language_Add" form={form} onFinish={Unit_LanguageAdd}>
                         <Form.Item>
                             <Table

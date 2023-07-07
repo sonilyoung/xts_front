@@ -89,7 +89,8 @@ export const XrayinfoWrite = () => {
             ...getXrayinforResponse?.data?.RET_DATA.map((d, i) => ({
                 key: d.bagScanId,
                 rowdata0: i + 1,
-                rowdata1: d.bagScanId
+                rowdata1: d.bagScanId,
+                rowdata2: d.actionDivName
             }))
         ]);
         setLoading(false);
@@ -106,7 +107,12 @@ export const XrayinfoWrite = () => {
             title: 'Scan ID',
             dataIndex: 'rowdata1',
             align: 'center'
-        }
+        },
+        {
+            title: 'ActionDivName',
+            dataIndex: 'rowdata2',
+            align: 'center'
+        }        
     ];
 
     // rowSelection, row selection
@@ -287,6 +293,8 @@ export const XrayinfoWrite = () => {
 
     // 각각업로드될 이미지param
     const [imgReal,	setImgReal	]	=	useState('');
+    const [imgFrontDanger,	setImgFrontDanger	]	=	useState('');
+    const [imgSideDanger,	setImgSideDanger	]	=	useState('');
     const [imgSide,	setImgSide	]	=	useState('');
     const [imgFront,	setImgFront	]	=	useState('');
     const [imgFrontColor,	setImgFrontColor	]	=	useState('');
@@ -332,6 +340,8 @@ export const XrayinfoWrite = () => {
     
     //화면에표시될이미지
     const [pimgReal,	setpimgReal	]	=	useState('');
+    const [pimgFrontDanger,	setpimgFrontDanger	]	=	useState('');
+    const [pimgSideDanger,	setpimgSideDanger ]	=	useState('');
     const [pimgSide,	setpimgSide	]	=	useState('');
     const [pimgFront,	setpimgFront	]	=	useState('');
     const [pimgFrontColor,	setpimgFrontColor	]	=	useState('');
@@ -421,6 +431,9 @@ export const XrayinfoWrite = () => {
     const imgRefReal = useRef();//실물이미지
     const imgRefFront = useRef();//정면이미지
     const imgRefSide = useRef();//측면이미지
+
+    const imgRefFrontDanger = useRef();//정면위험이미지
+    const imgRefSideDanger = useRef();//측면위험이미지
     
 
     const clickSaveImgRefFrontColor1 = e =>  {
@@ -1124,6 +1137,40 @@ export const XrayinfoWrite = () => {
         //setImgRealEdit(false);
     }; 
 
+
+
+    const clickSaveImgRefFrontDanger = e =>  {
+        setImgEdit(false);
+        imgRefFrontDanger.current.click();
+    };       
+
+    const saveImgRefFrontDanger = () => {
+        const file = imgRefFrontDanger.current.files[0];
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = () => {
+            setpimgFrontDanger(reader.result);
+        };
+        setImgReal(file);
+        //setImgRealEdit(false);
+    }; 
+    
+
+    const clickSaveImgRefSideDanger = e =>  {
+        setImgEdit(false);
+        imgRefSideDanger.current.click();
+    };       
+
+    const saveImgRefSideDanger = () => {
+        const file = imgRefSideDanger.current.files[0];
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = () => {
+            setpimgSideDanger(reader.result);
+        };
+        setImgReal(file);
+        //setImgRealEdit(false);
+    };     
 
     //3d생성
     const handleThreed = () => {
@@ -2125,6 +2172,86 @@ export const XrayinfoWrite = () => {
                                     </Space>
                                     </Form.Item>
                                     </Col>
+
+
+
+                                    {/*정면위험물품이미지*/}
+                                    <Col span={4}>
+                                    <Form.Item name="File15">
+                                    <Space direction="vertical">
+                                        <Card
+                                            size="small"
+                                            style={{
+                                                width: 100,
+                                                height: 50
+                                            }}
+                                        >
+                                                <Button 
+                                                    onClick={clickSaveImgRefFrontDanger}
+                                                    icon={<UploadOutlined />}
+                                                    style={{ height: '30px', padding: '0px 0px 0px 0px', backgroundColor: '#f0f0f0' }}
+                                                >
+                                                    정면위험물품이미지
+                                                </Button>                                                        
+                                                <input type="file"
+                                                        //ref={fileInput1}
+                                                        /*onChange={handleChange} */
+                                                        onChange={saveImgRefFrontDanger}
+                                                        ref={imgRefFrontDanger }
+                                                        style={{ display: "none" }} />                                                     
+                                        </Card>
+                                    </Space>
+
+                                    <Space direction="vertical">
+                                        {imgRealEdit === true ?  
+                                        <img onClick={()=>handleImgPop(unitParams?.resultImg?.imgFrontDanger)} src={unitParams?.resultImg?.imgFrontDanger!==null && unitParams?.resultImg?.imgFrontDanger!==undefined ? 'data:image/png;base64,' + unitParams?.resultImg?.imgFrontDanger : noImage} width={100} height={100} alt="front danger image" />
+                                        : 
+                                        <img src={pimgFrontDanger ? pimgFrontDanger :noImage} width={100} height={100} alt="front danger image"/>
+                                        }                                                
+                                    </Space>
+                                    </Form.Item>
+                                    </Col>  
+
+
+                                    {/*측면위험물품이미지*/}
+                                    <Col span={4}>
+                                    <Form.Item name="File16">
+                                    <Space direction="vertical">
+                                        <Card
+                                            size="small"
+                                            style={{
+                                                width: 100,
+                                                height: 50
+                                            }}
+                                        >
+                                                <Button 
+                                                    onClick={clickSaveImgRefSideDanger}
+                                                    icon={<UploadOutlined />}
+                                                    style={{ height: '30px', padding: '0px 0px 0px 0px', backgroundColor: '#f0f0f0' }}
+                                                >
+                                                    측면위험물품이미지
+                                                </Button>                                                        
+                                                <input type="file"
+                                                        //ref={fileInput1}
+                                                        /*onChange={handleChange} */
+                                                        onChange={saveImgRefSideDanger}
+                                                        ref={imgRefSide }
+                                                        style={{ display: "none" }} />                                                     
+                                        </Card>
+                                    </Space>
+
+                                    <Space direction="vertical">
+                                        {imgRealEdit === true ?  
+                                        <img onClick={()=>handleImgPop(unitParams?.resultImg?.imgSideDanger)} src={unitParams?.resultImg?.imgSideDanger!==null && unitParams?.resultImg?.imgSideDanger!==undefined ? 'data:image/png;base64,' + unitParams?.resultImg?.imgSideDanger : noImage} width={100} height={100} alt="side danger image" />
+                                        : 
+                                        <img src={pimgSideDanger ? pimgSideDanger :noImage} width={100} height={100} alt="side danger image"/>
+                                        }                                                
+                                    </Space>
+                                    </Form.Item>
+                                    </Col>                                      
+
+
+                                    
 
                                     {/*실물*/}
                                     <Col span={4}>
