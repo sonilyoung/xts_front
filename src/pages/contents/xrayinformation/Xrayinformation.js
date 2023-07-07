@@ -1512,7 +1512,7 @@ export const Xrayinformation = () => {
                 onOk={Unit_ModalOk}
                 onCancel={Unit_ModalCancel}
                 title="물품추가"
-                width={650}
+                width={800}
                 style={{
                     left: 130,
                     zIndex: 999
