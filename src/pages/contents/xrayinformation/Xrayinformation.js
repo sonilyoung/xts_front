@@ -147,7 +147,6 @@ export const Xrayinformation = () => {
                 rowdata15: s.insertId /*등록자*/,
                 rowdata16: s.answerItem /*정답물품*/,
                 rowdata18: s.unitDesc /*물품설명*/,
-                rowdata19: ''
             }))
         ]);
         setLoadingSub(false);
