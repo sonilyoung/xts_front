@@ -24,6 +24,7 @@ export const contentsManagement = createApi({
                 body: body
             })
         }),
+
         // 콘텐츠 관리 > 언어 관리 > 상세
         getLanguage: builder.mutation({
             query: (body) => ({
@@ -31,7 +32,8 @@ export const contentsManagement = createApi({
                 method: 'POST',
                 body: body
             })
-        }),        
+        }),
+
         // 콘텐츠 관리 > 언어 관리 > 등록
         insertLanguage: builder.mutation({
             query: (body) => ({
@@ -40,6 +42,7 @@ export const contentsManagement = createApi({
                 body: body
             })
         }),
+
         // 콘텐츠 관리 > 언어 관리 > 수정
         updateLanguage: builder.mutation({
             query: (body) => ({
@@ -47,7 +50,8 @@ export const contentsManagement = createApi({
                 method: 'POST',
                 body: body
             })
-        }),        
+        }),
+
         // 콘텐츠 관리 > 언어 관리 > 삭제
         deleteLanguage: builder.mutation({
             query: (body) => ({
@@ -56,9 +60,6 @@ export const contentsManagement = createApi({
                 body: body
             })
         }),
-
-
-
 
         // 콘텐츠 관리 > 그룹 관리 > 목록
         getGroupList: builder.mutation({
@@ -76,8 +77,7 @@ export const contentsManagement = createApi({
                 method: 'POST',
                 body: body
             })
-        }),        
-
+        }),
 
         // 콘텐츠 관리 > 그룹 관리 > 등록
         insertUnitGroup: builder.mutation({
@@ -88,7 +88,6 @@ export const contentsManagement = createApi({
             })
         }),
 
-
         // 콘텐츠 관리 > 그룹 관리 > 수정
         updateUnitGroup: builder.mutation({
             query: (body) => ({
@@ -97,7 +96,6 @@ export const contentsManagement = createApi({
                 body: body
             })
         }),
-        
 
         // 콘텐츠 관리 > 그룹 관리 > 삭제
         deleteUnitGroup: builder.mutation({
@@ -107,7 +105,6 @@ export const contentsManagement = createApi({
                 body: body
             })
         }),
-        
 
         // 콘텐츠 관리 > 그룹 관리 > 이미지업로드
         insertUnitGroupImg: builder.mutation({
@@ -117,14 +114,7 @@ export const contentsManagement = createApi({
                 body: body,
                 contentType: 'multipart/form-data'
             })
-        }),        
-
-
-
-
-
-
-
+        }),
 
         // 콘텐츠 관리 > 단품목록
         getUnitList: builder.mutation({
@@ -169,7 +159,7 @@ export const contentsManagement = createApi({
                 method: 'POST',
                 body: body
             })
-        }),        
+        }),
 
         //단품저장
         insertUnit: builder.mutation({
@@ -188,7 +178,7 @@ export const contentsManagement = createApi({
                 body: body
             })
         }),
-        
+
         // 단품삭제
         deleteUnit: builder.mutation({
             query: (body) => ({
@@ -196,7 +186,7 @@ export const contentsManagement = createApi({
                 method: 'POST',
                 body: body
             })
-        }),        
+        }),
 
         // 단품이미지저장
         saveUnitImg: builder.mutation({
@@ -224,7 +214,7 @@ export const contentsManagement = createApi({
                 method: 'POST',
                 body: body
             })
-        }),   
+        }),
 
         //xray컨텐츠삭제
         deleteXrayContents: builder.mutation({
@@ -233,7 +223,7 @@ export const contentsManagement = createApi({
                 method: 'POST',
                 body: body
             })
-        }),        
+        }),
 
         //xray컨텐츠 물품등록
         insertXrayUnit: builder.mutation({
@@ -271,7 +261,6 @@ export const contentsManagement = createApi({
             })
         }),
 
-
         //xray컨텐츠 이미지업로드(db)
         updateXrayContentsImg: builder.mutation({
             query: (body) => ({
@@ -291,30 +280,21 @@ export const contentsManagement = createApi({
                 contentType: 'multipart/form-data'
             })
         }),
-
-        // 이미지조회
-        selectImg: builder.mutation({
-            query: (body) => ({
-                url: '/adm/contents/selectImg.do',
-                method: 'POST',
-                body: body
-            })
-        }),        
     })
 });
 
 export const {
-    useGetLanguageListMutation,//언어목록
-    useGetLanguageMutation,//언어상세
-    useInsertLanguageMutation,//언어등록
-    useUpdateLanguageMutation,//언어수정
-    useDeleteLanguageMutation,//언어삭제
-    useGetGroupListMutation,//그룹목록
-    useGetGroupMutation,//그룹상세
-    useInsertUnitGroupMutation,//그룹등록
-    useUpdateUnitGroupMutation,//그룹수정
-    useDeleteUnitGroupMutation,//그룹삭제
-    useInsertUnitGroupImgMutation,//그룹이미지등록
+    useGetLanguageListMutation, //언어목록
+    useGetLanguageMutation, //언어상세
+    useInsertLanguageMutation, //언어등록
+    useUpdateLanguageMutation, //언어수정
+    useDeleteLanguageMutation, //언어삭제
+    useGetGroupListMutation, //그룹목록
+    useGetGroupMutation, //그룹상세
+    useInsertUnitGroupMutation, //그룹등록
+    useUpdateUnitGroupMutation, //그룹수정
+    useDeleteUnitGroupMutation, //그룹삭제
+    useInsertUnitGroupImgMutation, //그룹이미지등록
     useGetUnitListMutation,
     useGetInformationListMutation,
     useGetXrayinformationListMutation,
@@ -323,15 +303,14 @@ export const {
     useInsertUnitMutation,
     useUpdateUnitMutation,
     useDeleteUnitMutation,
-    useSaveUnitImgMutation,//단품이미지등록
-    useInsertXrayContentsMutation,//xray컨텐츠등록
-    useUpdateXrayContentsMutation,//xray컨텐츠수정
-    useDeleteXrayContentsMutation,//xray컨텐츠삭제
-    useInsertXrayUnitMutation,//xray컨텐츠 물품등록
-    useDeleteXrayUnitMutation,//xray컨텐츠 물품삭제
-    useSelectUnitPopupListMutation,//물품팝업리스트
+    useSaveUnitImgMutation, //단품이미지등록
+    useInsertXrayContentsMutation, //xray컨텐츠등록
+    useUpdateXrayContentsMutation, //xray컨텐츠수정
+    useDeleteXrayContentsMutation, //xray컨텐츠삭제
+    useInsertXrayUnitMutation, //xray컨텐츠 물품등록
+    useDeleteXrayUnitMutation, //xray컨텐츠 물품삭제
+    useSelectUnitPopupListMutation, //물품팝업리스트
     useSelectXrayImgContentsMutation, //xray컨텐츠 이미지상세정보가져오기
     useUpdateXrayContentsImgMutation, //xray컨텐츠 이미지업로드(db)
     useXrayImageUploadMutation, //xray컨텐츠 이미지업로드(db)
-    useSelectImgMutation
 } = contentsManagement;

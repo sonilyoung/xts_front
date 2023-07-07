@@ -70,50 +70,12 @@ export const StudentDetail = (props) => {
             ellipsis: true,
             align: 'center'
         },
-        // {
-        //     title: '기관',
-        //     dataIndex: 'company',
-        //     align: 'center'
-        // },
-        // {
-        //     title: '부서',
-        //     dataIndex: 'dept',
-        //     align: 'center'
-        // },
-        // {
-        //     title: '직위',
-        //     dataIndex: 'position',
-        //     align: 'center'
-        // },
         {
+            width: '230px',
             title: '교육 구분',
             dataIndex: 'procNm',
             align: 'center'
         }
-        // {
-        //     title: '입교 신청일',
-        //     dataIndex: 'writeDate',
-        //     align: 'center'
-        // }
-        // {
-        //     width: '85px',
-        //     title: '사용여부',
-        //     dataIndex: 'useYn',
-        //     align: 'center',
-        //     render: (_, { useYn }) => (
-        //         <>
-        //             {useYn === 'Y' ? (
-        //                 <Tag color={'green'} key={useYn}>
-        //                     사용
-        //                 </Tag>
-        //             ) : (
-        //                 <Tag color={'volcano'} key={useYn}>
-        //                     미사용
-        //                 </Tag>
-        //             )}
-        //         </>
-        //     )
-        // }
     ];
 
     const onChange = (pagination, filters, sorter, extra) => {

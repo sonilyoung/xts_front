@@ -10,29 +10,19 @@ import MainCard from 'components/MainCard';
 export const StudentSch = (props) => {
     const [dataSource, setDataSource] = useState([]); // Table 데이터 값
     const [loading, setLoading] = useState(false);
-    const [selectedRowKeys, setSelectedRowKeys] = useState(props.StudentValue); //셀렉트 박스 option Selected 값
+    const [selectedRowKeys, setSelectedRowKeys] = useState(); //셀렉트 박스 option Selected 값
 
-    // console.log(props.StudentValue);
     // ===============================
     // Api 호출 Start
     // 조회 ======================================================
     const [SelectUserListPopApi] = useSelectUserListPopMutation(); // 교육생 정보 hooks api호출
     const [selectUserListPopData, setSelectUserListPopData] = useState(); // 교육생 정보 리스트 값
+
     const handle_SelectUserListPop_Api = async () => {
-        //by 손일영 등록화면에서 procCd가 배열로 넘어오면 오류남
-        let targetProcCd;
-        if (props.ProcCdValue.length <= 0) {
-            targetProcCd = '';
-        } else {
-            targetProcCd = props.ProcCdValue;
-        }
         const SelectUserListPopresponse = await SelectUserListPopApi({
-            // procCd: props.ProcCdValue
-            //procCd: targetProcCd
-            targetProcCd
+            procCd: props.ProcCdValue
         });
 
-        // console.log(SelectUserListPopresponse?.data?.RET_DATA);
         setSelectUserListPopData(SelectUserListPopresponse?.data?.RET_DATA);
         setDataSource([
             ...SelectUserListPopresponse?.data?.RET_DATA.map((d, i) => ({
@@ -150,9 +140,10 @@ export const StudentSch = (props) => {
     };
 
     useEffect(() => {
+        setSelectedRowKeys(props.StudentValue);
         setLoading(true);
         handle_SelectUserListPop_Api();
-    }, [props.ProcCdValue]);
+    }, [props.ProcCdValue, props.StudentValue]);
 
     return (
         <>

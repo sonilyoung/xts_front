@@ -21,7 +21,7 @@ import {
     Tag
 } from 'antd';
 import 'antd/dist/antd.css';
-import { PlusOutlined, DeleteFilled, EditFilled, ExclamationCircleFilled } from '@ant-design/icons';
+import { PlusOutlined, DeleteFilled, EditFilled, ExclamationCircleFilled, CopyOutlined } from '@ant-design/icons';
 
 // 학습모듈 관리 - 조회, 등록, 상세, 수정, 삭제 가져오기
 import {
@@ -29,7 +29,8 @@ import {
     useInsertModuleMutation, // 등록
     useSelectModuleMutation, // 상세
     useUpdateModuleMutation, // 수정
-    useDeleteModuleMutation // 삭제
+    useDeleteModuleMutation, // 삭제
+    useInsertModuleCopyMutation // 모듈 복사
 } from '../../../hooks/api/CurriculumManagement/CurriculumManagement';
 
 // project import
@@ -43,24 +44,16 @@ export const Curriculum = () => {
 
     const [moduleId, setModuleId] = useState(); // 선택된 모듈 ID
     const [questionsModalOpen, setQuestionsModalOpen] = useState(); // 문항출제 팝업
-
-    // const [moduleNm, setModuleNm] = useState(''); // 모듈명 항목
-    // const [moduleDesc, setModuleDesc] = useState(''); // 모듈설명 항목
-    // const [moduleType, setModuleType] = useState(''); // 모듈타입 항목
-    // const [slideSpeed, setSlideSpeed] = useState(''); // 슬라이드스피드 항목
-    // const [learningType, setLearningType] = useState(''); // 학습방식 항목
-    // const [failToPass, setFailToPass] = useState(''); // 금지물품 통과시 불합격 처리 항목
-    // const [studyLvl, setStudyLvl] = useState(''); // 난이도레벨 항목
-    // const [timeLimit, setTimeLimit] = useState(''); // 제한시간 항목
-    // const [questionCnt, setQuestionCnt] = useState(''); // 출제문제수 항목
-    // const [useYn, setUseYn] = useState('Y'); // 사용여부 항목
+    const [modulecopyModalOpen, setModulecopyModalOpen] = useState(); // 모듈복사 팝업
     const [bagList, setBagList] = useState([null]); // 출제문항 목록 배열
-
     const [itemContainer, setItemContainer] = useState({}); // 항목 컨테이너
-
     const [selectedRowKeys, setSelectedRowKeys] = useState([]); //셀렉트 박스 option Selected 값
     const [open, setOpen] = useState(false);
     const [dataEdit, setDataEdit] = useState(false); // Drawer 수정 우측폼 상태
+
+    const [moduleNm, setModuleNm] = useState(); // 모듈 복사 모듈명
+    const [copyModuleNm, setCopyModuleNm] = useState(); // 모듈 복사 모듈명
+    const [confirmLoading, setConfirmLoading] = useState(false); // 복사 버튼 로딩
 
     // ===============================
     // Api 호출 Start
@@ -75,7 +68,7 @@ export const Curriculum = () => {
                 key: d.moduleId,
                 rowdata0: i + 1, // 시퀀스
                 rowdata1: d.moduleNm, // 모듈명
-                rowdata2: d.studyLvl, // 난이도레벨
+                rowdata2: d.studyLvl, // 난이도레벨F
                 rowdata3: d.slideSpeed, // 슬라이드스피드
                 rowdata4: d.questionCnt, // 출제문제수
                 rowdata5: d.moduleType, // 모듈타입
@@ -104,6 +97,19 @@ export const Curriculum = () => {
                 </Tooltip>
             )
         },
+
+        {
+            title: '모듈타입',
+            dataIndex: 'rowdata5',
+            align: 'center',
+            render: (_, { rowdata5 }) => <> {rowdata5 === 's' ? 'Slide' : 'Cut'} </>
+        },
+        {
+            title: '학습방식',
+            dataIndex: 'rowdata6',
+            align: 'center',
+            render: (_, { rowdata6 }) => <> {rowdata6 === 'l' ? '학습' : '평가'} </>
+        },
         {
             title: '난이도 레벨',
             dataIndex: 'rowdata2',
@@ -121,18 +127,7 @@ export const Curriculum = () => {
             dataIndex: 'rowdata4',
             align: 'center'
         },
-        {
-            title: '모듈타입',
-            dataIndex: 'rowdata5',
-            align: 'center',
-            render: (_, { rowdata5 }) => <> {rowdata5 === 's' ? 'Slide' : 'Cut'} </>
-        },
-        {
-            title: '학습방식',
-            dataIndex: 'rowdata6',
-            align: 'center',
-            render: (_, { rowdata6 }) => <> {rowdata6 === 'l' ? '학습' : '평가'} </>
-        },
+
         {
             title: '금지물품 통과시 불합격 처리',
             dataIndex: 'rowdata7',
@@ -175,20 +170,38 @@ export const Curriculum = () => {
             align: 'center'
         },
         {
-            width: '130px',
             title: '수정',
-            render: (_, { key }) => (
+            render: (_, { key, rowdata1 }) => (
                 <>
-                    <Tooltip title="수정" color="#108ee9">
-                        <Button
-                            type="primary"
-                            onClick={() => handleEdit(key)}
-                            style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
-                            icon={<EditFilled />}
-                        >
-                            수정
-                        </Button>
-                    </Tooltip>
+                    <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+                        <Tooltip title="수정" color="#108ee9">
+                            <Button
+                                type="primary"
+                                onClick={() => handleEdit(key)}
+                                style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                icon={<EditFilled />}
+                            >
+                                수정
+                            </Button>
+                        </Tooltip>
+
+                        <Tooltip title="복사" color="#f6951d">
+                            <Button
+                                type="default"
+                                onClick={() => handleCopy(key, rowdata1)}
+                                style={{
+                                    backgroundColor: '#f6951d',
+                                    borderColor: '#f6951d',
+                                    color: '#ffffff',
+                                    borderRadius: '5px',
+                                    boxShadow: '2px 3px 0px 0px #dbdbdb'
+                                }}
+                                icon={<CopyOutlined />}
+                            >
+                                복사
+                            </Button>
+                        </Tooltip>
+                    </div>
                 </>
             ),
             align: 'center'
@@ -209,7 +222,8 @@ export const Curriculum = () => {
             timeLimit: itemContainer.timeLimit,
             useYn: itemContainer.useYn,
             questionCnt: itemContainer.questionCnt,
-            bagList: bagList
+            bagList: bagList,
+            userId: localStorage.getItem('LoginId')
         });
 
         SelectModuleListresponse?.data?.RET_CODE === '0100'
@@ -291,6 +305,28 @@ export const Curriculum = () => {
                   onOk() {}
               });
     };
+
+    // 모듈 복사 ======================================================
+    const [InsertModuleCopyApi] = useInsertModuleCopyMutation(); // 삭제 hooks api호출
+    const handel_InsertModuleCopy_Api = async (targetModuleId, moduleNm) => {
+        const InsertModuleCopyresponse = await InsertModuleCopyApi({
+            targetModuleId: targetModuleId,
+            moduleNm: moduleNm,
+            userId: localStorage.getItem('LoginId')
+        });
+        InsertModuleCopyresponse?.data?.RET_CODE === '0100'
+            ? Modal.success({
+                  content: '복사 완료',
+                  onOk() {
+                      handel_selectModuleList_Api();
+                  }
+              })
+            : Modal.error({
+                  content: '복사 오류',
+                  onOk() {}
+              });
+    };
+
     // Api 호출 End
     // ===============================
 
@@ -345,6 +381,23 @@ export const Curriculum = () => {
         setQuestionsModalOpen(false);
     };
 
+    // 모듈 복사 Modal 닫기
+    const copy_handlecancel = () => {
+        setCopyModuleNm('');
+        setModulecopyModalOpen(false);
+    };
+
+    // 모듈 복사 Modal 복사처리
+    const copy_handle = () => {
+        setConfirmLoading(true);
+        setTimeout(() => {
+            handel_InsertModuleCopy_Api(moduleId, copyModuleNm);
+            setModulecopyModalOpen(false);
+            setConfirmLoading(false);
+        }, 800);
+        setCopyModuleNm('');
+    };
+
     //체크 박스 이벤트
     const onSelectChange = (newSelectedRowKeys) => {
         // console.log('selectedRowKeys changed: ', newSelectedRowKeys);
@@ -381,6 +434,15 @@ export const Curriculum = () => {
         form.resetFields();
         setDataEdit(true);
         setOpen(true);
+    };
+
+    // 복사 버튼
+    const handleCopy = (moduleId, moduleNm) => {
+        setModuleId(moduleId);
+        setModuleNm(moduleNm);
+
+        form.resetFields();
+        setModulecopyModalOpen(true);
     };
 
     // 추가 및 수정 처리
@@ -896,6 +958,41 @@ export const Curriculum = () => {
                 <XrayInformation QuestionCnt={Questions_handleOk} BagList={bagList?.slice()} />
             </Modal>
             {/* 출제 문항 검색 Modal End */}
+
+            {/* 모듈 복사 Modal Start */}
+            <Modal
+                title="모듈 복사"
+                closable={false}
+                open={modulecopyModalOpen}
+                onCancel={copy_handlecancel}
+                confirmLoading={confirmLoading}
+                onOk={copy_handle}
+                width={500}
+                okText="복사"
+                cancelText="취소"
+                style={{
+                    top: 90,
+                    left: 130,
+                    zIndex: 999
+                }}
+            >
+                <Card size="small" style={{ marginBottom: '20px', background: '#a7a9ad', color: '#ffffff' }}>
+                    복사 대상 모듈명 : {moduleNm}
+                </Card>
+
+                <Card title="모듈 복사명을 입력하세요" size="small">
+                    <Input
+                        style={{
+                            width: '100%'
+                        }}
+                        name="moduleNm"
+                        onChange={(e) => setCopyModuleNm(e.target.value)}
+                        placeholder="# 모듈명"
+                        value={copyModuleNm}
+                    />
+                </Card>
+            </Modal>
+            {/* 모듈 복사 Modal End */}
         </>
     );
 };

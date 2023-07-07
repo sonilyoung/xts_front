@@ -103,6 +103,15 @@ export const studentsManagement = createApi({
                 method: 'POST',
                 body: body
             })
+        }),
+
+        // 교육생 검색
+        updateBaselineUser: builder.mutation({
+            query: (body) => ({
+                url: '/adm/userMgr/updateBaselineUser.do',
+                method: 'POST',
+                body: body
+            })
         })
     })
 });

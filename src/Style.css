@@ -93,3 +93,7 @@ span {
 .table-row-lightblue {
     background-color: #eff5ff;
 }
+
+.custom-search-input input {
+    font-size: 12px;
+}
