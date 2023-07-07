@@ -152,62 +152,6 @@ export const Xrayinformation = () => {
         setLoadingSub(false);
     };
 
-    const EditableContext = React.createContext(null);
-    const EditableRow = ({ ...props }) => {
-        const [form] = Form.useForm();
-        return (
-            <Form form={form} component={false}>
-                <EditableContext.Provider value={form}>
-                    <tr {...props} />
-                </EditableContext.Provider>
-            </Form>
-        );
-    };
-
-    const EditableCell = ({ title, editable, children, dataIndex, record, handleSave, ...restProps }) => {
-        const [editing, setEditing] = useState(false);
-        const inputRef = useRef(null);
-        const form = useContext(EditableContext);
-        useEffect(() => {
-            if (editing) {
-                inputRef.current.focus();
-            }
-        }, [editing]);
-
-        const toggleEdit = () => {
-            setEditing(!editing);
-            form.setFieldsValue({
-                [dataIndex]: record[dataIndex]
-            });
-        };
-
-        const save = async () => {
-            try {
-                const values = await form.validateFields();
-                toggleEdit();
-                handleSave({
-                    ...record,
-                    ...values
-                });
-            } catch (errInfo) {
-                console.log('Save failed:', errInfo);
-            }
-        };
-        let childNode = children;
-        if (editable) {
-            childNode = editing ? (
-                <Form.Item style={{ margin: 0 }} name={dataIndex} rules={[{ required: true, message: `${title} is required.` }]}>
-                    <Input ref={inputRef} onPressEnter={save} onBlur={save} />
-                </Form.Item>
-            ) : (
-                <div className="editable-cell-value-wrap" onClick={toggleEdit} aria-hidden="true">
-                    {children}
-                </div>
-            );
-        }
-        return <td {...restProps}>{childNode}</td>;
-    };
-
     const [popupimg, setPopupimg] = useState('');
 
     const handelImgPop = (targetBagScanId, command) => {
@@ -709,12 +653,6 @@ export const Xrayinformation = () => {
         setDataSource(newData);
     };
 
-    const components = {
-        body: {
-            row: EditableRow,
-            cell: EditableCell
-        }
-    };
 
     const columns = defaultColumns.map((col) => {
         if (!col.editable) {
@@ -1154,7 +1092,6 @@ export const Xrayinformation = () => {
                     </Row>
                     <Table
                         size="small"
-                        components={components}
                         bordered={true}
                         dataSource={dataSource}
                         loading={loading}
@@ -1238,7 +1175,6 @@ export const Xrayinformation = () => {
                         <Table
                             size="small"
                             rowClassName={() => 'editable-row'}
-                            components={components}
                             bordered={true}
                             dataSource={dataSourceSub}
                             columns={columnsSub}
@@ -1488,7 +1424,6 @@ export const Xrayinformation = () => {
                         <Form.Item>
                             <Table
                                 size="small"
-                                components={components}
                                 rowClassName={() => 'editable-row'}
                                 bordered={true}
                                 dataSource={dataSourcePop}
