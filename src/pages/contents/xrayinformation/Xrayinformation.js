@@ -132,9 +132,9 @@ export const Xrayinformation = () => {
             bagScanId: targetId,
             command: command
         }); // 비동기 함수 호출    
-        //setimgReal(SelectImgResponse?.data?.RET_DATA.imgReal);
-        setOnImgPop(true);
+        //setOnImgPop(true);
         setPopupimg(SelectImgResponse?.data?.RET_DATA.imgReal);       
+        handleAdd();
     };
 
     const handleXrayinformationSub = async (Select_bagScanId) => {
@@ -1086,14 +1086,17 @@ export const Xrayinformation = () => {
         <>
             <MainCard title="정보 관리">
                 <Typography variant="body1">
-                    <Row style={{ marginBottom: '5px' }}>
+                    <Row>
                         <Col span={8}>
                             0 | 개봉/금지 | OPEN / Prohibited <br/>
                             1 | 미개봉/금지 | CLOSE / Prohibited <br/>
                             2 | 개봉/제한 | OPEN / Restricted <br/>
                             3 | 개봉/통과 | OPEN / PASS <br/>
                             4 | 미개봉/통과 | CLOSE / PASS
-                        </Col>
+                        </Col>  
+                    </Row>
+                    <Row style={{ marginBottom: '5px' }}>
+                        <Col span={8}></Col>
                         <Col span={8} offset={8} style={{ textAlign: 'right' }}>
                             <Space>
                                 <Tooltip title="추가">
@@ -1234,7 +1237,7 @@ export const Xrayinformation = () => {
                 title={`Xray 가방 ${dataEdit === true ? '수정' : '추가'}`}
                 onClose={onAddClose}
                 open={open}
-                width={500}
+                width={800}
                 style={{ top: '60px', zIndex: 888 }}
                 extra={
                     <>
@@ -1425,6 +1428,14 @@ export const Xrayinformation = () => {
                                 </Form.Item>
                             </Col>
                         </Row>
+
+
+                        <Row gutter={24}>
+                            <Col span={24} style={{ textAlign: 'center', padding: '0 10px' }}>
+                                <img src={'data:image/png;base64,'+ popupimg} />
+                            </Col>
+                        </Row>     
+
                     </Form>
                 </MainCard>
             </Drawer>
@@ -1514,7 +1525,8 @@ export const Xrayinformation = () => {
                 title="물품추가"
                 width={800}
                 style={{
-                    left: 130,
+                    top: 0,
+                    left: 0,
                     zIndex: 999
                 }}
                 footer={[
