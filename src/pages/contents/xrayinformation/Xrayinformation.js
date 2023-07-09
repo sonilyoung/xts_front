@@ -1053,6 +1053,8 @@ export const Xrayinformation = () => {
         selectedKeyPop.forEach(function (e) {
             arrTemp.push(unitPopupList.find((v) => v.unitScanId === e));
         });
+
+        arrTemp.push(...xrayinformationSubList);
         setTargetUnitPopupList(arrTemp);
         //form.resetFields();
 
