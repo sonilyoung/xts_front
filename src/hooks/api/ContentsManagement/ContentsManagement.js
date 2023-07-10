@@ -279,6 +279,15 @@ export const contentsManagement = createApi({
                 body: body,
                 contentType: 'multipart/form-data'
             })
+        }),
+
+        // 이미지조회
+        selectImg: builder.mutation({
+            query: (body) => ({
+                url: '/adm/contents/selectImg.do',
+                method: 'POST',
+                body: body
+            })
         })
     })
 });
@@ -312,5 +321,6 @@ export const {
     useSelectUnitPopupListMutation, //물품팝업리스트
     useSelectXrayImgContentsMutation, //xray컨텐츠 이미지상세정보가져오기
     useUpdateXrayContentsImgMutation, //xray컨텐츠 이미지업로드(db)
-    useXrayImageUploadMutation //xray컨텐츠 이미지업로드(db)
+    useXrayImageUploadMutation, //xray컨텐츠 이미지업로드(db)
+    useSelectImgMutation
 } = contentsManagement;
