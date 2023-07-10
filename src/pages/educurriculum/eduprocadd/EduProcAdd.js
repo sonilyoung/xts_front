@@ -365,6 +365,9 @@ export const EduProcAdd = () => {
             practiceTotalScore: itemContainer.practiceTotalScore,
             evaluationTotalScore: itemContainer.evaluationTotalScore,
             theoryTotalScore: itemContainer.theoryTotalScore,
+            passScore: itemContainer.passScore,
+            passTheoryScore: itemContainer.passTheoryScore,
+            passPracticeScore: itemContainer.passPracticeScore,
             scheduleList: studyDayArry,
             menuList: menuArry,
             moduleList: moduleArry,
@@ -942,20 +945,19 @@ export const EduProcAdd = () => {
                                     <Row>
                                         <Col>
                                             <Select
-                                                name="theoryTotalFailScore"
+                                                name="passTheoryScore"
                                                 style={{
                                                     width: '236px'
                                                 }}
                                                 options={Scoreoptions}
-                                                onChange={(e) => setItemContainer({ ...itemContainer, theoryTotalFailScore: e })}
+                                                onChange={(e) => setItemContainer({ ...itemContainer, passTheoryScore: e })}
                                                 value={
-                                                    itemContainer?.theoryTotalFailScore === undefined ||
-                                                    itemContainer?.theoryTotalFailScore === null
+                                                    itemContainer?.passTheoryScore === undefined || itemContainer?.passTheoryScore === null
                                                         ? {
                                                               value: 0,
                                                               label: '# 이론평가 과락점수'
                                                           }
-                                                        : itemContainer?.theoryTotalFailScore
+                                                        : itemContainer?.passTheoryScore
                                                 }
                                             />
                                         </Col>
@@ -1011,20 +1013,20 @@ export const EduProcAdd = () => {
                                     <Row>
                                         <Col>
                                             <Select
-                                                name="practiceTotalFailScore"
+                                                name="passPracticeScore"
                                                 style={{
                                                     width: '236px'
                                                 }}
                                                 options={Scoreoptions}
-                                                onChange={(e) => setItemContainer({ ...itemContainer, practiceTotalFailScore: e })}
+                                                onChange={(e) => setItemContainer({ ...itemContainer, passPracticeScore: e })}
                                                 value={
-                                                    itemContainer?.practiceTotalFailScore === undefined ||
-                                                    itemContainer?.practiceTotalFailScore === null
+                                                    itemContainer?.passPracticeScore === undefined ||
+                                                    itemContainer?.passPracticeScore === null
                                                         ? {
                                                               value: 0,
                                                               label: '# 실기평가 과락점수'
                                                           }
-                                                        : itemContainer?.practiceTotalFailScore
+                                                        : itemContainer?.passPracticeScore
                                                 }
                                             />
                                         </Col>
@@ -1080,20 +1082,19 @@ export const EduProcAdd = () => {
                                     <Row>
                                         <Col>
                                             <Select
-                                                name="evaluationTotalFailScore"
+                                                name="passScore"
                                                 style={{
                                                     width: '236px'
                                                 }}
                                                 options={Scoreoptions}
-                                                onChange={(e) => setItemContainer({ ...itemContainer, evaluationTotalFailScore: e })}
+                                                onChange={(e) => setItemContainer({ ...itemContainer, passScore: e })}
                                                 value={
-                                                    itemContainer?.evaluationTotalFailScore === undefined ||
-                                                    itemContainer?.evaluationTotalFailScore === null
+                                                    itemContainer?.passScore === undefined || itemContainer?.passScore === null
                                                         ? {
                                                               value: 0,
                                                               label: '# XBT 평가 과락점수'
                                                           }
-                                                        : itemContainer?.evaluationTotalFailScore
+                                                        : itemContainer?.passScore
                                                 }
                                             />
                                         </Col>
