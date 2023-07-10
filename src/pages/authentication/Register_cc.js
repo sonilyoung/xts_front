@@ -1,37 +1,122 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import { Row, Col, Space, Button, Divider, Form, Input, DatePicker, Card, Radio, Select } from 'antd';
+import { Typography } from '@mui/material';
+import { useInsertUserMutation, useSelectUserCheckMutation } from '../../hooks/api/StudentsManagement/StudentsManagement';
 import locale from 'antd/es/date-picker/locale/ko_KR';
+import 'antd/dist/antd.css';
 import MainCard from 'components/MainCard';
 import moment from 'moment';
-
-// material-ui
-import { Grid, Stack, Typography } from '@mui/material';
-
 // project import
-import FirebaseRegister from './auth-forms/AuthRegister';
-import AuthWrapper from './AuthWrapper';
-
 // ================================|| REGISTER ||================================ //
 
-const Register = () => {
+export const Register = () => {
     const { RangePicker } = DatePicker;
     const [form] = Form.useForm();
     const [idChk, setIdChk] = useState(false); // 선택한 교육생 아이디 값
     const [itemContainer, setItemContainer] = useState({}); // 항목 컨테이너
+
+    // ===============================
+    // Api 호출 Start
+    // 등록 ======================================================
+    const [InsertUserApi] = useInsertUserMutation(); // 교육생 정보 hooks api호출
+    const handle_InsertUser_Api = async () => {
+        const InsertUserresponse = await InsertUserApi({
+            eduName: itemContainer.eduName, //                      교육과정명
+            writeDate: itemContainer.writeDate, //                  입교신청일
+            userId: itemContainer.userId, //                        아이디
+            userPw: itemContainer.userPw, //                        패스워드
+            userNm: itemContainer.userNm, //                        성명국문
+            userNmCh: itemContainer.userNmCh, //                    성명한문
+            userNmEn: itemContainer.userNmEn, //                    성명영어
+            sex: itemContainer.sex, //                              성별 1 남 2여
+            registNumber: itemContainer.registNumber, //            주민번호
+            birthDay: itemContainer.birthDay, //                    생일
+            age: itemContainer.age, //                              나이
+            telNo: itemContainer.telNo, //                          전화번호
+            hpNo: itemContainer.hpNo, //                            핸드폰번호
+            email: itemContainer.email, //                          이메일
+            address: itemContainer.address, //                      주소
+            company: itemContainer.company, //                      소속회사명
+            employStatusYn: itemContainer.employStatusYn, //        재직여부
+            dept: itemContainer.dept, //                            소속
+            position: itemContainer.position, //                    직책
+            work: itemContainer.work, //                            담당업무
+            lastEdu: itemContainer.lastEdu, //                      최종학력
+            lastEduName: itemContainer.lastEduName, //              최종학력명
+            lastEduDept: itemContainer.lastEduDept, //              최종학력학과
+            lastEduYear: itemContainer.lastEduYear, //              최종학력년제
+            lastEduEnd: itemContainer.lastEduEnd, //                졸업 Y /재학 N
+            militaryStartDate: itemContainer.militaryStartDate, //  군경력시작일
+            militaryEndDate: itemContainer.militaryEndDate, //      군경력 종료일
+            militaryCareer: itemContainer.militaryCareer, //        군별
+            militaryClass: itemContainer.militaryClass, //          병과
+            militaryEnd: itemContainer.militaryEnd, //              최종계급
+            careerYn: itemContainer.careerYn, //                    보안경력유무
+            career1: itemContainer.career1, //                      보안검색경력담당업무1
+            careerStartDate1: itemContainer.careerStartDate1, //    보안검색경력시작일1
+            careerEndDate1: itemContainer.careerEndDate1, //        보안검색경력종료일1
+            careerCompany1: itemContainer.careerCompany1, //        보안검색경력소속1
+            careerPosition1: itemContainer.careerPosition1, //       보안검색경력직책1
+            career2: itemContainer.career2,
+            careerStartDate2: itemContainer.careerStartDate2,
+            careerEndDate2: itemContainer.careerEndDate2,
+            careerCompany2: itemContainer.careerCompany2,
+            careerPosition2: itemContainer.careerPosition2
+        });
+        InsertUserresponse?.data?.RET_CODE === '0100'
+            ? Modal.success({
+                  content: '등록 완료',
+                  onOk() {
+                      setOpen(false);
+                      setDataEdit(false);
+                      form.resetFields();
+                      handle_SelectUserList_Api();
+                  }
+              })
+            : Modal.error({
+                  content: '등록 오류',
+                  onOk() {}
+              });
+    };
+
+    // 아이디 중복 체크 ===========================================
+    const [SelectUserCheckApi] = useSelectUserCheckMutation(); // 상세 hooks api호출
+    const handel_SelectUserCheck_Api = async (userId) => {
+        const SelectUserCheckresponse = await SelectUserCheckApi({
+            userId: userId
+        });
+        SelectUserCheckresponse.data.RET_CODE === '9996'
+            ? (setItemContainer({ ...itemContainer, userId: '' }),
+              setIdChk(false),
+              Modal.success({
+                  content: SelectUserCheckresponse.data.RET_DESC,
+                  onOk() {}
+              }))
+            : setIdChk(true);
+    };
+    // Api 호출 End
+    // ===============================
+
+    // 추가 및 수정 취소
+    const onAddClose = () => {
+        setItemContainer([]);
+        form.resetFields();
+        setOpen(false);
+    };
+
+    // 추가 및 수정 처리
+    const onAddSubmit = () => {
+        handle_InsertUser_Api();
+    };
+
+    // 아이디 중복 체크 버튼 클릭 이벤트
+    const handel_IdChk = (user_id) => {
+        handel_SelectUserCheck_Api(user_id);
+    };
+
     return (
-        <Grid container spacing={3}>
-            {/* <Grid item xs={12}>
-                <Stack direction="row" justifyContent="space-between" alignItems="baseline" sx={{ mb: { xs: -0.5, sm: 0.5 } }}>
-                    <Typography variant="h3">Sign up</Typography>
-                    <Typography component={Link} to="/login" variant="body1" sx={{ textDecoration: 'none' }} color="primary">
-                        Already have an account?
-                    </Typography>
-                </Stack>
-            </Grid>
-            <Grid item xs={12}>
-                <FirebaseRegister />
-            </Grid> */}
+        <>
             <MainCard title="교육생 정보조회">
                 <Typography variant="body1">
                     <Form layout="horizontal" form={form}>
@@ -803,10 +888,9 @@ const Register = () => {
                                                             const [start2, end2] = dates;
                                                             setItemContainer({
                                                                 ...itemContainer,
-                                                                careerEndDate2: end2.format('YYYY-MM'),
-                                                                ...itemContainer,
                                                                 careerStartDate2: start2.format('YYYY-MM')
                                                             });
+                                                            setItemContainer({ ...itemContainer, careerEndDate2: end2.format('YYYY-MM') });
                                                         }}
                                                         value={[
                                                             itemContainer?.careerStartDate2 ? moment(itemContainer.careerStartDate2) : null,
@@ -855,7 +939,6 @@ const Register = () => {
                     </Form>
                 </Typography>
             </MainCard>
-        </Grid>
+        </>
     );
 };
-export default Register;

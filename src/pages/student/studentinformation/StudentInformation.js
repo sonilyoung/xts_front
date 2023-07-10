@@ -1,7 +1,25 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
 import { Typography } from '@mui/material';
-import { Row, Col, Space, Table, Tag, Tooltip, Button, Drawer, Divider, Form, Input, DatePicker, Card, Radio, Select, Modal } from 'antd';
+import {
+    Row,
+    Col,
+    Space,
+    Table,
+    Tag,
+    Tooltip,
+    Button,
+    Drawer,
+    Divider,
+    Form,
+    Input,
+    DatePicker,
+    Card,
+    Radio,
+    Select,
+    Modal,
+    Descriptions
+} from 'antd';
 import locale from 'antd/es/date-picker/locale/ko_KR';
 const { RangePicker } = DatePicker;
 
@@ -15,6 +33,9 @@ import {
 } from '../../../hooks/api/StudentsManagement/StudentsManagement';
 
 import { PlusOutlined, EditFilled, DeleteFilled, ExclamationCircleFilled, FileProtectOutlined } from '@ant-design/icons';
+
+import CertificatesPrint from './CertificatesPrint';
+import PrintButton from './PrintButton';
 
 // project import
 import MainCard from 'components/MainCard';
@@ -33,6 +54,9 @@ export const Studentinformation = () => {
     const [userId, setUserId] = useState([]); // 선택한 교육생 아이디 값
     const [idChk, setIdChk] = useState(false); // 선택한 교육생 아이디 값
     const [itemContainer, setItemContainer] = useState({}); // 항목 컨테이너
+
+    const [passResultModal, setPassResultModal] = useState(null); // 합격 여부 modal
+    const [certificatesModal, setCertificatesModal] = useState(null); // 수료증(이수증) modal
 
     // ===============================
     // Api 호출 Start
@@ -357,6 +381,7 @@ export const Studentinformation = () => {
                     <Tooltip title="학격여부" color="#108ee9">
                         <Button
                             type="primary"
+                            onClick={() => passResultModal_handleOpen(userId)}
                             style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
                             icon={<FileProtectOutlined />}
                         >
@@ -471,6 +496,55 @@ export const Studentinformation = () => {
                 onCancel() {}
             });
         }
+    };
+
+    // 합격여부 Modal Open
+    const passResultModal_handleOpen = (userId) => {
+        setPassResultModal(true);
+        console.log(userId);
+    };
+
+    // 합격여부 Modal Close
+    const passResultModal_handleCancel = () => {
+        setPassResultModal(null);
+    };
+
+    // 이수증명서 Modal Opem
+    const Certificates_Print = () => {
+        setCertificatesModal(true);
+
+        // };
+
+        // const handlePrint = () => {
+        const printContent = document.getElementById('modal-content');
+        const printWindow = window.open('', '', 'width=800,height=600');
+
+        printWindow.document.open();
+        printWindow.document.write(`
+      <html>
+        <head>
+          <title>이수증명서</title>
+          <style>
+            @media print {
+              body {
+                margin: 0;
+                font-size: 15pt;
+              }
+            }
+          </style>
+        </head>
+        <body>
+          ${printContent.innerHTML}
+        </body>
+      </html>
+    `);
+        printWindow.document.close();
+        printWindow.print();
+    };
+
+    // 이수증명서 Modal Close
+    const certificatesModal_handleCancel = () => {
+        setCertificatesModal(null);
     };
 
     useEffect(() => {
@@ -1563,6 +1637,102 @@ export const Studentinformation = () => {
 
             {/* 교육생 등록 Excel Start */}
             {/* 교육생 등록 Excel End */}
+
+            {/* 학격여부 Start */}
+            <Modal
+                title="합격 여부"
+                visible={true}
+                closable={false}
+                open={passResultModal}
+                width={700}
+                style={{
+                    top: 90,
+                    left: 130,
+                    zIndex: 999
+                }}
+                footer={[
+                    <Button
+                        type="primary"
+                        onClick={passResultModal_handleCancel}
+                        style={{
+                            width: '100px',
+                            borderRadius: '5px',
+                            boxShadow: '2px 3px 0px 0px #dbdbdb'
+                        }}
+                    >
+                        Close
+                    </Button>
+                ]}
+            >
+                <Space>
+                    <Card
+                        title={<h3 style={{ fontSize: '16px' }}>항공보안검색요원 초기 교육과정 1차</h3>}
+                        size="small"
+                        style={{ marginBottom: '20px', border: '1px solid #f50' }}
+                    >
+                        <Descriptions layout="vertical" bordered style={{ width: '450px', marginBottom: '15px' }}>
+                            <Descriptions.Item style={{ textAlign: 'center' }} label="XBT 평가">
+                                40점
+                            </Descriptions.Item>
+                            <Descriptions.Item style={{ textAlign: 'center' }} label="이론 평가">
+                                30점
+                            </Descriptions.Item>
+                            <Descriptions.Item style={{ textAlign: 'center' }} label="실습 평가 ">
+                                20점
+                            </Descriptions.Item>
+                        </Descriptions>
+                    </Card>
+                    <Button
+                        type="primary"
+                        danger
+                        onClick={() => Certificates_Print()}
+                        style={{ width: '160px', borderRadius: '12px', marginLeft: '10px', height: '85px' }}
+                    >
+                        이수 증명서 출력
+                    </Button>
+                </Space>
+                <Space>
+                    <Card
+                        title={<h3 style={{ fontSize: '16px' }}>항공보안검색요원 초기 교육과정 2차</h3>}
+                        size="small"
+                        style={{ marginBottom: '20px', border: '1px solid #f50' }}
+                    >
+                        <Descriptions layout="vertical" bordered style={{ width: '450px', marginBottom: '15px' }}>
+                            <Descriptions.Item style={{ textAlign: 'center' }} label="XBT 평가">
+                                40점
+                            </Descriptions.Item>
+                            <Descriptions.Item style={{ textAlign: 'center' }} label="이론 평가">
+                                30점
+                            </Descriptions.Item>
+                            <Descriptions.Item style={{ textAlign: 'center' }} label="실습 평가 ">
+                                20점
+                            </Descriptions.Item>
+                        </Descriptions>
+                    </Card>
+                    <Button type="primary" disabled block style={{ width: '160px', marginLeft: '10px', height: '65px' }}>
+                        불합격
+                    </Button>
+                </Space>
+            </Modal>
+            {/* 학격여부 Excel End */}
+
+            {/* 수료증 Print Start */}
+            <Modal
+                title="이수증명서"
+                closable={true}
+                open={certificatesModal}
+                // width={800}
+                style={{
+                    top: 90,
+                    left: 130,
+                    zIndex: 999
+                }}
+            >
+                <div id="modal-content">
+                    <CertificatesPrint />
+                </div>
+            </Modal>
+            {/* 수료증 Print End */}
         </>
     );
 };

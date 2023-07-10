@@ -52,6 +52,7 @@ export const Teacherstudent = () => {
                 compNm: d.compNm, //회사명
                 gainScore: d.gainScore, //총 획득점수
                 passYn: d.passYn, //합격 불합격 여부 (Y 합격 N 불합격 ING 진행중)
+                eduName: d.eduName,
                 eduStartDate: d.eduStartDate, //교육시작일
                 eduEndDate: d.eduEndDate, //교육종료일
                 endingYn: d.endingYn //완료여부 (Y 완료 N 미완료 ING 진행중)
@@ -144,7 +145,7 @@ export const Teacherstudent = () => {
         },
         {
             title: '교육 구분',
-            dataIndex: '',
+            dataIndex: 'eduName',
             align: 'center'
         },
         {
@@ -209,7 +210,6 @@ export const Teacherstudent = () => {
                 </div>
             )
         },
-
         {
             width: '110px',
             title: '교육완료여부',

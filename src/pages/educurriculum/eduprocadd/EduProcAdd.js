@@ -894,7 +894,7 @@ export const EduProcAdd = () => {
                             </Col>
                         </Row>
                         <Row gutter={24}>
-                            <Col span={12}>
+                            <Col span={24}>
                                 <Form.Item
                                     name="form05"
                                     label="수료 기준점수"
@@ -910,7 +910,7 @@ export const EduProcAdd = () => {
                                             <Select
                                                 name="endingStdScore"
                                                 style={{
-                                                    width: '236px'
+                                                    width: '490px'
                                                 }}
                                                 options={Scoreoptions}
                                                 onChange={(e) => setItemContainer({ ...itemContainer, endingStdScore: e })}
@@ -921,6 +921,41 @@ export const EduProcAdd = () => {
                                                               label: '# 수료 기준점수'
                                                           }
                                                         : itemContainer?.endingStdScore
+                                                }
+                                            />
+                                        </Col>
+                                    </Row>
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                        <Row gutter={24}>
+                            <Col span={12}>
+                                <Form.Item
+                                    name="form06"
+                                    label="이론평가 과락점수"
+                                    rules={[
+                                        {
+                                            required: true
+                                        }
+                                    ]}
+                                >
+                                    <Row>
+                                        <Col>
+                                            <Select
+                                                name="theoryTotalFailScore"
+                                                style={{
+                                                    width: '236px'
+                                                }}
+                                                options={Scoreoptions}
+                                                onChange={(e) => setItemContainer({ ...itemContainer, theoryTotalFailScore: e })}
+                                                value={
+                                                    itemContainer?.theoryTotalFailScore === undefined ||
+                                                    itemContainer?.theoryTotalFailScore === null
+                                                        ? {
+                                                              value: 0,
+                                                              label: '# 이론평가 과락점수'
+                                                          }
+                                                        : itemContainer?.theoryTotalFailScore
                                                 }
                                             />
                                         </Col>
@@ -966,6 +1001,39 @@ export const EduProcAdd = () => {
                             <Col span={12}>
                                 <Form.Item
                                     name="form07"
+                                    label="실기평가 과락점수"
+                                    rules={[
+                                        {
+                                            required: true
+                                        }
+                                    ]}
+                                >
+                                    <Row>
+                                        <Col>
+                                            <Select
+                                                name="practiceTotalFailScore"
+                                                style={{
+                                                    width: '236px'
+                                                }}
+                                                options={Scoreoptions}
+                                                onChange={(e) => setItemContainer({ ...itemContainer, practiceTotalFailScore: e })}
+                                                value={
+                                                    itemContainer?.practiceTotalFailScore === undefined ||
+                                                    itemContainer?.practiceTotalFailScore === null
+                                                        ? {
+                                                              value: 0,
+                                                              label: '# 실기평가 과락점수'
+                                                          }
+                                                        : itemContainer?.practiceTotalFailScore
+                                                }
+                                            />
+                                        </Col>
+                                    </Row>
+                                </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                                <Form.Item
+                                    name="form07"
                                     label="실기평가 가중치(%)"
                                     rules={[
                                         {
@@ -990,6 +1058,42 @@ export const EduProcAdd = () => {
                                                     itemContainer?.practiceTotalScore === null
                                                         ? 0
                                                         : itemContainer?.practiceTotalScore
+                                                }
+                                            />
+                                        </Col>
+                                    </Row>
+                                </Form.Item>
+                            </Col>
+                        </Row>
+
+                        <Row gutter={24}>
+                            <Col span={12}>
+                                <Form.Item
+                                    name="form08"
+                                    label="XBT 평가 과락점수"
+                                    rules={[
+                                        {
+                                            required: true
+                                        }
+                                    ]}
+                                >
+                                    <Row>
+                                        <Col>
+                                            <Select
+                                                name="evaluationTotalFailScore"
+                                                style={{
+                                                    width: '236px'
+                                                }}
+                                                options={Scoreoptions}
+                                                onChange={(e) => setItemContainer({ ...itemContainer, evaluationTotalFailScore: e })}
+                                                value={
+                                                    itemContainer?.evaluationTotalFailScore === undefined ||
+                                                    itemContainer?.evaluationTotalFailScore === null
+                                                        ? {
+                                                              value: 0,
+                                                              label: '# XBT 평가 과락점수'
+                                                          }
+                                                        : itemContainer?.evaluationTotalFailScore
                                                 }
                                             />
                                         </Col>

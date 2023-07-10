@@ -97,3 +97,16 @@ span {
 .custom-search-input input {
     font-size: 12px;
 }
+
+@media print {
+    @page {
+        size: A4;
+    }
+}
+
+@media print {
+    body {
+        margin: 0;
+        font-size: 12pt;
+    }
+}
