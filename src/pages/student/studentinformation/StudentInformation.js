@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Typography } from '@mui/material';
 import {
     Row,
@@ -34,8 +34,7 @@ import {
 
 import { PlusOutlined, EditFilled, DeleteFilled, ExclamationCircleFilled, FileProtectOutlined } from '@ant-design/icons';
 
-import CertificatesPrint from './CertificatesPrint';
-import PrintButton from './PrintButton';
+import { CertificatesPrint } from './CertificatesPrint';
 
 // project import
 import MainCard from 'components/MainCard';
@@ -44,6 +43,7 @@ import moment from 'moment';
 export const Studentinformation = () => {
     const { confirm } = Modal;
     const [form] = Form.useForm();
+    const contentRef = useRef(null);
 
     const [dataSource, setDataSource] = useState([]); // Table 데이터 값
     const [loading, setLoading] = useState(false);
@@ -55,8 +55,8 @@ export const Studentinformation = () => {
     const [idChk, setIdChk] = useState(false); // 선택한 교육생 아이디 값
     const [itemContainer, setItemContainer] = useState({}); // 항목 컨테이너
 
-    const [passResultModal, setPassResultModal] = useState(null); // 합격 여부 modal
-    const [certificatesModal, setCertificatesModal] = useState(null); // 수료증(이수증) modal
+    const [passResultModal, setPassResultModal] = useState(false); // 합격 여부 modal
+    const [certificatesModal, setCertificatesModal] = useState(false); // 수료증(이수증) modal
 
     // ===============================
     // Api 호출 Start
@@ -506,50 +506,75 @@ export const Studentinformation = () => {
 
     // 합격여부 Modal Close
     const passResultModal_handleCancel = () => {
-        setPassResultModal(null);
+        setPassResultModal(false);
     };
 
     // 이수증명서 Modal Opem
     const Certificates_Print = () => {
         setCertificatesModal(true);
+    };
 
-        // };
-
-        // const handlePrint = () => {
-        const printContent = document.getElementById('modal-content');
-        const printWindow = window.open('', '', 'width=800,height=600');
-
-        printWindow.document.open();
-        printWindow.document.write(`
-      <html>
-        <head>
-          <title>이수증명서</title>
-          <style>
-            @media print {
-              body {
-                margin: 0;
-                font-size: 15pt;
-              }
-            }
-          </style>
-        </head>
-        <body>
-          ${printContent.innerHTML}
-        </body>
-      </html>
-    `);
-        printWindow.document.close();
-        printWindow.print();
+    const handlePrint = () => {
+        const content = contentRef.current;
+        if (content) {
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+              <html>
+                <head>
+                  <title>Print</title>
+                  <style>
+                    @media print {
+                      @page {
+                        size: A4;
+                      }
+                    }
+                  </style>
+                </head>
+                <body>
+                ${content.innerHTML}
+                  <script>
+                    window.onload = function() {
+                      window.print();
+                    };
+      
+                    window.onafterprint = function() {
+                      window.close();
+                    };
+      
+                    window.onbeforeunload = function() {
+                      if (printWindow && !printWindow.closed) {
+                        printWindow.close();
+                      }
+                    };
+                  </script>
+                </body>
+              </html>
+            `);
+            printWindow.document.title = '이수증명서(홍길동).pdf';
+            printWindow.document.close();
+        }
     };
 
     // 이수증명서 Modal Close
     const certificatesModal_handleCancel = () => {
-        setCertificatesModal(null);
+        setCertificatesModal(false);
     };
 
     useEffect(() => {
         setLoading(true);
         handle_SelectUserList_Api();
+
+        const handleUnload = () => {
+            if (printWindow && !printWindow.closed) {
+                printWindow.close();
+            }
+        };
+
+        window.addEventListener('beforeunload', handleUnload);
+
+        return () => {
+            window.removeEventListener('beforeunload', handleUnload);
+        };
     }, []);
 
     return (
@@ -1641,7 +1666,6 @@ export const Studentinformation = () => {
             {/* 학격여부 Start */}
             <Modal
                 title="합격 여부"
-                visible={true}
                 closable={false}
                 open={passResultModal}
                 width={700}
@@ -1688,7 +1712,7 @@ export const Studentinformation = () => {
                         onClick={() => Certificates_Print()}
                         style={{ width: '160px', borderRadius: '12px', marginLeft: '10px', height: '85px' }}
                     >
-                        이수 증명서 출력
+                        이수 증명서
                     </Button>
                 </Space>
                 <Space>
@@ -1718,17 +1742,24 @@ export const Studentinformation = () => {
 
             {/* 수료증 Print Start */}
             <Modal
-                title="이수증명서"
+                title="이수 증명서"
                 closable={true}
                 open={certificatesModal}
-                // width={800}
+                onCancel={certificatesModal_handleCancel}
+                width={595}
+                height={842}
                 style={{
                     top: 90,
                     left: 130,
                     zIndex: 999
                 }}
+                footer={
+                    <div style={{ textAlign: 'right', marginTop: '20px' }}>
+                        <Button onClick={handlePrint}> 이수 증명서 출력</Button>
+                    </div>
+                }
             >
-                <div id="modal-content">
+                <div ref={contentRef}>
                     <CertificatesPrint />
                 </div>
             </Modal>

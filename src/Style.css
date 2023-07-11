@@ -101,12 +101,16 @@ span {
 @media print {
     @page {
         size: A4;
-    }
-}
-
-@media print {
-    body {
         margin: 0;
-        font-size: 12pt;
+    }
+
+    body {
+        margin: 1.6cm; /* 1.6cm은 일반적인 프린트 마진입니다. 필요에 따라 조절해주세요. */
+    }
+
+    /* 모달 내용을 프린트할 컨테이너에 스타일을 적용해주세요. */
+    .print-container {
+        page-break-inside: avoid; /* 페이지 나눔 방지 */
+        padding: 2cm; /* 모달 내용의 여백을 조절해주세요. */
     }
 }
