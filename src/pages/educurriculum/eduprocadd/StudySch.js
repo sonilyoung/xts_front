@@ -55,15 +55,25 @@ export const StudySch = (props) => {
     }, []);
 
     useEffect(() => {
-        const initialTotStudyDateList = Array.from({ length: props.TotStudyDate }, (_, index) => ({
-            eduStartDate: props.SetScheduleList[index].eduStartDate,
-            eduEndDate: props.SetScheduleList[index].eduEndDate
-        }));
-        setTotStudyDateList(initialTotStudyDateList);
-        setModuleListSet(props.SetModuleList);
-        setMenuListSet(props.SetMenuList);
-    }, [props.TotStudyDate, props.EduStartDate, props.EduEndDate, props.SetModuleList, props.SetMenuList]);
+        if (props.SetScheduleList === null) {
+            const initialTotStudyDateList = Array.from({ length: props.TotStudyDate }, () => ({
+                eduStartDate: props.EduStartDate,
+                eduEndDate: props.EduEndDate
+            }));
+            setTotStudyDateList(initialTotStudyDateList);
+        } else {
+            const initialTotStudyDateList = Array.from({ length: props.TotStudyDate }, (_, index) => ({
+                eduStartDate: props.SetScheduleList[index].eduStartDate,
+                eduEndDate: props.SetScheduleList[index].eduEndDate
+            }));
+            setTotStudyDateList(initialTotStudyDateList);
+        }
 
+        // setModuleListSet(props.SetModuleList);
+        setModuleListSet(props.SetModuleList !== null ? props.SetModuleList : Array(props.TotStudyDate).fill(0));
+
+        setMenuListSet(props.SetMenuList);
+    }, [props.SetScheduleList, props.TotStudyDate, props.SetModuleList, props.SetMenuList]);
     return (
         <>
             <MainCard title="학습 일정별 학습과정 설정" style={{ marginTop: 30 }}>
@@ -194,11 +204,15 @@ export const StudySch = (props) => {
                                                 width: '272px',
                                                 fontSize: '16px'
                                             }}
-                                            value={moduleListSet[index]}
+                                            value={
+                                                moduleListSet === null || moduleListSet === undefined || moduleListSet === ''
+                                                    ? ''
+                                                    : moduleListSet[index]
+                                            }
                                             onChange={(value) => {
                                                 setModuleListSet((prevList) => {
                                                     const newModuleList = [...prevList];
-                                                    newModuleList[index] = value; // Set unselected values to '0'
+                                                    newModuleList[index] = value;
                                                     return newModuleList;
                                                 });
                                             }}
