@@ -52,6 +52,8 @@ export const Studentinformation = () => {
 
     const [selectedRowKeys, setSelectedRowKeys] = useState([]); //셀렉트 박스 option Selected 값
     const [userId, setUserId] = useState([]); // 선택한 교육생 아이디 값
+    const [userNmValue, setUserNmValue] = useState([]); // 선택한 교육생 이름 값
+
     const [idChk, setIdChk] = useState(false); // 선택한 교육생 아이디 값
     const [itemContainer, setItemContainer] = useState({}); // 항목 컨테이너
 
@@ -376,12 +378,12 @@ export const Studentinformation = () => {
         {
             title: '학격여부',
             align: 'center',
-            render: (_, { userId }) => (
+            render: (_, { userId, userNm }) => (
                 <>
                     <Tooltip title="학격여부" color="#108ee9">
                         <Button
                             type="primary"
-                            onClick={() => passResultModal_handleOpen(userId)}
+                            onClick={() => passResultModal_handleOpen(userId, userNm)}
                             style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
                             icon={<FileProtectOutlined />}
                         >
@@ -499,9 +501,10 @@ export const Studentinformation = () => {
     };
 
     // 합격여부 Modal Open
-    const passResultModal_handleOpen = (userId) => {
+    const passResultModal_handleOpen = (userId, userNm) => {
         setPassResultModal(true);
-        console.log(userId);
+        setUserNmValue(userNm);
+        // console.log(userId);
     };
 
     // 합격여부 Modal Close
@@ -1688,9 +1691,15 @@ export const Studentinformation = () => {
                     </Button>
                 ]}
             >
+                <h4>[{userNmValue}]</h4>
                 <Space>
                     <Card
-                        title={<h3 style={{ fontSize: '16px' }}>항공보안검색요원 초기 교육과정 1차</h3>}
+                        title={
+                            <Space style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <h3 style={{ fontSize: '16px', margin: 0 }}>항공보안검색요원 초기 교육과정 1차</h3>
+                                <Tag color="green">합격</Tag>
+                            </Space>
+                        }
                         size="small"
                         style={{ marginBottom: '20px', border: '1px solid #f50' }}
                     >
@@ -1717,16 +1726,21 @@ export const Studentinformation = () => {
                 </Space>
                 <Space>
                     <Card
-                        title={<h3 style={{ fontSize: '16px' }}>항공보안검색요원 초기 교육과정 2차</h3>}
+                        title={
+                            <Space style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <h3 style={{ fontSize: '16px', margin: 0 }}>항공보안검색요원 초기 교육과정 2차</h3>
+                                <Tag color="volcano">불합격</Tag>
+                            </Space>
+                        }
                         size="small"
-                        style={{ marginBottom: '20px', border: '1px solid #f50' }}
+                        style={{ marginBottom: '20px', border: '1px solid #ccc' }}
                     >
                         <Descriptions layout="vertical" bordered style={{ width: '450px', marginBottom: '15px' }}>
                             <Descriptions.Item style={{ textAlign: 'center' }} label="XBT 평가">
-                                40점
+                                20점
                             </Descriptions.Item>
                             <Descriptions.Item style={{ textAlign: 'center' }} label="이론 평가">
-                                30점
+                                10점
                             </Descriptions.Item>
                             <Descriptions.Item style={{ textAlign: 'center' }} label="실습 평가 ">
                                 20점

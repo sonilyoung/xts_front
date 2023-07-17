@@ -1,7 +1,7 @@
 /* eslint-disable*/
 import React, { useEffect, useState } from 'react';
 import { Typography } from '@mui/material';
-import { Row, Col, Table, Button, Select, Form, Modal, Divider, Transfer } from 'antd';
+import { Row, Col, Table, Button, Select, Form, Modal, Divider, Transfer, Tooltip, Popover } from 'antd';
 import difference from 'lodash/difference';
 // 학습모듈 관리 - 랜덤추출, 물품팝업조회, 모듈에 등록된 문제목록 가져오기
 import {
@@ -9,6 +9,8 @@ import {
     useSelectModuleXrayPopListMutation, // 물품팝업조회
     useSelectModuleQuestionMutation // 모듈에 등록된 문제목록 가져오기
 } from '../../../hooks/api/CurriculumManagement/CurriculumManagement';
+
+import { useSelectImgMutation } from '../../../hooks/api/ContentsManagement/ContentsManagement';
 
 // project import
 import MainCard from 'components/MainCard';
@@ -21,6 +23,7 @@ export const XrayInformation = (props) => {
     const [disabled, setDisabled] = useState(false);
     const [loading, setLoading] = useState(false);
     const [mockData, setMockData] = useState([]);
+    const [tooltipImg, setTooltipImg] = useState();
 
     const [randemLevel, setRandemLevel] = useState(0); // 난이도 레벨
     const [randemlimit, setRandemlimit] = useState(5); // 출제 문항수
@@ -74,6 +77,27 @@ export const XrayInformation = (props) => {
         }
     };
 
+    // Tooltip 가방이미지 가져오기
+    const [SelectImgApi] = useSelectImgMutation(); // 이미지조회 api 정보
+    const handleTooltipImg = async (targetId, command) => {
+        const SelectImgResponse = await SelectImgApi({
+            bagScanId: targetId,
+            command: command
+        }); // 비동기 함수 호출
+
+        setTooltipImg(SelectImgResponse?.data?.RET_DATA.imgReal);
+    };
+
+    const handleMouseOver = (targetId, command) => {
+        // Call the function to fetch the image and update the Tooltip state
+        handleTooltipImg(targetId, command);
+    };
+
+    const handleMouseOut = () => {
+        // Clear the Tooltip image state when the mouse leaves
+        setTooltipImg(null);
+    };
+
     const TableTransfer = ({ leftColumns, rightColumns, ...restProps }) => (
         <Transfer {...restProps}>
             {({ direction, filteredItems, onItemSelectAll, onItemSelect, selectedKeys: listSelectedKeys, disabled: listDisabled }) => {
@@ -124,6 +148,17 @@ export const XrayInformation = (props) => {
             title: '가방촬영ID',
             dataIndex: 'rowdata1',
             align: 'center'
+            // render: (_, { rowdata1 }) => (
+            //     <>
+            //         <Popover
+            //             content={tooltipImg ? <img src={'data:image/png;base64,' + tooltipImg} alt="" style={{ width: '550px' }} /> : ''}
+            //             title=""
+            //             placement="bottomLeft"
+            //         >
+            //         {rowdata1}
+            //         </Popover>
+            //     </>
+            // )
         },
         {
             title: '정답물품',
@@ -234,8 +269,31 @@ export const XrayInformation = (props) => {
                 disabled={disabled}
                 showSearch={true}
                 onChange={onChange}
-                filterOption={(inputValue, item) => item.title.indexOf(inputValue) !== -1 || item.tag.indexOf(inputValue) !== -1}
+                filterOption={(inputValue, item) => {
+                    const searchableRowdata7 = item.rowdata7 ? `${item.rowdata7}Lv` : '';
+                    const lowerCasedInputValue = inputValue.toLowerCase(); // 검색어를 소문자로 변환
+                    const lowerCasedSearchableRowdata7 = searchableRowdata7.toLowerCase(); // searchableRowdata7를 소문자로 변환
+                    return (
+                        item.rowdata1.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1 ||
+                        (item.rowdata3 && item.rowdata3.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1) || // rowdata3이 null인 경우를 처리
+                        item.rowdata4.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1 ||
+                        item.rowdata5.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1 ||
+                        item.rowdata6.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1 ||
+                        lowerCasedSearchableRowdata7.indexOf(lowerCasedInputValue) !== -1 // 대소문자를 구분하지 않고 비교
+                    );
+                }}
                 leftColumns={leftTableColumns}
+                // leftColumns={leftTableColumns.map((column) => ({
+                //     ...column,
+                //     onCell: (record) => ({
+                //         onMouseOver: () => {
+                //             if (!tooltipImg) {
+                //                 handleMouseOver(record.rowdata1, '403');
+                //             }
+                //         },
+                //         onMouseOut: handleMouseOut
+                //     })
+                // }))}
                 rightColumns={rightTableColumns}
             />
             <Row style={{ marginTop: '15px' }}>
