@@ -57,7 +57,7 @@ export const Xrayinformation = () => {
     const [insertXrayUnit] = useInsertXrayUnitMutation(); // xray컨텐츠 물품등록 hooks api호출
     const [deleteXrayUnit] = useDeleteXrayUnitMutation(); // xray컨텐츠 물품삭제 hooks api호출
     const [selectUnitPopupList] = useSelectUnitPopupListMutation(); // xray컨텐츠 물품삭제 hooks api호출
-    const [SelectImgApi] = useSelectImgMutation();// 이미지조회 api 정보
+    const [SelectImgApi] = useSelectImgMutation(); // 이미지조회 api 정보
 
     const [unitPopupList, setUnitPopupList] = useState([]);
     const [targetUnitPopupList, setTargetUnitPopupList] = useState([]);
@@ -83,7 +83,7 @@ export const Xrayinformation = () => {
     const [onImgPop, setOnImgPop] = useState(false); // 이미지팝업
 
     //실사이미지
-    const [imgReal,	setimgReal]	=	useState('');
+    const [imgReal, setimgReal] = useState('');
 
     const [searchtext, setSearchtext] = useState('');
 
@@ -93,7 +93,7 @@ export const Xrayinformation = () => {
             console.log(searchtext);
             handleSelectUnitPopupList(searchtext);
         }
-    };    
+    };
 
     // 데이터 값 선언
     const handleXrayinformation = async () => {
@@ -131,9 +131,9 @@ export const Xrayinformation = () => {
         const SelectImgResponse = await SelectImgApi({
             bagScanId: targetId,
             command: command
-        }); // 비동기 함수 호출    
+        }); // 비동기 함수 호출
         //setOnImgPop(true);
-        setPopupimg(SelectImgResponse?.data?.RET_DATA.imgReal);       
+        setPopupimg(SelectImgResponse?.data?.RET_DATA.imgReal);
         handleAdd();
     };
 
@@ -159,25 +159,24 @@ export const Xrayinformation = () => {
                 rowdata14: s.insertDate /*등록일시*/,
                 rowdata15: s.insertId /*등록자*/,
                 rowdata16: s.answerItem /*정답물품*/,
-                rowdata18: s.unitDesc /*물품설명*/,
+                rowdata18: s.unitDesc /*물품설명*/
             }))
         ]);
         setLoadingSub(false);
     };
 
-
     const [popupimg, setPopupimg] = useState('');
 
     const handelImgPop = (targetBagScanId, command) => {
-        console.log('targetBagScanId:', targetBagScanId);	
+        console.log('targetBagScanId:', targetBagScanId);
         selectImg(targetBagScanId, command);
-    }    
-    
+    };
+
     //이미지팝업창 오픈
     const handleImgPop = (e) => {
         setOnImgPop(true);
-        setPopupimg(e);	
-    }
+        setPopupimg(e);
+    };
     //이미지팝업창
     const Unit_ModalOk = () => {
         setOnImgPop(false);
@@ -187,7 +186,7 @@ export const Xrayinformation = () => {
     const Unit_ModalCancel = () => {
         setOnImgPop(false);
         form.resetFields();
-    };    
+    };
 
     // 상단 테이블 Title
     const defaultColumns = [
@@ -227,7 +226,7 @@ export const Xrayinformation = () => {
                     <Tooltip title="수정" color="#108ee9">
                         <Button
                             type="primary"
-                            onClick={() => handelImgPop(rowdata1, "403")}
+                            onClick={() => handelImgPop(rowdata1, '403')}
                             style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
                             icon={<EditFilled />}
                         >
@@ -236,7 +235,7 @@ export const Xrayinformation = () => {
                     </Tooltip>
                 </div>
             )
-        },        
+        },
         {
             width: '90px',
             title: '물품ID',
@@ -290,11 +289,11 @@ export const Xrayinformation = () => {
             )
         },
         {
-            width: '90px',
+            width: '180px',
             title: 'Action구분',
             dataIndex: 'rowdata6',
             align: 'center',
-            render: (_, { rowdata1, rowdataNo}) =>
+            render: (_, { rowdata1, rowdataNo }) =>
                 dataSource.length >= 1 ? (
                     <Select
                         labelInValue
@@ -319,23 +318,23 @@ export const Xrayinformation = () => {
                         options={[
                             {
                                 value: '0',
-                                label: '0'
+                                label: '0 | 개봉/금지 | OPEN / Prohibited'
                             },
                             {
                                 value: '1',
-                                label: '1'
+                                label: '1 | 미개봉/금지 | CLOSE / Prohibited'
                             },
                             {
                                 value: '2',
-                                label: '2'
+                                label: '2 | 개봉/제한 | OPEN / Restricted'
                             },
                             {
                                 value: '3',
-                                label: '3'
+                                label: '3 | 개봉/통과 | OPEN / PASS'
                             },
                             {
                                 value: '4',
-                                label: '4'
+                                label: '4 | 미개봉/통과 | CLOSE'
                             }
                         ]}
                     />
@@ -503,8 +502,7 @@ export const Xrayinformation = () => {
                         //var tempTarget = targetUnitPopupList.find(v => v.unitScanId === rowdata1);
                         //Object.preventExtensions(tempTarget);
                         targetUnitPopupList.forEach(function (t) {
-
-                            console.log('unitId:', t.unitId );
+                            console.log('unitId:', t.unitId);
                             console.log('rowdata2:', rowdata2);
 
                             if (t.unitId === rowdata2) {
@@ -548,7 +546,7 @@ export const Xrayinformation = () => {
                     ]}
                 />
             )
-        },
+        }
         /*
         {
             width: '150px',
@@ -672,7 +670,6 @@ export const Xrayinformation = () => {
         setDataSource(newData);
     };
 
-
     const columns = defaultColumns.map((col) => {
         if (!col.editable) {
             return col;
@@ -763,14 +760,11 @@ export const Xrayinformation = () => {
 
         console.log('수정 selectedRowKeys:', selectedRowKeys);
 
-
-
         if (selectedRowKeys == '') {
             Modal.error({
                 content: '수정할 항목을 선택해주세요.'
             });
         } else {
-
             var arrTemp = [];
             xrayinformationList.forEach(function (t) {
                 selectedRowKeys.forEach(function (tg) {
@@ -779,9 +773,8 @@ export const Xrayinformation = () => {
                         //object copy
                         arrTemp.push(t);
                     }
-                });             
-
-            });            
+                });
+            });
 
             console.log('수정 arrTemp:', arrTemp);
             const response = await updateXrayContents({
@@ -848,7 +841,7 @@ export const Xrayinformation = () => {
             });
         }
         handleXrayinformationSub(bagScanId); // 그룹 api 호출
-    };       
+    };
 
     const onSaveSubmit = async () => {
         setLoading(true);
@@ -1088,7 +1081,7 @@ export const Xrayinformation = () => {
         <>
             <MainCard title="정보 관리">
                 <Typography variant="body1">
-                    <Row>
+                    {/* <Row>
                         <Col span={8}>
                             0 | 개봉/금지 | OPEN / Prohibited <br/>
                             1 | 미개봉/금지 | CLOSE / Prohibited <br/>
@@ -1096,7 +1089,7 @@ export const Xrayinformation = () => {
                             3 | 개봉/통과 | OPEN / PASS <br/>
                             4 | 미개봉/통과 | CLOSE / PASS
                         </Col>  
-                    </Row>
+                    </Row> */}
                     <Row style={{ marginBottom: '5px' }}>
                         <Col span={8}></Col>
                         <Col span={8} offset={8} style={{ textAlign: 'right' }}>
@@ -1213,8 +1206,8 @@ export const Xrayinformation = () => {
                             </Tooltip>
                         </Space>
                     </Col>
-                </Row>                
-                <Form layout="vertical" name="tableSub" >
+                </Row>
+                <Form layout="vertical" name="tableSub">
                     <Form.Item>
                         <Table
                             size="small"
@@ -1283,10 +1276,6 @@ export const Xrayinformation = () => {
                     </>
                 }
             >
-
-
-
-
                 <MainCard>
                     <Form name="Unit_Add" layout="vertical" form={form}>
                         <Divider style={{ margin: '10px 0' }} />
@@ -1431,13 +1420,11 @@ export const Xrayinformation = () => {
                             </Col>
                         </Row>
 
-
                         <Row gutter={24}>
                             <Col span={24} style={{ textAlign: 'center', padding: '0 10px' }}>
-                                <img src={'data:image/png;base64,'+ popupimg} />
+                                <img src={'data:image/png;base64,' + popupimg} />
                             </Col>
-                        </Row>     
-
+                        </Row>
                     </Form>
                 </MainCard>
             </Drawer>
@@ -1472,7 +1459,6 @@ export const Xrayinformation = () => {
                 ]}
             >
                 <MainCard>
-
                     <Row gutter={24}>
                         <Box sx={{ width: '100%', ml: { xs: 0, md: 1 } }}>
                             <FormControl sx={{ width: { xs: '100%', md: 224 } }}>
@@ -1494,10 +1480,9 @@ export const Xrayinformation = () => {
                                     placeholder="Search..."
                                 />
                             </FormControl>
-                        </Box>                            
+                        </Box>
                     </Row>
 
-                        
                     <Form layout="vertical" name="Unit_Language_Add" form={form} onFinish={Unit_LanguageAdd}>
                         <Form.Item>
                             <Table
@@ -1544,16 +1529,15 @@ export const Xrayinformation = () => {
                 <MainCard>
                     <Form layout="vertical" name="Unit_Language_Add" form={form} onFinish={Unit_LanguageAdd}>
                         <Form.Item>
-                            <Row >
+                            <Row>
                                 <Col style={{ textAlign: 'center', padding: '0 10px' }}>
-                                    <img src={'data:image/png;base64,'+ popupimg} />
+                                    <img src={'data:image/png;base64,' + popupimg} />
                                 </Col>
                             </Row>
                         </Form.Item>
                     </Form>
                 </MainCard>
             </Modal>
-
         </>
     );
 };
