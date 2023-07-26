@@ -112,6 +112,24 @@ export const studentsManagement = createApi({
                 method: 'POST',
                 body: body
             })
+        }),
+
+        // 교육생 회원가입(교육생 화면)
+        insertStuUser: builder.mutation({
+            query: (body) => ({
+                url: '/adm/userMgr/insertStuUser.do',
+                method: 'POST',
+                body: body
+            })
+        }),
+
+        // 교육생 회원가입(교육생 화면) > 교육생 아이디 중복 체크
+        selectStuUserCheck: builder.mutation({
+            query: (body) => ({
+                url: 'adm/userMgr/selectStuUserCheck.do',
+                method: 'POST',
+                body: body
+            })
         })
     })
 });
@@ -126,5 +144,7 @@ export const {
     useSelectUserListPopMutation,
     useSelectBaselineUserListMutation,
     useSelectBaselineUserMutation,
-    useUpdateBaselineUserMutation
+    useUpdateBaselineUserMutation,
+    useInsertStuUserMutation,
+    useSelectStuUserCheckMutation
 } = studentsManagement;

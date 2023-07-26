@@ -419,12 +419,9 @@ export const Studentinformation = () => {
             align: 'center'
         }
     ];
-    //const [data, setData] = useState();
-    //const [loading, setLoading] = useState(false);
 
     const onChange = (pagination, filters, sorter, extra) => {
         console.log('params', pagination, filters, sorter, extra);
-        //setSortedInfo(sorter);
     };
 
     //체크 박스 이벤트
@@ -488,7 +485,6 @@ export const Studentinformation = () => {
             confirm({
                 title: '선택한 항목을 삭제하시겠습니까?',
                 icon: <ExclamationCircleFilled />,
-                // content: selectedRowKeys + ' 번째 항목의 데이터',
                 okText: '예',
                 okType: 'danger',
                 cancelText: '아니오',

@@ -1,17 +1,15 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
-import { Row, Col, Space, Button, Divider, Form, Input, DatePicker, Card, Radio, Select } from 'antd';
+import { useEffect, useState, useRef } from 'react';
+import { Row, Col, Space, Button, Divider, Form, Input, DatePicker, Card, Radio, Select, Modal } from 'antd';
 import locale from 'antd/es/date-picker/locale/ko_KR';
 import MainCard from 'components/MainCard';
 import moment from 'moment';
 
 // material-ui
 import { Grid, Stack, Typography } from '@mui/material';
+import { useInsertStuUserMutation, useSelectStuUserCheckMutation } from '../../hooks/api/StudentsManagement/StudentsManagement';
 
-// project import
-import FirebaseRegister from './auth-forms/AuthRegister';
-import AuthWrapper from './AuthWrapper';
-
+const { RangePicker } = DatePicker;
 // ================================|| REGISTER ||================================ //
 
 const Register = () => {
@@ -19,23 +17,173 @@ const Register = () => {
     const [form] = Form.useForm();
     const [idChk, setIdChk] = useState(false); // 선택한 교육생 아이디 값
     const [itemContainer, setItemContainer] = useState({}); // 항목 컨테이너
+
+    // ===============================
+    // Api 호출 Start
+    // 등록 ======================================================
+    const [InsertStuUserApi] = useInsertStuUserMutation(); // 교육생 정보 hooks api호출
+    const handle_InsertStuUser_Api = async () => {
+        const InsertStuUserresponse = await InsertStuUserApi({
+            eduName: itemContainer.eduName, //                      교육과정명
+            writeDate: itemContainer.writeDate, //                  입교신청일
+            userId: itemContainer.userId, //                        아이디
+            userPw: itemContainer.userPw, //                        패스워드
+            userNm: itemContainer.userNm, //                        성명국문
+            userNmCh: itemContainer.userNmCh, //                    성명한문
+            userNmEn: itemContainer.userNmEn, //                    성명영어
+            sex: itemContainer.sex, //                              성별 1 남 2여
+            registNumber: itemContainer.registNumber, //            주민번호
+            birthDay: itemContainer.birthDay, //                    생일
+            age: itemContainer.age, //                              나이
+            telNo: itemContainer.telNo, //                          전화번호
+            hpNo: itemContainer.hpNo, //                            핸드폰번호
+            email: itemContainer.email, //                          이메일
+            address: itemContainer.address, //                      주소
+            company: itemContainer.company, //                      소속회사명
+            employStatusYn: itemContainer.employStatusYn, //        재직여부
+            dept: itemContainer.dept, //                            소속
+            position: itemContainer.position, //                    직책
+            work: itemContainer.work, //                            담당업무
+            lastEdu: itemContainer.lastEdu, //                      최종학력
+            lastEduName: itemContainer.lastEduName, //              최종학력명
+            lastEduDept: itemContainer.lastEduDept, //              최종학력학과
+            lastEduYear: itemContainer.lastEduYear, //              최종학력년제
+            lastEduEnd: itemContainer.lastEduEnd, //                졸업 Y /재학 N
+            militaryStartDate: itemContainer.militaryStartDate, //  군경력시작일
+            militaryEndDate: itemContainer.militaryEndDate, //      군경력 종료일
+            militaryCareer: itemContainer.militaryCareer, //        군별
+            militaryClass: itemContainer.militaryClass, //          병과
+            militaryEnd: itemContainer.militaryEnd, //              최종계급
+            careerYn: itemContainer.careerYn, //                    보안경력유무
+            career1: itemContainer.career1, //                      보안검색경력담당업무1
+            careerStartDate1: itemContainer.careerStartDate1, //    보안검색경력시작일1
+            careerEndDate1: itemContainer.careerEndDate1, //        보안검색경력종료일1
+            careerCompany1: itemContainer.careerCompany1, //        보안검색경력소속1
+            careerPosition1: itemContainer.careerPosition1, //      보안검색경력직책1
+            career2: itemContainer.career2,
+            careerStartDate2: itemContainer.careerStartDate2,
+            careerEndDate2: itemContainer.careerEndDate2,
+            careerCompany2: itemContainer.careerCompany2,
+            careerPosition2: itemContainer.careerPosition2
+        });
+        console.log(InsertStuUserresponse?.data);
+        InsertStuUserresponse?.data?.RET_CODE === '0100'
+            ? Modal.success({
+                  content: '등록 완료',
+                  onOk() {
+                      form.resetFields();
+                      window.close();
+                  }
+              })
+            : Modal.error({
+                  content: '등록 오류',
+                  onOk() {}
+              });
+    };
+
+    // 아이디 중복 체크 ===========================================
+    const [SelectStuUserCheckApi] = useSelectStuUserCheckMutation(); // 상세 hooks api호출
+    const handel_SelectStuUserCheck_Api = async (userId) => {
+        const SelectStuUserCheckresponse = await SelectStuUserCheckApi({
+            userId: userId
+        });
+
+        console.log(SelectStuUserCheckresponse.data);
+        SelectStuUserCheckresponse.data.RET_CODE === '9996'
+            ? (setItemContainer({ ...itemContainer, userId: '' }),
+              setIdChk(false),
+              Modal.success({
+                  content: SelectStuUserCheckresponse.data.RET_DESC,
+                  onOk() {}
+              }))
+            : setIdChk(true);
+    };
+    // Api 호출 End
+    // ===============================
+
+    // 등록 취소
+    const onAddClose = () => {
+        setItemContainer([]);
+        form.resetFields();
+        window.close();
+    };
+
+    // 등록 처리
+    const onAddSubmit = () => {
+        handle_InsertStuUser_Api();
+    };
+
+    // 아이디 중복 체크 버튼 클릭 이벤트
+    const handel_IdChk = (user_id) => {
+        if (user_id === undefined) {
+            Modal.success({
+                content: '아이디를 입력해주세요!',
+                onOk() {}
+            });
+        } else {
+            if (user_id.length < '4') {
+                Modal.success({
+                    content: '아이디는 최소 "4"자 이상 입력해주시기 바랍니다.',
+                    onOk() {}
+                });
+            } else {
+                handel_SelectStuUserCheck_Api(user_id);
+            }
+        }
+    };
+
+    const formatPhoneNumber = (input) => {
+        const cleanedInput = input.replace(/\D/g, '');
+        const formattedNumber = cleanedInput.replace(/^(\d{3})(\d{3,4})(\d{4})$/, '$1-$2-$3');
+        return formattedNumber;
+    };
+
+    const handlePhoneNumberChange = (fieldName, inputValue) => {
+        const formattedNumber = formatPhoneNumber(inputValue);
+        setItemContainer((prevValues) => ({
+            ...prevValues,
+            [fieldName]: formattedNumber
+        }));
+    };
+
+    const formatResidentRegistrationNumber = (input) => {
+        const cleanedInput = input.replace(/\D/g, '');
+        const formattedNumber = cleanedInput.replace(/^(\d{6})(\d{1,7})$/, '$1-$2');
+        return formattedNumber;
+    };
+
+    const handleResidentNumberChange = (inputValue) => {
+        const formattedNumber = formatResidentRegistrationNumber(inputValue);
+        setItemContainer((prevValues) => ({
+            ...prevValues,
+            registNumber: formattedNumber
+        }));
+    };
+
+    const calculateAge = (dob) => {
+        const today = new Date();
+        const birthDate = new Date(dob);
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const monthDiff = today.getMonth() - birthDate.getMonth();
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        return age;
+    };
+    const handleDOBChange = (date, dateString) => {
+        setItemContainer((prevValues) => ({
+            ...prevValues,
+            birthDay: dateString,
+            age: calculateAge(dateString).toString()
+        }));
+    };
+
     return (
         <Grid container spacing={3}>
-            {/* <Grid item xs={12}>
-                <Stack direction="row" justifyContent="space-between" alignItems="baseline" sx={{ mb: { xs: -0.5, sm: 0.5 } }}>
-                    <Typography variant="h3">Sign up</Typography>
-                    <Typography component={Link} to="/login" variant="body1" sx={{ textDecoration: 'none' }} color="primary">
-                        Already have an account?
-                    </Typography>
-                </Stack>
-            </Grid>
-            <Grid item xs={12}>
-                <FirebaseRegister />
-            </Grid> */}
-            <MainCard title="교육생 정보조회">
+            <MainCard>
+                <h1 style={{ margin: '30px 0px', textAlign: 'center' }}>교육생 가입</h1>
                 <Typography variant="body1">
                     <Form layout="horizontal" form={form}>
-                        {/* <Form layout="vertical" form={form}> */}
                         <Card>
                             <Row gutter={24}>
                                 <Col span={24}>
@@ -110,26 +258,17 @@ const Register = () => {
                                         ]}
                                         initialValue={itemContainer?.userId}
                                     >
-                                        {idChk ? ( // 수정의 경우
-                                            <Input
-                                                name="userId"
-                                                placeholder="아이디"
-                                                onChange={(e) => setItemContainer({ ...itemContainer, userId: e.target.value })}
-                                                value={itemContainer?.userId}
-                                                disabled={idChk}
-                                            />
-                                        ) : (
-                                            // 등록의 경우
-                                            <Space direction="horizontal">
-                                                <div className="form-group">
-                                                    <Input
-                                                        name="userId"
-                                                        placeholder="아이디"
-                                                        onChange={(e) => setItemContainer({ ...itemContainer, userId: e.target.value })}
-                                                        value={itemContainer?.userId}
-                                                        disabled={idChk}
-                                                    />
-                                                </div>
+                                        <Space direction="horizontal">
+                                            <div className="form-group">
+                                                <Input
+                                                    name="userId"
+                                                    placeholder="아이디"
+                                                    onChange={(e) => setItemContainer({ ...itemContainer, userId: e.target.value })}
+                                                    value={itemContainer?.userId}
+                                                    disabled={idChk}
+                                                />
+                                            </div>
+                                            {idChk === false ? (
                                                 <Button
                                                     style={{
                                                         width: 80
@@ -137,10 +276,19 @@ const Register = () => {
                                                     onClick={() => handel_IdChk(itemContainer?.userId)}
                                                     disabled={idChk}
                                                 >
+                                                    중복체크
+                                                </Button>
+                                            ) : (
+                                                <Button
+                                                    style={{
+                                                        width: 80
+                                                    }}
+                                                    disabled={idChk}
+                                                >
                                                     사용가능
                                                 </Button>
-                                            </Space>
-                                        )}
+                                            )}
+                                        </Space>
                                     </Form.Item>
                                 </Col>
                                 <Col span={12}>
@@ -282,7 +430,9 @@ const Register = () => {
                                                 width: '100%',
                                                 margin: '0 3px'
                                             }}
-                                            onChange={(e) => setItemContainer({ ...itemContainer, registNumber: e.target.value })}
+                                            placeholder="주민등록번호 (숫자만 입력)"
+                                            // onChange={(e) => setItemContainer({ ...itemContainer, registNumber: e.target.value })}
+                                            onChange={(e) => handleResidentNumberChange(e.target.value)}
                                             value={itemContainer?.registNumber}
                                         />
                                     </Form.Item>
@@ -299,12 +449,13 @@ const Register = () => {
                                     >
                                         <DatePicker
                                             name="birthDay"
-                                            onChange={(e) => {
-                                                setItemContainer({
-                                                    ...itemContainer,
-                                                    birthDay: e.format('YYYY-MM-DD')
-                                                });
-                                            }}
+                                            // onChange={(e) => {
+                                            //     setItemContainer({
+                                            //         ...itemContainer,
+                                            //         birthDay: e.format('YYYY-MM-DD')
+                                            //     });
+                                            // }}
+                                            onChange={handleDOBChange}
                                             value={itemContainer?.birthDay ? moment(itemContainer.birthDay) : null}
                                             placeholder="생년월일"
                                             style={{
@@ -347,8 +498,9 @@ const Register = () => {
                                             style={{
                                                 width: '100%'
                                             }}
-                                            placeholder="전화번호"
-                                            onChange={(e) => setItemContainer({ ...itemContainer, telNo: e.target.value })}
+                                            placeholder="전화번호 (숫자만 입력)"
+                                            // onChange={(e) => setItemContainer({ ...itemContainer, telNo: e.target.value })}
+                                            onChange={(e) => handlePhoneNumberChange('telNo', e.target.value)}
                                             value={itemContainer?.telNo}
                                         />
                                     </Form.Item>
@@ -369,8 +521,9 @@ const Register = () => {
                                             style={{
                                                 width: '100%'
                                             }}
-                                            placeholder="휴대폰번호"
-                                            onChange={(e) => setItemContainer({ ...itemContainer, hpNo: e.target.value })}
+                                            placeholder="휴대폰번호 (숫자만 입력)"
+                                            // onChange={(e) => setItemContainer({ ...itemContainer, hpNo: e.target.value })}
+                                            onChange={(e) => handlePhoneNumberChange('hpNo', e.target.value)}
                                             value={itemContainer?.hpNo}
                                         />
                                     </Form.Item>
@@ -853,6 +1006,24 @@ const Register = () => {
                             )}
                         </Card>
                     </Form>
+                    <Row gutter={16} style={{ marginTop: '20px' }} justify="center">
+                        <Space>
+                            <Col>
+                                <Button onClick={onAddClose} style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}>
+                                    취 소
+                                </Button>
+                            </Col>
+                            <Col>
+                                <Button
+                                    onClick={onAddSubmit}
+                                    style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                    type="primary"
+                                >
+                                    회원가입
+                                </Button>
+                            </Col>
+                        </Space>
+                    </Row>
                 </Typography>
             </MainCard>
         </Grid>
