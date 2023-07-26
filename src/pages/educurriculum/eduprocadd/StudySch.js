@@ -55,19 +55,19 @@ export const StudySch = (props) => {
     }, []);
 
     useEffect(() => {
-        // if (props.SetScheduleList === null) {
-        const initialTotStudyDateList = Array.from({ length: props.TotStudyDate }, () => ({
-            eduStartDate: props.EduStartDate,
-            eduEndDate: props.EduEndDate
-        }));
-        setTotStudyDateList(initialTotStudyDateList);
-        // } else {
-        //     const initialTotStudyDateList = Array.from({ length: props.TotStudyDate }, (_, index) => ({
-        //         eduStartDate: props.SetScheduleList[index].eduStartDate,
-        //         eduEndDate: props.SetScheduleList[index].eduEndDate
-        //     }));
-        //     setTotStudyDateList(initialTotStudyDateList);
-        // }
+        if (props.SetScheduleList === null) {
+            const initialTotStudyDateList = Array.from({ length: props.TotStudyDate }, () => ({
+                eduStartDate: props.EduStartDate,
+                eduEndDate: props.EduEndDate
+            }));
+            setTotStudyDateList(initialTotStudyDateList);
+        } else {
+            const initialTotStudyDateList = Array.from({ length: props.TotStudyDate }, (_, index) => ({
+                eduStartDate: props.SetScheduleList[index].eduStartDate,
+                eduEndDate: props.SetScheduleList[index].eduEndDate
+            }));
+            setTotStudyDateList(initialTotStudyDateList);
+        }
 
         // setModuleListSet(props.SetModuleList);
         setModuleListSet(props.SetModuleList !== null ? props.SetModuleList : Array(props.TotStudyDate).fill(0));
