@@ -139,12 +139,12 @@ export const Learning_Contentgroup = () => {
             align: 'center'
         },
         {
-            title: '정답률',
+            title: '정답수',
             dataIndex: 'rowdata5',
             align: 'center'
         },
         {
-            title: '오답률',
+            title: '오답수',
             dataIndex: 'rowdata6',
             align: 'center'
         }

@@ -42,7 +42,7 @@ import { Studentinformation } from 'pages/student/studentinformation'; // 교육
 // 강사 관리
 
 // 통계
-import { Evaluationscore } from 'pages/statistics/evaluationscore'; // 통계 / 교육실적 조회 / 교육생 평가점수 조회
+// import { Evaluationscore } from 'pages/statistics/evaluationscore'; // 통계 / 교육실적 조회 / 교육생 평가점수 조회
 
 import { Learning_Performance } from 'pages/statistics/learning/learning_performance'; // 통계 / 학습 / 학습 실적 조회
 import { Learning_Contentgroup } from 'pages/statistics/learning/learning_contentgroup'; //통계 / 학습 / 컨텐츠 그룹 조회
@@ -182,11 +182,11 @@ const MainRoutes = {
         //     path: '/student/baseline',
         //     element: <Baseline />
         // },
-        {
-            // 통계 > 교육실적조회 > 평가점수 조회
-            path: '/statistics/evaluationscore',
-            element: <Evaluationscore />
-        },
+        // {
+        //     // 통계 > 교육실적조회 > 평가점수 조회
+        //     path: '/statistics/evaluationscore',
+        //     element: <Evaluationscore />
+        // },
         // {
         //     // 통계 > 교육실적조회 > 교육평가 조회
         //     path: '/statistics/educationaleval',
