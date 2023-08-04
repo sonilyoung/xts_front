@@ -14,88 +14,77 @@ export const Learning_Performance = () => {
             rowdata1: '2023',
             rowdata2: '항공보안검색요원 초기 교육과정 [5차]',
             rowdata3: '80',
-            rowdata4: '40',
-            rowdata5: '88%'
+            rowdata4: '40'
         },
         {
             rowdata0: '2',
             rowdata1: '2023',
             rowdata2: '항공경비요원 초기 교육과정 [5차]',
             rowdata3: '70',
-            rowdata4: '40',
-            rowdata5: '80%'
+            rowdata4: '40'
         },
         {
             rowdata0: '3',
             rowdata1: '2023',
             rowdata2: '항공보안검색요원 정기 교육과정 [4차]',
             rowdata3: '90',
-            rowdata4: '45',
-            rowdata5: '80%'
+            rowdata4: '45'
         },
         {
             rowdata0: '4',
             rowdata1: '2023',
             rowdata2: '항공경비요원 정기 교육과정 [4차]',
             rowdata3: '88',
-            rowdata4: '50',
-            rowdata5: '70%'
+            rowdata4: '50'
         },
         {
             rowdata0: '5',
             rowdata1: '2023',
             rowdata2: '항공보안검색요원 초기 교육과정 [3차]',
             rowdata3: '80',
-            rowdata4: '40',
-            rowdata5: '80%'
+            rowdata4: '40'
         },
         {
             rowdata0: '6',
             rowdata1: '2023',
             rowdata2: '항공경비요원 초기 교육과정 [3차]',
             rowdata3: '76',
-            rowdata4: '35',
-            rowdata5: '60%'
+            rowdata4: '35'
         },
         {
             rowdata0: '7',
             rowdata1: '2022',
             rowdata2: '항공보안검색요원 초기 교육과정 [2차]',
             rowdata3: '90',
-            rowdata4: '40',
-            rowdata5: '70%'
+            rowdata4: '40'
         },
         {
             rowdata0: '8',
             rowdata1: '2022',
             rowdata2: '항공경비요원 초기 교육과정 [2차]',
             rowdata3: '90',
-            rowdata4: '40',
-            rowdata5: '80%'
+            rowdata4: '40'
         },
         {
             rowdata0: '9',
             rowdata1: '2022',
             rowdata2: '항공보안검색요원 정기 교육과정 [1차]',
             rowdata3: '80',
-            rowdata4: '30',
-            rowdata5: '80%'
+            rowdata4: '30'
         },
         {
             rowdata0: '10',
             rowdata1: '2022',
             rowdata2: '항공경비요원 정기 교육과정 [1차]',
             rowdata3: '70',
-            rowdata4: '35',
-            rowdata5: '70%'
+            rowdata4: '35'
         },
         {
             rowdata0: '11',
             rowdata1: '2022',
             rowdata2: '항공보안검색요원 초기 교육과정 [1차]',
             rowdata3: '60',
-            rowdata4: '45',
-            rowdata5: '90%'
+            rowdata4: '45'
         }
     ]);
     const [count, setCount] = useState(dataSource.length);
@@ -150,11 +139,6 @@ export const Learning_Performance = () => {
                     </Button>
                 </>
             )
-        },
-        {
-            title: '합격율',
-            dataIndex: 'rowdata5',
-            align: 'center'
         }
     ];
 

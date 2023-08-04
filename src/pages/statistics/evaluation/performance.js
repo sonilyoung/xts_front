@@ -152,7 +152,7 @@ export const Evaluation_Performance = () => {
             )
         },
         {
-            title: '합격율',
+            title: '평가 합격율',
             dataIndex: 'rowdata5',
             align: 'center'
         }

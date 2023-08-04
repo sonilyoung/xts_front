@@ -152,7 +152,7 @@ export const Theory_Performance = () => {
             )
         },
         {
-            title: '합격율',
+            title: '이론편가 합격율',
             dataIndex: 'rowdata5',
             align: 'center'
         }
