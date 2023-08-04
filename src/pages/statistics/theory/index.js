@@ -1,1 +1,1 @@
-export { Theory_Performance } from './performance';
+export { Theory_Performance } from './theory_performance';
