@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 // material-ui
 import { Box, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
-import { Badge, Tooltip } from 'antd';
+import { Badge, Tooltip, Button } from 'antd';
 
 // third-party
 // import NumberFormat from 'react-number-format';
@@ -19,403 +19,11 @@ function createData(userName, name, totalcnt, bcnt, cper) {
 }
 
 const rows = [
-    createData(
-        '김상철',
-        <span>
-            x-ray 판독 초급2023 - 1차
-        </span>,
-        30,
-        20,
-        80
-    ),
-    createData(
-        '서세원',
-        <span>
-            x-ray 판독 초급2023 - 1차
-        </span>,
-        30,
-        10,
-        33
-    ),
-    createData(
-        '홍서방',
-        <span>
-            x-ray 판독 중급2023 - 1차
-        </span>,
-        30,
-        30,
-        100
-    ),
-    createData(
-        '강민',
-        <span>
-            x-ray 판독 중급2023 - 1차
-        </span>,
-        30,
-        1,
-        93
-    ),
-    createData(
-        '김갑분',
-        <span>
-            x-ray 판독 고급2023 - 1차
-        </span>,
-        30,
-        2,
-        90
-    ),
-    /*createData(
-        84564569,
-        <span>
-            Bullet
-            <br />
-            [총알]
-        </span>,
-        71,
-        4,
-        6
-    ),
-    createData(
-        84564570,
-        <span>
-            Chisel
-            <br />
-            [조각끌]
-        </span>,
-        119,
-        77,
-        65
-    ),
-    createData(
-        84564571,
-        <span>
-            Electronic
-            <br />
-            [전자]
-        </span>,
-        41,
-        38,
-        93
-    ),
-    createData(
-        84564574,
-        <span>
-            Cigarettes
-            <br />
-            [담배]
-        </span>,
-        9,
-        1,
-        11
-    ),
-    createData(
-        84564575,
-        <span>
-            Liquid
-            <br />
-            [액체]
-        </span>,
-        109,
-        49,
-        45
-    ),
-    createData(
-        84564576,
-        <span>
-            Firecracker
-            <br />
-            [폭죽]
-        </span>,
-        2,
-        2,
-        100
-    ),
-    createData(
-        84564577,
-        <span>
-            Gun
-            <br />
-            [총]
-        </span>,
-        12,
-        6,
-        50
-    ),
-    createData(
-        84564578,
-        <span>
-            GunParts
-            <br />
-            [건파츠]
-        </span>,
-        242,
-        149,
-        62
-    ),
-    createData(
-        84564579,
-        <span>
-            Hammer
-            <br />
-            [망치]
-        </span>,
-        70,
-        30,
-        43
-    ),
-    createData(
-        84564580,
-        <span>
-            HandCuffs
-            <br />
-            [수갑]
-        </span>,
-        104,
-        53,
-        51
-    ),
-    createData(
-        84564581,
-        <span>
-            HDD
-            <br />
-            [하드디스크]
-        </span>,
-        104,
-        63,
-        61
-    ),
-    createData(
-        84564582,
-        <span>
-            Laptop
-            <br />
-            [노트북]
-        </span>,
-        42,
-        20,
-        48
-    ),
-    createData(
-        84564583,
-        <span>
-            Lighter
-            <br />
-            [라이타]
-        </span>,
-        58,
-        58,
-        100
-    ),
-    createData(
-        84564585,
-        <span>
-            Match
-            <br />
-            [성냥]
-        </span>,
-        55,
-        38,
-        69
-    ),
-    createData(
-        84564586,
-        <span>
-            MetalPipe
-            <br />
-            [메탈파이프]
-        </span>,
-        19,
-        8,
-        42
-    ),
-    createData(
-        84564587,
-        <span>
-            NailClippers
-            <br />
-            [손톱깎이]
-        </span>,
-        20,
-        3,
-        15
-    ),
-    createData(
-        84564588,
-        <span>
-            Plier
-            <br />
-            [펜치]
-        </span>,
-        41,
-        11,
-        27
-    ),
-    createData(
-        84564589,
-        <span>
-            Prtable Gas
-            <br />
-            [휴대용 가스]
-        </span>,
-        161,
-        57,
-        35
-    ),
-    createData(
-        84564590,
-        <span>
-            Saw
-            <br />
-            [톱]
-        </span>,
-        106,
-        64,
-        60
-    ),
-    createData(
-        84564591,
-        <span>
-            Scissors
-            <br />
-            [가위]
-        </span>,
-        36,
-        5,
-        14
-    ),
-    createData(
-        84564592,
-        <span>
-            Screwdriver
-            <br />
-            [드라이버]
-        </span>,
-        133,
-        102,
-        7
-    ),
-    createData(
-        84564593,
-        <span>
-            SmartPhone
-            <br />
-            [스마트 폰]
-        </span>,
-        15,
-        13,
-        87
-    ),
-    createData(
-        84564594,
-        <span>
-            Spanner
-            <br />
-            [스패너]
-        </span>,
-        1,
-        0,
-        0
-    ),
-    createData(
-        84564595,
-        <span>
-            SSD
-            <br />
-            [하드디스크]
-        </span>,
-        106,
-        67,
-        63
-    ),
-    createData(
-        84564596,
-        <span>
-            Supp
-            <br />
-            [좌약]
-        </span>,
-        105,
-        61,
-        58
-    ),
-    createData(
-        84564598,
-        <span>
-            Tablet PC
-            <br />
-            [테블릿 PC]
-        </span>,
-        79,
-        69,
-        87
-    ),
-    createData(
-        84564599,
-        <span>
-            Thinner
-            <br />
-            [희석제]
-        </span>,
-        1,
-        1,
-        100
-    ),
-    createData(
-        84564602,
-        <span>
-            USB
-            <br />
-            [이동식 기억장치]
-        </span>,
-        3,
-        3,
-        100
-    ),
-    createData(
-        84564603,
-        <span>
-            Zippo Oil
-            <br />
-            [라이터 기름]
-        </span>,
-        18,
-        17,
-        94
-    ),
-    createData(
-        84564604,
-        <span>
-            Knife
-            <br />
-            [칼]
-        </span>,
-        19,
-        3,
-        16
-    ),
-    createData(
-        84564605,
-        <span>
-            SolidFuel
-            <br />
-            [고체연료]
-        </span>,
-        4,
-        4,
-        100
-    ),
-    createData(
-        84564606,
-        <span>
-            Stungun
-            <br />
-            [전기총]
-        </span>,
-        34,
-        20,
-        59
-    )*/
+    createData('강민', <span>x-ray 판독 초급2023 - 1차</span>, 40, '2023-08-07 ~ 2023-08-11', 10),
+    createData('김갑분', <span>x-ray 판독 중급2023 - 1차</span>, 50, '2023-08-14 ~ 2023-08-18', 0),
+    createData('김상철', <span>x-ray 판독 고급2023 - 1차</span>, 50, '2023-08-21 ~ 2023-08-25', 0),
+    createData('서세원', <span>x-ray 판독 초급2023 - 1차</span>, 40, '2023-08-28 ~ 2023-09-01', 0),
+    createData('홍서방', <span>x-ray 판독 중급2023 - 1차</span>, 30, '2023-09-04 ~ 2023-09-08', 0)
 ];
 
 const areaChartOptions = {
@@ -506,37 +114,31 @@ const headCells = [
         id: 'userName',
         align: 'center',
         disablePadding: false,
-        label: '교육생'
+        label: '강사'
     },
     {
         id: 'name',
         align: 'center',
         disablePadding: true,
-        label: '교육명'
+        label: '차수명(차수)'
     },
     {
         id: 'totalcnt',
         align: 'center',
         disablePadding: false,
-        label: '문제 출제수'
-        // },
-        // {
-        //     id: 'aper',
-        //     align: 'center',
-        //     disablePadding: false,
-        //     label: '정답률'
+        label: '교육인원'
     },
     {
         id: 'bcnt',
         align: 'center',
         disablePadding: false,
-        label: '오답건수'
+        label: '교육일정'
     },
     {
         id: 'cper',
         align: 'center',
         disablePadding: false,
-        label: '오답률'
+        label: '교육진행율(%)'
     }
 ];
 
@@ -658,21 +260,18 @@ export default function OrderTable() {
                                         {row.name}
                                     </TableCell>
                                     <TableCell align="center" style={{ width: '20%', fontSize: '14px' }}>
-                                        <Badge
-                                            count={row.totalcnt.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                                            color="#faad14"
-                                            overflowCount={9999}
-                                        />
-                                        {/* {row.totalcnt.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} */}
+                                        <Button type="text">
+                                            <Badge
+                                                count={row.totalcnt.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                                color="#faad14"
+                                                style={{ padding: '0 20px' }}
+                                                overflowCount={9999}
+                                            />
+                                        </Button>
                                     </TableCell>
                                     {/* <TableCell align="center">{row.aper}%</TableCell> */}
                                     <TableCell align="center" style={{ width: '20%', fontSize: '14px' }}>
-                                        <Badge
-                                            count={row.bcnt.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                                            color="#52c41a"
-                                            overflowCount={9999}
-                                        />
-                                        {/* {row.bcnt.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} */}
+                                        {row.bcnt}
                                     </TableCell>
                                     <TableCell align="center" style={{ width: '15%' }}>
                                         <div style={{ float: 'left', marign: '0' }}>

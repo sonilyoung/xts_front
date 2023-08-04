@@ -71,9 +71,9 @@ export const Theoryinformation = () => {
     const [selectTheoryFileListData, setSelectTheoryFileListData] = useState(); // 이론강의 정보 리스트 값
     const handle_SelectTheoryFileList_Api = async () => {
         const SelectTheoryFileListresponse = await SelectTheoryFileListApi({});
-        console.log(SelectTheoryFileListresponse?.data?.RET_DATA);
+        // console.log(SelectTheoryFileListresponse?.data?.RET_DATA);
         setSelectTheoryFileListData(SelectTheoryFileListresponse?.data?.RET_DATA);
-        console.log(SelectTheoryFileListresponse?.data?.RET_DATA);
+        // console.log(SelectTheoryFileListresponse?.data?.RET_DATA);
         setDataSource([
             ...SelectTheoryFileListresponse?.data?.RET_DATA.map((d, i) => ({
                 key: d.theoryNo,

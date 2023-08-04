@@ -43,8 +43,13 @@ import { Studentinformation } from 'pages/student/studentinformation'; // 교육
 
 // 통계
 import { Evaluationscore } from 'pages/statistics/evaluationscore'; // 통계 / 교육실적 조회 / 교육생 평가점수 조회
-// import { Educationaleval } from 'pages/statistics/educationaleval'; // 통계 / 교육실적 조회 / 교육평가 조회
-import { Wronganswerrate } from 'pages/statistics/wronganswerrate'; // 통계 / 교육실적 조회 / 문제별 오답률 조회
+
+import { Learning_Performance } from 'pages/statistics/learning/performance'; // 통계 / 학습 / 학습 실적 조회
+import { Learning_Contentgroup } from 'pages/statistics/learning/contentgroup'; //통계 / 학습 / 컨텐츠 그룹 조회
+import { Evaluation_Performance } from 'pages/statistics/evaluation/performance'; // 통계 / 평가 / 평가 실적 조회
+import { Evaluation_Contentgroup } from 'pages/statistics/evaluation/contentgroup'; //통계 / 평가 / 컨텐츠 그룹 조회
+import { Theory_Performance } from 'pages/statistics/theory/performance'; // 통계 / 이론평가 / 이론평가 실적 조회
+
 // import { Traineeevaluation } from 'pages/statistics/traineeevaluation'; // 통계 / 교육실적 조회 / 교육생 평가 조회
 // import { Traineescoreranking } from 'pages/statistics/traineescoreranking'; // 통계 / 최종평가 조회 / 교육생 점수 순위 조회
 // import { Evaluationscoreby } from 'pages/statistics/evaluationscoreby'; // 통계 / 최종평가 조회 / 기관별 평가 점수 조회
@@ -188,10 +193,33 @@ const MainRoutes = {
         //     element: <Educationaleval />
         // },
         {
-            // 통계 > 교육실적조회 > 문제별 오답률 조회
-            path: '/statistics/wronganswerrate',
-            element: <Wronganswerrate />
+            // 통계 > 학습 > 학습실적 조회
+            path: '/statistics/learning/performance',
+            element: <Learning_Performance />
         },
+        {
+            // 통계 > 학습 > 컨텐츠 그룹 조회
+            path: '/statistics/learning/contentgroup',
+            element: <Learning_Contentgroup />
+        },
+
+        {
+            // 통계 > 평가 > 평가실적 조회
+            path: '/statistics/evaluation/performance',
+            element: <Evaluation_Performance />
+        },
+        {
+            // 통계 > 평가 > 컨텐츠 그룹 조회
+            path: '/statistics/evaluation/contentgroup',
+            element: <Evaluation_Contentgroup />
+        },
+
+        {
+            // 통계 > 이론평가 > 이론평가실적 조회
+            path: '/statistics/theory/performance',
+            element: <Theory_Performance />
+        },
+
         // {
         //     // 통계 > 교육실적조회 > 교육생 평가 조회
         //     path: '/statistics/traineeevaluation',

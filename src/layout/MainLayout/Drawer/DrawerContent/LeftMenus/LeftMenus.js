@@ -56,10 +56,16 @@ const items = [
     ]),
 
     getItem('통계', 'sub6', <AppstoreAddOutlined />, [
-        getItem('교육실적조회', 'g8', <BlockOutlined />, [
-            getItem(<Link to="/statistics/evaluationscore">평가점수 조회</Link>, '27', <FileTextOutlined />),
-            getItem(<Link to="/statistics/wronganswerrate">문제별 오답률 조회</Link>, '29', <FileTextOutlined />)
-            // getItem('설문조사 결과 조회', '29', <FileTextOutlined />),
+        getItem('학습', 'g8', <BlockOutlined />, [
+            getItem(<Link to="/statistics/learning/performance">학습실적 조회</Link>, '27', <FileTextOutlined />),
+            getItem(<Link to="/statistics/learning/contentgroup">컨텐츠 그룹</Link>, '28', <FileTextOutlined />)
+        ]),
+        getItem('평가', 'g9', <BlockOutlined />, [
+            getItem(<Link to="/statistics/evaluation/performance">평가실적 조회</Link>, '29', <FileTextOutlined />),
+            getItem(<Link to="/statistics/evaluation/contentgroup">컨텐츠 그룹</Link>, '30', <FileTextOutlined />)
+        ]),
+        getItem('이론평가', 'g10', <BlockOutlined />, [
+            getItem(<Link to="/statistics/theory/performance">이론평가 조회</Link>, '31', <FileTextOutlined />)
         ])
     ]),
 

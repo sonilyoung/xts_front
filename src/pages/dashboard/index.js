@@ -6,6 +6,7 @@ import { Box, Grid, Typography } from '@mui/material';
 
 // project import
 import OrdersTable from './OrdersTable';
+import Schedule from './Schedule';
 import IncomeAreaChart from './IncomeAreaChart';
 import YearOrder from './YearOrder';
 import YearPassPer from './YearPassPer';
@@ -32,21 +33,21 @@ export const DashboardDefault = () => {
                     {/* <Grid item xs={12} mb={7} lg={12}>
                         <Grid container alignItems="center" justifyContent="space-between">
                             <Grid item>
-                                <Typography variant="h5">문제별 오답건</Typography>
+                                <Typography variant="h5">교육 스케쥴</Typography>
                             </Grid>
                         </Grid>
                         <MainCard content={false} sx={{ mt: 1.5 }}>
                             <Box sx={{ pt: 1, pr: 2 }}>
-                                <IncomeAreaChart />
+                                <Schedule />
                             </Box>
                         </MainCard>
-                    </Grid>*/}
+                    </Grid> */}
 
                     {/* row 2 */}
                     <Grid item xs={12} mb={15} lg={12}>
                         <Grid container alignItems="center" justifyContent="space-between">
                             <Grid item>
-                                <Typography variant="h5">교육생 오답률</Typography>
+                                <Typography variant="h5">교육상황</Typography>
                             </Grid>
                             <Grid item />
                         </Grid>
