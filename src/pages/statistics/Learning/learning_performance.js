@@ -150,6 +150,7 @@ export const Learning_Performance = () => {
             render: (_, { rowdata3 }) => (
                 <>
                     <Badge
+                        style={{ width: '60px', height: '25px', lineHeight: '25px' }}
                         count={rowdata3.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                         status={rowdata3 >= '90' ? 'success' : rowdata3 < '80' ? 'error' : 'warning'}
                         overflowCount={99}
@@ -199,7 +200,12 @@ export const Learning_Performance = () => {
             align: 'center',
             render: (_, { rowdata2 }) => (
                 <>
-                    <Badge count={rowdata2.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} color="blue" overflowCount={99} />
+                    <Badge
+                        style={{ width: '60px', height: '25px', lineHeight: '25px' }}
+                        count={rowdata2.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                        color="blue"
+                        overflowCount={99}
+                    />
                 </>
             )
         },
@@ -209,7 +215,12 @@ export const Learning_Performance = () => {
             align: 'center',
             render: (_, { rowdata3 }) => (
                 <>
-                    <Badge count={rowdata3.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} color="green" overflowCount={99} />
+                    <Badge
+                        style={{ width: '60px', height: '25px', lineHeight: '25px' }}
+                        count={rowdata3.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                        color="green"
+                        overflowCount={99}
+                    />
                 </>
             )
         },
@@ -219,7 +230,12 @@ export const Learning_Performance = () => {
             align: 'center',
             render: (_, { rowdata4 }) => (
                 <>
-                    <Badge count={rowdata4.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} color="volcano" overflowCount={99} />
+                    <Badge
+                        style={{ width: '60px', height: '25px', lineHeight: '25px' }}
+                        count={rowdata4.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                        color="volcano"
+                        overflowCount={99}
+                    />
                 </>
             )
         },
@@ -261,7 +277,12 @@ export const Learning_Performance = () => {
             align: 'center',
             render: (_, { rowdata1 }) => (
                 <>
-                    <Badge count={rowdata1.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} color="gold" overflowCount={99} />
+                    <Badge
+                        style={{ width: '60px', height: '25px', lineHeight: '25px' }}
+                        count={rowdata1.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                        color="gold"
+                        overflowCount={99}
+                    />
                 </>
             )
         },
@@ -271,7 +292,12 @@ export const Learning_Performance = () => {
             align: 'center',
             render: (_, { rowdata2 }) => (
                 <>
-                    <Badge count={rowdata2.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} color="green" overflowCount={99} />
+                    <Badge
+                        style={{ width: '60px', height: '25px', lineHeight: '25px' }}
+                        count={rowdata2.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                        color="green"
+                        overflowCount={99}
+                    />
                 </>
             )
         },
@@ -281,7 +307,12 @@ export const Learning_Performance = () => {
             align: 'center',
             render: (_, { rowdata3 }) => (
                 <>
-                    <Badge count={rowdata3.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} color="volcano" overflowCount={99} />
+                    <Badge
+                        style={{ width: '60px', height: '25px', lineHeight: '25px' }}
+                        count={rowdata3.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                        color="volcano"
+                        overflowCount={99}
+                    />
                 </>
             )
         }

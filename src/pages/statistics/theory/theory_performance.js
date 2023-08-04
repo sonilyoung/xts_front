@@ -14,10 +14,8 @@ export const Theory_Performance = () => {
 
     const [ModalOpen, setModalOpen] = useState(false); // Modal창
     const [ModalTitle, setModalTitle] = useState(null); // Modal Title
-    const [CntModalOpen, setCntModalOpen] = useState(false); // Modal창
-    const [CntModalTitle, setCntModalTitle] = useState(null); // Modal Title
 
-    // 학습 실적 Data
+    // 이론평가 실적 Data
     const [dataSource, setDataSource] = useState([
         {
             rowdata0: '1',
@@ -98,35 +96,19 @@ export const Theory_Performance = () => {
         }
     ]);
 
-    // 학습 교육생 Data
+    // 이론평가 교육생 Data
     const [studataSource, setStuDataSource] = useState([
         {
             rowdata0: '1',
             rowdata1: '홍길동',
-            rowdata2: '80',
-            rowdata3: '60',
-            rowdata4: '20',
-            rowdata5: '2'
+            rowdata2: '40',
+            rowdata3: '80',
+            rowdata4: '30',
+            rowdata5: '10'
         }
     ]);
 
-    // 학습횟수 Data
-    const [cntdataSource, setCntDataSource] = useState([
-        {
-            rowdata0: '1',
-            rowdata1: '80',
-            rowdata2: '25',
-            rowdata3: '15'
-        },
-        {
-            rowdata0: '2',
-            rowdata1: '60',
-            rowdata2: '35',
-            rowdata3: '5'
-        }
-    ]);
-
-    // 학습 실적 컬럼
+    // 이론평가 실적 컬럼
     const defaultColumns = [
         {
             title: 'No.',
@@ -150,6 +132,7 @@ export const Theory_Performance = () => {
             render: (_, { rowdata3 }) => (
                 <>
                     <Badge
+                        style={{ width: '60px', height: '25px', lineHeight: '25px' }}
                         count={rowdata3.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                         status={rowdata3 >= '90' ? 'success' : rowdata3 < '80' ? 'error' : 'warning'}
                         overflowCount={99}
@@ -181,7 +164,7 @@ export const Theory_Performance = () => {
         }
     ];
 
-    // 학습 교육생 컬럼
+    // 이론평가 교육생 컬럼
     const studefaultColumns = [
         {
             title: 'No.',
@@ -199,95 +182,63 @@ export const Theory_Performance = () => {
             align: 'center',
             render: (_, { rowdata2 }) => (
                 <>
-                    <Badge count={rowdata2.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} color="blue" overflowCount={99} />
+                    <Badge
+                        style={{ width: '60px', height: '25px', lineHeight: '25px' }}
+                        count={rowdata2.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                        color="blue"
+                        overflowCount={99}
+                    />
+                </>
+            )
+        },
+        {
+            title: '점수',
+            dataIndex: 'rowdata3',
+            align: 'center',
+            render: (_, { rowdata3 }) => (
+                <>
+                    <Badge
+                        style={{ width: '60px', height: '25px', lineHeight: '25px' }}
+                        count={rowdata3.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                        color="gold"
+                        overflowCount={99}
+                    />
                 </>
             )
         },
         {
             title: '정답수',
-            dataIndex: 'rowdata3',
-            align: 'center',
-            render: (_, { rowdata3 }) => (
-                <>
-                    <Badge count={rowdata3.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} color="green" overflowCount={99} />
-                </>
-            )
-        },
-        {
-            title: '오답수',
             dataIndex: 'rowdata4',
             align: 'center',
             render: (_, { rowdata4 }) => (
                 <>
-                    <Badge count={rowdata4.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} color="volcano" overflowCount={99} />
-                </>
-            )
-        },
-        {
-            title: '학습횟수',
-            dataIndex: 'rowdata6',
-            align: 'center',
-            render: (_, { rowdata1, rowdata5 }) => (
-                <>
-                    <Button
-                        style={{
-                            border: '0xp',
-                            background: '#1677ff',
-                            color: '#fff',
-                            borderRadius: '7px',
-                            width: '70px',
-                            boxShadow: '2px 3px 0px 0px #e8f2ff'
-                        }}
-                        onClick={() => Cnt_Default(rowdata1)}
-                    >
-                        {rowdata5}회
-                    </Button>
-                </>
-            )
-        }
-    ];
-
-    // 학습 횟수 컬럼
-    const cntdefaultColumns = [
-        {
-            title: '횟수',
-            dataIndex: 'rowdata0',
-            align: 'center',
-            render: (_, { rowdata0 }) => <>{rowdata0}회</>
-        },
-        {
-            title: '점수',
-            dataIndex: 'rowdata1',
-            align: 'center',
-            render: (_, { rowdata1 }) => (
-                <>
-                    <Badge count={rowdata1.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} color="gold" overflowCount={99} />
-                </>
-            )
-        },
-        {
-            title: '정답수',
-            dataIndex: 'rowdata2',
-            align: 'center',
-            render: (_, { rowdata2 }) => (
-                <>
-                    <Badge count={rowdata2.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} color="green" overflowCount={99} />
+                    <Badge
+                        style={{ width: '60px', height: '25px', lineHeight: '25px' }}
+                        count={rowdata4.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                        color="green"
+                        overflowCount={99}
+                    />
                 </>
             )
         },
         {
             title: '오답수',
-            dataIndex: 'rowdata3',
+            dataIndex: 'rowdata5',
             align: 'center',
-            render: (_, { rowdata3 }) => (
+            render: (_, { rowdata5 }) => (
                 <>
-                    <Badge count={rowdata3.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} color="volcano" overflowCount={99} />
+                    <Badge
+                        style={{ width: '60px', height: '25px', lineHeight: '25px' }}
+                        count={rowdata5.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                        color="volcano"
+                        overflowCount={99}
+                    />
                 </>
             )
         }
     ];
 
-    // 학습 실적 컬럼
+    // 이론평가 실적 컬럼
     const columns = defaultColumns.map((col) => {
         if (!col.editable) {
             return col;
@@ -304,25 +255,8 @@ export const Theory_Performance = () => {
         };
     });
 
-    // 학습 교육생 컬럼
+    // 이론평가 교육생 컬럼
     const stucolumns = studefaultColumns.map((col) => {
-        if (!col.editable) {
-            return col;
-        }
-        return {
-            ...col,
-            onCell: (record) => ({
-                record,
-                editable: col.editable,
-                dataIndex: col.dataIndex,
-                title: col.title
-                // handleSave
-            })
-        };
-    });
-
-    // 학습 횟수 컬럼
-    const cntcolumns = cntdefaultColumns.map((col) => {
         if (!col.editable) {
             return col;
         }
@@ -346,15 +280,6 @@ export const Theory_Performance = () => {
     const handleCancel = () => {
         setModalTitle(null);
         setModalOpen(false);
-    };
-
-    const Cnt_Default = (title1) => {
-        setCntModalTitle(title1);
-        setCntModalOpen(true);
-    };
-
-    const cnt_handleCancel = () => {
-        setCntModalOpen(false);
     };
 
     return (
@@ -384,31 +309,6 @@ export const Theory_Performance = () => {
                         dataSource={studataSource}
                         loading={stuloading}
                         columns={stucolumns}
-                    />
-                </MainCard>
-            </Modal>
-            {/* 교육생 설정 Modal End */}
-
-            {/* 학습횟수 Modal Start */}
-            <Modal
-                open={CntModalOpen}
-                // onOk={handleOk}
-                onCancel={cnt_handleCancel}
-                width={600}
-                style={{
-                    left: 130,
-                    zIndex: 999
-                }}
-                footer={null}
-            >
-                <MainCard title={`${ModalTitle} - [${CntModalTitle}]`} style={{ marginTop: '30px' }}>
-                    <Typography variant="body1"></Typography>
-                    <Table
-                        rowClassName={() => 'editable-row'}
-                        bordered
-                        dataSource={cntdataSource}
-                        loading={cntloading}
-                        columns={cntcolumns}
                     />
                 </MainCard>
             </Modal>

@@ -16,7 +16,7 @@ export const Evaluation_Contentgroup = () => {
             rowdata3: '총기류',
             rowdata4: '80',
             rowdata5: '60',
-            rowdata6: '20%'
+            rowdata6: '20'
         },
         {
             rowdata0: '2',
@@ -25,7 +25,7 @@ export const Evaluation_Contentgroup = () => {
             rowdata3: '총기부품류',
             rowdata4: '80',
             rowdata5: '70',
-            rowdata6: '10%'
+            rowdata6: '10'
         },
         {
             rowdata0: '3',
@@ -34,7 +34,7 @@ export const Evaluation_Contentgroup = () => {
             rowdata3: '폭발물류1',
             rowdata4: '60',
             rowdata5: '40',
-            rowdata6: '60%'
+            rowdata6: '60'
         },
         {
             rowdata0: '4',
@@ -43,7 +43,7 @@ export const Evaluation_Contentgroup = () => {
             rowdata3: '폭발물구성품',
             rowdata4: '70',
             rowdata5: '50',
-            rowdata6: '80%'
+            rowdata6: '80'
         },
         {
             rowdata0: '5',
@@ -52,7 +52,7 @@ export const Evaluation_Contentgroup = () => {
             rowdata3: '도화선',
             rowdata4: '50',
             rowdata5: '50',
-            rowdata6: '0%'
+            rowdata6: '0'
         },
         {
             rowdata0: '6',
@@ -61,7 +61,7 @@ export const Evaluation_Contentgroup = () => {
             rowdata3: '실탄류',
             rowdata4: '60',
             rowdata5: '50',
-            rowdata6: '10%'
+            rowdata6: '10'
         },
         {
             rowdata0: '7',
@@ -70,7 +70,7 @@ export const Evaluation_Contentgroup = () => {
             rowdata3: '도검류',
             rowdata4: '70',
             rowdata5: '40',
-            rowdata6: '40%'
+            rowdata6: '40'
         },
         {
             rowdata0: '8',
@@ -79,7 +79,7 @@ export const Evaluation_Contentgroup = () => {
             rowdata3: '일반무기',
             rowdata4: '70',
             rowdata5: '30',
-            rowdata6: '60%'
+            rowdata6: '60'
         },
         {
             rowdata0: '9',
@@ -88,7 +88,7 @@ export const Evaluation_Contentgroup = () => {
             rowdata3: '스포츠용품류',
             rowdata4: '80',
             rowdata5: '40',
-            rowdata6: '50%'
+            rowdata6: '50'
         },
         {
             rowdata0: '10',
@@ -97,7 +97,7 @@ export const Evaluation_Contentgroup = () => {
             rowdata3: '위장무기류',
             rowdata4: '80',
             rowdata5: '70',
-            rowdata6: '10%'
+            rowdata6: '10'
         },
         {
             rowdata0: '11',
@@ -132,21 +132,50 @@ export const Evaluation_Contentgroup = () => {
             dataIndex: 'rowdata2',
             align: 'center'
         },
-
         {
             title: '총문항수',
             dataIndex: 'rowdata4',
-            align: 'center'
+            align: 'center',
+            render: (_, { rowdata4 }) => (
+                <>
+                    <Badge
+                        style={{ width: '60px', height: '25px', lineHeight: '25px' }}
+                        count={rowdata4.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                        color="blue"
+                        overflowCount={99}
+                    />
+                </>
+            )
         },
         {
             title: '정답수',
             dataIndex: 'rowdata5',
-            align: 'center'
+            align: 'center',
+            render: (_, { rowdata5 }) => (
+                <>
+                    <Badge
+                        style={{ width: '60px', height: '25px', lineHeight: '25px' }}
+                        count={rowdata5.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                        color="green"
+                        overflowCount={99}
+                    />
+                </>
+            )
         },
         {
             title: '오답수',
             dataIndex: 'rowdata6',
-            align: 'center'
+            align: 'center',
+            render: (_, { rowdata6 }) => (
+                <>
+                    <Badge
+                        style={{ width: '60px', height: '25px', lineHeight: '25px' }}
+                        count={rowdata6.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                        color="volcano"
+                        overflowCount={99}
+                    />
+                </>
+            )
         }
     ];
 
