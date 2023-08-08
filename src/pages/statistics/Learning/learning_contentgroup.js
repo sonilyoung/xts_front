@@ -1,115 +1,35 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
-import { Table, Tag, Badge } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Table, Badge } from 'antd';
 import { Typography } from '@mui/material';
+
+import { useSelectStatisticsLearningGroupListMutation } from '../../../hooks/api/StatisticsManagement/StatisticsManagement';
 
 // project import
 import MainCard from 'components/MainCard';
 
 export const Learning_Contentgroup = () => {
     const [loading, setLoading] = useState(false);
-    const [dataSource, setDataSource] = useState([
-        {
-            rowdata0: '1',
-            rowdata1: '2016',
-            rowdata2: '항공보안검색요원 초기 교육과정[1차]',
-            rowdata3: '총기류',
-            rowdata4: '80',
-            rowdata5: '60',
-            rowdata6: '20'
-        },
-        {
-            rowdata0: '2',
-            rowdata1: '2016',
-            rowdata2: '항공보안검색요원 초기 교육과정[1차]',
-            rowdata3: '총기부품류',
-            rowdata4: '80',
-            rowdata5: '70',
-            rowdata6: '10'
-        },
-        {
-            rowdata0: '3',
-            rowdata1: '2016',
-            rowdata2: '항공보안검색요원 초기 교육과정[1차]',
-            rowdata3: '폭발물류1',
-            rowdata4: '60',
-            rowdata5: '40',
-            rowdata6: '60'
-        },
-        {
-            rowdata0: '4',
-            rowdata1: '2016',
-            rowdata2: '항공보안검색요원 초기 교육과정[1차]',
-            rowdata3: '폭발물구성품',
-            rowdata4: '70',
-            rowdata5: '50',
-            rowdata6: '80'
-        },
-        {
-            rowdata0: '5',
-            rowdata1: '2016',
-            rowdata2: '항공보안검색요원 초기 교육과정[1차]',
-            rowdata3: '도화선',
-            rowdata4: '50',
-            rowdata5: '50',
-            rowdata6: '0'
-        },
-        {
-            rowdata0: '6',
-            rowdata1: '2016',
-            rowdata2: '항공보안검색요원 초기 교육과정[1차]',
-            rowdata3: '실탄류',
-            rowdata4: '60',
-            rowdata5: '50',
-            rowdata6: '10'
-        },
-        {
-            rowdata0: '7',
-            rowdata1: '2016',
-            rowdata2: '항공보안검색요원 초기 교육과정[1차]',
-            rowdata3: '도검류',
-            rowdata4: '70',
-            rowdata5: '40',
-            rowdata6: '40'
-        },
-        {
-            rowdata0: '8',
-            rowdata1: '2016',
-            rowdata2: '항공보안검색요원 초기 교육과정[1차]',
-            rowdata3: '일반무기',
-            rowdata4: '70',
-            rowdata5: '30',
-            rowdata6: '60'
-        },
-        {
-            rowdata0: '9',
-            rowdata1: '2016',
-            rowdata2: '항공보안검색요원 초기 교육과정[1차]',
-            rowdata3: '스포츠용품류',
-            rowdata4: '80',
-            rowdata5: '40',
-            rowdata6: '50'
-        },
-        {
-            rowdata0: '10',
-            rowdata1: '2016',
-            rowdata2: '항공보안검색요원 초기 교육과정[1차]',
-            rowdata3: '위장무기류',
-            rowdata4: '80',
-            rowdata5: '70',
-            rowdata6: '10'
-        },
-        {
-            rowdata0: '11',
-            rowdata1: '2016',
-            rowdata2: '항공보안검색요원 초기 교육과정[1차]',
-            rowdata3: '공구/생활용품류',
-            rowdata4: '60',
-            rowdata5: '60',
-            rowdata6: '0'
-        }
-    ]);
-    const [count, setCount] = useState(dataSource.length);
+    const [dataSource, setDataSource] = useState([]); // 학습 실적 Table 데이터 값
+
+    const [SelectStatisticsLearningGroupListApi] = useSelectStatisticsLearningGroupListMutation(); // 콘텐츠 정보 관리 hooks api호출
+    const handel_SelectStatisticsLearningGroupList_Api = async () => {
+        const SelectStatisticsLearningGroupListresponse = await SelectStatisticsLearningGroupListApi({});
+        setDataSource([
+            ...SelectStatisticsLearningGroupListresponse?.data?.RET_DATA.map((d, i) => ({
+                key: d.procCd /* 차수번호 */,
+                rowdata0: i + 1,
+                rowdata1: d.procYear /* 차수년도 */,
+                rowdata2: d.procName /* 차수명 */,
+                rowdata3: d.procSeq /* 차수 */,
+                rowdata4: d.groupName /* 물품분류명 */,
+                rowdata5: d.rightCnt /* 정답수 */,
+                rowdata6: d.wrongCnt /* 오답수 */,
+                rowdata7: d.totalCnt /* 총문항수 */
+            }))
+        ]);
+        setLoading(false);
+    };
 
     const defaultColumns = [
         {
@@ -124,25 +44,30 @@ export const Learning_Contentgroup = () => {
         },
         {
             title: '물품분류명칭',
-            dataIndex: 'rowdata3',
+            dataIndex: 'rowdata4',
             align: 'center'
         },
         {
             title: '차수명(차수)',
             dataIndex: 'rowdata2',
-            align: 'center'
+            align: 'center',
+            render: (_, { rowdata2, rowdata3 }) => (
+                <>
+                    {rowdata2} [{rowdata3}차]
+                </>
+            )
         },
         {
             title: '총문항수',
-            dataIndex: 'rowdata4',
+            dataIndex: 'rowdata7',
             align: 'center',
-            render: (_, { rowdata4 }) => (
+            render: (_, { rowdata7 }) => (
                 <>
                     <Badge
-                        style={{ width: '60px', height: '25px', lineHeight: '25px' }}
-                        count={rowdata4.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                        style={{ width: '45px', height: '30px', lineHeight: '30px' }}
+                        count={rowdata7.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                         color="blue"
-                        overflowCount={99}
+                        overflowCount={100}
                     />
                 </>
             )
@@ -154,10 +79,10 @@ export const Learning_Contentgroup = () => {
             render: (_, { rowdata5 }) => (
                 <>
                     <Badge
-                        style={{ width: '60px', height: '25px', lineHeight: '25px' }}
+                        style={{ width: '45px', height: '30px', lineHeight: '30px' }}
                         count={rowdata5.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                         color="green"
-                        overflowCount={99}
+                        overflowCount={100}
                     />
                 </>
             )
@@ -169,10 +94,10 @@ export const Learning_Contentgroup = () => {
             render: (_, { rowdata6 }) => (
                 <>
                     <Badge
-                        style={{ width: '60px', height: '25px', lineHeight: '25px' }}
+                        style={{ width: '45px', height: '30px', lineHeight: '30px' }}
                         count={rowdata6.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                         color="volcano"
-                        overflowCount={99}
+                        overflowCount={100}
                     />
                 </>
             )
@@ -194,6 +119,11 @@ export const Learning_Contentgroup = () => {
             })
         };
     });
+
+    useEffect(() => {
+        setLoading(true); // 로딩 호출
+        handel_SelectStatisticsLearningGroupList_Api(); // 조회
+    }, []);
 
     return (
         <>

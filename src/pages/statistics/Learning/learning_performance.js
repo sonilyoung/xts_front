@@ -1,7 +1,13 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Table, Badge, Button, Modal } from 'antd';
 import { Typography } from '@mui/material';
+
+import {
+    useSelectStatisticsLearningListMutation,
+    useSelectStatisticsLearningMutation,
+    useSelectStatisticsLearningDetailMutation
+} from '../../../hooks/api/StatisticsManagement/StatisticsManagement';
 
 // project import
 import MainCard from 'components/MainCard';
@@ -12,120 +18,34 @@ export const Learning_Performance = () => {
     const [stuloading, setStuLoading] = useState(false);
     const [cntloading, setCntLoading] = useState(false);
 
+    const [dataSource, setDataSource] = useState([]); // 학습 실적 Table 데이터 값
+    const [studataSource, setStuDataSource] = useState([]); // 학습 실적 교육생 Table 데이터 값
+    const [cntdataSource, setCntDataSource] = useState([]); // 학습 횟수 Table 데이터 값
+
+    const [procCd_Value, setProcCd_Value] = useState(null);
     const [ModalOpen, setModalOpen] = useState(false); // Modal창
     const [ModalTitle, setModalTitle] = useState(null); // Modal Title
     const [CntModalOpen, setCntModalOpen] = useState(false); // Modal창
     const [CntModalTitle, setCntModalTitle] = useState(null); // Modal Title
 
     // 학습 실적 Data
-    const [dataSource, setDataSource] = useState([
-        {
-            rowdata0: '1',
-            rowdata1: '2023',
-            rowdata2: '항공보안검색요원 초기 교육과정 [5차]',
-            rowdata3: '80',
-            rowdata4: '40'
-        },
-        {
-            rowdata0: '2',
-            rowdata1: '2023',
-            rowdata2: '항공경비요원 초기 교육과정 [5차]',
-            rowdata3: '70',
-            rowdata4: '40'
-        },
-        {
-            rowdata0: '3',
-            rowdata1: '2023',
-            rowdata2: '항공보안검색요원 정기 교육과정 [4차]',
-            rowdata3: '90',
-            rowdata4: '45'
-        },
-        {
-            rowdata0: '4',
-            rowdata1: '2023',
-            rowdata2: '항공경비요원 정기 교육과정 [4차]',
-            rowdata3: '88',
-            rowdata4: '50'
-        },
-        {
-            rowdata0: '5',
-            rowdata1: '2023',
-            rowdata2: '항공보안검색요원 초기 교육과정 [3차]',
-            rowdata3: '80',
-            rowdata4: '40'
-        },
-        {
-            rowdata0: '6',
-            rowdata1: '2023',
-            rowdata2: '항공경비요원 초기 교육과정 [3차]',
-            rowdata3: '76',
-            rowdata4: '35'
-        },
-        {
-            rowdata0: '7',
-            rowdata1: '2022',
-            rowdata2: '항공보안검색요원 초기 교육과정 [2차]',
-            rowdata3: '90',
-            rowdata4: '40'
-        },
-        {
-            rowdata0: '8',
-            rowdata1: '2022',
-            rowdata2: '항공경비요원 초기 교육과정 [2차]',
-            rowdata3: '90',
-            rowdata4: '40'
-        },
-        {
-            rowdata0: '9',
-            rowdata1: '2022',
-            rowdata2: '항공보안검색요원 정기 교육과정 [1차]',
-            rowdata3: '80',
-            rowdata4: '30'
-        },
-        {
-            rowdata0: '10',
-            rowdata1: '2022',
-            rowdata2: '항공경비요원 정기 교육과정 [1차]',
-            rowdata3: '70',
-            rowdata4: '35'
-        },
-        {
-            rowdata0: '11',
-            rowdata1: '2022',
-            rowdata2: '항공보안검색요원 초기 교육과정 [1차]',
-            rowdata3: '60',
-            rowdata4: '45'
-        }
-    ]);
-
-    // 학습 교육생 Data
-    const [studataSource, setStuDataSource] = useState([
-        {
-            rowdata0: '1',
-            rowdata1: '홍길동',
-            rowdata2: '80',
-            rowdata3: '60',
-            rowdata4: '20',
-            rowdata5: '2'
-        }
-    ]);
-
-    // 학습횟수 Data
-    const [cntdataSource, setCntDataSource] = useState([
-        {
-            rowdata0: '1',
-            rowdata1: '80',
-            rowdata2: '25',
-            rowdata3: '15'
-        },
-        {
-            rowdata0: '2',
-            rowdata1: '60',
-            rowdata2: '35',
-            rowdata3: '5'
-        }
-    ]);
-
+    const [SelectStatisticsLearningListApi] = useSelectStatisticsLearningListMutation(); // 콘텐츠 정보 관리 hooks api호출
+    const handel_SelectStatisticsLearningList_Api = async () => {
+        const SelectStatisticsLearningListresponse = await SelectStatisticsLearningListApi({});
+        setDataSource([
+            ...SelectStatisticsLearningListresponse?.data?.RET_DATA.map((d, i) => ({
+                key: d.procCd /* 차수번호 */,
+                rowdata0: i + 1,
+                rowdata1: d.procYear /* 차수년도 */,
+                rowdata2: d.procName /* 차수명 */,
+                rowdata3: d.procSeq /* 차수 */,
+                rowdata4: d.averageScore /* 평균 */,
+                rowdata5: d.studentCnt /* 전체학생수 */,
+                rowdata6: d.playStudentCnt /* 참여학생수 */
+            }))
+        ]);
+        setLoading(false);
+    };
     // 학습 실적 컬럼
     const defaultColumns = [
         {
@@ -141,28 +61,33 @@ export const Learning_Performance = () => {
         {
             title: '차수명 [차수]',
             dataIndex: 'rowdata2',
-            align: 'center'
+            align: 'center',
+            render: (_, { rowdata2, rowdata3 }) => (
+                <>
+                    {rowdata2} [{rowdata3}차]
+                </>
+            )
         },
         {
             title: '평균점수',
-            dataIndex: 'rowdata3',
+            dataIndex: 'rowdata4',
             align: 'center',
-            render: (_, { rowdata3 }) => (
+            render: (_, { rowdata4 }) => (
                 <>
                     <Badge
-                        style={{ width: '60px', height: '25px', lineHeight: '25px' }}
-                        count={rowdata3.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                        status={rowdata3 >= '90' ? 'success' : rowdata3 < '80' ? 'error' : 'warning'}
-                        overflowCount={99}
+                        style={{ width: '45px', height: '30px', lineHeight: '30px' }}
+                        count={rowdata4.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                        status={rowdata4 >= '90' ? 'success' : rowdata4 < '80' ? 'error' : 'warning'}
+                        overflowCount={100}
                     />
                 </>
             )
         },
         {
             title: '교육인원',
-            dataIndex: 'rowdata4',
+            dataIndex: 'rowdata5',
             align: 'center',
-            render: (_, { rowdata1, rowdata2, rowdata4 }) => (
+            render: (_, { key, rowdata1, rowdata2, rowdata3, rowdata5, rowdata6 }) => (
                 <>
                     <Button
                         style={{
@@ -171,17 +96,38 @@ export const Learning_Performance = () => {
                             color: '#fff',
                             borderRadius: '7px',
                             width: '70px',
-                            boxShadow: '2px 3px 0px 0px #e8f2ff'
+                            boxShadow: '2px 3px 0px 0px #e3e3e3'
                         }}
-                        onClick={() => Student_Default(rowdata1, rowdata2)}
+                        onClick={() => Student_Default(rowdata1, rowdata2, rowdata3, key)}
                     >
-                        {rowdata4}
+                        {rowdata6} / {rowdata5}
                     </Button>
                 </>
             )
         }
     ];
 
+    // 학습 교육생 Data
+    const [SelectStatisticsLearningApi] = useSelectStatisticsLearningMutation(); // 콘텐츠 정보 관리 hooks api호출
+    const handel_SelectStatisticsLearning_Api = async (procCd_Value) => {
+        const SelectStatisticsLearningresponse = await SelectStatisticsLearningApi({
+            procCd: procCd_Value
+        });
+        setProcCd_Value(procCd_Value);
+        setStuDataSource([
+            ...SelectStatisticsLearningresponse?.data?.RET_DATA.map((d, i) => ({
+                key: d.procCd /* 차수번호 */,
+                rowdata0: i + 1,
+                rowdata1: d.userName /* 교육생 명 */,
+                rowdata2: d.totalCnt /* 총문항수 */,
+                rowdata3: d.rightCnt /* 정답수 */,
+                rowdata4: d.wrongCnt /* 오답수 */,
+                rowdata5: d.trySeq /* 학습횟수 */,
+                rowdata6: d.userId /* 교육생 아이디 */
+            }))
+        ]);
+        setStuLoading(false);
+    };
     // 학습 교육생 컬럼
     const studefaultColumns = [
         {
@@ -201,10 +147,10 @@ export const Learning_Performance = () => {
             render: (_, { rowdata2 }) => (
                 <>
                     <Badge
-                        style={{ width: '60px', height: '25px', lineHeight: '25px' }}
+                        style={{ width: '45px', height: '30px', lineHeight: '30px' }}
                         count={rowdata2.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                         color="blue"
-                        overflowCount={99}
+                        overflowCount={100}
                     />
                 </>
             )
@@ -216,10 +162,10 @@ export const Learning_Performance = () => {
             render: (_, { rowdata3 }) => (
                 <>
                     <Badge
-                        style={{ width: '60px', height: '25px', lineHeight: '25px' }}
+                        style={{ width: '45px', height: '30px', lineHeight: '30px' }}
                         count={rowdata3.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                         color="green"
-                        overflowCount={99}
+                        overflowCount={100}
                     />
                 </>
             )
@@ -231,19 +177,19 @@ export const Learning_Performance = () => {
             render: (_, { rowdata4 }) => (
                 <>
                     <Badge
-                        style={{ width: '60px', height: '25px', lineHeight: '25px' }}
+                        style={{ width: '45px', height: '30px', lineHeight: '30px' }}
                         count={rowdata4.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                         color="volcano"
-                        overflowCount={99}
+                        overflowCount={100}
                     />
                 </>
             )
         },
         {
             title: '학습횟수',
-            dataIndex: 'rowdata6',
+            dataIndex: 'rowdata5',
             align: 'center',
-            render: (_, { rowdata1, rowdata5 }) => (
+            render: (_, { rowdata1, rowdata5, rowdata6 }) => (
                 <>
                     <Button
                         style={{
@@ -252,9 +198,9 @@ export const Learning_Performance = () => {
                             color: '#fff',
                             borderRadius: '7px',
                             width: '70px',
-                            boxShadow: '2px 3px 0px 0px #e8f2ff'
+                            boxShadow: '2px 3px 0px 0px #e3e3e3'
                         }}
-                        onClick={() => Cnt_Default(rowdata1)}
+                        onClick={() => Cnt_Default(rowdata1, rowdata6)}
                     >
                         {rowdata5}회
                     </Button>
@@ -263,6 +209,25 @@ export const Learning_Performance = () => {
         }
     ];
 
+    // 학습횟수 Data
+    const [SelectStatisticsLearningDetailApi] = useSelectStatisticsLearningDetailMutation(); // 콘텐츠 정보 관리 hooks api호출
+    const handel_SelectStatisticsLearningDetail_Api = async (userId_Value) => {
+        const SelectStatisticsLearningDetailresponse = await SelectStatisticsLearningDetailApi({
+            procCd: procCd_Value,
+            userId: userId_Value
+        });
+        setCntDataSource([
+            ...SelectStatisticsLearningDetailresponse?.data?.RET_DATA.map((d, i) => ({
+                key: d.procCd /*차수번호*/,
+                rowdata0: d.trySeq /*횟수*/,
+                rowdata1: d.gainScore /*점수*/,
+                rowdata2: d.rightCnt /*정답수*/,
+                rowdata3: d.wrongCnt /*오답수*/,
+                rowdata4: d.totalCnt /*출제문항수*/
+            }))
+        ]);
+        setCntLoading(false);
+    };
     // 학습 횟수 컬럼
     const cntdefaultColumns = [
         {
@@ -272,16 +237,31 @@ export const Learning_Performance = () => {
             render: (_, { rowdata0 }) => <>{rowdata0}회</>
         },
         {
+            title: '출제문항수',
+            dataIndex: 'rowdata4',
+            align: 'center',
+            render: (_, { rowdata4 }) => (
+                <>
+                    <Badge
+                        style={{ width: '45px', height: '30px', lineHeight: '30px' }}
+                        count={rowdata4.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                        color="blue"
+                        overflowCount={100}
+                    />
+                </>
+            )
+        },
+        {
             title: '점수',
             dataIndex: 'rowdata1',
             align: 'center',
             render: (_, { rowdata1 }) => (
                 <>
                     <Badge
-                        style={{ width: '60px', height: '25px', lineHeight: '25px' }}
+                        style={{ width: '45px', height: '30px', lineHeight: '30px' }}
                         count={rowdata1.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                         color="gold"
-                        overflowCount={99}
+                        overflowCount={100}
                     />
                 </>
             )
@@ -293,10 +273,10 @@ export const Learning_Performance = () => {
             render: (_, { rowdata2 }) => (
                 <>
                     <Badge
-                        style={{ width: '60px', height: '25px', lineHeight: '25px' }}
+                        style={{ width: '45px', height: '30px', lineHeight: '30px' }}
                         count={rowdata2.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                         color="green"
-                        overflowCount={99}
+                        overflowCount={100}
                     />
                 </>
             )
@@ -308,10 +288,10 @@ export const Learning_Performance = () => {
             render: (_, { rowdata3 }) => (
                 <>
                     <Badge
-                        style={{ width: '60px', height: '25px', lineHeight: '25px' }}
+                        style={{ width: '45px', height: '30px', lineHeight: '30px' }}
                         count={rowdata3.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                         color="volcano"
-                        overflowCount={99}
+                        overflowCount={100}
                     />
                 </>
             )
@@ -369,8 +349,11 @@ export const Learning_Performance = () => {
         };
     });
 
-    const Student_Default = (title1, title2) => {
-        setModalTitle(`${title1}년 ${title2}`);
+    // 교육생 조회
+    const Student_Default = (title1, title2, title3, key) => {
+        setModalTitle(`[${title1}년] ${title2} [${title3}차]`);
+        setStuLoading(true);
+        handel_SelectStatisticsLearning_Api(key);
         setModalOpen(true);
     };
 
@@ -379,14 +362,22 @@ export const Learning_Performance = () => {
         setModalOpen(false);
     };
 
-    const Cnt_Default = (title1) => {
-        setCntModalTitle(title1);
+    // 학습 횟수 조회
+    const Cnt_Default = (userNm, userId) => {
+        setCntModalTitle(userNm);
+        setCntLoading(true);
+        handel_SelectStatisticsLearningDetail_Api(userId);
         setCntModalOpen(true);
     };
 
     const cnt_handleCancel = () => {
         setCntModalOpen(false);
     };
+
+    useEffect(() => {
+        setLoading(true); // 로딩 호출
+        handel_SelectStatisticsLearningList_Api(); // 조회
+    }, []);
 
     return (
         <>

@@ -63,8 +63,8 @@ export const StudySch = (props) => {
             setTotStudyDateList(initialTotStudyDateList);
         } else {
             const initialTotStudyDateList = Array.from({ length: props.TotStudyDate }, (_, index) => ({
-                eduStartDate: props.SetScheduleList[index].eduStartDate,
-                eduEndDate: props.SetScheduleList[index].eduEndDate
+                eduStartDate: props.SetScheduleList[index] === undefined ? props.EduStartDate : props.SetScheduleList[index].eduStartDate,
+                eduEndDate: props.SetScheduleList[index] === undefined ? props.EduEndDate : props.SetScheduleList[index].eduEndDate
             }));
             setTotStudyDateList(initialTotStudyDateList);
         }

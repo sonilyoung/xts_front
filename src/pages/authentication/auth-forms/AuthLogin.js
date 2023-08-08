@@ -89,7 +89,7 @@ const AuthLogin = () => {
 
             setTimeout(() => {
                 navigate('/');
-            }, 1000);
+            }, 500);
 
             // Modal.success({
             //     content: values.Adminid + ' .',

@@ -20,62 +20,93 @@ function getItem(label, key, icon, children, type) {
         type
     };
 }
+const items =
+    localStorage.getItem('authCd') === 'ADMIN'
+        ? [
+              getItem('콘텐츠 관리', 'sub1', <AppstoreAddOutlined />, [
+                  getItem('물품 콘텐츠 관리', 'g1', <BlockOutlined />, [
+                      getItem(<Link to="/contents/language">언어 관리</Link>, '0', <FileTextOutlined />),
+                      getItem(<Link to="/contents/goodsgroup">그룹 관리</Link>, '1', <FileTextOutlined />),
+                      getItem(<Link to="/contents/imagesmanagement">이미지 관리</Link>, '3', <FileTextOutlined />)
+                  ]),
+                  getItem('X-ray 콘텐츠 관리', 'g2', <BlockOutlined />, [
+                      getItem(<Link to="/contents/xrayinformation">정보 관리</Link>, '4', <FileTextOutlined />),
+                      getItem(<Link to="/contents/xrayinformationimage">이미지 관리</Link>, '5', <FileTextOutlined />)
+                  ])
+              ]),
 
-const items = [
-    getItem('콘텐츠 관리', 'sub1', <AppstoreAddOutlined />, [
-        getItem('물품 콘텐츠 관리', 'g1', <BlockOutlined />, [
-            getItem(<Link to="/contents/language">언어 관리</Link>, '0', <FileTextOutlined />),
-            getItem(<Link to="/contents/goodsgroup">그룹 관리</Link>, '1', <FileTextOutlined />),
-            getItem(<Link to="/contents/imagesmanagement">이미지 관리</Link>, '3', <FileTextOutlined />)
-        ]),
-        getItem('X-ray 콘텐츠 관리', 'g2', <BlockOutlined />, [
-            getItem(<Link to="/contents/xrayinformation">정보 관리</Link>, '4', <FileTextOutlined />),
-            getItem(<Link to="/contents/xrayinformationimage">이미지 관리</Link>, '5', <FileTextOutlined />)
-        ])
-    ]),
+              getItem('강사 관리', 'sub2', <AppstoreAddOutlined />, [
+                  getItem(<Link to="/teacher/teacherinformation">강사 정보조회</Link>, '6', <FileTextOutlined />),
+                  getItem(<Link to="/teacher/theoryinformation">이론강의 정보조회</Link>, '7', <FileTextOutlined />),
+                  getItem(<Link to="/teacher/teacherstudent">교육생 조회</Link>, '8', <FileTextOutlined />)
+              ]),
 
-    getItem('강사 관리', 'sub2', <AppstoreAddOutlined />, [
-        getItem(<Link to="/teacher/teacherinformation">강사 정보조회</Link>, '6', <FileTextOutlined />),
-        getItem(<Link to="/teacher/theoryinformation">이론강의 정보조회</Link>, '7', <FileTextOutlined />),
-        getItem(<Link to="/teacher/teacherstudent">교육생 조회</Link>, '8', <FileTextOutlined />)
-    ]),
+              getItem('학습 관리', 'sub3', <AppstoreAddOutlined />, [
+                  getItem(<Link to="/learning/curriculum">모듈 관리</Link>, '10', <FileTextOutlined />),
+                  getItem(<Link to="/educurriculum/eduprocadd">차수 관리</Link>, '177', <FileTextOutlined />),
+                  getItem(<Link to="/learning/xraypoint">배점 관리</Link>, '11', <BlockOutlined />)
+              ]),
 
-    getItem('학습 관리', 'sub3', <AppstoreAddOutlined />, [
-        getItem(<Link to="/learning/curriculum">모듈 관리</Link>, '10', <FileTextOutlined />),
-        getItem(<Link to="/educurriculum/eduprocadd">차수 관리</Link>, '177', <FileTextOutlined />),
-        getItem(<Link to="/learning/xraypoint">배점 관리</Link>, '11', <BlockOutlined />)
-    ]),
+              getItem('이론 교육 관리', 'sub4', <AppstoreAddOutlined />, [
+                  getItem(<Link to="/theory/theorygroup">그룹 관리</Link>, '12', <FileTextOutlined />),
+                  getItem(<Link to="/theory/theoryinfo">교육 관리</Link>, '13', <FileTextOutlined />)
+              ]),
 
-    getItem('이론 교육 관리', 'sub4', <AppstoreAddOutlined />, [
-        getItem(<Link to="/theory/theorygroup">그룹 관리</Link>, '12', <FileTextOutlined />),
-        getItem(<Link to="/theory/theoryinfo">교육 관리</Link>, '13', <FileTextOutlined />)
-    ]),
+              getItem('교육생 관리', 'sub5', <AppstoreAddOutlined />, [
+                  getItem(<Link to="/student/studentinformation">교육생 정보조회</Link>, '18', <FileTextOutlined />)
+              ]),
 
-    getItem('교육생 관리', 'sub5', <AppstoreAddOutlined />, [
-        getItem(<Link to="/student/studentinformation">교육생 정보조회</Link>, '18', <FileTextOutlined />)
-    ]),
+              getItem('통계', 'sub6', <AppstoreAddOutlined />, [
+                  getItem('학습', 'g8', <BlockOutlined />, [
+                      getItem(<Link to="/statistics/learning/learning_performance">학습실적 조회</Link>, '27', <FileTextOutlined />),
+                      getItem(<Link to="/statistics/learning/learning_contentgroup">컨텐츠 그룹</Link>, '28', <FileTextOutlined />)
+                  ]),
+                  getItem('평가', 'g9', <BlockOutlined />, [
+                      getItem(<Link to="/statistics/evaluation/evaluation_performance">평가실적 조회</Link>, '29', <FileTextOutlined />),
+                      getItem(<Link to="/statistics/evaluation/evaluation_contentgroup">컨텐츠 그룹</Link>, '30', <FileTextOutlined />)
+                  ]),
+                  getItem('이론평가', 'g10', <BlockOutlined />, [
+                      getItem(<Link to="/statistics/theory/theory_performance">이론평가 조회</Link>, '31', <FileTextOutlined />)
+                  ])
+              ]),
 
-    getItem('통계', 'sub6', <AppstoreAddOutlined />, [
-        getItem('학습', 'g8', <BlockOutlined />, [
-            getItem(<Link to="/statistics/learning/learning_performance">학습실적 조회</Link>, '27', <FileTextOutlined />),
-            getItem(<Link to="/statistics/learning/learning_contentgroup">컨텐츠 그룹</Link>, '28', <FileTextOutlined />)
-        ]),
-        getItem('평가', 'g9', <BlockOutlined />, [
-            getItem(<Link to="/statistics/evaluation/evaluation_performance">평가실적 조회</Link>, '29', <FileTextOutlined />),
-            getItem(<Link to="/statistics/evaluation/evaluation_contentgroup">컨텐츠 그룹</Link>, '30', <FileTextOutlined />)
-        ]),
-        getItem('이론평가', 'g10', <BlockOutlined />, [
-            getItem(<Link to="/statistics/theory/theory_performance">이론평가 조회</Link>, '31', <FileTextOutlined />)
-        ])
-    ]),
+              getItem('환경설정', 'sub7', <AppstoreAddOutlined />, [
+                  getItem(<Link to="/preferences/notices">공지사항 관리</Link>, '34', <FileTextOutlined />),
+                  getItem(<Link to="/preferences/commoncode">공통코드 관리</Link>, '37', <FileTextOutlined />),
+                  getItem('메뉴관리', '41', <FileTextOutlined />),
+                  getItem(<Link to="/preferences/system">시스템메세지 관리</Link>, '38', <FileTextOutlined />)
+              ])
+          ]
+        : [
+              getItem('콘텐츠 관리', 'sub1', <AppstoreAddOutlined />, [
+                  getItem('물품 콘텐츠 관리', 'g1', <BlockOutlined />, [
+                      //   getItem(<Link to="/contents/language">언어 관리</Link>, '0', <FileTextOutlined />),
+                      getItem(<Link to="/contents/goodsgroup">그룹 관리</Link>, '1', <FileTextOutlined />),
+                      getItem(<Link to="/contents/imagesmanagement">이미지 관리</Link>, '3', <FileTextOutlined />)
+                  ]),
+                  getItem('X-ray 콘텐츠 관리', 'g2', <BlockOutlined />, [
+                      getItem(<Link to="/contents/xrayinformation">정보 관리</Link>, '4', <FileTextOutlined />),
+                      getItem(<Link to="/contents/xrayinformationimage">이미지 관리</Link>, '5', <FileTextOutlined />)
+                  ])
+              ]),
 
-    getItem('환경설정', 'sub7', <AppstoreAddOutlined />, [
-        getItem(<Link to="/preferences/notices">공지사항 관리</Link>, '34', <FileTextOutlined />),
-        getItem(<Link to="/preferences/commoncode">공통코드 관리</Link>, '37', <FileTextOutlined />),
-        getItem('메뉴관리', '41', <FileTextOutlined />),
-        getItem(<Link to="/preferences/system">시스템메세지 관리</Link>, '38', <FileTextOutlined />)
-    ])
-];
+              getItem('강사 관리', 'sub2', <AppstoreAddOutlined />, [
+                  getItem(<Link to="/teacher/teacherinformation">강사 정보조회</Link>, '6', <FileTextOutlined />),
+                  getItem(<Link to="/teacher/theoryinformation">이론강의 정보조회</Link>, '7', <FileTextOutlined />),
+                  getItem(<Link to="/teacher/teacherstudent">교육생 조회</Link>, '8', <FileTextOutlined />)
+              ]),
+
+              getItem('학습 관리', 'sub3', <AppstoreAddOutlined />, [
+                  getItem(<Link to="/learning/curriculum">모듈 관리</Link>, '10', <FileTextOutlined />),
+                  getItem(<Link to="/educurriculum/eduprocadd">차수 관리</Link>, '177', <FileTextOutlined />),
+                  getItem(<Link to="/learning/xraypoint">배점 관리</Link>, '11', <BlockOutlined />)
+              ]),
+
+              getItem('교육생 관리', 'sub5', <AppstoreAddOutlined />, [
+                  getItem(<Link to="/student/studentinformation">교육생 정보조회</Link>, '18', <FileTextOutlined />)
+              ])
+          ];
+
 const LeftMenus = () => {
     const [defaultSelectedKeys] = useState(cookies.load('defaultSelectedKey') === undefined ? '' : cookies.load('defaultSelectedKey'));
     const [defaultOpenKeys] = useState(cookies.load('defaultOpenKey') === undefined ? '' : cookies.load('defaultOpenKey'));
