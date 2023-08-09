@@ -67,22 +67,18 @@ const Register = () => {
             careerCompany2: itemContainer.careerCompany2,
             careerPosition2: itemContainer.careerPosition2
         });
-        // console.log(InsertStuUserresponse?.data);
-        setLoading(true); // 로딩 호출
+        setLoading(false);
         InsertStuUserresponse?.data?.RET_CODE === '0100'
             ? Modal.success({
                   content: '등록 완료',
                   onOk() {
-                      setLoading(false);
                       form.resetFields();
                       window.close();
                   }
               })
             : Modal.error({
                   content: '등록 오류',
-                  onOk() {
-                      setLoading(false);
-                  }
+                  onOk() {}
               });
     };
 
@@ -115,6 +111,7 @@ const Register = () => {
 
     // 등록 처리
     const onAddSubmit = () => {
+        setLoading(true); // 로딩 호출
         handle_InsertStuUser_Api();
     };
 
@@ -190,7 +187,7 @@ const Register = () => {
                 <h1 style={{ margin: '10px 0px 30px 0px', textAlign: 'center', color: '#0e276c' }}>XBT 회원가입</h1>
                 <Typography variant="body1">
                     <Form layout="horizontal" form={form}>
-                        <Card>
+                        <Card loading={loading}>
                             <Row gutter={24}>
                                 <Col span={24}>
                                     <Form.Item
