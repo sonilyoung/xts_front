@@ -17,6 +17,7 @@ const Register = () => {
     const [form] = Form.useForm();
     const [idChk, setIdChk] = useState(false); // 선택한 교육생 아이디 값
     const [itemContainer, setItemContainer] = useState({}); // 항목 컨테이너
+    const [loading, setLoading] = useState(false);
 
     // ===============================
     // Api 호출 Start
@@ -66,18 +67,22 @@ const Register = () => {
             careerCompany2: itemContainer.careerCompany2,
             careerPosition2: itemContainer.careerPosition2
         });
-        console.log(InsertStuUserresponse?.data);
+        // console.log(InsertStuUserresponse?.data);
+        setLoading(true); // 로딩 호출
         InsertStuUserresponse?.data?.RET_CODE === '0100'
             ? Modal.success({
                   content: '등록 완료',
                   onOk() {
+                      setLoading(false);
                       form.resetFields();
                       window.close();
                   }
               })
             : Modal.error({
                   content: '등록 오류',
-                  onOk() {}
+                  onOk() {
+                      setLoading(false);
+                  }
               });
     };
 
@@ -88,7 +93,7 @@ const Register = () => {
             userId: userId
         });
 
-        console.log(SelectStuUserCheckresponse.data);
+        // console.log(SelectStuUserCheckresponse.data);
         SelectStuUserCheckresponse.data.RET_CODE === '9996'
             ? (setItemContainer({ ...itemContainer, userId: '' }),
               setIdChk(false),
@@ -181,7 +186,8 @@ const Register = () => {
     return (
         <Grid container spacing={3}>
             <MainCard>
-                <h1 style={{ margin: '30px 0px', textAlign: 'center' }}>교육생 가입</h1>
+                <h1 style={{ margin: '30px 0px 10px 0px', textAlign: 'center', color: '#155eb6' }}>X-ray Security Training</h1>
+                <h1 style={{ margin: '10px 0px 30px 0px', textAlign: 'center', color: '#0e276c' }}>XBT 회원가입</h1>
                 <Typography variant="body1">
                     <Form layout="horizontal" form={form}>
                         <Card>
