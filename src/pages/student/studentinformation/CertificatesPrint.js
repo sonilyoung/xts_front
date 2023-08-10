@@ -1,6 +1,30 @@
 /* eslint-disable no-unused-vars */
+import { useEffect, useState } from 'react';
 import './WatermarkPrint.css';
-export const CertificatesPrint = () => {
+import { useSelectCertificationUserMutation } from '../../../hooks/api/StudentsManagement/StudentsManagement';
+
+export const CertificatesPrint = (props) => {
+    const [loading, setLoading] = useState(false);
+
+    // 이수증 상세
+    const [SelectCertificationUserApi] = useSelectCertificationUserMutation(); // 상세 hooks api호출
+    const [certificationUserDetail, setCertificationUserDetail] = useState(null);
+    const handel_SelectCertificationUser_Api = async (userId, procCd, procSeq) => {
+        const SelectCertificationUserResponse = await SelectCertificationUserApi({
+            userId: userId,
+            procCd: procCd,
+            procSeq: procSeq
+        });
+        console.log(SelectCertificationUserResponse.data.RET_DATA);
+        setCertificationUserDetail(SelectCertificationUserResponse.data.RET_DATA);
+        setLoading(false);
+    };
+
+    useEffect(() => {
+        setLoading(true);
+        handel_SelectCertificationUser_Api(props.userId_props, props.procCd_props, props.procSeq_props);
+    }, [props.userId_props, props.procCd_props, props.procSeq_props]);
+
     return (
         <>
             <div className="watermark-print">
@@ -15,17 +39,20 @@ export const CertificatesPrint = () => {
                         <tr>
                             <td style={{ letterSpacing: '1.9em', width: '100px', alignItems: 'flex-start' }}>성명</td>
                             <td>{' : '}</td>
-                            <td style={{ paddingLeft: '25px', letterSpacing: '2.7em' }}>김원중</td>
+                            <td style={{ paddingLeft: '25px', letterSpacing: '2.7em' }}>{certificationUserDetail?.userNm}</td>
                         </tr>
                         <tr>
                             <td>&nbsp;</td>
                             <td>{' : '}</td>
-                            <td style={{ paddingLeft: '25px', wordSpacing: '13px' }}>Kim Won Joong</td>
+                            <td style={{ paddingLeft: '25px', wordSpacing: '13px' }}>{certificationUserDetail?.userNmEn}</td>
                         </tr>
                         <tr>
                             <td style={{ letterSpacing: '0.1em', width: '100px', alignItems: 'flex-start' }}>생년월일</td>
                             <td>{' : '}</td>
-                            <td style={{ paddingLeft: '25px' }}>1978년 10월 08일</td>
+                            <td style={{ paddingLeft: '25px' }}>
+                                {certificationUserDetail?.birthDay.split('-')[0]}년 {certificationUserDetail?.birthDay.split('-')[1]}월{' '}
+                                {certificationUserDetail?.birthDay.split('-')[2]}일
+                            </td>
                         </tr>
                     </table>
                     <p style={{ margin: '30px 0px' }}></p>
@@ -41,9 +68,7 @@ export const CertificatesPrint = () => {
                                 주소
                             </td>
                             <td style={{ alignSelf: 'flex-start' }}>{' : '}</td>
-                            <td style={{ paddingLeft: '25px', letterSpacing: '0.1em' }}>
-                                경기도 남양주시 천마산로65 파라곤아파트 102동102호
-                            </td>
+                            <td style={{ paddingLeft: '25px', letterSpacing: '0.1em' }}>{certificationUserDetail?.address}</td>
                         </tr>
                     </table>
                     <p style={{ margin: '60px 0px' }}></p>
@@ -60,12 +85,18 @@ export const CertificatesPrint = () => {
                         <tr>
                             <td style={{ letterSpacing: '0.6em', width: '100px', alignItems: 'flex-start' }}>과정명</td>
                             <td>{' : '}</td>
-                            <td style={{ paddingLeft: '25px', letterSpacing: '0.1em' }}>보안검색요원 초기교육</td>
+                            <td style={{ paddingLeft: '25px', letterSpacing: '0.1em' }}>{certificationUserDetail?.eduName}</td>
                         </tr>
                         <tr>
                             <td style={{ letterSpacing: '0.1em', width: '100px', alignItems: 'flex-start' }}>교육기간</td>
                             <td>{' : '}</td>
-                            <td style={{ paddingLeft: '25px', letterSpacing: '0.1em' }}>2023년 07월 10일 ~ 2023년 07월 14일 (40시간)</td>
+                            <td style={{ paddingLeft: '25px', letterSpacing: '0.05em' }}>
+                                {certificationUserDetail?.eduStartDate.split('-')[0]}년{' '}
+                                {certificationUserDetail?.eduStartDate.split('-')[1]}월{' '}
+                                {certificationUserDetail?.eduStartDate.split('-')[2]}일 ~{' '}
+                                {certificationUserDetail?.eduEndDate.split('-')[0]}년 {certificationUserDetail?.eduEndDate.split('-')[1]}월{' '}
+                                {certificationUserDetail?.eduEndDate.split('-')[2]}일 ({certificationUserDetail?.eduTime}시간)
+                            </td>
                         </tr>
                     </table>
                     <p style={{ margin: '60px 0px' }}></p>
@@ -78,7 +109,8 @@ export const CertificatesPrint = () => {
                             fontSize: '15px'
                         }}
                     >
-                        2023년 07월 14일
+                        {certificationUserDetail?.toDay.split('-')[0]}년 {certificationUserDetail?.toDay.split('-')[1]}월{' '}
+                        {certificationUserDetail?.toDay.split('-')[2]}일
                     </div>
 
                     <hr style={{ width: '100%', margin: '60px 0px' }}></hr>

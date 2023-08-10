@@ -29,7 +29,8 @@ import {
     useInsertUserMutation,
     useUpdateUserMutation,
     useDeleteUserMutation,
-    useSelectUserCheckMutation
+    useSelectUserCheckMutation,
+    useSelectCertificationUserListMutation
 } from '../../../hooks/api/StudentsManagement/StudentsManagement';
 
 import { PlusOutlined, EditFilled, DeleteFilled, ExclamationCircleFilled, FileProtectOutlined } from '@ant-design/icons';
@@ -59,6 +60,10 @@ export const Studentinformation = () => {
 
     const [passResultModal, setPassResultModal] = useState(false); // 합격 여부 modal
     const [certificatesModal, setCertificatesModal] = useState(false); // 수료증(이수증) modal
+
+    const [userId_props, setUserId_props] = useState(null); // 수료증(이수증) props
+    const [procCd_props, setProcCd_props] = useState(null); // 수료증(이수증) props
+    const [procSeq_props, setProcSeq_props] = useState(null); // 수료증(이수증) props
 
     // ===============================
     // Api 호출 Start
@@ -304,6 +309,16 @@ export const Studentinformation = () => {
               });
     };
 
+    // 이수증 리스트
+    const [SelectCertificationUserListApi] = useSelectCertificationUserListMutation(); // 상세 hooks api호출
+    const [certificationUserList, setCertificationUserList] = useState(null);
+    const handel_SelectCertificationUserList_Api = async (userId) => {
+        const SelectCertificationUserListResponse = await SelectCertificationUserListApi({
+            userId: userId
+        });
+        setCertificationUserList(SelectCertificationUserListResponse.data.RET_DATA);
+    };
+
     // Api 호출 End
     // ===============================
     const columns = [
@@ -498,9 +513,9 @@ export const Studentinformation = () => {
 
     // 합격여부 Modal Open
     const passResultModal_handleOpen = (userId, userNm) => {
+        handel_SelectCertificationUserList_Api(userId);
         setPassResultModal(true);
         setUserNmValue(userNm);
-        // console.log(userId);
     };
 
     // 합격여부 Modal Close
@@ -509,7 +524,10 @@ export const Studentinformation = () => {
     };
 
     // 이수증명서 Modal Opem
-    const Certificates_Print = () => {
+    const Certificates_Print = (userId, procCd, procSeq) => {
+        setUserId_props(userId);
+        setProcCd_props(procCd);
+        setProcSeq_props(procSeq);
         setCertificatesModal(true);
     };
 
@@ -549,13 +567,16 @@ export const Studentinformation = () => {
                 </body>
               </html>
             `);
-            printWindow.document.title = '이수증명서(홍길동).pdf';
+            printWindow.document.title = '이수증명서(' + userNmValue + ').pdf';
             printWindow.document.close();
         }
     };
 
     // 이수증명서 Modal Close
     const certificatesModal_handleCancel = () => {
+        setUserId_props(null);
+        setProcCd_props(null);
+        setProcSeq_props(null);
         setCertificatesModal(false);
     };
 
@@ -717,12 +738,28 @@ export const Studentinformation = () => {
                                         value={itemContainer?.eduName}
                                         options={[
                                             {
-                                                label: '보안검색요원 초기교육',
-                                                value: '보안검색요원 초기교육'
+                                                label: '보안검색요원 초기 교육 [5일/40시간]',
+                                                value: '1'
                                             },
                                             {
-                                                label: '항공경비요원 초기교육',
-                                                value: '항공경비요원 초기교육'
+                                                label: '보안검색요원 정기 교육 [1일/8시간]',
+                                                value: '2'
+                                            },
+                                            {
+                                                label: '보안검색요원 인증평가 교육 [1일/4시간]',
+                                                value: '3'
+                                            },
+                                            {
+                                                label: '항공경비요원 초기교육 [4일/30시간]',
+                                                value: '4'
+                                            },
+                                            {
+                                                label: '항공경비요원 정기 교육 [1일/8시간]',
+                                                value: '5'
+                                            },
+                                            {
+                                                label: '항공경비요원 인증평가 교육 [1일/4시간]',
+                                                value: '6'
                                             }
                                         ]}
                                     />
@@ -1688,65 +1725,58 @@ export const Studentinformation = () => {
                 ]}
             >
                 <h4>[{userNmValue}]</h4>
-                <Space>
-                    <Card
-                        title={
-                            <Space style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                <h3 style={{ fontSize: '16px', margin: 0 }}>항공보안검색요원 초기 교육과정 1차</h3>
-                                <Tag color="green">합격</Tag>
-                            </Space>
-                        }
-                        size="small"
-                        style={{ marginBottom: '20px', border: '1px solid #f50' }}
-                    >
-                        <Descriptions layout="vertical" bordered style={{ width: '450px', marginBottom: '15px' }}>
-                            <Descriptions.Item style={{ textAlign: 'center' }} label="XBT 평가">
-                                40점
-                            </Descriptions.Item>
-                            <Descriptions.Item style={{ textAlign: 'center' }} label="이론 평가">
-                                30점
-                            </Descriptions.Item>
-                            <Descriptions.Item style={{ textAlign: 'center' }} label="실습 평가 ">
-                                20점
-                            </Descriptions.Item>
-                        </Descriptions>
-                    </Card>
-                    <Button
-                        type="primary"
-                        danger
-                        onClick={() => Certificates_Print()}
-                        style={{ width: '160px', borderRadius: '12px', marginLeft: '10px', height: '85px' }}
-                    >
-                        이수 증명서
-                    </Button>
-                </Space>
-                <Space>
-                    <Card
-                        title={
-                            <Space style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                <h3 style={{ fontSize: '16px', margin: 0 }}>항공보안검색요원 초기 교육과정 2차</h3>
-                                <Tag color="volcano">불합격</Tag>
-                            </Space>
-                        }
-                        size="small"
-                        style={{ marginBottom: '20px', border: '1px solid #ccc' }}
-                    >
-                        <Descriptions layout="vertical" bordered style={{ width: '450px', marginBottom: '15px' }}>
-                            <Descriptions.Item style={{ textAlign: 'center' }} label="XBT 평가">
-                                20점
-                            </Descriptions.Item>
-                            <Descriptions.Item style={{ textAlign: 'center' }} label="이론 평가">
-                                10점
-                            </Descriptions.Item>
-                            <Descriptions.Item style={{ textAlign: 'center' }} label="실습 평가 ">
-                                20점
-                            </Descriptions.Item>
-                        </Descriptions>
-                    </Card>
-                    <Button type="primary" disabled block style={{ width: '160px', marginLeft: '10px', height: '65px' }}>
-                        불합격
-                    </Button>
-                </Space>
+                {certificationUserList?.map((d, i) => (
+                    <>
+                        <Space>
+                            <Card
+                                title={
+                                    <Space style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                        <h3 style={{ fontSize: '16px', margin: 0 }}>
+                                            {d.eduName} {d.procSeq}차
+                                        </h3>
+                                        {d.passYn === 'Y' ? <Tag color="green"> 합격</Tag> : <Tag color="volcano">불합격</Tag>}
+                                    </Space>
+                                }
+                                size="small"
+                                style={
+                                    d.passYn === 'Y'
+                                        ? { marginBottom: '20px', border: '1px solid #f50' }
+                                        : { marginBottom: '20px', border: '1px solid #ccc' }
+                                }
+                            >
+                                <Descriptions layout="vertical" bordered style={{ width: '450px', marginBottom: '15px' }}>
+                                    <Descriptions.Item style={{ textAlign: 'center' }} label="XBT 평가">
+                                        {d.evaluationScore}점
+                                    </Descriptions.Item>
+                                    <Descriptions.Item style={{ textAlign: 'center' }} label="이론 평가">
+                                        {d.theoryScore}점
+                                    </Descriptions.Item>
+                                    <Descriptions.Item style={{ textAlign: 'center' }} label="실습 평가 ">
+                                        {d.practiceScore}점
+                                    </Descriptions.Item>
+                                </Descriptions>
+                            </Card>
+                            {d.passYn === 'Y' ? (
+                                <>
+                                    <Button
+                                        type="primary"
+                                        danger
+                                        onClick={() => Certificates_Print(d.userId, d.procCd, d.procSeq)}
+                                        style={{ width: '160px', borderRadius: '12px', marginLeft: '10px', height: '85px' }}
+                                    >
+                                        이수 증명서
+                                    </Button>
+                                </>
+                            ) : (
+                                <>
+                                    <Button type="primary" disabled block style={{ width: '160px', marginLeft: '10px', height: '65px' }}>
+                                        불합격
+                                    </Button>
+                                </>
+                            )}
+                        </Space>
+                    </>
+                ))}
             </Modal>
             {/* 학격여부 Excel End */}
 
@@ -1756,7 +1786,7 @@ export const Studentinformation = () => {
                 closable={true}
                 open={certificatesModal}
                 onCancel={certificatesModal_handleCancel}
-                width={595}
+                width={730}
                 height={842}
                 style={{
                     top: 90,
@@ -1765,12 +1795,14 @@ export const Studentinformation = () => {
                 }}
                 footer={
                     <div style={{ textAlign: 'right', marginTop: '20px' }}>
-                        <Button onClick={handlePrint}> 이수 증명서 출력</Button>
+                        <Button type="primary" style={{ width: '160px', height: ' 60px', lineHeight: '30px' }} onClick={handlePrint}>
+                            이수 증명서 출력
+                        </Button>
                     </div>
                 }
             >
                 <div ref={contentRef}>
-                    <CertificatesPrint />
+                    <CertificatesPrint userId_props={userId_props} procCd_props={procCd_props} procSeq_props={procSeq_props} />
                 </div>
             </Modal>
             {/* 수료증 Print End */}

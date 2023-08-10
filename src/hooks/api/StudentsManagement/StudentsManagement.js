@@ -130,6 +130,24 @@ export const studentsManagement = createApi({
                 method: 'POST',
                 body: body
             })
+        }),
+
+        // 이수증 리스트
+        selectCertificationUserList: builder.mutation({
+            query: (body) => ({
+                url: 'adm/userMgr/selectCertificationUserList.do',
+                method: 'POST',
+                body: body
+            })
+        }),
+
+        // 이수증 상세
+        selectCertificationUser: builder.mutation({
+            query: (body) => ({
+                url: 'adm/userMgr/selectCertificationUser.do',
+                method: 'POST',
+                body: body
+            })
         })
     })
 });
@@ -146,5 +164,7 @@ export const {
     useSelectBaselineUserMutation,
     useUpdateBaselineUserMutation,
     useInsertStuUserMutation,
-    useSelectStuUserCheckMutation
+    useSelectStuUserCheckMutation,
+    useSelectCertificationUserListMutation,
+    useSelectCertificationUserMutation
 } = studentsManagement;
