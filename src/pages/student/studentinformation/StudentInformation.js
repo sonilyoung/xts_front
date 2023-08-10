@@ -730,12 +730,12 @@ export const Studentinformation = () => {
                                 >
                                     <Select
                                         name="eduName"
-                                        defaultValue="# 교육과정"
+                                        defaultValue={[{ label: '# 교육과정', value: '0' }]}
                                         style={{
                                             width: '100%'
                                         }}
                                         onChange={(e) => setItemContainer({ ...itemContainer, eduName: e })}
-                                        value={itemContainer?.eduName}
+                                        value={itemContainer?.eduCode}
                                         options={[
                                             {
                                                 label: '보안검색요원 초기 교육 [5일/40시간]',
