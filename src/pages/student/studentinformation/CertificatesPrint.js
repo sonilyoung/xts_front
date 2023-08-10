@@ -15,7 +15,6 @@ export const CertificatesPrint = (props) => {
             procCd: procCd,
             procSeq: procSeq
         });
-        console.log(SelectCertificationUserResponse.data.RET_DATA);
         setCertificationUserDetail(SelectCertificationUserResponse.data.RET_DATA);
         setLoading(false);
     };

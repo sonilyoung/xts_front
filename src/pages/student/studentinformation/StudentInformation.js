@@ -273,8 +273,8 @@ export const Studentinformation = () => {
             // careerCompany5: itemContainer.careerCompany5,
             // careerPosition5: itemContainer.careerPosition5
         });
-        console.log(userId);
-        console.log(UpdateUserresponse);
+        // console.log(userId);
+        // console.log(UpdateUserresponse);
         UpdateUserresponse?.data?.RET_CODE === '0100'
             ? Modal.success({
                   content: '수정 완료',
