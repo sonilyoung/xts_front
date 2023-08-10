@@ -25,7 +25,7 @@ export const Teacherstudent = () => {
     const { confirm } = Modal;
     const [dataSource, setDataSource] = useState([]); // Table 데이터 값
     const [loading, setLoading] = useState(false);
-    const [practiceScore, setPracticeScore] = useState(''); // 실습 점수
+    const [practiceScoreValue, setPracticeScoreValue] = useState(null); // 실습 점수
     const [procCdChk, setProcCdChk] = useState(''); // 실습 점수
     const [userIdChk, setUserIdChk] = useState(''); // 실습 점수
     const [evalOpen, setEvalOpen] = useState(false);
@@ -82,7 +82,7 @@ export const Teacherstudent = () => {
         const UpdateBaselineUserResponse = await UpdateBaselineUserApi({
             procCd: procCdChk,
             userId: userIdChk,
-            practiceScore: practiceScore
+            practiceScore: practiceScoreValue
         });
         if (UpdateBaselineUserResponse?.data?.RET_CODE === '0100') {
             Modal.success({
@@ -238,10 +238,10 @@ export const Teacherstudent = () => {
     ];
 
     const handle_Score = (procCd, userId) => {
-        setEvalOpen(true);
         setProcCdChk(procCd);
         setUserIdChk(userId);
         handle_SelectBaselineUser_Api(procCd, userId);
+        setEvalOpen(true);
     };
 
     const handel_practiceScore = () => {
@@ -250,7 +250,7 @@ export const Teacherstudent = () => {
     // Modal 닫기
     const handleCancel = () => {
         setEvalOpen(false);
-        setPracticeScore(null);
+        setPracticeScoreValue(null);
     };
 
     const onChange = (pagination, filters, sorter, extra) => {
@@ -272,18 +272,16 @@ export const Teacherstudent = () => {
         <>
             <MainCard title="교육생 정보조회">
                 <Typography variant="body1">
-                    {/* <Space style={{ justifyContent: 'flex-end' }} size="small"> */}
                     <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                         <Input.Search
                             placeholder="※ 통합 검색 (차수명, 교육생ID, 교육생명, 교육구분, 기관)"
-                            style={{ width: 450, fontSize: '12px' }}
+                            style={{ width: 480 }}
                             onSearch={onSearch}
                             allowClear
                             enterButton
                             size="large"
                             className="custom-search-input"
                         />
-                        {/* </Space> */}
                     </div>
                     <Descriptions style={{ marginTop: '20px' }}></Descriptions>
                     <Table columns={columns} dataSource={dataSource} bordered={true} onChange={onChange} loading={loading} />
@@ -385,7 +383,6 @@ export const Teacherstudent = () => {
                 <br />
                 <br />
                 <br />
-                {/* setPracticeInfoData(SelectBaselineUserResponse?.data?.RET_DATA?.practiceInfo); */}
                 <Space>
                     <Descriptions title="※ 실습 평가" layout="vertical" bordered column={3}>
                         <Descriptions.Item style={{ textAlign: 'center', width: '190px' }} label="평가명">
@@ -395,9 +392,9 @@ export const Teacherstudent = () => {
                             <Input
                                 name="choice"
                                 placeholder="※ 실습 평가 점수"
-                                value={practiceScore === null ? practiceInfoData?.practiceScore : practiceScore}
+                                value={practiceScoreValue === null ? practiceInfoData?.practiceScore : practiceScoreValue}
                                 onChange={(e) => {
-                                    setPracticeScore(e.target.value);
+                                    setPracticeScoreValue(e.target.value);
                                 }}
                                 style={{ width: '145px' }}
                             />
