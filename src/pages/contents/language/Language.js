@@ -1,7 +1,7 @@
 /* eslint-disable*/
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Typography } from '@mui/material';
-import { Col, Row, Button, Form, Input, Table, Select, Space, Tooltip, Tag, Badge, Divider, Card, Modal, Drawer } from 'antd';
+import { Col, Row, Button, Form, Input, Table, Select, Space, Tooltip, Tag, Descriptions, Divider, Card, Modal, Drawer } from 'antd';
 import 'antd/dist/antd.css';
 import {
     useGetLanguageListMutation,
@@ -18,7 +18,6 @@ import MainCard from 'components/MainCard';
 export const Language = () => {
     const { confirm } = Modal;
     const [form] = Form.useForm();
-
     const [getLanguageList] = useGetLanguageListMutation(); //목록 hooks api호출
     const [getLanguage] = useGetLanguageMutation(); //상세 hooks api호출
     const [insertLanguage] = useInsertLanguageMutation(); //등록 hooks api호출
@@ -31,6 +30,7 @@ export const Language = () => {
     const [loading, setLoading] = useState(false); // 로딩 초기값
     const [open, setOpen] = useState(false); // Drawer 추가 우측폼 상태
     const [dataEdit, setDataEdit] = useState(false); // Drawer 수정 우측폼 상태
+    const [searchval, setSearchval] = useState();
 
     // 추가 및 수정 input 기본값 정리
     const [languageNmVal, setLanguageNmVal] = useState();
@@ -145,7 +145,7 @@ export const Language = () => {
                     {tags.map((tag) => {
                         let color = rowdata3 === '사용' ? 'green' : 'volcano';
                         return (
-                            <Tag color={color} key={tag} onClick={handelUser}>
+                            <Tag color={color} key={tag}>
                                 {rowdata3.toUpperCase()}
                             </Tag>
                         );
@@ -396,22 +396,34 @@ export const Language = () => {
         }
     };
 
-    const handelUser = () => {
-        console.log('사용여부');
+    const onSearch = (value) => {
+        setSearchval(value);
     };
+
     useEffect(() => {
         setLoading(true);
         handleLanguage();
-    }, [refresh]);
+    }, [refresh, searchval]);
 
     return (
         <>
             <MainCard title="언어 관리">
                 <Typography variant="body1">
                     <Row style={{ marginBottom: 16 }}>
-                        <Col span={8}></Col>
-                        <Col span={8} offset={8} style={{ textAlign: 'right' }}>
+                        <Col span={16}></Col>
+                        <Col span={16} offset={8} style={{ textAlign: 'right' }}>
                             <Space>
+                                <div style={{ display: 'flex', justifyContent: 'flex-end', fontSize: '14px' }}>
+                                    <Input.Search
+                                        placeholder="※ 통합 검색 (언어, 언어코드)"
+                                        style={{ width: 480 }}
+                                        onSearch={onSearch}
+                                        allowClear
+                                        enterButton
+                                        size="middle"
+                                        className="custom-search-input"
+                                    />
+                                </div>
                                 <Tooltip title="추가">
                                     <Button
                                         type="success"

@@ -69,7 +69,7 @@ export const ImagesManagement = () => {
     const [dataSource, setDataSource] = useState([]); // Table 데이터 값
     const [open, setOpen] = useState(false); // Drawer 추가 우측폼 상태
     const [unitopen, setUnitopen] = useState(false); // Drawer 단품이미지 추가 우측폼 상태
-    
+
     const [dataEdit, setDataEdit] = useState(false); // Drawer 수정 우측폼 상태
     const [imgEdit, setImgEdit] = useState(false); // 이미지업로드를 위한 상태값
     const [uploading, setUploading] = useState(false); // 이미지업로드
@@ -103,8 +103,9 @@ export const ImagesManagement = () => {
     //const params = useRef(); // 수정화면
     const [refresh, setRefresh] = useState(false); //리프레쉬
     const [unitParams, setUnitParams] = useState({});
-    const [unitMultiple, setUnitMultiple]	=	useState([]); //멀티업로드 이미지
+    const [unitMultiple, setUnitMultiple] = useState([]); //멀티업로드 이미지
     const [uploadXrayImg] = useXrayImageUploadMutation(); // xray이미지 서버저장 api
+    const [searchval, setSearchval] = useState();
 
     const handleUnit = async () => {
         const getUnitListResponse = await getUnitList({ languageCode: languageCode });
@@ -214,9 +215,7 @@ export const ImagesManagement = () => {
         setDataEdit(false);
         setUnitopen(true);
         form.resetFields();
-    };    
-
-    
+    };
 
     // 이미지가져오기
     const getUnitImgList = async (e, u, g) => {
@@ -269,7 +268,7 @@ export const ImagesManagement = () => {
         setUnitopen(false);
         setDataEdit(false);
         form.resetFields();
-    };    
+    };
 
     // 추가 및 수정 처리
     const onAddSubmit = () => {
@@ -552,11 +551,10 @@ export const ImagesManagement = () => {
         e.preventDefault();
         e.persist();
         console.log(e.target.files);
-        
-        let files = e.target.files
+
+        let files = e.target.files;
         setUnitMultiple(files);
-        
-    };     
+    };
 
     // 단품이미지 추가 등록
     const insertSubmit = async () => {
@@ -572,13 +570,13 @@ export const ImagesManagement = () => {
             return false;
         }
 
-        console.log("unitId:", unitParams?.unitId);
-        console.log("files:", unitMultiple);
+        console.log('unitId:', unitParams?.unitId);
+        console.log('files:', unitMultiple);
 
         let formData = new FormData();
-        const params = { targetName: unitParams?.unitId, command : "unit"};
-        formData.append("params", new Blob([JSON.stringify(params)], { type: 'application/json' }));
-        Object.values(unitMultiple).forEach((unitMultiple) => formData.append("files", unitMultiple));
+        const params = { targetName: unitParams?.unitId, command: 'unit' };
+        formData.append('params', new Blob([JSON.stringify(params)], { type: 'application/json' }));
+        Object.values(unitMultiple).forEach((unitMultiple) => formData.append('files', unitMultiple));
         //formData.append("files", pimgMultiple);
         const response = await uploadXrayImg(formData);
 
@@ -591,12 +589,20 @@ export const ImagesManagement = () => {
                 form.resetFields();
             }
         });
-    };        
+    };
 
-    useEffect(() => {
-        setLoading(true); // 로딩 호출
-        handleUnit();
-    }, [refresh]);
+    const onSearch = (value) => {
+        setSearchval(value);
+    };
+
+    useEffect(
+        () => {
+            setLoading(true); // 로딩 호출
+            handleUnit();
+        },
+        [refresh],
+        searchval
+    );
 
     return (
         <>
@@ -605,8 +611,19 @@ export const ImagesManagement = () => {
                     <Row gutter={[16, 16]}>
                         <Col span={11} style={{ textAlign: 'center', padding: '0 10px' }}>
                             <Row gutter={24} style={{ paddingBottom: '15px' }}>
-                                <Col span={24} offset={10}>
+                                <Col span={24} offset={2}>
                                     <Space>
+                                        <div style={{ display: 'flex', justifyContent: 'flex-end', fontSize: '14px' }}>
+                                            <Input.Search
+                                                placeholder="※ 통합 검색 (물품ID, 물품분류코드, 물품분류, 물품명칭)"
+                                                style={{ width: 430 }}
+                                                onSearch={onSearch}
+                                                allowClear
+                                                enterButton
+                                                size="middle"
+                                                className="custom-search-input"
+                                            />
+                                        </div>
                                         <Tooltip title="물품 추가">
                                             <Button
                                                 type="success"
@@ -653,7 +670,7 @@ export const ImagesManagement = () => {
                                 // disabled={componentDisabled}
                             >
                                 <Row gutter={24} style={{ paddingBottom: '15px' }}>
-                                    <Col span={24} offset={8}>
+                                    <Col span={24} offset={6}>
                                         <Space>
                                             <Tooltip title="업로드">
                                                 <Button
@@ -684,7 +701,6 @@ export const ImagesManagement = () => {
                                             </Tooltip>
                                         </Space>
 
-
                                         <Space direction="vertical">
                                             <Tooltip title="단품이미지추가">
                                                 <Button
@@ -696,7 +712,7 @@ export const ImagesManagement = () => {
                                                     단품이미지추가
                                                 </Button>
                                             </Tooltip>
-                                        </Space>                                        
+                                        </Space>
                                     </Col>
                                 </Row>
 
@@ -1194,7 +1210,6 @@ export const ImagesManagement = () => {
             </Drawer>
             {/* 이미지 관리 추가 폼 End */}
 
-
             {/* 이미지추가 폼 Start */}
             <Drawer
                 maskClosable={false}
@@ -1258,26 +1273,27 @@ export const ImagesManagement = () => {
                                         }
                                     ]}
                                 >
-                                    <input type="file"
-                                            //ref={fileInput1}
-                                            /*onChange={handleChange} */
-                                            onChange={handleChange}
-                                            multiple/>  
+                                    <input
+                                        type="file"
+                                        //ref={fileInput1}
+                                        /*onChange={handleChange} */
+                                        onChange={handleChange}
+                                        multiple
+                                    />
                                 </Form.Item>
                             </Col>
-                        </Row>    
+                        </Row>
 
-                       <Descriptions title="단품 이미지명 설명" bordered>
+                        <Descriptions title="단품 이미지명 설명" bordered>
                             <Descriptions.Item>
-                            실사이미지 - 403 <br/>
-                            정면컬러 - 101 <br/>
-                            측면컬러 - 201 <br/>
+                                실사이미지 - 403 <br />
+                                정면컬러 - 101 <br />
+                                측면컬러 - 201 <br />
                             </Descriptions.Item>
-                        </Descriptions>                                               
+                        </Descriptions>
                     </Form>
                 </MainCard>
-            </Drawer>    
-
+            </Drawer>
 
             {/* 물품명칭 언어 추가 Modal Start */}
             <Modal

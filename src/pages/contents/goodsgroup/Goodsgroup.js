@@ -1,16 +1,16 @@
 /* eslint-disable*/
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Typography } from '@mui/material';
-import { Col, Row, Button, Form, Input, Table, Select, Space, Tooltip, Tag, Badge, Divider, Card, Modal ,Drawer } from 'antd';
+import { Col, Row, Button, Form, Input, Table, Select, Space, Tooltip, Tag, Badge, Divider, Card, Modal, Drawer } from 'antd';
 import { PlusOutlined, EditFilled, DeleteFilled, UploadOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import {
     useGetLanguageListMutation,
     useGetGroupListMutation,
     useGetGroupMutation,
-    useInsertUnitGroupMutation,//그룹등록
-    useUpdateUnitGroupMutation,//그룹수정
-    useDeleteUnitGroupMutation,//그룹삭제
-    useInsertUnitGroupImgMutation//이미지등록    
+    useInsertUnitGroupMutation, //그룹등록
+    useUpdateUnitGroupMutation, //그룹수정
+    useDeleteUnitGroupMutation, //그룹삭제
+    useInsertUnitGroupImgMutation //이미지등록
 } from '../../../hooks/api/ContentsManagement/ContentsManagement';
 
 // project import
@@ -20,7 +20,6 @@ import { ExclamationCircleFilled } from '@ant-design/icons';
 const { confirm } = Modal;
 
 export const Goodsgroup = () => {
-    
     const [getLanguageList] = useGetLanguageListMutation(); // 언어 hooks api호출
 
     const [getGroupList] = useGetGroupListMutation(); // 목록 콘텐츠 그룹 hooks api호출
@@ -41,16 +40,18 @@ export const Goodsgroup = () => {
     const [imgEdit, setImgEdit] = useState(false); // 이미지업로드를 위한 상태값
     const [refresh, setRefresh] = useState(false); //리프레쉬
     const [form] = Form.useForm();
-    const [imgFile1, setImgFile1] = useState("");
+    const [imgFile1, setImgFile1] = useState('');
     const [imgFile, setImgFile] = useState(null); // 파일 업로드 실물 이미지
+    const [searchval, setSearchval] = useState();
+
     const [unitParams, setUnitParams] = useState({
-        "parentUnitGroupCd" : "",
-        "openYn" : "",
-        "passYn" : "", 
-        "languageCode" : "",
-        "groupName" : "",
-        "groupDesc" : "",
-        "useYn" : "" 
+        parentUnitGroupCd: '',
+        openYn: '',
+        passYn: '',
+        languageCode: '',
+        groupName: '',
+        groupDesc: '',
+        useYn: ''
     });
 
     // 그룹 데이터 값 선언
@@ -190,9 +191,7 @@ export const Goodsgroup = () => {
             dataIndex: 'rowdata5',
             align: 'center',
             render: (_, { rowdata5 }) => (
-                <>
-                    {rowdata5 === 'CLOSE' ? <Badge count={rowdata5} color="#bfbfbf" /> : <Badge count={rowdata5} color="#52c41a" />}
-                </>
+                <>{rowdata5 === 'CLOSE' ? <Badge count={rowdata5} color="#bfbfbf" /> : <Badge count={rowdata5} color="#52c41a" />}</>
             )
         },
         {
@@ -201,9 +200,7 @@ export const Goodsgroup = () => {
             dataIndex: 'rowdata6',
             align: 'center',
             render: (_, { rowdata6 }) => (
-                <>
-                    {rowdata6 === 'PASS' ? <Badge count={rowdata6} color="#2db7f5" /> : <Badge count={rowdata6} color="#faad14" />}
-                </>
+                <>{rowdata6 === 'PASS' ? <Badge count={rowdata6} color="#2db7f5" /> : <Badge count={rowdata6} color="#faad14" />}</>
             )
         },
         {
@@ -244,18 +241,23 @@ export const Goodsgroup = () => {
             render: (rowdata1) => (
                 <>
                     <Tooltip title="수정" color="#108ee9">
-                        <Button  onClick={()=>handleUnitMod({rowdata1})} type="primary" style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }} icon={<EditFilled />}>
+                        <Button
+                            onClick={() => handleUnitMod({ rowdata1 })}
+                            type="primary"
+                            style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                            icon={<EditFilled />}
+                        >
                             수정
                         </Button>
                     </Tooltip>
                 </>
-            ),            
-        }        
+            )
+        }
         //{
-            //width: '110px',
-            //title: '하위물품분류',
-            //dataIndex: 'rowdata11',
-            //align: 'center'
+        //width: '110px',
+        //title: '하위물품분류',
+        //dataIndex: 'rowdata11',
+        //align: 'center'
         //}
         // {
         //     width: '100px',
@@ -313,10 +315,9 @@ export const Goodsgroup = () => {
     };
 
     const fileInput1 = React.createRef();
-    const handleButtonClick1 = e => {
+    const handleButtonClick1 = (e) => {
         imgRef1.current.click();
-    };    
-
+    };
 
     // 이미지 업로드 input의 onChange
     const imgRef1 = useRef();
@@ -329,7 +330,7 @@ export const Goodsgroup = () => {
         };
         setImgFile(file);
         setImgEdit(false);
-    };       
+    };
 
     // 실물 이미지 업로드 처리
     /*const handleUpload = async () => {
@@ -343,7 +344,7 @@ export const Goodsgroup = () => {
         const response = await saveImg(formData);
         console.log('결과:', response);
         setRefresh(response);
-    };*/    
+    };*/
 
     // 수정
     const handleEdit = () => {
@@ -391,14 +392,13 @@ export const Goodsgroup = () => {
         setLanguageCode(value);
     };
 
-    const onSearch = (value) => {
+    const onlangSearch = (value) => {
         console.log('search:', value);
     };
 
     const handelUser = (e) => {
         console.log(e, '사용여부');
     };
-
 
     // 물품 추가 버튼
     const handleAdd = () => {
@@ -408,44 +408,42 @@ export const Goodsgroup = () => {
         form.resetFields();
     };
 
-
     // 물품 수정 버튼
     const handleUnitMod = async (e) => {
         console.log('상세:', e);
         const response = await getGroup({
-            "languageCode" : languageCode,
-            "unitGroupCd" : e?.rowdata1?.key
+            languageCode: languageCode,
+            unitGroupCd: e?.rowdata1?.key
         });
-        
+
         //console.log('unitName2:',response.data.RET_DATA.unitName);
         setUnitParams(response.data.RET_DATA);
         //params = response.data.RET_DATA;
         form.resetFields();
-        setDataEdit(true);        
+        setDataEdit(true);
         setImgEdit(true);
         setOpen(true);
-        
-    };    
+    };
 
     // 추가 취소
     const onAddClose = () => {
         setOpen(false);
         setDataEdit(false);
         form.resetFields();
-    };    
+    };
 
     //단품저장
     const onSaveSubmit = async () => {
-        console.log('저장:',unitParams);
-        
+        console.log('저장:', unitParams);
+
         const response = await insertGroup({
-            "parentUnitGroupCd" : unitParams?.parentUnitGroupCd,
-            "openYn" : unitParams?.openYn,
-            "passYn" : unitParams?.passYn, 
-            "useYn" : unitParams?.useYn, 
-            "languageCode" : unitParams?.languageCode,
-            "groupName" : unitParams?.groupName,
-            "groupDesc" : unitParams?.groupDesc             
+            parentUnitGroupCd: unitParams?.parentUnitGroupCd,
+            openYn: unitParams?.openYn,
+            passYn: unitParams?.passYn,
+            useYn: unitParams?.useYn,
+            languageCode: unitParams?.languageCode,
+            groupName: unitParams?.groupName,
+            groupDesc: unitParams?.groupDesc
         });
 
         let formData = new FormData();
@@ -468,18 +466,17 @@ export const Goodsgroup = () => {
 
     //단품수정
     const onUpdateSubmit = async () => {
-        
-        console.log('수정:',unitParams);
-        
+        console.log('수정:', unitParams);
+
         const response = await updateGroup({
-            "unitGroupCd" : unitParams?.unitGroupCd,
-            "parentUnitGroupCd" : unitParams?.parentUnitGroupCd,
-            "openYn" : unitParams?.openYn,
-            "passYn" : unitParams?.passYn, 
-            "useYn" : unitParams?.useYn, 
-            "languageCode" : unitParams?.languageCode,
-            "groupName" : unitParams?.groupName,
-            "groupDesc" : unitParams?.groupDesc  
+            unitGroupCd: unitParams?.unitGroupCd,
+            parentUnitGroupCd: unitParams?.parentUnitGroupCd,
+            openYn: unitParams?.openYn,
+            passYn: unitParams?.passYn,
+            useYn: unitParams?.useYn,
+            languageCode: unitParams?.languageCode,
+            groupName: unitParams?.groupName,
+            groupDesc: unitParams?.groupDesc
         });
 
         let formData = new FormData();
@@ -499,15 +496,13 @@ export const Goodsgroup = () => {
                 form.resetFields();
             }
         });
-    };    
-
-    
+    };
 
     //단품삭제
     const onDelete = async () => {
         const response = await deleteGroup({
-            "unitGroupCd" : unitParams?.unitGroupCd,
-            "languageCode" : unitParams?.languageCode
+            unitGroupCd: unitParams?.unitGroupCd,
+            languageCode: unitParams?.languageCode
         });
         setRefresh(response);
         Modal.success({
@@ -517,32 +512,47 @@ export const Goodsgroup = () => {
                 setDataEdit(false);
                 form.resetFields();
             }
-        });        
-    }        
+        });
+    };
+
+    const onSearch = (value) => {
+        setSearchval(value);
+    };
 
     useEffect(() => {
         setLoading(true); // 로딩 호출
         handleGroup(); // 그룹 api 호출
         handleLanguage(); // api 호출
-    }, [languageCode, refresh]);
+    }, [languageCode, refresh, searchval]);
 
     return (
         <>
             <MainCard title="반입금지물품 관리">
                 <Typography variant="body1">
                     <Row style={{ marginBottom: 16 }}>
-                        <Col span={8}>
+                        <Col span={16}>
                             <Select
                                 showSearch
                                 placeholder=" Language Select "
                                 optionFilterProp="children"
                                 onChange={onChange}
-                                onSearch={onSearch}
+                                onSearch={onlangSearch}
                                 options={[...languageSelect]}
                             />
                         </Col>
-                        <Col span={8} offset={8} style={{ textAlign: 'right' }}>
+                        <Col span={16} offset={8} style={{ textAlign: 'right' }}>
                             <Space>
+                                <div style={{ display: 'flex', justifyContent: 'flex-end', fontSize: '14px' }}>
+                                    <Input.Search
+                                        placeholder="※ 통합 검색 (물품분류코드, 물품분류명칭, 물품분류설명)"
+                                        style={{ width: 480 }}
+                                        onSearch={onSearch}
+                                        allowClear
+                                        enterButton
+                                        size="middle"
+                                        className="custom-search-input"
+                                    />
+                                </div>
                                 <Tooltip title="추가">
                                     <Button
                                         type="primary"
@@ -606,7 +616,11 @@ export const Goodsgroup = () => {
                                 </Tooltip>
                             )}
                             <Tooltip title="삭제">
-                                <Button type="danger" onClick={onDelete} style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}>
+                                <Button
+                                    type="danger"
+                                    onClick={onDelete}
+                                    style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                >
                                     삭제
                                 </Button>
                             </Tooltip>
@@ -616,7 +630,6 @@ export const Goodsgroup = () => {
             >
                 <MainCard>
                     <Form name="Unit_Add" layout="vertical" form={form}>
-
                         <Row gutter={24}>
                             <Col span={24}>
                                 <Form.Item
@@ -631,10 +644,10 @@ export const Goodsgroup = () => {
                                 >
                                     <Input
                                         type="text"
-                                        name="groupName"                                    
+                                        name="groupName"
                                         value={unitParams?.groupName}
                                         defaultValue={unitParams?.groupName}
-                                        onChange={(e) => setUnitParams({ ...unitParams, "groupName": e.target.value })}
+                                        onChange={(e) => setUnitParams({ ...unitParams, groupName: e.target.value })}
                                         style={{
                                             width: '100%'
                                         }}
@@ -642,7 +655,7 @@ export const Goodsgroup = () => {
                                     />
                                 </Form.Item>
                             </Col>
-                        </Row>                        
+                        </Row>
                         <Divider style={{ margin: '10px 0' }} />
 
                         <Row gutter={24}>
@@ -659,10 +672,10 @@ export const Goodsgroup = () => {
                                 >
                                     <Input
                                         type="text"
-                                        name="groupDesc"                                    
+                                        name="groupDesc"
                                         value={unitParams?.groupDesc}
                                         defaultValue={unitParams?.groupDesc}
-                                        onChange={(e) => setUnitParams({ ...unitParams, "groupDesc": e.target.value })}
+                                        onChange={(e) => setUnitParams({ ...unitParams, groupDesc: e.target.value })}
                                         style={{
                                             width: '100%'
                                         }}
@@ -684,24 +697,24 @@ export const Goodsgroup = () => {
                                         }
                                     ]}
                                 >
-                                <Select
-                                    defaultValue = {()=>unitParams?.openYn}
-                                    onChange={(e) =>  setUnitParams({ ...unitParams, "openYn": e })}
-                                    style={{
-                                        width: '100%'
-                                    }}
-                                    options={[
-                                        {
-                                            value: 'OPEN',
-                                            label: '개봉'
-                                        },
-                                        {
-                                            value: 'CLOSE',
-                                            label: '미개봉'
-                                        },
-                                    ]}	
-                                />    
-                                </Form.Item>                            
+                                    <Select
+                                        defaultValue={() => unitParams?.openYn}
+                                        onChange={(e) => setUnitParams({ ...unitParams, openYn: e })}
+                                        style={{
+                                            width: '100%'
+                                        }}
+                                        options={[
+                                            {
+                                                value: 'OPEN',
+                                                label: '개봉'
+                                            },
+                                            {
+                                                value: 'CLOSE',
+                                                label: '미개봉'
+                                            }
+                                        ]}
+                                    />
+                                </Form.Item>
                             </Col>
                         </Row>
 
@@ -717,30 +730,30 @@ export const Goodsgroup = () => {
                                         }
                                     ]}
                                 >
-                                <Select
-                                    defaultValue = {()=>unitParams?.passYn}
-                                    onChange={(e) => setUnitParams({ ...unitParams, "passYn": e })}
-                                    style={{
-                                        width: '100%'
-                                    }}
-                                    options={[
-                                        {
-                                            value: 'Prohibited',
-                                            label: '금지'
-                                        },
-                                        {
-                                            value: 'Restricted',
-                                            label: '제한'
-                                        },
-                                        {
-                                            value: 'PASS',
-                                            label: '통과'
-                                        },
-                                    ]}			
-                                />    
-                                </Form.Item>                            
+                                    <Select
+                                        defaultValue={() => unitParams?.passYn}
+                                        onChange={(e) => setUnitParams({ ...unitParams, passYn: e })}
+                                        style={{
+                                            width: '100%'
+                                        }}
+                                        options={[
+                                            {
+                                                value: 'Prohibited',
+                                                label: '금지'
+                                            },
+                                            {
+                                                value: 'Restricted',
+                                                label: '제한'
+                                            },
+                                            {
+                                                value: 'PASS',
+                                                label: '통과'
+                                            }
+                                        ]}
+                                    />
+                                </Form.Item>
                             </Col>
-                        </Row>                        
+                        </Row>
 
                         <Row gutter={24}>
                             <Col span={24}>
@@ -754,23 +767,23 @@ export const Goodsgroup = () => {
                                         }
                                     ]}
                                 >
-                                <Select
-                                    defaultValue={unitParams?.useYn}
-                                    onChange={(e) => setUnitParams({ ...unitParams, "useYn": e })}
-                                    style={{
-                                        width: '100%'
-                                    }}
-                                    options={[
-                                        {
-                                            value: 'Y',
-                                            label: '사용'
-                                        },
-                                        {
-                                            value: 'N',
-                                            label: '미사용'
-                                        },
-                                    ]}
-                                />
+                                    <Select
+                                        defaultValue={unitParams?.useYn}
+                                        onChange={(e) => setUnitParams({ ...unitParams, useYn: e })}
+                                        style={{
+                                            width: '100%'
+                                        }}
+                                        options={[
+                                            {
+                                                value: 'Y',
+                                                label: '사용'
+                                            },
+                                            {
+                                                value: 'N',
+                                                label: '미사용'
+                                            }
+                                        ]}
+                                    />
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -787,23 +800,23 @@ export const Goodsgroup = () => {
                                         }
                                     ]}
                                 >
-                                <Select
-                                    defaultValue={unitParams?.languageCode}
-                                    onChange={(e) => setUnitParams({ ...unitParams, "languageCode": e })}
-                                    style={{
-                                        width: '100%'
-                                    }}
-                                    options={[
-                                        {
-                                            value: 'kr',
-                                            label: '한국어'
-                                        },
-                                        {
-                                            value: 'en',
-                                            label: '영어'
-                                        },
-                                    ]}
-                                />
+                                    <Select
+                                        defaultValue={unitParams?.languageCode}
+                                        onChange={(e) => setUnitParams({ ...unitParams, languageCode: e })}
+                                        style={{
+                                            width: '100%'
+                                        }}
+                                        options={[
+                                            {
+                                                value: 'kr',
+                                                label: '한국어'
+                                            },
+                                            {
+                                                value: 'en',
+                                                label: '영어'
+                                            }
+                                        ]}
+                                    />
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -818,27 +831,34 @@ export const Goodsgroup = () => {
                                                 width: 200
                                             }}
                                         >
-                                                <Button 
-                                                    onClick={handleButtonClick1}
-                                                    icon={<UploadOutlined />}
-                                                    style={{ height: '40px', width: '170px', padding: '0 10px', backgroundColor: '#f0f0f0' }}
-                                                >
-                                                   반입금지물품 이미지
-                                                </Button>                                                        
-                                                <input type="file"
-                                                        //ref={fileInput1}
-                                                        /*onChange={handleChange} */
-                                                        onChange={saveImgFile1}
-                                                        ref={imgRef1}
-                                                        style={{ display: "none" }} />                                                     
+                                            <Button
+                                                onClick={handleButtonClick1}
+                                                icon={<UploadOutlined />}
+                                                style={{ height: '40px', width: '170px', padding: '0 10px', backgroundColor: '#f0f0f0' }}
+                                            >
+                                                반입금지물품 이미지
+                                            </Button>
+                                            <input
+                                                type="file"
+                                                //ref={fileInput1}
+                                                /*onChange={handleChange} */
+                                                onChange={saveImgFile1}
+                                                ref={imgRef1}
+                                                style={{ display: 'none' }}
+                                            />
                                         </Card>
                                     </Space>
                                     <Space direction="vertical">
-                                        {imgEdit === true ?  
-                                            <img src={unitParams.imgFile!==null ? 'data:image/png;base64,' + unitParams.imgFile : noImage} width={280} height={280} alt="real image" />
-                                            : 
-                                            <img src={imgFile1 ? imgFile1 :noImage} width={200} height={200} alt="real image"/>                                            
-                                        }
+                                        {imgEdit === true ? (
+                                            <img
+                                                src={unitParams.imgFile !== null ? 'data:image/png;base64,' + unitParams.imgFile : noImage}
+                                                width={280}
+                                                height={280}
+                                                alt="real image"
+                                            />
+                                        ) : (
+                                            <img src={imgFile1 ? imgFile1 : noImage} width={200} height={200} alt="real image" />
+                                        )}
                                     </Space>
                                 </Form.Item>
                             </Col>
@@ -846,7 +866,7 @@ export const Goodsgroup = () => {
                     </Form>
                 </MainCard>
             </Drawer>
-            {/* 이미지 관리 추가 폼 End */}            
+            {/* 이미지 관리 추가 폼 End */}
         </>
     );
 };
