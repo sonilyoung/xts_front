@@ -260,7 +260,6 @@ export const Teacherstudent = () => {
 
     const onSearch = (value) => {
         setSearchval(value);
-        // setDataSource(null);
     };
 
     useEffect(() => {
