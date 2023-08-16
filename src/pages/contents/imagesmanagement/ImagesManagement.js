@@ -671,7 +671,7 @@ export const ImagesManagement = () => {
                             >
                                 <Row gutter={24} style={{ paddingBottom: '15px' }}>
                                     <Col span={24} offset={6}>
-                                        <Space>
+                                        <Space size="middle">
                                             <Tooltip title="업로드">
                                                 <Button
                                                     type="success"
@@ -684,9 +684,7 @@ export const ImagesManagement = () => {
                                                     업로드
                                                 </Button>
                                             </Tooltip>
-                                        </Space>
 
-                                        <Space direction="vertical">
                                             <Tooltip title="3D생성">
                                                 <Button
                                                     type="success"
@@ -699,9 +697,7 @@ export const ImagesManagement = () => {
                                                     3D이미지생성
                                                 </Button>
                                             </Tooltip>
-                                        </Space>
 
-                                        <Space direction="vertical">
                                             <Tooltip title="단품이미지추가">
                                                 <Button
                                                     type="success"

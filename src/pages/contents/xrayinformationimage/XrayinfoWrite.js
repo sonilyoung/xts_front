@@ -1637,11 +1637,11 @@ export const XrayinfoWrite = () => {
                                 <Row gutter={[24, 24]}>
                                     {/*정면 (컬러 ,흑백) 엑스레이정면, 엑스레이측면, 실물*/}
                                     <Col span={12} style={{ width: '100%' }}>
-                                        <Row style={{ paddingBottom: '15px' }}>
+                                        <Row style={{ paddingBottom: '25px' }}>
                                             <Col>
                                                 <Space direction="right">
                                                     <Tooltip title="업로드">
-                                                        <Button
+                                                        {/* <Button
                                                             type="success"
                                                             // onClick={handleUpload}
                                                             htmlType="submit"
@@ -1650,28 +1650,28 @@ export const XrayinfoWrite = () => {
                                                             icon={<PlusOutlined />}
                                                         >
                                                             업로드
-                                                        </Button>
+                                                        </Button> */}
                                                     </Tooltip>
                                                 </Space>
                                             </Col>
                                             <Col span={8} offset={8} style={{ textAlign: 'right' }}>
                                                 <Space>
                                                     <Tooltip title="3D생성">
-                                                        <Button
+                                                        {/* <Button
                                                             type="success"
                                                             onClick={handleThreed}
                                                             style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
                                                             icon={<PlusOutlined />}
                                                         >
                                                             3D생성
-                                                        </Button>
+                                                        </Button> */}
                                                     </Tooltip>
                                                 </Space>
                                             </Col>
                                         </Row>
 
                                         <Row style={{ border: '1px solid #f28b82' }}>
-                                            <Col span={24} style={{ marginTop: '10px' }}>
+                                            <Col span={24} style={{ marginTop: '15px' }}>
                                                 <Row>
                                                     <Space>
                                                         <Col>
@@ -2929,1169 +2929,1224 @@ export const XrayinfoWrite = () => {
                                             </Col>
                                         </Row>
 
-                                        <Row gutter={48}>
-                                            <Col span={4}>
-                                                <Form.Item name="File1">
-                                                    <Space direction="vertical">
-                                                        <Card
-                                                            size="small"
-                                                            style={{
-                                                                width: 100,
-                                                                height: 50
-                                                            }}
-                                                        >
-                                                            <Button
-                                                                onClick={clickSaveImgRefSideColor1}
-                                                                icon={<UploadOutlined />}
-                                                                style={{
-                                                                    height: '30px',
-                                                                    padding: '0px 0px 0px 0px',
-                                                                    backgroundColor: '#f0f0f0'
-                                                                }}
-                                                            >
-                                                                측면컬러1
-                                                            </Button>
-                                                            <input
-                                                                type="file"
-                                                                //ref={fileInput1}
-                                                                /*onChange={handleChange} */
-                                                                onChange={saveImgRefSideColor1}
-                                                                ref={imgRefSideColor1}
-                                                                style={{ display: 'none' }}
-                                                            />
-                                                        </Card>
-                                                    </Space>
+                                        <Row style={{ border: '1px solid #f28b82' }}>
+                                            <Col span={24} style={{ marginTop: '10px' }}>
+                                                <Row>
+                                                    <Space>
+                                                        <Col>
+                                                            <Form.Item name="File1">
+                                                                <Space direction="vertical">
+                                                                    <Card
+                                                                        size="small"
+                                                                        style={{
+                                                                            width: 100,
+                                                                            height: 50
+                                                                        }}
+                                                                    >
+                                                                        <Button
+                                                                            onClick={clickSaveImgRefSideColor1}
+                                                                            icon={<UploadOutlined />}
+                                                                            style={{
+                                                                                height: '30px',
+                                                                                padding: '0px 0px 0px 0px',
+                                                                                backgroundColor: '#f0f0f0'
+                                                                            }}
+                                                                        >
+                                                                            측면컬러1
+                                                                        </Button>
+                                                                        <input
+                                                                            type="file"
+                                                                            //ref={fileInput1}
+                                                                            /*onChange={handleChange} */
+                                                                            onChange={saveImgRefSideColor1}
+                                                                            ref={imgRefSideColor1}
+                                                                            style={{ display: 'none' }}
+                                                                        />
+                                                                    </Card>
+                                                                </Space>
 
-                                                    <Space direction="vertical">
-                                                        {imgRealEdit === true ? (
-                                                            <img
-                                                                onClick={() => handleImgPop(unitParams?.resultImg?.imgSideColor)}
-                                                                src={
-                                                                    unitParams?.resultImg?.imgSideColor !== null &&
-                                                                    unitParams?.resultImg?.imgSideColor !== undefined
-                                                                        ? 'data:image/png;base64,' + unitParams?.resultImg?.imgSideColor
-                                                                        : noImage
-                                                                }
-                                                                width={100}
-                                                                height={100}
-                                                                alt="real image"
-                                                            />
-                                                        ) : (
-                                                            <img
-                                                                src={pimgSideColor ? pimgSideColor : noImage}
-                                                                width={100}
-                                                                height={100}
-                                                                alt="real image"
-                                                            />
-                                                        )}
-                                                    </Space>
-                                                </Form.Item>
-                                            </Col>
-                                            <Col span={4}>
-                                                <Form.Item name="File2">
-                                                    <Space direction="vertical">
-                                                        <Card
-                                                            size="small"
-                                                            style={{
-                                                                width: 100,
-                                                                height: 50
-                                                            }}
-                                                        >
-                                                            <Button
-                                                                onClick={clickSaveImgRefSideColor2}
-                                                                icon={<UploadOutlined />}
-                                                                style={{
-                                                                    height: '30px',
-                                                                    padding: '0px 0px 0px 0px',
-                                                                    backgroundColor: '#f0f0f0'
-                                                                }}
-                                                            >
-                                                                측면컬러2
-                                                            </Button>
-                                                            <input
-                                                                type="file"
-                                                                //ref={fileInput1}
-                                                                /*onChange={handleChange} */
-                                                                onChange={saveImgRefSideColor2}
-                                                                ref={imgRefSideColor2}
-                                                                style={{ display: 'none' }}
-                                                            />
-                                                        </Card>
-                                                    </Space>
+                                                                <Space direction="vertical">
+                                                                    {imgRealEdit === true ? (
+                                                                        <img
+                                                                            onClick={() =>
+                                                                                handleImgPop(unitParams?.resultImg?.imgSideColor)
+                                                                            }
+                                                                            src={
+                                                                                unitParams?.resultImg?.imgSideColor !== null &&
+                                                                                unitParams?.resultImg?.imgSideColor !== undefined
+                                                                                    ? 'data:image/png;base64,' +
+                                                                                      unitParams?.resultImg?.imgSideColor
+                                                                                    : noImage
+                                                                            }
+                                                                            width={100}
+                                                                            height={100}
+                                                                            alt="real image"
+                                                                        />
+                                                                    ) : (
+                                                                        <img
+                                                                            src={pimgSideColor ? pimgSideColor : noImage}
+                                                                            width={100}
+                                                                            height={100}
+                                                                            alt="real image"
+                                                                        />
+                                                                    )}
+                                                                </Space>
+                                                            </Form.Item>
+                                                        </Col>
+                                                        <Col>
+                                                            <Form.Item name="File2">
+                                                                <Space direction="vertical">
+                                                                    <Card
+                                                                        size="small"
+                                                                        style={{
+                                                                            width: 100,
+                                                                            height: 50
+                                                                        }}
+                                                                    >
+                                                                        <Button
+                                                                            onClick={clickSaveImgRefSideColor2}
+                                                                            icon={<UploadOutlined />}
+                                                                            style={{
+                                                                                height: '30px',
+                                                                                padding: '0px 0px 0px 0px',
+                                                                                backgroundColor: '#f0f0f0'
+                                                                            }}
+                                                                        >
+                                                                            측면컬러2
+                                                                        </Button>
+                                                                        <input
+                                                                            type="file"
+                                                                            //ref={fileInput1}
+                                                                            /*onChange={handleChange} */
+                                                                            onChange={saveImgRefSideColor2}
+                                                                            ref={imgRefSideColor2}
+                                                                            style={{ display: 'none' }}
+                                                                        />
+                                                                    </Card>
+                                                                </Space>
 
-                                                    <Space direction="vertical">
-                                                        {imgRealEdit === true ? (
-                                                            <img
-                                                                onClick={() => handleImgPop(unitParams?.resultImg?.imgSideColorMineral)}
-                                                                src={
-                                                                    unitParams?.resultImg?.imgSideColorMineral !== null &&
-                                                                    unitParams?.resultImg?.imgSideColorMineral !== undefined
-                                                                        ? 'data:image/png;base64,' +
-                                                                          unitParams?.resultImg?.imgSideColorMineral
-                                                                        : noImage
-                                                                }
-                                                                width={100}
-                                                                height={100}
-                                                                alt="real image"
-                                                            />
-                                                        ) : (
-                                                            <img
-                                                                src={pimgSideColorMineral ? pimgSideColorMineral : noImage}
-                                                                width={100}
-                                                                height={100}
-                                                                alt="real image"
-                                                            />
-                                                        )}
-                                                    </Space>
-                                                </Form.Item>
-                                            </Col>
-                                            <Col span={4}>
-                                                <Form.Item name="File3">
-                                                    <Space direction="vertical">
-                                                        <Card
-                                                            size="small"
-                                                            style={{
-                                                                width: 100,
-                                                                height: 50
-                                                            }}
-                                                        >
-                                                            <Button
-                                                                onClick={clickSaveImgRefSideColor3}
-                                                                icon={<UploadOutlined />}
-                                                                style={{
-                                                                    height: '30px',
-                                                                    padding: '0px 0px 0px 0px',
-                                                                    backgroundColor: '#f0f0f0'
-                                                                }}
-                                                            >
-                                                                측면컬러3
-                                                            </Button>
-                                                            <input
-                                                                type="file"
-                                                                //ref={fileInput1}
-                                                                /*onChange={handleChange} */
-                                                                onChange={saveImgRefSideColor3}
-                                                                ref={imgRefSideColor3}
-                                                                style={{ display: 'none' }}
-                                                            />
-                                                        </Card>
-                                                    </Space>
+                                                                <Space direction="vertical">
+                                                                    {imgRealEdit === true ? (
+                                                                        <img
+                                                                            onClick={() =>
+                                                                                handleImgPop(unitParams?.resultImg?.imgSideColorMineral)
+                                                                            }
+                                                                            src={
+                                                                                unitParams?.resultImg?.imgSideColorMineral !== null &&
+                                                                                unitParams?.resultImg?.imgSideColorMineral !== undefined
+                                                                                    ? 'data:image/png;base64,' +
+                                                                                      unitParams?.resultImg?.imgSideColorMineral
+                                                                                    : noImage
+                                                                            }
+                                                                            width={100}
+                                                                            height={100}
+                                                                            alt="real image"
+                                                                        />
+                                                                    ) : (
+                                                                        <img
+                                                                            src={pimgSideColorMineral ? pimgSideColorMineral : noImage}
+                                                                            width={100}
+                                                                            height={100}
+                                                                            alt="real image"
+                                                                        />
+                                                                    )}
+                                                                </Space>
+                                                            </Form.Item>
+                                                        </Col>
+                                                        <Col>
+                                                            <Form.Item name="File3">
+                                                                <Space direction="vertical">
+                                                                    <Card
+                                                                        size="small"
+                                                                        style={{
+                                                                            width: 100,
+                                                                            height: 50
+                                                                        }}
+                                                                    >
+                                                                        <Button
+                                                                            onClick={clickSaveImgRefSideColor3}
+                                                                            icon={<UploadOutlined />}
+                                                                            style={{
+                                                                                height: '30px',
+                                                                                padding: '0px 0px 0px 0px',
+                                                                                backgroundColor: '#f0f0f0'
+                                                                            }}
+                                                                        >
+                                                                            측면컬러3
+                                                                        </Button>
+                                                                        <input
+                                                                            type="file"
+                                                                            //ref={fileInput1}
+                                                                            /*onChange={handleChange} */
+                                                                            onChange={saveImgRefSideColor3}
+                                                                            ref={imgRefSideColor3}
+                                                                            style={{ display: 'none' }}
+                                                                        />
+                                                                    </Card>
+                                                                </Space>
 
-                                                    <Space direction="vertical">
-                                                        {imgRealEdit === true ? (
-                                                            <img
-                                                                onClick={() => handleImgPop(unitParams?.resultImg?.imgSideColorOrganism)}
-                                                                src={
-                                                                    unitParams?.resultImg?.imgSideColorOrganism !== null &&
-                                                                    unitParams?.resultImg?.imgSideColorOrganism !== undefined
-                                                                        ? 'data:image/png;base64,' +
-                                                                          unitParams?.resultImg?.imgSideColorOrganism
-                                                                        : noImage
-                                                                }
-                                                                width={100}
-                                                                height={100}
-                                                                alt="real image"
-                                                            />
-                                                        ) : (
-                                                            <img
-                                                                src={pimgSideColorOrganism ? pimgSideColorOrganism : noImage}
-                                                                width={100}
-                                                                height={100}
-                                                                alt="real image"
-                                                            />
-                                                        )}
-                                                    </Space>
-                                                </Form.Item>
-                                            </Col>
-                                            <Col span={4}>
-                                                <Form.Item name="File4">
-                                                    <Space direction="vertical">
-                                                        <Card
-                                                            size="small"
-                                                            style={{
-                                                                width: 100,
-                                                                height: 50
-                                                            }}
-                                                        >
-                                                            <Button
-                                                                onClick={clickSaveImgRefSideColor4}
-                                                                icon={<UploadOutlined />}
-                                                                style={{
-                                                                    height: '30px',
-                                                                    padding: '0px 0px 0px 0px',
-                                                                    backgroundColor: '#f0f0f0'
-                                                                }}
-                                                            >
-                                                                측면컬러4
-                                                            </Button>
-                                                            <input
-                                                                type="file"
-                                                                //ref={fileInput1}
-                                                                /*onChange={handleChange} */
-                                                                onChange={saveImgRefSideColor4}
-                                                                ref={imgRefSideColor4}
-                                                                style={{ display: 'none' }}
-                                                            />
-                                                        </Card>
-                                                    </Space>
+                                                                <Space direction="vertical">
+                                                                    {imgRealEdit === true ? (
+                                                                        <img
+                                                                            onClick={() =>
+                                                                                handleImgPop(unitParams?.resultImg?.imgSideColorOrganism)
+                                                                            }
+                                                                            src={
+                                                                                unitParams?.resultImg?.imgSideColorOrganism !== null &&
+                                                                                unitParams?.resultImg?.imgSideColorOrganism !== undefined
+                                                                                    ? 'data:image/png;base64,' +
+                                                                                      unitParams?.resultImg?.imgSideColorOrganism
+                                                                                    : noImage
+                                                                            }
+                                                                            width={100}
+                                                                            height={100}
+                                                                            alt="real image"
+                                                                        />
+                                                                    ) : (
+                                                                        <img
+                                                                            src={pimgSideColorOrganism ? pimgSideColorOrganism : noImage}
+                                                                            width={100}
+                                                                            height={100}
+                                                                            alt="real image"
+                                                                        />
+                                                                    )}
+                                                                </Space>
+                                                            </Form.Item>
+                                                        </Col>
+                                                        <Col>
+                                                            <Form.Item name="File4">
+                                                                <Space direction="vertical">
+                                                                    <Card
+                                                                        size="small"
+                                                                        style={{
+                                                                            width: 100,
+                                                                            height: 50
+                                                                        }}
+                                                                    >
+                                                                        <Button
+                                                                            onClick={clickSaveImgRefSideColor4}
+                                                                            icon={<UploadOutlined />}
+                                                                            style={{
+                                                                                height: '30px',
+                                                                                padding: '0px 0px 0px 0px',
+                                                                                backgroundColor: '#f0f0f0'
+                                                                            }}
+                                                                        >
+                                                                            측면컬러4
+                                                                        </Button>
+                                                                        <input
+                                                                            type="file"
+                                                                            //ref={fileInput1}
+                                                                            /*onChange={handleChange} */
+                                                                            onChange={saveImgRefSideColor4}
+                                                                            ref={imgRefSideColor4}
+                                                                            style={{ display: 'none' }}
+                                                                        />
+                                                                    </Card>
+                                                                </Space>
 
-                                                    <Space direction="vertical">
-                                                        {imgRealEdit === true ? (
-                                                            <img
-                                                                onClick={() => handleImgPop(unitParams?.resultImg?.imgSideColorReversal)}
-                                                                src={
-                                                                    unitParams?.resultImg?.imgSideColorReversal !== null &&
-                                                                    unitParams?.resultImg?.imgSideColorReversal !== undefined
-                                                                        ? 'data:image/png;base64,' +
-                                                                          unitParams?.resultImg?.imgSideColorReversal
-                                                                        : noImage
-                                                                }
-                                                                width={100}
-                                                                height={100}
-                                                                alt="real image"
-                                                            />
-                                                        ) : (
-                                                            <img
-                                                                src={pimgSideColorReversal ? pimgSideColorReversal : noImage}
-                                                                width={100}
-                                                                height={100}
-                                                                alt="real image"
-                                                            />
-                                                        )}
-                                                    </Space>
-                                                </Form.Item>
-                                            </Col>
-                                            <Col span={4}>
-                                                <Form.Item name="File5">
-                                                    <Space direction="vertical">
-                                                        <Card
-                                                            size="small"
-                                                            style={{
-                                                                width: 100,
-                                                                height: 50
-                                                            }}
-                                                        >
-                                                            <Button
-                                                                onClick={clickSaveImgRefSideColor5}
-                                                                icon={<UploadOutlined />}
-                                                                style={{
-                                                                    height: '30px',
-                                                                    padding: '0px 0px 0px 0px',
-                                                                    backgroundColor: '#f0f0f0'
-                                                                }}
-                                                            >
-                                                                측면컬러5
-                                                            </Button>
-                                                            <input
-                                                                type="file"
-                                                                //ref={fileInput1}
-                                                                /*onChange={handleChange} */
-                                                                onChange={saveImgRefSideColor5}
-                                                                ref={imgRefSideColor5}
-                                                                style={{ display: 'none' }}
-                                                            />
-                                                        </Card>
-                                                    </Space>
+                                                                <Space direction="vertical">
+                                                                    {imgRealEdit === true ? (
+                                                                        <img
+                                                                            onClick={() =>
+                                                                                handleImgPop(unitParams?.resultImg?.imgSideColorReversal)
+                                                                            }
+                                                                            src={
+                                                                                unitParams?.resultImg?.imgSideColorReversal !== null &&
+                                                                                unitParams?.resultImg?.imgSideColorReversal !== undefined
+                                                                                    ? 'data:image/png;base64,' +
+                                                                                      unitParams?.resultImg?.imgSideColorReversal
+                                                                                    : noImage
+                                                                            }
+                                                                            width={100}
+                                                                            height={100}
+                                                                            alt="real image"
+                                                                        />
+                                                                    ) : (
+                                                                        <img
+                                                                            src={pimgSideColorReversal ? pimgSideColorReversal : noImage}
+                                                                            width={100}
+                                                                            height={100}
+                                                                            alt="real image"
+                                                                        />
+                                                                    )}
+                                                                </Space>
+                                                            </Form.Item>
+                                                        </Col>
+                                                        <Col>
+                                                            <Form.Item name="File5">
+                                                                <Space direction="vertical">
+                                                                    <Card
+                                                                        size="small"
+                                                                        style={{
+                                                                            width: 100,
+                                                                            height: 50
+                                                                        }}
+                                                                    >
+                                                                        <Button
+                                                                            onClick={clickSaveImgRefSideColor5}
+                                                                            icon={<UploadOutlined />}
+                                                                            style={{
+                                                                                height: '30px',
+                                                                                padding: '0px 0px 0px 0px',
+                                                                                backgroundColor: '#f0f0f0'
+                                                                            }}
+                                                                        >
+                                                                            측면컬러5
+                                                                        </Button>
+                                                                        <input
+                                                                            type="file"
+                                                                            //ref={fileInput1}
+                                                                            /*onChange={handleChange} */
+                                                                            onChange={saveImgRefSideColor5}
+                                                                            ref={imgRefSideColor5}
+                                                                            style={{ display: 'none' }}
+                                                                        />
+                                                                    </Card>
+                                                                </Space>
 
-                                                    <Space direction="vertical">
-                                                        {imgRealEdit === true ? (
-                                                            <img
-                                                                onClick={() => handleImgPop(unitParams?.resultImg?.imgSideColorBwRate1)}
-                                                                src={
-                                                                    unitParams?.resultImg?.imgSideColorBwRate1 !== null &&
-                                                                    unitParams?.resultImg?.imgSideColorBwRate1 !== undefined
-                                                                        ? 'data:image/png;base64,' +
-                                                                          unitParams?.resultImg?.imgSideColorBwRate1
-                                                                        : noImage
-                                                                }
-                                                                width={100}
-                                                                height={100}
-                                                                alt="real image"
-                                                            />
-                                                        ) : (
-                                                            <img
-                                                                src={pimgSideColorBwRate1 ? pimgSideColorBwRate1 : noImage}
-                                                                width={100}
-                                                                height={100}
-                                                                alt="real image"
-                                                            />
-                                                        )}
+                                                                <Space direction="vertical">
+                                                                    {imgRealEdit === true ? (
+                                                                        <img
+                                                                            onClick={() =>
+                                                                                handleImgPop(unitParams?.resultImg?.imgSideColorBwRate1)
+                                                                            }
+                                                                            src={
+                                                                                unitParams?.resultImg?.imgSideColorBwRate1 !== null &&
+                                                                                unitParams?.resultImg?.imgSideColorBwRate1 !== undefined
+                                                                                    ? 'data:image/png;base64,' +
+                                                                                      unitParams?.resultImg?.imgSideColorBwRate1
+                                                                                    : noImage
+                                                                            }
+                                                                            width={100}
+                                                                            height={100}
+                                                                            alt="real image"
+                                                                        />
+                                                                    ) : (
+                                                                        <img
+                                                                            src={pimgSideColorBwRate1 ? pimgSideColorBwRate1 : noImage}
+                                                                            width={100}
+                                                                            height={100}
+                                                                            alt="real image"
+                                                                        />
+                                                                    )}
+                                                                </Space>
+                                                            </Form.Item>
+                                                        </Col>
                                                     </Space>
-                                                </Form.Item>
-                                            </Col>
-                                        </Row>
+                                                </Row>
+                                                <Row>
+                                                    <Space>
+                                                        <Col>
+                                                            <Form.Item name="File6">
+                                                                <Space direction="vertical">
+                                                                    <Card
+                                                                        size="small"
+                                                                        style={{
+                                                                            width: 100,
+                                                                            height: 50
+                                                                        }}
+                                                                    >
+                                                                        <Button
+                                                                            onClick={clickSaveImgRefSideColor6}
+                                                                            icon={<UploadOutlined />}
+                                                                            style={{
+                                                                                height: '30px',
+                                                                                padding: '0px 0px 0px 0px',
+                                                                                backgroundColor: '#f0f0f0'
+                                                                            }}
+                                                                        >
+                                                                            측면컬러6
+                                                                        </Button>
+                                                                        <input
+                                                                            type="file"
+                                                                            //ref={fileInput1}
+                                                                            /*onChange={handleChange} */
+                                                                            onChange={saveImgRefSideColor6}
+                                                                            ref={imgRefSideColor6}
+                                                                            style={{ display: 'none' }}
+                                                                        />
+                                                                    </Card>
+                                                                </Space>
 
-                                        <Row gutter={48}>
-                                            <Col span={4}>
-                                                <Form.Item name="File6">
-                                                    <Space direction="vertical">
-                                                        <Card
-                                                            size="small"
-                                                            style={{
-                                                                width: 100,
-                                                                height: 50
-                                                            }}
-                                                        >
-                                                            <Button
-                                                                onClick={clickSaveImgRefSideColor6}
-                                                                icon={<UploadOutlined />}
-                                                                style={{
-                                                                    height: '30px',
-                                                                    padding: '0px 0px 0px 0px',
-                                                                    backgroundColor: '#f0f0f0'
-                                                                }}
-                                                            >
-                                                                측면컬러6
-                                                            </Button>
-                                                            <input
-                                                                type="file"
-                                                                //ref={fileInput1}
-                                                                /*onChange={handleChange} */
-                                                                onChange={saveImgRefSideColor6}
-                                                                ref={imgRefSideColor6}
-                                                                style={{ display: 'none' }}
-                                                            />
-                                                        </Card>
-                                                    </Space>
+                                                                <Space direction="vertical">
+                                                                    {imgRealEdit === true ? (
+                                                                        <img
+                                                                            onClick={() =>
+                                                                                handleImgPop(unitParams?.resultImg?.imgSideColorBwRate2)
+                                                                            }
+                                                                            src={
+                                                                                unitParams?.resultImg?.imgSideColorBwRate2 !== null &&
+                                                                                unitParams?.resultImg?.imgSideColorBwRate2 !== undefined
+                                                                                    ? 'data:image/png;base64,' +
+                                                                                      unitParams?.resultImg?.imgSideColorBwRate2
+                                                                                    : noImage
+                                                                            }
+                                                                            width={100}
+                                                                            height={100}
+                                                                            alt="real image"
+                                                                        />
+                                                                    ) : (
+                                                                        <img
+                                                                            src={pimgSideColorBwRate2 ? pimgSideColorBwRate2 : noImage}
+                                                                            width={100}
+                                                                            height={100}
+                                                                            alt="real image"
+                                                                        />
+                                                                    )}
+                                                                </Space>
+                                                            </Form.Item>
+                                                        </Col>
+                                                        <Col>
+                                                            <Form.Item name="File7">
+                                                                <Space direction="vertical">
+                                                                    <Card
+                                                                        size="small"
+                                                                        style={{
+                                                                            width: 100,
+                                                                            height: 50
+                                                                        }}
+                                                                    >
+                                                                        <Button
+                                                                            onClick={clickSaveImgRefSideColor7}
+                                                                            icon={<UploadOutlined />}
+                                                                            style={{
+                                                                                height: '30px',
+                                                                                padding: '0px 0px 0px 0px',
+                                                                                backgroundColor: '#f0f0f0'
+                                                                            }}
+                                                                        >
+                                                                            측면컬러7
+                                                                        </Button>
+                                                                        <input
+                                                                            type="file"
+                                                                            //ref={fileInput1}
+                                                                            /*onChange={handleChange} */
+                                                                            onChange={saveImgRefSideColor7}
+                                                                            ref={imgRefSideColor7}
+                                                                            style={{ display: 'none' }}
+                                                                        />
+                                                                    </Card>
+                                                                </Space>
 
-                                                    <Space direction="vertical">
-                                                        {imgRealEdit === true ? (
-                                                            <img
-                                                                onClick={() => handleImgPop(unitParams?.resultImg?.imgSideColorBwRate2)}
-                                                                src={
-                                                                    unitParams?.resultImg?.imgSideColorBwRate2 !== null &&
-                                                                    unitParams?.resultImg?.imgSideColorBwRate2 !== undefined
-                                                                        ? 'data:image/png;base64,' +
-                                                                          unitParams?.resultImg?.imgSideColorBwRate2
-                                                                        : noImage
-                                                                }
-                                                                width={100}
-                                                                height={100}
-                                                                alt="real image"
-                                                            />
-                                                        ) : (
-                                                            <img
-                                                                src={pimgSideColorBwRate2 ? pimgSideColorBwRate2 : noImage}
-                                                                width={100}
-                                                                height={100}
-                                                                alt="real image"
-                                                            />
-                                                        )}
-                                                    </Space>
-                                                </Form.Item>
-                                            </Col>
-                                            <Col span={4}>
-                                                <Form.Item name="File7">
-                                                    <Space direction="vertical">
-                                                        <Card
-                                                            size="small"
-                                                            style={{
-                                                                width: 100,
-                                                                height: 50
-                                                            }}
-                                                        >
-                                                            <Button
-                                                                onClick={clickSaveImgRefSideColor7}
-                                                                icon={<UploadOutlined />}
-                                                                style={{
-                                                                    height: '30px',
-                                                                    padding: '0px 0px 0px 0px',
-                                                                    backgroundColor: '#f0f0f0'
-                                                                }}
-                                                            >
-                                                                측면컬러7
-                                                            </Button>
-                                                            <input
-                                                                type="file"
-                                                                //ref={fileInput1}
-                                                                /*onChange={handleChange} */
-                                                                onChange={saveImgRefSideColor7}
-                                                                ref={imgRefSideColor7}
-                                                                style={{ display: 'none' }}
-                                                            />
-                                                        </Card>
-                                                    </Space>
+                                                                <Space direction="vertical">
+                                                                    {imgRealEdit === true ? (
+                                                                        <img
+                                                                            onClick={() =>
+                                                                                handleImgPop(unitParams?.resultImg?.imgSideColorBwRate3)
+                                                                            }
+                                                                            src={
+                                                                                unitParams?.resultImg?.imgSideColorBwRate3 !== null &&
+                                                                                unitParams?.resultImg?.imgSideColorBwRate3 !== undefined
+                                                                                    ? 'data:image/png;base64,' +
+                                                                                      unitParams?.resultImg?.imgSideColorBwRate3
+                                                                                    : noImage
+                                                                            }
+                                                                            width={100}
+                                                                            height={100}
+                                                                            alt="real image"
+                                                                        />
+                                                                    ) : (
+                                                                        <img
+                                                                            src={pimgSideColorBwRate3 ? pimgSideColorBwRate3 : noImage}
+                                                                            width={100}
+                                                                            height={100}
+                                                                            alt="real image"
+                                                                        />
+                                                                    )}
+                                                                </Space>
+                                                            </Form.Item>
+                                                        </Col>
+                                                        <Col>
+                                                            <Form.Item name="File8">
+                                                                <Space direction="vertical">
+                                                                    <Card
+                                                                        size="small"
+                                                                        style={{
+                                                                            width: 100,
+                                                                            height: 50
+                                                                        }}
+                                                                    >
+                                                                        <Button
+                                                                            onClick={clickSaveImgRefSideColor8}
+                                                                            icon={<UploadOutlined />}
+                                                                            style={{
+                                                                                height: '30px',
+                                                                                padding: '0px 0px 0px 0px',
+                                                                                backgroundColor: '#f0f0f0'
+                                                                            }}
+                                                                        >
+                                                                            측면컬러8
+                                                                        </Button>
+                                                                        <input
+                                                                            type="file"
+                                                                            //ref={fileInput1}
+                                                                            /*onChange={handleChange} */
+                                                                            onChange={saveImgRefSideColor8}
+                                                                            ref={imgRefSideColor8}
+                                                                            style={{ display: 'none' }}
+                                                                        />
+                                                                    </Card>
+                                                                </Space>
 
-                                                    <Space direction="vertical">
-                                                        {imgRealEdit === true ? (
-                                                            <img
-                                                                onClick={() => handleImgPop(unitParams?.resultImg?.imgSideColorBwRate3)}
-                                                                src={
-                                                                    unitParams?.resultImg?.imgSideColorBwRate3 !== null &&
-                                                                    unitParams?.resultImg?.imgSideColorBwRate3 !== undefined
-                                                                        ? 'data:image/png;base64,' +
-                                                                          unitParams?.resultImg?.imgSideColorBwRate3
-                                                                        : noImage
-                                                                }
-                                                                width={100}
-                                                                height={100}
-                                                                alt="real image"
-                                                            />
-                                                        ) : (
-                                                            <img
-                                                                src={pimgSideColorBwRate3 ? pimgSideColorBwRate3 : noImage}
-                                                                width={100}
-                                                                height={100}
-                                                                alt="real image"
-                                                            />
-                                                        )}
-                                                    </Space>
-                                                </Form.Item>
-                                            </Col>
-                                            <Col span={4}>
-                                                <Form.Item name="File8">
-                                                    <Space direction="vertical">
-                                                        <Card
-                                                            size="small"
-                                                            style={{
-                                                                width: 100,
-                                                                height: 50
-                                                            }}
-                                                        >
-                                                            <Button
-                                                                onClick={clickSaveImgRefSideColor8}
-                                                                icon={<UploadOutlined />}
-                                                                style={{
-                                                                    height: '30px',
-                                                                    padding: '0px 0px 0px 0px',
-                                                                    backgroundColor: '#f0f0f0'
-                                                                }}
-                                                            >
-                                                                측면컬러8
-                                                            </Button>
-                                                            <input
-                                                                type="file"
-                                                                //ref={fileInput1}
-                                                                /*onChange={handleChange} */
-                                                                onChange={saveImgRefSideColor8}
-                                                                ref={imgRefSideColor8}
-                                                                style={{ display: 'none' }}
-                                                            />
-                                                        </Card>
-                                                    </Space>
+                                                                <Space direction="vertical">
+                                                                    {imgRealEdit === true ? (
+                                                                        <img
+                                                                            onClick={() =>
+                                                                                handleImgPop(unitParams?.resultImg?.imgSideColorBwRate4)
+                                                                            }
+                                                                            src={
+                                                                                unitParams?.resultImg?.imgSideColorBwRate4 !== null &&
+                                                                                unitParams?.resultImg?.imgSideColorBwRate4 !== undefined
+                                                                                    ? 'data:image/png;base64,' +
+                                                                                      unitParams?.resultImg?.imgSideColorBwRate4
+                                                                                    : noImage
+                                                                            }
+                                                                            width={100}
+                                                                            height={100}
+                                                                            alt="real image"
+                                                                        />
+                                                                    ) : (
+                                                                        <img
+                                                                            src={pimgSideColorBwRate4 ? pimgSideColorBwRate4 : noImage}
+                                                                            width={100}
+                                                                            height={100}
+                                                                            alt="real image"
+                                                                        />
+                                                                    )}
+                                                                </Space>
+                                                            </Form.Item>
+                                                        </Col>
+                                                        <Col>
+                                                            <Form.Item name="File9">
+                                                                <Space direction="vertical">
+                                                                    <Card
+                                                                        size="small"
+                                                                        style={{
+                                                                            width: 100,
+                                                                            height: 50
+                                                                        }}
+                                                                    >
+                                                                        <Button
+                                                                            onClick={clickSaveImgRefSideColor9}
+                                                                            icon={<UploadOutlined />}
+                                                                            style={{
+                                                                                height: '30px',
+                                                                                padding: '0px 0px 0px 0px',
+                                                                                backgroundColor: '#f0f0f0'
+                                                                            }}
+                                                                        >
+                                                                            측면컬러9
+                                                                        </Button>
+                                                                        <input
+                                                                            type="file"
+                                                                            //ref={fileInput1}
+                                                                            /*onChange={handleChange} */
+                                                                            onChange={saveImgRefSideColor9}
+                                                                            ref={imgRefSideColor9}
+                                                                            style={{ display: 'none' }}
+                                                                        />
+                                                                    </Card>
+                                                                </Space>
 
-                                                    <Space direction="vertical">
-                                                        {imgRealEdit === true ? (
-                                                            <img
-                                                                onClick={() => handleImgPop(unitParams?.resultImg?.imgSideColorBwRate4)}
-                                                                src={
-                                                                    unitParams?.resultImg?.imgSideColorBwRate4 !== null &&
-                                                                    unitParams?.resultImg?.imgSideColorBwRate4 !== undefined
-                                                                        ? 'data:image/png;base64,' +
-                                                                          unitParams?.resultImg?.imgSideColorBwRate4
-                                                                        : noImage
-                                                                }
-                                                                width={100}
-                                                                height={100}
-                                                                alt="real image"
-                                                            />
-                                                        ) : (
-                                                            <img
-                                                                src={pimgSideColorBwRate4 ? pimgSideColorBwRate4 : noImage}
-                                                                width={100}
-                                                                height={100}
-                                                                alt="real image"
-                                                            />
-                                                        )}
-                                                    </Space>
-                                                </Form.Item>
-                                            </Col>
-                                            <Col span={4}>
-                                                <Form.Item name="File9">
-                                                    <Space direction="vertical">
-                                                        <Card
-                                                            size="small"
-                                                            style={{
-                                                                width: 100,
-                                                                height: 50
-                                                            }}
-                                                        >
-                                                            <Button
-                                                                onClick={clickSaveImgRefSideColor9}
-                                                                icon={<UploadOutlined />}
-                                                                style={{
-                                                                    height: '30px',
-                                                                    padding: '0px 0px 0px 0px',
-                                                                    backgroundColor: '#f0f0f0'
-                                                                }}
-                                                            >
-                                                                측면컬러9
-                                                            </Button>
-                                                            <input
-                                                                type="file"
-                                                                //ref={fileInput1}
-                                                                /*onChange={handleChange} */
-                                                                onChange={saveImgRefSideColor9}
-                                                                ref={imgRefSideColor9}
-                                                                style={{ display: 'none' }}
-                                                            />
-                                                        </Card>
-                                                    </Space>
+                                                                <Space direction="vertical">
+                                                                    {imgRealEdit === true ? (
+                                                                        <img
+                                                                            onClick={() =>
+                                                                                handleImgPop(unitParams?.resultImg?.imgSideColorBwRate5)
+                                                                            }
+                                                                            src={
+                                                                                unitParams?.resultImg?.imgSideColorBwRate5 !== null &&
+                                                                                unitParams?.resultImg?.imgSideColorBwRate5 !== undefined
+                                                                                    ? 'data:image/png;base64,' +
+                                                                                      unitParams?.resultImg?.imgSideColorBwRate5
+                                                                                    : noImage
+                                                                            }
+                                                                            width={100}
+                                                                            height={100}
+                                                                            alt="real image"
+                                                                        />
+                                                                    ) : (
+                                                                        <img
+                                                                            src={pimgSideColorBwRate5 ? pimgSideColorBwRate5 : noImage}
+                                                                            width={100}
+                                                                            height={100}
+                                                                            alt="real image"
+                                                                        />
+                                                                    )}
+                                                                </Space>
+                                                            </Form.Item>
+                                                        </Col>
+                                                        <Col>
+                                                            <Form.Item name="File10">
+                                                                <Space direction="vertical">
+                                                                    <Card
+                                                                        size="small"
+                                                                        style={{
+                                                                            width: 100,
+                                                                            height: 50
+                                                                        }}
+                                                                    >
+                                                                        <Button
+                                                                            onClick={clickSaveImgRefSideColor10}
+                                                                            icon={<UploadOutlined />}
+                                                                            style={{
+                                                                                height: '30px',
+                                                                                padding: '0px 0px 0px 0px',
+                                                                                backgroundColor: '#f0f0f0'
+                                                                            }}
+                                                                        >
+                                                                            측면컬러10
+                                                                        </Button>
+                                                                        <input
+                                                                            type="file"
+                                                                            //ref={fileInput1}
+                                                                            /*onChange={handleChange} */
+                                                                            onChange={saveImgRefSideColor10}
+                                                                            ref={imgRefSideColor10}
+                                                                            style={{ display: 'none' }}
+                                                                        />
+                                                                    </Card>
+                                                                </Space>
 
-                                                    <Space direction="vertical">
-                                                        {imgRealEdit === true ? (
-                                                            <img
-                                                                onClick={() => handleImgPop(unitParams?.resultImg?.imgSideColorBwRate5)}
-                                                                src={
-                                                                    unitParams?.resultImg?.imgSideColorBwRate5 !== null &&
-                                                                    unitParams?.resultImg?.imgSideColorBwRate5 !== undefined
-                                                                        ? 'data:image/png;base64,' +
-                                                                          unitParams?.resultImg?.imgSideColorBwRate5
-                                                                        : noImage
-                                                                }
-                                                                width={100}
-                                                                height={100}
-                                                                alt="real image"
-                                                            />
-                                                        ) : (
-                                                            <img
-                                                                src={pimgSideColorBwRate5 ? pimgSideColorBwRate5 : noImage}
-                                                                width={100}
-                                                                height={100}
-                                                                alt="real image"
-                                                            />
-                                                        )}
+                                                                <Space direction="vertical">
+                                                                    {imgRealEdit === true ? (
+                                                                        <img
+                                                                            onClick={() =>
+                                                                                handleImgPop(unitParams?.resultImg?.imgSideColorBwRate6)
+                                                                            }
+                                                                            src={
+                                                                                unitParams?.resultImg?.imgSideColorBwRate6 !== null &&
+                                                                                unitParams?.resultImg?.imgSideColorBwRate6 !== undefined
+                                                                                    ? 'data:image/png;base64,' +
+                                                                                      unitParams?.resultImg?.imgSideColorBwRate6
+                                                                                    : noImage
+                                                                            }
+                                                                            width={100}
+                                                                            height={100}
+                                                                            alt="real image"
+                                                                        />
+                                                                    ) : (
+                                                                        <img
+                                                                            src={pimgSideColorBwRate6 ? pimgSideColorBwRate6 : noImage}
+                                                                            width={100}
+                                                                            height={100}
+                                                                            alt="real image"
+                                                                        />
+                                                                    )}
+                                                                </Space>
+                                                            </Form.Item>
+                                                        </Col>
                                                     </Space>
-                                                </Form.Item>
-                                            </Col>
-                                            <Col span={4}>
-                                                <Form.Item name="File10">
-                                                    <Space direction="vertical">
-                                                        <Card
-                                                            size="small"
-                                                            style={{
-                                                                width: 100,
-                                                                height: 50
-                                                            }}
-                                                        >
-                                                            <Button
-                                                                onClick={clickSaveImgRefSideColor10}
-                                                                icon={<UploadOutlined />}
-                                                                style={{
-                                                                    height: '30px',
-                                                                    padding: '0px 0px 0px 0px',
-                                                                    backgroundColor: '#f0f0f0'
-                                                                }}
-                                                            >
-                                                                측면컬러10
-                                                            </Button>
-                                                            <input
-                                                                type="file"
-                                                                //ref={fileInput1}
-                                                                /*onChange={handleChange} */
-                                                                onChange={saveImgRefSideColor10}
-                                                                ref={imgRefSideColor10}
-                                                                style={{ display: 'none' }}
-                                                            />
-                                                        </Card>
-                                                    </Space>
+                                                </Row>
+                                                {/*정면컬러*/}
+                                                <Row>
+                                                    <Space>
+                                                        <Col>
+                                                            <Form.Item name="File1">
+                                                                <Space direction="vertical">
+                                                                    <Card
+                                                                        size="small"
+                                                                        style={{
+                                                                            width: 100,
+                                                                            height: 50
+                                                                        }}
+                                                                    >
+                                                                        <Button
+                                                                            onClick={clickSaveImgRefSideBw1}
+                                                                            icon={<UploadOutlined />}
+                                                                            style={{
+                                                                                height: '30px',
+                                                                                padding: '0px 0px 0px 0px',
+                                                                                backgroundColor: '#f0f0f0'
+                                                                            }}
+                                                                        >
+                                                                            측면흑백1
+                                                                        </Button>
+                                                                        <input
+                                                                            type="file"
+                                                                            //ref={fileInput1}
+                                                                            /*onChange={handleChange} */
+                                                                            onChange={saveImgRefSideBw1}
+                                                                            ref={imgRefSideBw1}
+                                                                            style={{ display: 'none' }}
+                                                                        />
+                                                                    </Card>
+                                                                </Space>
 
-                                                    <Space direction="vertical">
-                                                        {imgRealEdit === true ? (
-                                                            <img
-                                                                onClick={() => handleImgPop(unitParams?.resultImg?.imgSideColorBwRate6)}
-                                                                src={
-                                                                    unitParams?.resultImg?.imgSideColorBwRate6 !== null &&
-                                                                    unitParams?.resultImg?.imgSideColorBwRate6 !== undefined
-                                                                        ? 'data:image/png;base64,' +
-                                                                          unitParams?.resultImg?.imgSideColorBwRate6
-                                                                        : noImage
-                                                                }
-                                                                width={100}
-                                                                height={100}
-                                                                alt="real image"
-                                                            />
-                                                        ) : (
-                                                            <img
-                                                                src={pimgSideColorBwRate6 ? pimgSideColorBwRate6 : noImage}
-                                                                width={100}
-                                                                height={100}
-                                                                alt="real image"
-                                                            />
-                                                        )}
-                                                    </Space>
-                                                </Form.Item>
-                                            </Col>
-                                        </Row>
+                                                                <Space direction="vertical">
+                                                                    {imgRealEdit === true ? (
+                                                                        <img
+                                                                            onClick={() => handleImgPop(unitParams?.resultImg?.imgSideBw)}
+                                                                            src={
+                                                                                unitParams?.resultImg?.imgSideBw !== null &&
+                                                                                unitParams?.resultImg?.imgSideBw !== undefined
+                                                                                    ? 'data:image/png;base64,' +
+                                                                                      unitParams?.resultImg?.imgSideBw
+                                                                                    : noImage
+                                                                            }
+                                                                            width={100}
+                                                                            height={100}
+                                                                            alt="real image"
+                                                                        />
+                                                                    ) : (
+                                                                        <img
+                                                                            src={pimgSideBw ? pimgSideBw : noImage}
+                                                                            width={100}
+                                                                            height={100}
+                                                                            alt="real image"
+                                                                        />
+                                                                    )}
+                                                                </Space>
+                                                            </Form.Item>
+                                                        </Col>
+                                                        <Col>
+                                                            <Form.Item name="File2">
+                                                                <Space direction="vertical">
+                                                                    <Card
+                                                                        size="small"
+                                                                        style={{
+                                                                            width: 100,
+                                                                            height: 50
+                                                                        }}
+                                                                    >
+                                                                        <Button
+                                                                            onClick={clickSaveImgRefSideBw2}
+                                                                            icon={<UploadOutlined />}
+                                                                            style={{
+                                                                                height: '30px',
+                                                                                padding: '0px 0px 0px 0px',
+                                                                                backgroundColor: '#f0f0f0'
+                                                                            }}
+                                                                        >
+                                                                            측면흑백2
+                                                                        </Button>
+                                                                        <input
+                                                                            type="file"
+                                                                            //ref={fileInput1}
+                                                                            /*onChange={handleChange} */
+                                                                            onChange={saveImgRefSideBw2}
+                                                                            ref={imgRefSideBw2}
+                                                                            style={{ display: 'none' }}
+                                                                        />
+                                                                    </Card>
+                                                                </Space>
 
-                                        {/*정면컬러*/}
-                                        <Row gutter={48}>
-                                            <Col span={4}>
-                                                <Form.Item name="File1">
-                                                    <Space direction="vertical">
-                                                        <Card
-                                                            size="small"
-                                                            style={{
-                                                                width: 100,
-                                                                height: 50
-                                                            }}
-                                                        >
-                                                            <Button
-                                                                onClick={clickSaveImgRefSideBw1}
-                                                                icon={<UploadOutlined />}
-                                                                style={{
-                                                                    height: '30px',
-                                                                    padding: '0px 0px 0px 0px',
-                                                                    backgroundColor: '#f0f0f0'
-                                                                }}
-                                                            >
-                                                                측면흑백1
-                                                            </Button>
-                                                            <input
-                                                                type="file"
-                                                                //ref={fileInput1}
-                                                                /*onChange={handleChange} */
-                                                                onChange={saveImgRefSideBw1}
-                                                                ref={imgRefSideBw1}
-                                                                style={{ display: 'none' }}
-                                                            />
-                                                        </Card>
-                                                    </Space>
+                                                                <Space direction="vertical">
+                                                                    {imgRealEdit === true ? (
+                                                                        <img
+                                                                            onClick={() =>
+                                                                                handleImgPop(unitParams?.resultImg?.imgSideBwMinerals)
+                                                                            }
+                                                                            src={
+                                                                                unitParams?.resultImg?.imgSideBwMinerals !== null &&
+                                                                                unitParams?.resultImg?.imgSideBwMinerals !== undefined
+                                                                                    ? 'data:image/png;base64,' +
+                                                                                      unitParams?.resultImg?.imgSideBwMinerals
+                                                                                    : noImage
+                                                                            }
+                                                                            width={100}
+                                                                            height={100}
+                                                                            alt="real image"
+                                                                        />
+                                                                    ) : (
+                                                                        <img
+                                                                            src={pimgSideBwMinerals ? pimgSideBwMinerals : noImage}
+                                                                            width={100}
+                                                                            height={100}
+                                                                            alt="real image"
+                                                                        />
+                                                                    )}
+                                                                </Space>
+                                                            </Form.Item>
+                                                        </Col>
+                                                        <Col>
+                                                            <Form.Item name="File3">
+                                                                <Space direction="vertical">
+                                                                    <Card
+                                                                        size="small"
+                                                                        style={{
+                                                                            width: 100,
+                                                                            height: 50
+                                                                        }}
+                                                                    >
+                                                                        <Button
+                                                                            onClick={clickSaveImgRefSideBw3}
+                                                                            icon={<UploadOutlined />}
+                                                                            style={{
+                                                                                height: '30px',
+                                                                                padding: '0px 0px 0px 0px',
+                                                                                backgroundColor: '#f0f0f0'
+                                                                            }}
+                                                                        >
+                                                                            측면흑백3
+                                                                        </Button>
+                                                                        <input
+                                                                            type="file"
+                                                                            //ref={fileInput1}
+                                                                            /*onChange={handleChange} */
+                                                                            onChange={saveImgRefSideBw3}
+                                                                            ref={imgRefSideBw3}
+                                                                            style={{ display: 'none' }}
+                                                                        />
+                                                                    </Card>
+                                                                </Space>
 
-                                                    <Space direction="vertical">
-                                                        {imgRealEdit === true ? (
-                                                            <img
-                                                                onClick={() => handleImgPop(unitParams?.resultImg?.imgSideBw)}
-                                                                src={
-                                                                    unitParams?.resultImg?.imgSideBw !== null &&
-                                                                    unitParams?.resultImg?.imgSideBw !== undefined
-                                                                        ? 'data:image/png;base64,' + unitParams?.resultImg?.imgSideBw
-                                                                        : noImage
-                                                                }
-                                                                width={100}
-                                                                height={100}
-                                                                alt="real image"
-                                                            />
-                                                        ) : (
-                                                            <img
-                                                                src={pimgSideBw ? pimgSideBw : noImage}
-                                                                width={100}
-                                                                height={100}
-                                                                alt="real image"
-                                                            />
-                                                        )}
-                                                    </Space>
-                                                </Form.Item>
-                                            </Col>
-                                            <Col span={4}>
-                                                <Form.Item name="File2">
-                                                    <Space direction="vertical">
-                                                        <Card
-                                                            size="small"
-                                                            style={{
-                                                                width: 100,
-                                                                height: 50
-                                                            }}
-                                                        >
-                                                            <Button
-                                                                onClick={clickSaveImgRefSideBw2}
-                                                                icon={<UploadOutlined />}
-                                                                style={{
-                                                                    height: '30px',
-                                                                    padding: '0px 0px 0px 0px',
-                                                                    backgroundColor: '#f0f0f0'
-                                                                }}
-                                                            >
-                                                                측면흑백2
-                                                            </Button>
-                                                            <input
-                                                                type="file"
-                                                                //ref={fileInput1}
-                                                                /*onChange={handleChange} */
-                                                                onChange={saveImgRefSideBw2}
-                                                                ref={imgRefSideBw2}
-                                                                style={{ display: 'none' }}
-                                                            />
-                                                        </Card>
-                                                    </Space>
+                                                                <Space direction="vertical">
+                                                                    {imgRealEdit === true ? (
+                                                                        <img
+                                                                            onClick={() =>
+                                                                                handleImgPop(unitParams?.resultImg?.imgSideBwOrganism)
+                                                                            }
+                                                                            src={
+                                                                                unitParams?.resultImg?.imgSideBwOrganism !== null &&
+                                                                                unitParams?.resultImg?.imgSideBwOrganism !== undefined
+                                                                                    ? 'data:image/png;base64,' +
+                                                                                      unitParams?.resultImg?.imgSideBwOrganism
+                                                                                    : noImage
+                                                                            }
+                                                                            width={100}
+                                                                            height={100}
+                                                                            alt="real image"
+                                                                        />
+                                                                    ) : (
+                                                                        <img
+                                                                            src={pimgSideBwOrganism ? pimgSideBwOrganism : noImage}
+                                                                            width={100}
+                                                                            height={100}
+                                                                            alt="real image"
+                                                                        />
+                                                                    )}
+                                                                </Space>
+                                                            </Form.Item>
+                                                        </Col>
+                                                        <Col>
+                                                            <Form.Item name="File4">
+                                                                <Space direction="vertical">
+                                                                    <Card
+                                                                        size="small"
+                                                                        style={{
+                                                                            width: 100,
+                                                                            height: 50
+                                                                        }}
+                                                                    >
+                                                                        <Button
+                                                                            onClick={clickSaveImgRefSideBw4}
+                                                                            icon={<UploadOutlined />}
+                                                                            style={{
+                                                                                height: '30px',
+                                                                                padding: '0px 0px 0px 0px',
+                                                                                backgroundColor: '#f0f0f0'
+                                                                            }}
+                                                                        >
+                                                                            측면흑백4
+                                                                        </Button>
+                                                                        <input
+                                                                            type="file"
+                                                                            //ref={fileInput1}
+                                                                            /*onChange={handleChange} */
+                                                                            onChange={saveImgRefSideBw4}
+                                                                            ref={imgRefSideBw4}
+                                                                            style={{ display: 'none' }}
+                                                                        />
+                                                                    </Card>
+                                                                </Space>
 
-                                                    <Space direction="vertical">
-                                                        {imgRealEdit === true ? (
-                                                            <img
-                                                                onClick={() => handleImgPop(unitParams?.resultImg?.imgSideBwMinerals)}
-                                                                src={
-                                                                    unitParams?.resultImg?.imgSideBwMinerals !== null &&
-                                                                    unitParams?.resultImg?.imgSideBwMinerals !== undefined
-                                                                        ? 'data:image/png;base64,' +
-                                                                          unitParams?.resultImg?.imgSideBwMinerals
-                                                                        : noImage
-                                                                }
-                                                                width={100}
-                                                                height={100}
-                                                                alt="real image"
-                                                            />
-                                                        ) : (
-                                                            <img
-                                                                src={pimgSideBwMinerals ? pimgSideBwMinerals : noImage}
-                                                                width={100}
-                                                                height={100}
-                                                                alt="real image"
-                                                            />
-                                                        )}
-                                                    </Space>
-                                                </Form.Item>
-                                            </Col>
-                                            <Col span={4}>
-                                                <Form.Item name="File3">
-                                                    <Space direction="vertical">
-                                                        <Card
-                                                            size="small"
-                                                            style={{
-                                                                width: 100,
-                                                                height: 50
-                                                            }}
-                                                        >
-                                                            <Button
-                                                                onClick={clickSaveImgRefSideBw3}
-                                                                icon={<UploadOutlined />}
-                                                                style={{
-                                                                    height: '30px',
-                                                                    padding: '0px 0px 0px 0px',
-                                                                    backgroundColor: '#f0f0f0'
-                                                                }}
-                                                            >
-                                                                측면흑백3
-                                                            </Button>
-                                                            <input
-                                                                type="file"
-                                                                //ref={fileInput1}
-                                                                /*onChange={handleChange} */
-                                                                onChange={saveImgRefSideBw3}
-                                                                ref={imgRefSideBw3}
-                                                                style={{ display: 'none' }}
-                                                            />
-                                                        </Card>
-                                                    </Space>
+                                                                <Space direction="vertical">
+                                                                    {imgRealEdit === true ? (
+                                                                        <img
+                                                                            onClick={() =>
+                                                                                handleImgPop(unitParams?.resultImg?.imgSideBwReversal)
+                                                                            }
+                                                                            src={
+                                                                                unitParams?.resultImg?.imgSideBwReversal !== null &&
+                                                                                unitParams?.resultImg?.imgSideBwReversal !== undefined
+                                                                                    ? 'data:image/png;base64,' +
+                                                                                      unitParams?.resultImg?.imgSideBwReversal
+                                                                                    : noImage
+                                                                            }
+                                                                            width={100}
+                                                                            height={100}
+                                                                            alt="real image"
+                                                                        />
+                                                                    ) : (
+                                                                        <img
+                                                                            src={pimgSideBwReversal ? pimgSideBwReversal : noImage}
+                                                                            width={100}
+                                                                            height={100}
+                                                                            alt="real image"
+                                                                        />
+                                                                    )}
+                                                                </Space>
+                                                            </Form.Item>
+                                                        </Col>
+                                                        <Col>
+                                                            <Form.Item name="File5">
+                                                                <Space direction="vertical">
+                                                                    <Card
+                                                                        size="small"
+                                                                        style={{
+                                                                            width: 100,
+                                                                            height: 50
+                                                                        }}
+                                                                    >
+                                                                        <Button
+                                                                            onClick={clickSaveImgRefSideBw5}
+                                                                            icon={<UploadOutlined />}
+                                                                            style={{
+                                                                                height: '30px',
+                                                                                padding: '0px 0px 0px 0px',
+                                                                                backgroundColor: '#f0f0f0'
+                                                                            }}
+                                                                        >
+                                                                            측면흑백5
+                                                                        </Button>
+                                                                        <input
+                                                                            type="file"
+                                                                            //ref={fileInput1}
+                                                                            /*onChange={handleChange} */
+                                                                            onChange={saveImgRefSideBw5}
+                                                                            ref={imgRefSideBw5}
+                                                                            style={{ display: 'none' }}
+                                                                        />
+                                                                    </Card>
+                                                                </Space>
 
-                                                    <Space direction="vertical">
-                                                        {imgRealEdit === true ? (
-                                                            <img
-                                                                onClick={() => handleImgPop(unitParams?.resultImg?.imgSideBwOrganism)}
-                                                                src={
-                                                                    unitParams?.resultImg?.imgSideBwOrganism !== null &&
-                                                                    unitParams?.resultImg?.imgSideBwOrganism !== undefined
-                                                                        ? 'data:image/png;base64,' +
-                                                                          unitParams?.resultImg?.imgSideBwOrganism
-                                                                        : noImage
-                                                                }
-                                                                width={100}
-                                                                height={100}
-                                                                alt="real image"
-                                                            />
-                                                        ) : (
-                                                            <img
-                                                                src={pimgSideBwOrganism ? pimgSideBwOrganism : noImage}
-                                                                width={100}
-                                                                height={100}
-                                                                alt="real image"
-                                                            />
-                                                        )}
+                                                                <Space direction="vertical">
+                                                                    {imgRealEdit === true ? (
+                                                                        <img
+                                                                            onClick={() =>
+                                                                                handleImgPop(unitParams?.resultImg?.imgSideBwBwRate1)
+                                                                            }
+                                                                            src={
+                                                                                unitParams?.resultImg?.imgSideBwBwRate1 !== null &&
+                                                                                unitParams?.resultImg?.imgSideBwBwRate1 !== undefined
+                                                                                    ? 'data:image/png;base64,' +
+                                                                                      unitParams?.resultImg?.imgSideBwBwRate1
+                                                                                    : noImage
+                                                                            }
+                                                                            width={100}
+                                                                            height={100}
+                                                                            alt="real image"
+                                                                        />
+                                                                    ) : (
+                                                                        <img
+                                                                            src={pimgSideBwBwRate1 ? pimgSideBwBwRate1 : noImage}
+                                                                            width={100}
+                                                                            height={100}
+                                                                            alt="real image"
+                                                                        />
+                                                                    )}
+                                                                </Space>
+                                                            </Form.Item>
+                                                        </Col>
                                                     </Space>
-                                                </Form.Item>
-                                            </Col>
-                                            <Col span={4}>
-                                                <Form.Item name="File4">
-                                                    <Space direction="vertical">
-                                                        <Card
-                                                            size="small"
-                                                            style={{
-                                                                width: 100,
-                                                                height: 50
-                                                            }}
-                                                        >
-                                                            <Button
-                                                                onClick={clickSaveImgRefSideBw4}
-                                                                icon={<UploadOutlined />}
-                                                                style={{
-                                                                    height: '30px',
-                                                                    padding: '0px 0px 0px 0px',
-                                                                    backgroundColor: '#f0f0f0'
-                                                                }}
-                                                            >
-                                                                측면흑백4
-                                                            </Button>
-                                                            <input
-                                                                type="file"
-                                                                //ref={fileInput1}
-                                                                /*onChange={handleChange} */
-                                                                onChange={saveImgRefSideBw4}
-                                                                ref={imgRefSideBw4}
-                                                                style={{ display: 'none' }}
-                                                            />
-                                                        </Card>
-                                                    </Space>
+                                                </Row>
+                                                {/*정면흑백*/}
+                                                <Row>
+                                                    <Space>
+                                                        <Col>
+                                                            <Form.Item name="File6">
+                                                                <Space direction="vertical">
+                                                                    <Card
+                                                                        size="small"
+                                                                        style={{
+                                                                            width: 100,
+                                                                            height: 50
+                                                                        }}
+                                                                    >
+                                                                        <Button
+                                                                            onClick={clickSaveImgRefSideBw6}
+                                                                            icon={<UploadOutlined />}
+                                                                            style={{
+                                                                                height: '30px',
+                                                                                padding: '0px 0px 0px 0px',
+                                                                                backgroundColor: '#f0f0f0'
+                                                                            }}
+                                                                        >
+                                                                            측면흑백6
+                                                                        </Button>
+                                                                        <input
+                                                                            type="file"
+                                                                            //ref={fileInput1}
+                                                                            /*onChange={handleChange} */
+                                                                            onChange={saveImgRefSideBw6}
+                                                                            ref={imgRefSideBw6}
+                                                                            style={{ display: 'none' }}
+                                                                        />
+                                                                    </Card>
+                                                                </Space>
 
-                                                    <Space direction="vertical">
-                                                        {imgRealEdit === true ? (
-                                                            <img
-                                                                onClick={() => handleImgPop(unitParams?.resultImg?.imgSideBwReversal)}
-                                                                src={
-                                                                    unitParams?.resultImg?.imgSideBwReversal !== null &&
-                                                                    unitParams?.resultImg?.imgSideBwReversal !== undefined
-                                                                        ? 'data:image/png;base64,' +
-                                                                          unitParams?.resultImg?.imgSideBwReversal
-                                                                        : noImage
-                                                                }
-                                                                width={100}
-                                                                height={100}
-                                                                alt="real image"
-                                                            />
-                                                        ) : (
-                                                            <img
-                                                                src={pimgSideBwReversal ? pimgSideBwReversal : noImage}
-                                                                width={100}
-                                                                height={100}
-                                                                alt="real image"
-                                                            />
-                                                        )}
-                                                    </Space>
-                                                </Form.Item>
-                                            </Col>
-                                            <Col span={4}>
-                                                <Form.Item name="File5">
-                                                    <Space direction="vertical">
-                                                        <Card
-                                                            size="small"
-                                                            style={{
-                                                                width: 100,
-                                                                height: 50
-                                                            }}
-                                                        >
-                                                            <Button
-                                                                onClick={clickSaveImgRefSideBw5}
-                                                                icon={<UploadOutlined />}
-                                                                style={{
-                                                                    height: '30px',
-                                                                    padding: '0px 0px 0px 0px',
-                                                                    backgroundColor: '#f0f0f0'
-                                                                }}
-                                                            >
-                                                                측면흑백5
-                                                            </Button>
-                                                            <input
-                                                                type="file"
-                                                                //ref={fileInput1}
-                                                                /*onChange={handleChange} */
-                                                                onChange={saveImgRefSideBw5}
-                                                                ref={imgRefSideBw5}
-                                                                style={{ display: 'none' }}
-                                                            />
-                                                        </Card>
-                                                    </Space>
+                                                                <Space direction="vertical">
+                                                                    {imgRealEdit === true ? (
+                                                                        <img
+                                                                            onClick={() =>
+                                                                                handleImgPop(unitParams?.resultImg?.imgSideBwBwRate2)
+                                                                            }
+                                                                            src={
+                                                                                unitParams?.resultImg?.imgSideBwBwRate2 !== null &&
+                                                                                unitParams?.resultImg?.imgSideBwBwRate2 !== undefined
+                                                                                    ? 'data:image/png;base64,' +
+                                                                                      unitParams?.resultImg?.imgSideBwBwRate2
+                                                                                    : noImage
+                                                                            }
+                                                                            width={100}
+                                                                            height={100}
+                                                                            alt="real image"
+                                                                        />
+                                                                    ) : (
+                                                                        <img
+                                                                            src={pimgSideBwBwRate2 ? pimgSideBwBwRate2 : noImage}
+                                                                            width={100}
+                                                                            height={100}
+                                                                            alt="real image"
+                                                                        />
+                                                                    )}
+                                                                </Space>
+                                                            </Form.Item>
+                                                        </Col>
+                                                        <Col>
+                                                            <Form.Item name="File7">
+                                                                <Space direction="vertical">
+                                                                    <Card
+                                                                        size="small"
+                                                                        style={{
+                                                                            width: 100,
+                                                                            height: 50
+                                                                        }}
+                                                                    >
+                                                                        <Button
+                                                                            onClick={clickSaveImgRefSideBw7}
+                                                                            icon={<UploadOutlined />}
+                                                                            style={{
+                                                                                height: '30px',
+                                                                                padding: '0px 0px 0px 0px',
+                                                                                backgroundColor: '#f0f0f0'
+                                                                            }}
+                                                                        >
+                                                                            측면흑백7
+                                                                        </Button>
+                                                                        <input
+                                                                            type="file"
+                                                                            //ref={fileInput1}
+                                                                            /*onChange={handleChange} */
+                                                                            onChange={saveImgRefSideBw7}
+                                                                            ref={imgRefSideBw7}
+                                                                            style={{ display: 'none' }}
+                                                                        />
+                                                                    </Card>
+                                                                </Space>
 
-                                                    <Space direction="vertical">
-                                                        {imgRealEdit === true ? (
-                                                            <img
-                                                                onClick={() => handleImgPop(unitParams?.resultImg?.imgSideBwBwRate1)}
-                                                                src={
-                                                                    unitParams?.resultImg?.imgSideBwBwRate1 !== null &&
-                                                                    unitParams?.resultImg?.imgSideBwBwRate1 !== undefined
-                                                                        ? 'data:image/png;base64,' + unitParams?.resultImg?.imgSideBwBwRate1
-                                                                        : noImage
-                                                                }
-                                                                width={100}
-                                                                height={100}
-                                                                alt="real image"
-                                                            />
-                                                        ) : (
-                                                            <img
-                                                                src={pimgSideBwBwRate1 ? pimgSideBwBwRate1 : noImage}
-                                                                width={100}
-                                                                height={100}
-                                                                alt="real image"
-                                                            />
-                                                        )}
-                                                    </Space>
-                                                </Form.Item>
-                                            </Col>
-                                        </Row>
+                                                                <Space direction="vertical">
+                                                                    {imgRealEdit === true ? (
+                                                                        <img
+                                                                            onClick={() =>
+                                                                                handleImgPop(unitParams?.resultImg?.imgSideBwBwRate3)
+                                                                            }
+                                                                            src={
+                                                                                unitParams?.resultImg?.imgSideBwBwRate3 !== null &&
+                                                                                unitParams?.resultImg?.imgSideBwBwRate3 !== undefined
+                                                                                    ? 'data:image/png;base64,' +
+                                                                                      unitParams?.resultImg?.imgSideBwBwRate3
+                                                                                    : noImage
+                                                                            }
+                                                                            width={100}
+                                                                            height={100}
+                                                                            alt="real image"
+                                                                        />
+                                                                    ) : (
+                                                                        <img
+                                                                            src={pimgSideBwBwRate3 ? pimgSideBwBwRate3 : noImage}
+                                                                            width={100}
+                                                                            height={100}
+                                                                            alt="real image"
+                                                                        />
+                                                                    )}
+                                                                </Space>
+                                                            </Form.Item>
+                                                        </Col>
+                                                        <Col>
+                                                            <Form.Item name="File8">
+                                                                <Space direction="vertical">
+                                                                    <Card
+                                                                        size="small"
+                                                                        style={{
+                                                                            width: 100,
+                                                                            height: 50
+                                                                        }}
+                                                                    >
+                                                                        <Button
+                                                                            onClick={clickSaveImgRefSideBw8}
+                                                                            icon={<UploadOutlined />}
+                                                                            style={{
+                                                                                height: '30px',
+                                                                                padding: '0px 0px 0px 0px',
+                                                                                backgroundColor: '#f0f0f0'
+                                                                            }}
+                                                                        >
+                                                                            측면흑백8
+                                                                        </Button>
+                                                                        <input
+                                                                            type="file"
+                                                                            //ref={fileInput1}
+                                                                            /*onChange={handleChange} */
+                                                                            onChange={saveImgRefSideBw8}
+                                                                            ref={imgRefSideBw8}
+                                                                            style={{ display: 'none' }}
+                                                                        />
+                                                                    </Card>
+                                                                </Space>
 
-                                        {/*정면흑백*/}
-                                        <Row gutter={48}>
-                                            <Col span={4}>
-                                                <Form.Item name="File6">
-                                                    <Space direction="vertical">
-                                                        <Card
-                                                            size="small"
-                                                            style={{
-                                                                width: 100,
-                                                                height: 50
-                                                            }}
-                                                        >
-                                                            <Button
-                                                                onClick={clickSaveImgRefSideBw6}
-                                                                icon={<UploadOutlined />}
-                                                                style={{
-                                                                    height: '30px',
-                                                                    padding: '0px 0px 0px 0px',
-                                                                    backgroundColor: '#f0f0f0'
-                                                                }}
-                                                            >
-                                                                측면흑백6
-                                                            </Button>
-                                                            <input
-                                                                type="file"
-                                                                //ref={fileInput1}
-                                                                /*onChange={handleChange} */
-                                                                onChange={saveImgRefSideBw6}
-                                                                ref={imgRefSideBw6}
-                                                                style={{ display: 'none' }}
-                                                            />
-                                                        </Card>
-                                                    </Space>
+                                                                <Space direction="vertical">
+                                                                    {imgRealEdit === true ? (
+                                                                        <img
+                                                                            onClick={() =>
+                                                                                handleImgPop(unitParams?.resultImg?.imgSideBwBwRate4)
+                                                                            }
+                                                                            src={
+                                                                                unitParams?.resultImg?.imgSideBwBwRate4 !== null &&
+                                                                                unitParams?.resultImg?.imgSideBwBwRate4 !== undefined
+                                                                                    ? 'data:image/png;base64,' +
+                                                                                      unitParams?.resultImg?.imgSideBwBwRate4
+                                                                                    : noImage
+                                                                            }
+                                                                            width={100}
+                                                                            height={100}
+                                                                            alt="real image"
+                                                                        />
+                                                                    ) : (
+                                                                        <img
+                                                                            src={pimgSideBwBwRate4 ? pimgSideBwBwRate4 : noImage}
+                                                                            width={100}
+                                                                            height={100}
+                                                                            alt="real image"
+                                                                        />
+                                                                    )}
+                                                                </Space>
+                                                            </Form.Item>
+                                                        </Col>
+                                                        <Col>
+                                                            <Form.Item name="File9">
+                                                                <Space direction="vertical">
+                                                                    <Card
+                                                                        size="small"
+                                                                        style={{
+                                                                            width: 100,
+                                                                            height: 50
+                                                                        }}
+                                                                    >
+                                                                        <Button
+                                                                            onClick={clickSaveImgRefSideBw9}
+                                                                            icon={<UploadOutlined />}
+                                                                            style={{
+                                                                                height: '30px',
+                                                                                padding: '0px 0px 0px 0px',
+                                                                                backgroundColor: '#f0f0f0'
+                                                                            }}
+                                                                        >
+                                                                            측면흑백9
+                                                                        </Button>
+                                                                        <input
+                                                                            type="file"
+                                                                            //ref={fileInput1}
+                                                                            /*onChange={handleChange} */
+                                                                            onChange={saveImgRefSideBw9}
+                                                                            ref={imgRefSideBw9}
+                                                                            style={{ display: 'none' }}
+                                                                        />
+                                                                    </Card>
+                                                                </Space>
 
-                                                    <Space direction="vertical">
-                                                        {imgRealEdit === true ? (
-                                                            <img
-                                                                onClick={() => handleImgPop(unitParams?.resultImg?.imgSideBwBwRate2)}
-                                                                src={
-                                                                    unitParams?.resultImg?.imgSideBwBwRate2 !== null &&
-                                                                    unitParams?.resultImg?.imgSideBwBwRate2 !== undefined
-                                                                        ? 'data:image/png;base64,' + unitParams?.resultImg?.imgSideBwBwRate2
-                                                                        : noImage
-                                                                }
-                                                                width={100}
-                                                                height={100}
-                                                                alt="real image"
-                                                            />
-                                                        ) : (
-                                                            <img
-                                                                src={pimgSideBwBwRate2 ? pimgSideBwBwRate2 : noImage}
-                                                                width={100}
-                                                                height={100}
-                                                                alt="real image"
-                                                            />
-                                                        )}
-                                                    </Space>
-                                                </Form.Item>
-                                            </Col>
-                                            <Col span={4}>
-                                                <Form.Item name="File7">
-                                                    <Space direction="vertical">
-                                                        <Card
-                                                            size="small"
-                                                            style={{
-                                                                width: 100,
-                                                                height: 50
-                                                            }}
-                                                        >
-                                                            <Button
-                                                                onClick={clickSaveImgRefSideBw7}
-                                                                icon={<UploadOutlined />}
-                                                                style={{
-                                                                    height: '30px',
-                                                                    padding: '0px 0px 0px 0px',
-                                                                    backgroundColor: '#f0f0f0'
-                                                                }}
-                                                            >
-                                                                측면흑백7
-                                                            </Button>
-                                                            <input
-                                                                type="file"
-                                                                //ref={fileInput1}
-                                                                /*onChange={handleChange} */
-                                                                onChange={saveImgRefSideBw7}
-                                                                ref={imgRefSideBw7}
-                                                                style={{ display: 'none' }}
-                                                            />
-                                                        </Card>
-                                                    </Space>
+                                                                <Space direction="vertical">
+                                                                    {imgRealEdit === true ? (
+                                                                        <img
+                                                                            onClick={() =>
+                                                                                handleImgPop(unitParams?.resultImg?.imgSideBwBwRate5)
+                                                                            }
+                                                                            src={
+                                                                                unitParams?.resultImg?.imgSideBwBwRate5 !== null &&
+                                                                                unitParams?.resultImg?.imgSideBwBwRate5 !== undefined
+                                                                                    ? 'data:image/png;base64,' +
+                                                                                      unitParams?.resultImg?.imgSideBwBwRate5
+                                                                                    : noImage
+                                                                            }
+                                                                            width={100}
+                                                                            height={100}
+                                                                            alt="real image"
+                                                                        />
+                                                                    ) : (
+                                                                        <img
+                                                                            src={pimgSideBwBwRate5 ? pimgSideBwBwRate5 : noImage}
+                                                                            width={100}
+                                                                            height={100}
+                                                                            alt="real image"
+                                                                        />
+                                                                    )}
+                                                                </Space>
+                                                            </Form.Item>
+                                                        </Col>
+                                                        <Col>
+                                                            <Form.Item name="File10">
+                                                                <Space direction="vertical">
+                                                                    <Card
+                                                                        size="small"
+                                                                        style={{
+                                                                            width: 100,
+                                                                            height: 50
+                                                                        }}
+                                                                    >
+                                                                        <Button
+                                                                            onClick={clickSaveImgRefSideBw10}
+                                                                            icon={<UploadOutlined />}
+                                                                            style={{
+                                                                                height: '30px',
+                                                                                padding: '0px 0px 0px 0px',
+                                                                                backgroundColor: '#f0f0f0'
+                                                                            }}
+                                                                        >
+                                                                            측면흑백10
+                                                                        </Button>
+                                                                        <input
+                                                                            type="file"
+                                                                            //ref={fileInput1}
+                                                                            /*onChange={handleChange} */
+                                                                            onChange={saveImgRefSideBw10}
+                                                                            ref={imgRefSideBw10}
+                                                                            style={{ display: 'none' }}
+                                                                        />
+                                                                    </Card>
+                                                                </Space>
 
-                                                    <Space direction="vertical">
-                                                        {imgRealEdit === true ? (
-                                                            <img
-                                                                onClick={() => handleImgPop(unitParams?.resultImg?.imgSideBwBwRate3)}
-                                                                src={
-                                                                    unitParams?.resultImg?.imgSideBwBwRate3 !== null &&
-                                                                    unitParams?.resultImg?.imgSideBwBwRate3 !== undefined
-                                                                        ? 'data:image/png;base64,' + unitParams?.resultImg?.imgSideBwBwRate3
-                                                                        : noImage
-                                                                }
-                                                                width={100}
-                                                                height={100}
-                                                                alt="real image"
-                                                            />
-                                                        ) : (
-                                                            <img
-                                                                src={pimgSideBwBwRate3 ? pimgSideBwBwRate3 : noImage}
-                                                                width={100}
-                                                                height={100}
-                                                                alt="real image"
-                                                            />
-                                                        )}
+                                                                <Space direction="vertical">
+                                                                    {imgRealEdit === true ? (
+                                                                        <img
+                                                                            onClick={() =>
+                                                                                handleImgPop(unitParams?.resultImg?.imgSideBwBwRate6)
+                                                                            }
+                                                                            src={
+                                                                                unitParams?.resultImg?.imgSideBwBwRate6 !== null &&
+                                                                                unitParams?.resultImg?.imgSideBwBwRate6 !== undefined
+                                                                                    ? 'data:image/png;base64,' +
+                                                                                      unitParams?.resultImg?.imgSideBwBwRate6
+                                                                                    : noImage
+                                                                            }
+                                                                            width={100}
+                                                                            height={100}
+                                                                            alt="real image"
+                                                                        />
+                                                                    ) : (
+                                                                        <img
+                                                                            src={pimgSideBwBwRate6 ? pimgSideBwBwRate6 : noImage}
+                                                                            width={100}
+                                                                            height={100}
+                                                                            alt="real image"
+                                                                        />
+                                                                    )}
+                                                                </Space>
+                                                            </Form.Item>
+                                                        </Col>
                                                     </Space>
-                                                </Form.Item>
-                                            </Col>
-                                            <Col span={4}>
-                                                <Form.Item name="File8">
-                                                    <Space direction="vertical">
-                                                        <Card
-                                                            size="small"
-                                                            style={{
-                                                                width: 100,
-                                                                height: 50
-                                                            }}
-                                                        >
-                                                            <Button
-                                                                onClick={clickSaveImgRefSideBw8}
-                                                                icon={<UploadOutlined />}
-                                                                style={{
-                                                                    height: '30px',
-                                                                    padding: '0px 0px 0px 0px',
-                                                                    backgroundColor: '#f0f0f0'
-                                                                }}
-                                                            >
-                                                                측면흑백8
-                                                            </Button>
-                                                            <input
-                                                                type="file"
-                                                                //ref={fileInput1}
-                                                                /*onChange={handleChange} */
-                                                                onChange={saveImgRefSideBw8}
-                                                                ref={imgRefSideBw8}
-                                                                style={{ display: 'none' }}
-                                                            />
-                                                        </Card>
-                                                    </Space>
-
-                                                    <Space direction="vertical">
-                                                        {imgRealEdit === true ? (
-                                                            <img
-                                                                onClick={() => handleImgPop(unitParams?.resultImg?.imgSideBwBwRate4)}
-                                                                src={
-                                                                    unitParams?.resultImg?.imgSideBwBwRate4 !== null &&
-                                                                    unitParams?.resultImg?.imgSideBwBwRate4 !== undefined
-                                                                        ? 'data:image/png;base64,' + unitParams?.resultImg?.imgSideBwBwRate4
-                                                                        : noImage
-                                                                }
-                                                                width={100}
-                                                                height={100}
-                                                                alt="real image"
-                                                            />
-                                                        ) : (
-                                                            <img
-                                                                src={pimgSideBwBwRate4 ? pimgSideBwBwRate4 : noImage}
-                                                                width={100}
-                                                                height={100}
-                                                                alt="real image"
-                                                            />
-                                                        )}
-                                                    </Space>
-                                                </Form.Item>
-                                            </Col>
-                                            <Col span={4}>
-                                                <Form.Item name="File9">
-                                                    <Space direction="vertical">
-                                                        <Card
-                                                            size="small"
-                                                            style={{
-                                                                width: 100,
-                                                                height: 50
-                                                            }}
-                                                        >
-                                                            <Button
-                                                                onClick={clickSaveImgRefSideBw9}
-                                                                icon={<UploadOutlined />}
-                                                                style={{
-                                                                    height: '30px',
-                                                                    padding: '0px 0px 0px 0px',
-                                                                    backgroundColor: '#f0f0f0'
-                                                                }}
-                                                            >
-                                                                측면흑백9
-                                                            </Button>
-                                                            <input
-                                                                type="file"
-                                                                //ref={fileInput1}
-                                                                /*onChange={handleChange} */
-                                                                onChange={saveImgRefSideBw9}
-                                                                ref={imgRefSideBw9}
-                                                                style={{ display: 'none' }}
-                                                            />
-                                                        </Card>
-                                                    </Space>
-
-                                                    <Space direction="vertical">
-                                                        {imgRealEdit === true ? (
-                                                            <img
-                                                                onClick={() => handleImgPop(unitParams?.resultImg?.imgSideBwBwRate5)}
-                                                                src={
-                                                                    unitParams?.resultImg?.imgSideBwBwRate5 !== null &&
-                                                                    unitParams?.resultImg?.imgSideBwBwRate5 !== undefined
-                                                                        ? 'data:image/png;base64,' + unitParams?.resultImg?.imgSideBwBwRate5
-                                                                        : noImage
-                                                                }
-                                                                width={100}
-                                                                height={100}
-                                                                alt="real image"
-                                                            />
-                                                        ) : (
-                                                            <img
-                                                                src={pimgSideBwBwRate5 ? pimgSideBwBwRate5 : noImage}
-                                                                width={100}
-                                                                height={100}
-                                                                alt="real image"
-                                                            />
-                                                        )}
-                                                    </Space>
-                                                </Form.Item>
-                                            </Col>
-                                            <Col span={4}>
-                                                <Form.Item name="File10">
-                                                    <Space direction="vertical">
-                                                        <Card
-                                                            size="small"
-                                                            style={{
-                                                                width: 100,
-                                                                height: 50
-                                                            }}
-                                                        >
-                                                            <Button
-                                                                onClick={clickSaveImgRefSideBw10}
-                                                                icon={<UploadOutlined />}
-                                                                style={{
-                                                                    height: '30px',
-                                                                    padding: '0px 0px 0px 0px',
-                                                                    backgroundColor: '#f0f0f0'
-                                                                }}
-                                                            >
-                                                                측면흑백10
-                                                            </Button>
-                                                            <input
-                                                                type="file"
-                                                                //ref={fileInput1}
-                                                                /*onChange={handleChange} */
-                                                                onChange={saveImgRefSideBw10}
-                                                                ref={imgRefSideBw10}
-                                                                style={{ display: 'none' }}
-                                                            />
-                                                        </Card>
-                                                    </Space>
-
-                                                    <Space direction="vertical">
-                                                        {imgRealEdit === true ? (
-                                                            <img
-                                                                onClick={() => handleImgPop(unitParams?.resultImg?.imgSideBwBwRate6)}
-                                                                src={
-                                                                    unitParams?.resultImg?.imgSideBwBwRate6 !== null &&
-                                                                    unitParams?.resultImg?.imgSideBwBwRate6 !== undefined
-                                                                        ? 'data:image/png;base64,' + unitParams?.resultImg?.imgSideBwBwRate6
-                                                                        : noImage
-                                                                }
-                                                                width={100}
-                                                                height={100}
-                                                                alt="real image"
-                                                            />
-                                                        ) : (
-                                                            <img
-                                                                src={pimgSideBwBwRate6 ? pimgSideBwBwRate6 : noImage}
-                                                                width={100}
-                                                                height={100}
-                                                                alt="real image"
-                                                            />
-                                                        )}
-                                                    </Space>
-                                                </Form.Item>
+                                                </Row>
                                             </Col>
                                         </Row>
                                     </Col>
