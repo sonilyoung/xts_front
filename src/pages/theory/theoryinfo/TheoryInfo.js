@@ -59,6 +59,7 @@ export const TheoryInfo = () => {
     const [selectedImage3, setSelectedImage3] = useState([]);
     const [uploadedImages4, setUploadedImages4] = useState([null]); // 이미지 + 사지선다형 이미지
     const [selectedImage4, setSelectedImage4] = useState([]);
+    const [searchval, setSearchval] = useState(null);
 
     // ===============================
     // Api 호출 Start
@@ -612,6 +613,10 @@ export const TheoryInfo = () => {
         }
     };
 
+    const onSearch = (value) => {
+        setSearchval(value);
+    };
+
     useEffect(() => {
         setLoading(true);
         handle_SelectTheoryList_Api();
@@ -629,9 +634,21 @@ export const TheoryInfo = () => {
         <>
             <MainCard title="교육 관리">
                 <Typography variant="body1">
-                    <Row style={{ marginBottom: 16 }}>
-                        <Col span={8}></Col>
-                        <Col span={8} offset={8} style={{ textAlign: 'right' }}>
+                    <Row gutter={[8, 8]} style={{ marginBottom: 16 }}>
+                        <Col span={12}>
+                            <div style={{ display: 'flex', justifyContent: 'flex-start', fontSize: '14px' }}>
+                                <Input.Search
+                                    placeholder="※ 통합 검색 (문제ID, 문제타입, 학습레벨, 질문)"
+                                    style={{ width: 483 }}
+                                    onSearch={onSearch}
+                                    allowClear
+                                    enterButton
+                                    size="middle"
+                                    className="custom-search-input"
+                                />
+                            </div>
+                        </Col>
+                        <Col span={12} style={{ textAlign: 'right' }}>
                             <Space>
                                 <Tooltip title="추가">
                                     <Button

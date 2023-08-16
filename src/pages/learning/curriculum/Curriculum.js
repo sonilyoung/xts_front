@@ -54,6 +54,7 @@ export const Curriculum = () => {
     const [moduleNm, setModuleNm] = useState(); // 모듈 복사 모듈명
     const [copyModuleNm, setCopyModuleNm] = useState(); // 모듈 복사 모듈명
     const [confirmLoading, setConfirmLoading] = useState(false); // 복사 버튼 로딩
+    const [searchval, setSearchval] = useState();
 
     // ===============================
     // Api 호출 Start
@@ -476,6 +477,10 @@ export const Curriculum = () => {
         }
     };
 
+    const onSearch = (value) => {
+        setSearchval(value);
+    };
+
     useEffect(() => {
         setSelectModuleListLoading(true); // 로딩 호출
         handel_selectModuleList_Api(); // 조회
@@ -483,11 +488,23 @@ export const Curriculum = () => {
 
     return (
         <>
-            <MainCard title="커리큘럼 모듈 관리">
+            <MainCard title="모듈 관리">
                 <Typography variant="body1">
-                    <Row style={{ marginBottom: 16 }}>
-                        <Col span={8}></Col>
-                        <Col span={8} offset={8} style={{ textAlign: 'right' }}>
+                    <Row gutter={[8, 8]} style={{ marginBottom: 16 }}>
+                        <Col span={12}>
+                            <div style={{ display: 'flex', justifyContent: 'flex-start', fontSize: '14px' }}>
+                                <Input.Search
+                                    placeholder="※ 통합 검색 (모듈명, 모듈타입, 학습방식, 난이도 레벨)"
+                                    style={{ width: 483 }}
+                                    onSearch={onSearch}
+                                    allowClear
+                                    enterButton
+                                    size="middle"
+                                    className="custom-search-input"
+                                />
+                            </div>
+                        </Col>
+                        <Col span={12} style={{ textAlign: 'right' }}>
                             <Space>
                                 <Tooltip title="추가">
                                     <Button

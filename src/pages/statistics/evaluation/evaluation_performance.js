@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
-import { Table, Badge, Button, Modal } from 'antd';
+import { Table, Badge, Button, Modal, Row, Col, Space, Input } from 'antd';
 import { Typography } from '@mui/material';
 
 import {
@@ -22,6 +22,8 @@ export const Evaluation_Performance = () => {
 
     const [ModalOpen, setModalOpen] = useState(false); // Modal창
     const [ModalTitle, setModalTitle] = useState(null); // Modal Title
+
+    const [searchval, setSearchval] = useState(null);
 
     // 평가 실적 Data
     const [SelectStatisticsEvaluationListApi] = useSelectStatisticsEvaluationListMutation(); // 콘텐츠 정보 관리 hooks api호출
@@ -241,6 +243,10 @@ export const Evaluation_Performance = () => {
         setModalOpen(false);
     };
 
+    const onSearch = (value) => {
+        setSearchval(value);
+    };
+
     useEffect(() => {
         setLoading(true); // 로딩 호출
         handel_SelectStatisticsEvaluationList_Api(); // 조회
@@ -249,7 +255,25 @@ export const Evaluation_Performance = () => {
     return (
         <>
             <MainCard title="평가 실적 조회">
-                <Typography variant="body1">Search </Typography>
+                <Typography variant="body1">
+                    <Row gutter={[8, 8]} style={{ marginBottom: 16 }}>
+                        <Col span={12}>
+                            <div style={{ display: 'flex', justifyContent: 'flex-start', fontSize: '14px' }}>
+                                <Space size="middle">
+                                    <Input.Search
+                                        placeholder="※ 통합 검색 (학습년도, 차수명, 차수)"
+                                        style={{ width: 483 }}
+                                        onSearch={onSearch}
+                                        allowClear
+                                        enterButton
+                                        size="middle"
+                                        className="custom-search-input"
+                                    />
+                                </Space>
+                            </div>
+                        </Col>
+                    </Row>
+                </Typography>
                 <Table rowClassName={() => 'editable-row'} bordered dataSource={dataSource} loading={loading} columns={columns} />
             </MainCard>
 

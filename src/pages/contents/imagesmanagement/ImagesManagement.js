@@ -610,31 +610,31 @@ export const ImagesManagement = () => {
                 <Typography variant="body1">
                     <Row gutter={[16, 16]}>
                         <Col span={11} style={{ textAlign: 'center', padding: '0 10px' }}>
-                            <Row gutter={24} style={{ paddingBottom: '15px' }}>
-                                <Col span={24} offset={2}>
-                                    <Space>
-                                        <div style={{ display: 'flex', justifyContent: 'flex-end', fontSize: '14px' }}>
-                                            <Input.Search
-                                                placeholder="※ 통합 검색 (물품ID, 물품분류코드, 물품분류, 물품명칭)"
-                                                style={{ width: 430 }}
-                                                onSearch={onSearch}
-                                                allowClear
-                                                enterButton
-                                                size="middle"
-                                                className="custom-search-input"
-                                            />
-                                        </div>
-                                        <Tooltip title="물품 추가">
-                                            <Button
-                                                type="success"
-                                                onClick={handleAdd}
-                                                style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
-                                                icon={<PlusOutlined />}
-                                            >
-                                                물품 추가
-                                            </Button>
-                                        </Tooltip>
-                                    </Space>
+                            <Row style={{ paddingBottom: '15px' }}>
+                                <Col span={16}>
+                                    <div style={{ display: 'flex', justifyContent: 'flex-start', fontSize: '14px' }}>
+                                        <Input.Search
+                                            placeholder="※ 통합 검색 (물품ID, 물품분류코드, 물품분류, 물품명칭)"
+                                            style={{ width: 430 }}
+                                            onSearch={onSearch}
+                                            allowClear
+                                            enterButton
+                                            size="middle"
+                                            className="custom-search-input"
+                                        />
+                                    </div>
+                                </Col>
+                                <Col span={8} style={{ textAlign: 'right' }}>
+                                    <Tooltip title="물품 추가">
+                                        <Button
+                                            type="success"
+                                            onClick={handleAdd}
+                                            style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                            icon={<PlusOutlined />}
+                                        >
+                                            물품 추가
+                                        </Button>
+                                    </Tooltip>
                                 </Col>
                             </Row>
                             <Table

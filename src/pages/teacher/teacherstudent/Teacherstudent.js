@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
-import { Typography, Table, Tag, Tooltip, Button, Descriptions, Modal, Input, Space, Card } from 'antd';
+import { Typography, Table, Tag, Tooltip, Button, Descriptions, Modal, Input, Space, Row, Col } from 'antd';
 import {
     useSelectBaselineUserListMutation,
     useSelectBaselineUserMutation,
@@ -271,17 +271,22 @@ export const Teacherstudent = () => {
         <>
             <MainCard title="교육생 정보조회">
                 <Typography variant="body1">
-                    <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                        <Input.Search
-                            placeholder="※ 통합 검색 (차수명, 교육생ID, 교육생명, 교육구분, 기관)"
-                            style={{ width: 480 }}
-                            onSearch={onSearch}
-                            allowClear
-                            enterButton
-                            size="large"
-                            className="custom-search-input"
-                        />
-                    </div>
+                    <Row gutter={[8, 8]} style={{ marginBottom: 16 }}>
+                        <Col span={12}>
+                            <div style={{ display: 'flex', justifyContent: 'flex-start', fontSize: '14px' }}>
+                                <Input.Search
+                                    placeholder="※ 통합 검색 (차수명, 교육생ID, 교육생명, 교육구분, 기관)"
+                                    style={{ width: 483 }}
+                                    onSearch={onSearch}
+                                    allowClear
+                                    enterButton
+                                    size="middle"
+                                    className="custom-search-input"
+                                />
+                            </div>
+                        </Col>
+                        <Col span={12}></Col>
+                    </Row>
                     <Descriptions style={{ marginTop: '20px' }}></Descriptions>
                     <Table columns={columns} dataSource={dataSource} bordered={true} onChange={onChange} loading={loading} />
                 </Typography>

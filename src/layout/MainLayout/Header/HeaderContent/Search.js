@@ -21,7 +21,7 @@ const Search = () => {
 
     return (
         <Box sx={{ width: '100%', ml: { xs: 0, md: 1 } }}>
-            <FormControl sx={{ width: { xs: '100%', md: 224 } }}>
+            {/* <FormControl sx={{ width: { xs: '100%', md: 224 } }}>
                 <OutlinedInput
                     size="small"
                     id="header-search"
@@ -39,7 +39,7 @@ const Search = () => {
                     onKeyPress={searchEnter}
                     placeholder="Search..."
                 />
-            </FormControl>
+            </FormControl> */}
         </Box>
     );
 };

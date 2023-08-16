@@ -65,6 +65,7 @@ export const Studentinformation = () => {
     const [procCd_props, setProcCd_props] = useState(null); // 수료증(이수증) props
     const [procSeq_props, setProcSeq_props] = useState(null); // 수료증(이수증) props
 
+    const [searchval, setSearchval] = useState(null);
     // ===============================
     // Api 호출 Start
     // 조회 ======================================================
@@ -515,6 +516,7 @@ export const Studentinformation = () => {
     const passResultModal_handleOpen = (userId, userNm) => {
         handel_SelectCertificationUserList_Api(userId);
         setPassResultModal(true);
+        setUserId_props(userId);
         setUserNmValue(userNm);
     };
 
@@ -580,6 +582,10 @@ export const Studentinformation = () => {
         setCertificatesModal(false);
     };
 
+    const onSearch = (value) => {
+        setSearchval(value);
+    };
+
     useEffect(() => {
         setLoading(true);
         handle_SelectUserList_Api();
@@ -601,8 +607,21 @@ export const Studentinformation = () => {
         <>
             <MainCard title="교육생 정보조회">
                 <Typography variant="body1">
-                    <Row style={{ marginBottom: 16 }}>
-                        <Col span={16} offset={8} style={{ textAlign: 'right' }}>
+                    <Row gutter={[8, 8]} style={{ marginBottom: 16 }}>
+                        <Col span={12}>
+                            <div style={{ display: 'flex', justifyContent: 'flex-start', fontSize: '14px' }}>
+                                <Input.Search
+                                    placeholder="※ 통합 검색 (이론 과정, 이론 강의명, 이론 강의내용)"
+                                    style={{ width: 483 }}
+                                    onSearch={onSearch}
+                                    allowClear
+                                    enterButton
+                                    size="middle"
+                                    className="custom-search-input"
+                                />
+                            </div>
+                        </Col>
+                        <Col span={12} style={{ textAlign: 'right' }}>
                             <Space>
                                 <Tooltip title="추가">
                                     <Button
@@ -627,10 +646,14 @@ export const Studentinformation = () => {
                             </Space>
                         </Col>
                     </Row>
+                    {/* userId */}
                     <Table
                         columns={columns}
                         dataSource={dataSource}
                         rowSelection={{ ...rowSelection }}
+                        rowClassName={(record) => {
+                            return record.userId === userId_props ? `table-row-lightblue` : '';
+                        }}
                         bordered={true}
                         onChange={onChange}
                         loading={loading}

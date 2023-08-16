@@ -529,41 +529,41 @@ export const Goodsgroup = () => {
         <>
             <MainCard title="반입금지물품 관리">
                 <Typography variant="body1">
-                    <Row style={{ marginBottom: 16 }}>
-                        <Col span={16}>
-                            <Select
-                                showSearch
-                                placeholder=" Language Select "
-                                optionFilterProp="children"
-                                onChange={onChange}
-                                onSearch={onlangSearch}
-                                options={[...languageSelect]}
-                            />
-                        </Col>
-                        <Col span={16} offset={8} style={{ textAlign: 'right' }}>
-                            <Space>
-                                <div style={{ display: 'flex', justifyContent: 'flex-end', fontSize: '14px' }}>
+                    <Row gutter={[8, 8]} style={{ marginBottom: 16 }}>
+                        <Col span={12}>
+                            <div style={{ display: 'flex', justifyContent: 'flex-start', fontSize: '14px' }}>
+                                <Space>
+                                    <Select
+                                        showSearch
+                                        placeholder=" Language Select "
+                                        optionFilterProp="children"
+                                        onChange={onChange}
+                                        onSearch={onlangSearch}
+                                        options={[...languageSelect]}
+                                    />
                                     <Input.Search
                                         placeholder="※ 통합 검색 (물품분류코드, 물품분류명칭, 물품분류설명)"
-                                        style={{ width: 480 }}
+                                        style={{ width: 483 }}
                                         onSearch={onSearch}
                                         allowClear
                                         enterButton
                                         size="middle"
                                         className="custom-search-input"
                                     />
-                                </div>
-                                <Tooltip title="추가">
-                                    <Button
-                                        type="primary"
-                                        onClick={handleAdd}
-                                        style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
-                                        icon={<EditFilled />}
-                                    >
-                                        추가
-                                    </Button>
-                                </Tooltip>
-                            </Space>
+                                </Space>
+                            </div>
+                        </Col>
+                        <Col span={12} style={{ textAlign: 'right' }}>
+                            <Tooltip title="추가">
+                                <Button
+                                    type="primary"
+                                    onClick={handleAdd}
+                                    style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                    icon={<EditFilled />}
+                                >
+                                    추가
+                                </Button>
+                            </Tooltip>
                         </Col>
                     </Row>
                     <Table

@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
-import { Table, Badge } from 'antd';
+import { Table, Badge, Button, Modal, Row, Col, Space, Input } from 'antd';
 import { Typography } from '@mui/material';
 
 import { useSelectStatisticsEvaluationGroupListMutation } from '../../../hooks/api/StatisticsManagement/StatisticsManagement';
@@ -11,6 +11,8 @@ import MainCard from 'components/MainCard';
 export const Evaluation_Contentgroup = () => {
     const [loading, setLoading] = useState(false);
     const [dataSource, setDataSource] = useState([]); // 학습 실적 Table 데이터 값
+
+    const [searchval, setSearchval] = useState(null);
 
     const [SelectStatisticsEvaluationGroupListApi] = useSelectStatisticsEvaluationGroupListMutation(); // 콘텐츠 정보 관리 hooks api호출
     const handel_SelectStatisticsEvaluationGroupList_Api = async () => {
@@ -120,6 +122,10 @@ export const Evaluation_Contentgroup = () => {
         };
     });
 
+    const onSearch = (value) => {
+        setSearchval(value);
+    };
+
     useEffect(() => {
         setLoading(true); // 로딩 호출
         handel_SelectStatisticsEvaluationGroupList_Api(); // 조회
@@ -128,7 +134,25 @@ export const Evaluation_Contentgroup = () => {
     return (
         <>
             <MainCard title="평가 컨텐츠 그룹별 출제 문항">
-                <Typography variant="body1"></Typography>
+                <Typography variant="body1">
+                    <Row gutter={[8, 8]} style={{ marginBottom: 16 }}>
+                        <Col span={12}>
+                            <div style={{ display: 'flex', justifyContent: 'flex-start', fontSize: '14px' }}>
+                                <Space size="middle">
+                                    <Input.Search
+                                        placeholder="※ 통합 검색 (학습년도, 물품분류명칭, 차수명, 차수)"
+                                        style={{ width: 483 }}
+                                        onSearch={onSearch}
+                                        allowClear
+                                        enterButton
+                                        size="middle"
+                                        className="custom-search-input"
+                                    />
+                                </Space>
+                            </div>
+                        </Col>
+                    </Row>
+                </Typography>
                 <Table rowClassName={() => 'editable-row'} bordered dataSource={dataSource} loading={loading} columns={columns} />
             </MainCard>
         </>

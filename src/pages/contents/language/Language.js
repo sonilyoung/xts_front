@@ -409,32 +409,31 @@ export const Language = () => {
         <>
             <MainCard title="언어 관리">
                 <Typography variant="body1">
-                    <Row style={{ marginBottom: 16 }}>
-                        <Col span={16}></Col>
-                        <Col span={16} offset={8} style={{ textAlign: 'right' }}>
-                            <Space>
-                                <div style={{ display: 'flex', justifyContent: 'flex-end', fontSize: '14px' }}>
-                                    <Input.Search
-                                        placeholder="※ 통합 검색 (언어, 언어코드)"
-                                        style={{ width: 480 }}
-                                        onSearch={onSearch}
-                                        allowClear
-                                        enterButton
-                                        size="middle"
-                                        className="custom-search-input"
-                                    />
-                                </div>
-                                <Tooltip title="추가">
-                                    <Button
-                                        type="success"
-                                        onClick={handleAdd}
-                                        style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
-                                        icon={<PlusOutlined />}
-                                    >
-                                        추가
-                                    </Button>
-                                </Tooltip>
-                            </Space>
+                    <Row gutter={[8, 8]} style={{ marginBottom: 16 }}>
+                        <Col span={12}>
+                            <div style={{ display: 'flex', justifyContent: 'flex-start', fontSize: '14px' }}>
+                                <Input.Search
+                                    placeholder="※ 통합 검색 (언어, 언어코드)"
+                                    style={{ width: 483 }}
+                                    onSearch={onSearch}
+                                    allowClear
+                                    enterButton
+                                    size="middle"
+                                    className="custom-search-input"
+                                />
+                            </div>
+                        </Col>
+                        <Col span={12} style={{ textAlign: 'right' }}>
+                            <Tooltip title="추가">
+                                <Button
+                                    type="success"
+                                    onClick={handleAdd}
+                                    style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                    icon={<PlusOutlined />}
+                                >
+                                    추가
+                                </Button>
+                            </Tooltip>
                         </Col>
                     </Row>
                     <Table

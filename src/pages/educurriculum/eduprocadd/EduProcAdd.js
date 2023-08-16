@@ -84,7 +84,7 @@ export const EduProcAdd = () => {
     const [menuArry, setMenuArry] = useState(); //  메뉴 배열
     const [moduleArry, setModuleArry] = useState(); //  모듈 배열
     const [stuList, setStuList] = useState(); // 상세 - 교육생 배열 정보
-
+    const [searchval, setSearchval] = useState(null);
     // Data source End
 
     // Title Text Start
@@ -661,6 +661,10 @@ export const EduProcAdd = () => {
         setEduDayModalOpen(false);
     };
 
+    const onSearch = (value) => {
+        setSearchval(value);
+    };
+
     useEffect(() => {
         setLoading(true); // 로딩 호출
         handel_SelectBaselineList_Api(); // 조회
@@ -670,9 +674,21 @@ export const EduProcAdd = () => {
         <>
             <MainCard title="차수 관리">
                 <Typography variant="body1">
-                    <Row style={{ marginBottom: 16 }}>
-                        <Col span={8}></Col>
-                        <Col span={8} offset={8} style={{ textAlign: 'right' }}>
+                    <Row gutter={[8, 8]} style={{ marginBottom: 16 }}>
+                        <Col span={12}>
+                            <div style={{ display: 'flex', justifyContent: 'flex-start', fontSize: '14px' }}>
+                                <Input.Search
+                                    placeholder="※ 통합 검색 (차수명, 차수, 교육기간)"
+                                    style={{ width: 483 }}
+                                    onSearch={onSearch}
+                                    allowClear
+                                    enterButton
+                                    size="middle"
+                                    className="custom-search-input"
+                                />
+                            </div>
+                        </Col>
+                        <Col span={12} style={{ textAlign: 'right' }}>
                             <Space>
                                 <Tooltip title="추가">
                                     <Button

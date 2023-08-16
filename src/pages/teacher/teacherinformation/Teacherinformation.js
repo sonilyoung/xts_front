@@ -33,7 +33,7 @@ export const Teacherinformation = () => {
     const [userId, setUserId] = useState([]); // 선택한 강사 아이디 값
     const [idChk, setIdChk] = useState(false); // 선택한 강사 아이디 값
     const [itemContainer, setItemContainer] = useState({}); // 항목 컨테이너
-
+    const [searchval, setSearchval] = useState(null);
     // ===============================
     // Api 호출 Start
     // 조회 ======================================================
@@ -383,6 +383,10 @@ export const Teacherinformation = () => {
         }
     };
 
+    const onSearch = (value) => {
+        setSearchval(value);
+    };
+
     useEffect(() => {
         setLoading(true);
         handle_SelectTeacherList_Api();
@@ -392,8 +396,21 @@ export const Teacherinformation = () => {
         <>
             <MainCard title="강사정보 조회">
                 <Typography variant="body1">
-                    <Row style={{ marginBottom: 16 }}>
-                        <Col span={16} offset={8} style={{ textAlign: 'right' }}>
+                    <Row gutter={[8, 8]} style={{ marginBottom: 16 }}>
+                        <Col span={12}>
+                            <div style={{ display: 'flex', justifyContent: 'flex-start', fontSize: '14px' }}>
+                                <Input.Search
+                                    placeholder="※ 통합 검색 (강사ID, 강사명, 교육구분)"
+                                    style={{ width: 483 }}
+                                    onSearch={onSearch}
+                                    allowClear
+                                    enterButton
+                                    size="middle"
+                                    className="custom-search-input"
+                                />
+                            </div>
+                        </Col>
+                        <Col span={12} style={{ textAlign: 'right' }}>
                             <Space>
                                 <Tooltip title="추가">
                                     <Button

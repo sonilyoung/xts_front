@@ -38,12 +38,10 @@ export const CertificatesPrint = (props) => {
                         <tr>
                             <td style={{ letterSpacing: '1.9em', width: '100px', alignItems: 'flex-start' }}>성명</td>
                             <td>{' : '}</td>
-                            <td style={{ paddingLeft: '25px', letterSpacing: '2.7em' }}>{certificationUserDetail?.userNm}</td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;</td>
-                            <td>{' : '}</td>
-                            <td style={{ paddingLeft: '25px', wordSpacing: '13px' }}>{certificationUserDetail?.userNmEn}</td>
+                            <td>
+                                <span style={{ paddingLeft: '25px', letterSpacing: '2.7em' }}>{certificationUserDetail?.userNm}</span>
+                                <span style={{ paddingLeft: '25px', wordSpacing: '13px' }}>{certificationUserDetail?.userNmEn}</span>
+                            </td>
                         </tr>
                         <tr>
                             <td style={{ letterSpacing: '0.1em', width: '100px', alignItems: 'flex-start' }}>생년월일</td>
@@ -132,7 +130,7 @@ export const CertificatesPrint = (props) => {
                                         fontWeight: 'bold'
                                     }}
                                 >
-                                    교 육 기 관 장
+                                    한 국 보 안 인 재 개 발 원 장
                                 </td>
                                 <td
                                     style={{

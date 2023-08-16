@@ -1128,7 +1128,7 @@ export const Xrayinformation = () => {
                         columns={columns}
                         rowSelection={rowSelection}
                         rowClassName={(record) => {
-                            return record.rowdata0 === bagScanId ? `table-row-lightblue` : '';
+                            return record.rowdata2 === bagScanId ? `table-row-lightblue` : '';
                         }}
                         onRow={(record) => {
                             return {
@@ -1146,7 +1146,7 @@ export const Xrayinformation = () => {
                                     if (record.rowdata0 !== bagScanId) {
                                         setOnChoiceItem(true);
                                         setLoadingSub(true);
-                                        setBagScanId(record.rowdata1);
+                                        setBagScanId(record.rowdata2);
                                         handleXrayinformationSub(record.rowdata1);
                                     }
                                 }

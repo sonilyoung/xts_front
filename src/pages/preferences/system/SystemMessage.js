@@ -387,7 +387,7 @@ export const SystemMessage = () => {
 
     return (
         <>
-            <MainCard title="시스템 메세지 관리">
+            <MainCard title="시스템 언어 관리">
                 <Typography variant="body1">
                     <Row style={{ marginBottom: 16 }}>
                         <Col span={8}>
