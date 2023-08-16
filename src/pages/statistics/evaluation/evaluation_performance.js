@@ -75,7 +75,7 @@ export const Evaluation_Performance = () => {
                         style={{ width: '45px', height: '30px', lineHeight: '30px' }}
                         count={rowdata4.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                         status={rowdata4 >= '90' ? 'success' : rowdata4 < '80' ? 'error' : 'warning'}
-                        overflowCount={100}
+                        overflowCount={999}
                     />
                 </>
             )
@@ -146,7 +146,7 @@ export const Evaluation_Performance = () => {
                         style={{ width: '45px', height: '30px', lineHeight: '30px' }}
                         count={rowdata2.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                         color="blue"
-                        overflowCount={100}
+                        overflowCount={999}
                     />
                 </>
             )
@@ -161,7 +161,7 @@ export const Evaluation_Performance = () => {
                         style={{ width: '45px', height: '30px', lineHeight: '30px' }}
                         count={rowdata3.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                         color="gold"
-                        overflowCount={100}
+                        overflowCount={999}
                     />
                 </>
             )
@@ -176,7 +176,7 @@ export const Evaluation_Performance = () => {
                         style={{ width: '45px', height: '30px', lineHeight: '30px' }}
                         count={rowdata4.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                         color="green"
-                        overflowCount={100}
+                        overflowCount={999}
                     />
                 </>
             )
@@ -191,7 +191,7 @@ export const Evaluation_Performance = () => {
                         style={{ width: '45px', height: '30px', lineHeight: '30px' }}
                         count={rowdata5.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                         color="volcano"
-                        overflowCount={100}
+                        overflowCount={999}
                     />
                 </>
             )

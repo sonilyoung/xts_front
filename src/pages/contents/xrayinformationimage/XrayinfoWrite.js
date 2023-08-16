@@ -1676,7 +1676,7 @@ export const XrayinfoWrite = () => {
                                                     <Space>
                                                         <Col>
                                                             <Form.Item name="File1">
-                                                                <Space direction="vertical">
+                                                                <Space>
                                                                     <Card
                                                                         size="small"
                                                                         style={{

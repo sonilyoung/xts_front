@@ -140,7 +140,7 @@ export const TheoryGroup_M = ({ ...props }) => {
 
     const defaultColumns = [
         {
-            width: '60px',
+            width: '50px',
             title: 'No',
             dataIndex: 'rowdata0',
             align: 'center',
@@ -172,6 +172,7 @@ export const TheoryGroup_M = ({ ...props }) => {
             )
         },
         {
+            width: '70px',
             title: '사용여부',
             dataIndex: 'rowdata5',
             render: (_, { rowdata5 }) => (

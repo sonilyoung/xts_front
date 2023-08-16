@@ -69,7 +69,7 @@ export const Learning_Contentgroup = () => {
                         style={{ width: '45px', height: '30px', lineHeight: '30px' }}
                         count={rowdata7.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                         color="blue"
-                        overflowCount={100}
+                        overflowCount={999}
                     />
                 </>
             )
@@ -84,7 +84,7 @@ export const Learning_Contentgroup = () => {
                         style={{ width: '45px', height: '30px', lineHeight: '30px' }}
                         count={rowdata5.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                         color="green"
-                        overflowCount={100}
+                        overflowCount={999}
                     />
                 </>
             )
@@ -99,7 +99,7 @@ export const Learning_Contentgroup = () => {
                         style={{ width: '45px', height: '30px', lineHeight: '30px' }}
                         count={rowdata6.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                         color="volcano"
-                        overflowCount={100}
+                        overflowCount={999}
                     />
                 </>
             )
