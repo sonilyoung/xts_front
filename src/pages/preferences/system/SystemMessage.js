@@ -389,18 +389,31 @@ export const SystemMessage = () => {
         <>
             <MainCard title="시스템 언어 관리">
                 <Typography variant="body1">
-                    <Row style={{ marginBottom: 16 }}>
-                        <Col span={8}>
-                            <Select
-                                showSearch
-                                placeholder=" Language Select "
-                                optionFilterProp="children"
-                                onChange={onChange}
-                                onSearch={onSearch}
-                                options={[...languageSelect]}
-                            />
+                    <Row gutter={[8, 8]} style={{ marginBottom: 16 }}>
+                        <Col span={14}>
+                            <Space>
+                                <Select
+                                    showSearch
+                                    placeholder=" Language Select "
+                                    optionFilterProp="children"
+                                    onChange={onChange}
+                                    onSearch={onSearch}
+                                    options={[...languageSelect]}
+                                />
+                                <div style={{ display: 'flex', justifyContent: 'flex-start', fontSize: '14px' }}>
+                                    <Input.Search
+                                        placeholder="※ 통합 검색 (구분, 그룹코드, 메세지코드, 메세지)"
+                                        style={{ width: 483 }}
+                                        onSearch={onSearch}
+                                        allowClear
+                                        enterButton
+                                        size="middle"
+                                        className="custom-search-input"
+                                    />
+                                </div>
+                            </Space>
                         </Col>
-                        <Col span={8} offset={8} style={{ textAlign: 'right' }}>
+                        <Col span={10} style={{ textAlign: 'right' }}>
                             <Space>
                                 <Tooltip title="추가">
                                     <Button

@@ -42,6 +42,7 @@ export const Theory_Performance = () => {
         ]);
         setLoading(false);
     };
+
     // 이론평가 실적 컬럼
     const defaultColumns = [
         {
