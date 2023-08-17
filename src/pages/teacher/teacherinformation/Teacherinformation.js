@@ -436,6 +436,9 @@ export const Teacherinformation = () => {
                         </Col>
                     </Row>
                     <Table
+                        rowClassName={(record) => {
+                            return record.key === userId ? `table-row-lightblue` : '';
+                        }}
                         columns={columns}
                         dataSource={dataSource}
                         rowSelection={{ ...rowSelection }}

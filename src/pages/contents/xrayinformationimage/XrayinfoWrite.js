@@ -138,7 +138,7 @@ export const XrayinfoWrite = () => {
             bagScanId: k
         });
 
-        console.log('이미지가져오기:', response.data.RET_DATA);
+        // console.log('이미지가져오기:', response.data.RET_DATA);
         setUnitParams(response.data.RET_DATA);
         //params = response.data.RET_DATA;
 
@@ -1308,6 +1308,9 @@ export const XrayinfoWrite = () => {
                         <Row gutter={[24, 24]}>
                             <Col span={4}>
                                 <Table
+                                    rowClassName={(record) => {
+                                        return record.key === bagScanId ? `table-row-lightblue` : '';
+                                    }}
                                     columns={imagescolumns}
                                     dataSource={dataSource}
                                     onRow={(record, rowIndex) => {

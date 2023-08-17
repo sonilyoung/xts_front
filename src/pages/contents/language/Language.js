@@ -33,8 +33,7 @@ export const Language = () => {
     const [searchval, setSearchval] = useState();
 
     // 추가 및 수정 input 기본값 정리
-    const [languageNmVal, setLanguageNmVal] = useState();
-    const [languageCdVal, setLanguageCdVal] = useState();
+    const [codeNo, setCodeNo] = useState();
     const [unitParams, setUnitParams] = useState({});
     const [refresh, setRefresh] = useState(false); //리프레쉬
 
@@ -255,6 +254,7 @@ export const Language = () => {
 
         //console.log('unitName2:',response.data.RET_DATA.unitName);
         setUnitParams(response.data.RET_DATA);
+        setCodeNo(e);
         //params = response.data.RET_DATA;
         form.resetFields();
         setDataEdit(true);
@@ -438,7 +438,9 @@ export const Language = () => {
                     </Row>
                     <Table
                         components={components}
-                        rowClassName={() => 'editable-row'}
+                        rowClassName={(record) => {
+                            return record.key === codeNo ? `table-row-lightblue` : '';
+                        }}
                         bordered={true}
                         dataSource={dataSource}
                         loading={loading}

@@ -674,7 +674,9 @@ export const TheoryInfo = () => {
                         </Col>
                     </Row>
                     <Table
-                        rowClassName={() => 'editable-row'}
+                        rowClassName={(record) => {
+                            return record.key === questionIdKey ? `table-row-lightblue` : '';
+                        }}
                         bordered={true}
                         dataSource={selectTheoryListData}
                         loading={loading}

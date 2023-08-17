@@ -78,6 +78,7 @@ export const EduProcAdd = () => {
     const [itemContainer, setItemContainer] = useState({}); // 항목 컨테이너
     const [copyItemContainer, setCopyItemContainer] = useState(); // 복사 항목 컨테이너
     const [procCdValue, setProcCdValue] = useState(); // 차수관리 아이디
+    const [procCdKey, setProcCdKey] = useState(); // 차수관리 선택키
     const [copyProcCd, setCopyProcCd] = useState(); // 복사 차수 아이디
     const [copyProcNm, setCopyProcNm] = useState(); // 복사 차수 명
     const [studyDayArry, setStudyDayArry] = useState(); // 학습일수 배열
@@ -540,6 +541,7 @@ export const EduProcAdd = () => {
     const handleEdit = (EditKey) => {
         handel_SelectBaseline_Api(EditKey);
         setProcCdValue(EditKey);
+        setProcCdKey(EditKey);
         setDataEdit(true);
         setOpen(true);
     };
@@ -714,7 +716,9 @@ export const EduProcAdd = () => {
                         </Col>
                     </Row>
                     <Table
-                        rowClassName={() => 'editable-row'}
+                        rowClassName={(record) => {
+                            return record.key === procCdKey ? `table-row-lightblue` : '';
+                        }}
                         bordered={true}
                         dataSource={selectBaselineListData}
                         loading={loading}

@@ -530,9 +530,11 @@ export const Curriculum = () => {
                         </Col>
                     </Row>
                     <Table
-                        rowClassName={() => 'editable-row'}
                         bordered={true}
                         dataSource={selectModuleListData}
+                        rowClassName={(record) => {
+                            return record.key === moduleId ? `table-row-lightblue` : '';
+                        }}
                         loading={selectModuleListLoading}
                         columns={columns}
                         rowSelection={rowSelection}

@@ -288,7 +288,16 @@ export const Teacherstudent = () => {
                         <Col span={12}></Col>
                     </Row>
                     <Descriptions style={{ marginTop: '20px' }}></Descriptions>
-                    <Table columns={columns} dataSource={dataSource} bordered={true} onChange={onChange} loading={loading} />
+                    <Table
+                        rowClassName={(record) => {
+                            return record.userId === userIdChk ? `table-row-lightblue` : '';
+                        }}
+                        columns={columns}
+                        dataSource={dataSource}
+                        bordered={true}
+                        onChange={onChange}
+                        loading={loading}
+                    />
                 </Typography>
             </MainCard>
 

@@ -43,7 +43,7 @@ export const Goodsgroup = () => {
     const [imgFile1, setImgFile1] = useState('');
     const [imgFile, setImgFile] = useState(null); // 파일 업로드 실물 이미지
     const [searchval, setSearchval] = useState();
-
+    const [unitGroupKey, setUnitGroupKey] = useState();
     const [unitParams, setUnitParams] = useState({
         parentUnitGroupCd: '',
         openYn: '',
@@ -410,7 +410,7 @@ export const Goodsgroup = () => {
 
     // 물품 수정 버튼
     const handleUnitMod = async (e) => {
-        console.log('상세:', e);
+        console.log('상세:', e?.rowdata1?.key);
         const response = await getGroup({
             languageCode: languageCode,
             unitGroupCd: e?.rowdata1?.key
@@ -418,6 +418,7 @@ export const Goodsgroup = () => {
 
         //console.log('unitName2:',response.data.RET_DATA.unitName);
         setUnitParams(response.data.RET_DATA);
+        setUnitGroupKey(e?.rowdata1?.key);
         //params = response.data.RET_DATA;
         form.resetFields();
         setDataEdit(true);
@@ -568,7 +569,9 @@ export const Goodsgroup = () => {
                     </Row>
                     <Table
                         components={components}
-                        //rowClassName={() => 'editable-row'}
+                        rowClassName={(record) => {
+                            return record.key === unitGroupKey ? `table-row-lightblue` : '';
+                        }}
                         bordered={true}
                         dataSource={dataSource}
                         loading={loading}

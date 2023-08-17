@@ -2,8 +2,9 @@
 
 .watermark-print {
     position: relative;
-    width: 100%;
-    height: 100%;
+    margin: 20px 30px;
+    width: 90%;
+    height: 90%;
 }
 
 .watermark-logo {

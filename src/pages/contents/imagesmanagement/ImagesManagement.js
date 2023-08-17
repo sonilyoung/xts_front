@@ -227,8 +227,7 @@ export const ImagesManagement = () => {
             languageCode: languageCode,
             unitId: e
         });
-
-        console.log('이미지가져오기:', response.data.RET_DATA);
+        // console.log('이미지가져오기:', response.data.RET_DATA);
         setUnitParams(response.data.RET_DATA);
         //params = response.data.RET_DATA;
 
@@ -245,6 +244,7 @@ export const ImagesManagement = () => {
         });
 
         setUnitParams(response.data.RET_DATA);
+        setUnitId(e?.rowdata1?.key);
         //params = response.data.RET_DATA;
         form.resetFields();
         setDataEdit(true);
@@ -643,15 +643,13 @@ export const ImagesManagement = () => {
                                 onRow={(record, rowIndex) => {
                                     return {
                                         onClick: (event) => {
-                                            // console.log(record);
                                             setDataEdit(true);
                                             getUnitImgList(record.key, record.rowdata1, record.rowdata2);
-                                        } // click row
-                                        // onDoubleClick: (event) => {}, // double click row
-                                        // onContextMenu: (event) => {}, // right button click row
-                                        // onMouseEnter: (event) => {}, // mouse enter row
-                                        // onMouseLeave: (event) => {} // mouse leave row
+                                        }
                                     };
+                                }}
+                                rowClassName={(record) => {
+                                    return record.key === unitId ? `table-row-lightblue` : '';
                                 }}
                                 onHeaderRow={() => {
                                     return {

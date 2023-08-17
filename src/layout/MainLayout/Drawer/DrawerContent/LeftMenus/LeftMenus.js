@@ -9,7 +9,7 @@ import DrawerHeaderStyled from '../../DrawerHeader/DrawerHeaderStyled';
 import { useTheme } from '@mui/material/styles';
 
 import { AppstoreAddOutlined, BlockOutlined, FileTextOutlined } from '@ant-design/icons';
-import { Menu } from 'antd';
+import { Menu, Divider } from 'antd';
 
 function getItem(label, key, icon, children, type) {
     return {
@@ -135,11 +135,11 @@ const LeftMenus = () => {
 
     return (
         <>
-            <DrawerHeaderStyled sx={{ height: '120px' }}>
+            <DrawerHeaderStyled sx={{ height: '130px' }}>
                 <Stack direction="row" spacing={1} alignItems="center" onClick={DashCalls}>
                     <Link>
-                        <div style={{ textAlign: 'center', fontSize: '18px' }}>XBT ADMINISTRATOR</div>
-                        <div style={{ textAlign: 'center', fontSize: '12px', color: '#fff' }}>X-ray Based Training System</div>
+                        <div style={{ textAlign: 'center', fontSize: '23px', paddingBottom: '10px' }}>XBT ADMINISTRATOR</div>
+                        <div style={{ textAlign: 'center', fontSize: '15px', color: '#fff' }}>X-ray Based Training System</div>
                     </Link>
                 </Stack>
             </DrawerHeaderStyled>

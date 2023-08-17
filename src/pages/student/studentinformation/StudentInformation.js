@@ -456,6 +456,7 @@ export const Studentinformation = () => {
     const handleEdit = (userId) => {
         handel_SelectUser_Api(userId);
         setUserId(userId);
+        setUserId_props(userId);
         form.resetFields();
         setDataEdit(true);
         setIdChk(true);
@@ -1809,8 +1810,8 @@ export const Studentinformation = () => {
                 closable={true}
                 open={certificatesModal}
                 onCancel={certificatesModal_handleCancel}
-                width={730}
-                height={842}
+                width={700}
+                height={802}
                 style={{
                     top: 90,
                     left: 130,

@@ -278,12 +278,12 @@ export const Theoryinformation = () => {
         {
             width: '120px',
             title: '수정',
-            render: (_, { userId }) => (
+            render: (_, { theoryNo }) => (
                 <>
                     <Tooltip title="수정" color="#108ee9">
                         <Button
                             type="primary"
-                            onClick={() => handleEdit(userId)}
+                            onClick={() => handleEdit(theoryNo)}
                             style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
                             icon={<EditFilled />}
                         >
@@ -473,6 +473,9 @@ export const Theoryinformation = () => {
                         </Col>
                     </Row>
                     <Table
+                        rowClassName={(record) => {
+                            return record.key === theoryNoKey ? `table-row-lightblue` : '';
+                        }}
                         columns={columns}
                         dataSource={dataSource}
                         rowSelection={{ ...rowSelection }}
