@@ -2,7 +2,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Typography } from '@mui/material';
 import { Col, Row, Button, Form, Input, Table, Select, Space, Tooltip, Tag, Descriptions, Divider, Card, Modal, Drawer } from 'antd';
-import 'antd/dist/antd.css';
+// import 'antd/dist/antd.css';
 import {
     useGetLanguageListMutation,
     useGetLanguageMutation,
@@ -462,7 +462,7 @@ export const Language = () => {
                 style={{ top: '60px' }}
                 extra={
                     <>
-                        <Space>
+                        <Space style={{ marginTop: '120px' }}>
                             <Tooltip title="취소" placement="bottom">
                                 <Button onClick={onAddClose} style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}>
                                     취소
@@ -491,7 +491,8 @@ export const Language = () => {
                             )}
                             <Tooltip title="삭제">
                                 <Button
-                                    type="danger"
+                                    type="primary"
+                                    danger
                                     onClick={deleteSubmit}
                                     style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
                                 >

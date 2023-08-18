@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from 'react';
 import { Row, Col, Space, Button, Divider, Form, Input, DatePicker, Card, Radio, Select, Modal } from 'antd';
 import locale from 'antd/es/date-picker/locale/ko_KR';
 import MainCard from 'components/MainCard';
-import moment from 'moment';
+// import moment from 'moment';
 
 // material-ui
 import { Grid, Stack, Typography } from '@mui/material';
@@ -252,8 +252,8 @@ const Register = () => {
                                     >
                                         <DatePicker
                                             name="writeDate"
-                                            onChange={(e) => {
-                                                setItemContainer({ ...itemContainer, writeDate: e.format('YYYY-MM-DD') });
+                                            onChange={(date) => {
+                                                setItemContainer({ ...itemContainer, writeDate: date });
                                             }}
                                             placeholder="입교신청일"
                                             style={{
@@ -475,7 +475,7 @@ const Register = () => {
                                             //     });
                                             // }}
                                             onChange={handleDOBChange}
-                                            value={itemContainer?.birthDay ? moment(itemContainer.birthDay) : null}
+                                            value={itemContainer?.birthDay ? itemContainer.birthDay : null}
                                             placeholder="생년월일"
                                             style={{
                                                 width: '48%'
@@ -823,17 +823,16 @@ const Register = () => {
                                                 picker="month"
                                                 locale={locale}
                                                 onChange={(dates) => {
-                                                    const [start, end] = dates;
                                                     setItemContainer({
                                                         ...itemContainer,
-                                                        militaryEndDate: end.format('YYYY-MM'),
+                                                        militaryEndDate: dates[1],
                                                         ...itemContainer,
-                                                        militaryStartDate: start.format('YYYY-MM')
+                                                        militaryStartDate: dates[0]
                                                     });
                                                 }}
                                                 value={[
-                                                    itemContainer?.militaryStartDate ? moment(itemContainer.militaryStartDate) : null,
-                                                    itemContainer?.militaryEndDate ? moment(itemContainer.militaryEndDate) : null
+                                                    itemContainer?.militaryStartDate ? itemContainer.militaryStartDate : null,
+                                                    itemContainer?.militaryEndDate ? itemContainer.militaryEndDate : null
                                                 ]}
                                             />
                                             <Input
@@ -911,12 +910,11 @@ const Register = () => {
                                                         picker="month"
                                                         locale={locale}
                                                         onChange={(dates) => {
-                                                            const [start, end] = dates;
                                                             setItemContainer({
                                                                 ...itemContainer,
-                                                                careerEndDate1: end.format('YYYY-MM'),
+                                                                careerEndDate1: dates[1],
                                                                 ...itemContainer,
-                                                                careerStartDate1: start.format('YYYY-MM')
+                                                                careerStartDate1: dates[0]
                                                             });
                                                         }}
                                                         value={[
@@ -972,12 +970,11 @@ const Register = () => {
                                                         picker="month"
                                                         locale={locale}
                                                         onChange={(dates) => {
-                                                            const [start2, end2] = dates;
                                                             setItemContainer({
                                                                 ...itemContainer,
-                                                                careerEndDate2: end2.format('YYYY-MM'),
+                                                                careerEndDate2: dates[1],
                                                                 ...itemContainer,
-                                                                careerStartDate2: start2.format('YYYY-MM')
+                                                                careerStartDate2: dates[0]
                                                             });
                                                         }}
                                                         value={[

@@ -20,7 +20,7 @@ import {
     Divider,
     Tag
 } from 'antd';
-import 'antd/dist/antd.css';
+// import 'antd/dist/antd.css';
 import { PlusOutlined, DeleteFilled, EditFilled, ExclamationCircleFilled, CopyOutlined } from '@ant-design/icons';
 
 // 학습모듈 관리 - 조회, 등록, 상세, 수정, 삭제 가져오기
@@ -520,7 +520,8 @@ export const Curriculum = () => {
                                 </Tooltip>
                                 <Tooltip title="삭제">
                                     <Button
-                                        type="danger"
+                                        type="primary"
+                                        danger
                                         onClick={handleDel}
                                         style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
                                         icon={<DeleteFilled />}
@@ -553,7 +554,7 @@ export const Curriculum = () => {
                 style={{ top: '60px' }}
                 extra={
                     <>
-                        <Space>
+                        <Space style={{ marginTop: '120px' }}>
                             <Tooltip title="취소" placement="bottom">
                                 <Button onClick={onAddClose} style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}>
                                     취소

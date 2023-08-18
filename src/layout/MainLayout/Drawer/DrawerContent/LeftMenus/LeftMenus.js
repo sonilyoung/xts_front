@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import cookies from 'react-cookies';
 import { Link, useNavigate } from 'react-router-dom';
-import 'antd/dist/antd.css';
+// import 'antd/dist/antd.css';
 
 import { Stack } from '@mui/material';
 import DrawerHeaderStyled from '../../DrawerHeader/DrawerHeaderStyled';

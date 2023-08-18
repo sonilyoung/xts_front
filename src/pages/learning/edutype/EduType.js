@@ -369,7 +369,8 @@ export const EduType = () => {
                                 </Tooltip>
                                 <Tooltip title="삭제">
                                     <Button
-                                        type="danger"
+                                        type="primary"
+                                        danger
                                         onClick={handleDel}
                                         style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
                                         icon={<DeleteFilled />}
@@ -402,7 +403,7 @@ export const EduType = () => {
                 style={{ top: '60px' }}
                 extra={
                     <>
-                        <Space>
+                        <Space style={{ marginTop: '120px' }}>
                             <Tooltip title="취소" placement="bottom">
                                 <Button onClick={onAddClose} style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}>
                                     취소

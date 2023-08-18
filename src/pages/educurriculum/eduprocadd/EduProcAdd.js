@@ -20,7 +20,7 @@ import {
     Divider,
     Tag
 } from 'antd';
-import 'antd/dist/antd.css';
+// import 'antd/dist/antd.css';
 import { PlusOutlined, EditFilled, EyeOutlined, DeleteFilled, ExclamationCircleFilled, CopyOutlined } from '@ant-design/icons';
 
 // 차수 관리 : 조회, 상세, 등록, 등록-(커리큘럼 메뉴목록 조회), 수정, 삭제, 커리큘럼 교육생삭제, 학습일정 상세정보 팝업, 학습생 인원 상세정보 팝업, 차수 복사
@@ -706,7 +706,8 @@ export const EduProcAdd = () => {
                                 </Tooltip>
                                 <Tooltip title="삭제">
                                     <Button
-                                        type="danger"
+                                        type="primary"
+                                        danger
                                         onClick={handleDel}
                                         style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
                                         icon={<DeleteFilled />}
@@ -740,7 +741,7 @@ export const EduProcAdd = () => {
                 style={{ top: '60px' }}
                 extra={
                     <>
-                        <Space>
+                        <Space style={{ marginTop: '120px' }}>
                             <Tooltip title="차수 취소" placement="bottom">
                                 <Button onClick={onAddClose} style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}>
                                     취소
@@ -773,6 +774,52 @@ export const EduProcAdd = () => {
             >
                 <MainCard>
                     <Form layout="vertical" form={form} autoComplete="off">
+                        <Row gutter={24}>
+                            <Col span={24}>
+                                <Form.Item
+                                    name="form99"
+                                    label="강사"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: '강사 선택'
+                                        }
+                                    ]}
+                                >
+                                    <Row>
+                                        <Col>
+                                            {localStorage.getItem('LoginId') === 'admin' ? (
+                                                <Select
+                                                    name="teacherId"
+                                                    style={{
+                                                        width: '490px'
+                                                    }}
+                                                    onChange={(e) => setItemContainer({ ...itemContainer, teacherId: e })}
+                                                    value={
+                                                        itemContainer?.teacherId === undefined || itemContainer?.teacherId === null
+                                                            ? {
+                                                                  value: 0,
+                                                                  label: '# 강사 선택'
+                                                              }
+                                                            : itemContainer?.teacherId
+                                                    }
+                                                    options={baseLineArr}
+                                                />
+                                            ) : (
+                                                <Input
+                                                    style={{
+                                                        width: '490px'
+                                                    }}
+                                                    name="teacherId"
+                                                    value={localStorage.getItem('LoginId')}
+                                                    disabled
+                                                />
+                                            )}
+                                        </Col>
+                                    </Row>
+                                </Form.Item>
+                            </Col>
+                        </Row>
                         <Row gutter={24}>
                             <Col span={24}>
                                 <Form.Item
@@ -875,7 +922,6 @@ export const EduProcAdd = () => {
                                 </Form.Item>
                             </Col>
                         </Row>
-
                         <Row gutter={24}>
                             <Col span={24}>
                                 <Form.Item
@@ -905,7 +951,6 @@ export const EduProcAdd = () => {
                                 </Form.Item>
                             </Col>
                         </Row>
-
                         <Row gutter={24}>
                             <Col span={24}>
                                 <Button
@@ -1020,7 +1065,6 @@ export const EduProcAdd = () => {
                                 </Form.Item>
                             </Col>
                         </Row>
-
                         <Row gutter={24}>
                             <Col span={12}>
                                 <Form.Item
@@ -1089,7 +1133,6 @@ export const EduProcAdd = () => {
                                 </Form.Item>
                             </Col>
                         </Row>
-
                         <Row gutter={24}>
                             <Col span={12}>
                                 <Form.Item
@@ -1186,7 +1229,6 @@ export const EduProcAdd = () => {
                                 </Descriptions>
                             </Col>
                         </Row>
-
                         <Divider style={{ margin: '10px 0' }} />
                         <Card bordered style={{ textAlign: 'center' }}>
                             <Row gutter={24}>

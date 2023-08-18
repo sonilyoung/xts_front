@@ -4204,7 +4204,7 @@ export const XrayinfoWrite = () => {
                 style={{ top: '60px' }}
                 extra={
                     <>
-                        <Space>
+                        <Space style={{ marginTop: '120px' }}>
                             <Tooltip title="취소" placement="bottom">
                                 <Button onClick={onAddClose} style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}>
                                     취소

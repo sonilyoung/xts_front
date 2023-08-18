@@ -39,7 +39,7 @@ import { CertificatesPrint } from './CertificatesPrint';
 
 // project import
 import MainCard from 'components/MainCard';
-import moment from 'moment';
+// import moment from 'moment';
 
 export const Studentinformation = () => {
     const { confirm } = Modal;
@@ -638,7 +638,8 @@ export const Studentinformation = () => {
                                 </Tooltip>
                                 <Tooltip title="삭제">
                                     <Button
-                                        type="danger"
+                                        type="primary"
+                                        danger
                                         onClick={handleDel}
                                         style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
                                         icon={<DeleteFilled />}
@@ -667,15 +668,15 @@ export const Studentinformation = () => {
 
             {/* 교육생 등록 Start */}
             <Drawer
-                maskClosable={false}
+                // maskClosable={false}
+
                 title={`교육생 ${dataEdit === true ? '수정' : '추가'}`}
                 onClose={onAddClose}
                 open={open}
                 width={700}
-                style={{ top: '60px' }}
                 extra={
                     <>
-                        <Space>
+                        <Space style={{ marginTop: '120px' }}>
                             <Tooltip title="취소" placement="bottom">
                                 <Button onClick={onAddClose} style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}>
                                     취소
@@ -807,14 +808,14 @@ export const Studentinformation = () => {
                                     <DatePicker
                                         name="writeDate"
                                         // onChange={(e) => setItemContainer({ ...itemContainer, writeDate: e.format('YYYY-MM-DD') })}
-                                        onChange={(e) => {
-                                            setItemContainer({ ...itemContainer, writeDate: e.format('YYYY-MM-DD') });
+                                        onChange={(date) => {
+                                            setItemContainer({ ...itemContainer, writeDate: date });
                                         }}
                                         placeholder="입교신청일"
                                         style={{
                                             width: '100%'
                                         }}
-                                        value={itemContainer?.writeDate ? moment(itemContainer.writeDate) : null}
+                                        value={itemContainer?.writeDate ? itemContainer.writeDate : null}
                                     />
                                 </Form.Item>
                             </Col>
@@ -1019,13 +1020,13 @@ export const Studentinformation = () => {
                                 >
                                     <DatePicker
                                         name="birthDay"
-                                        onChange={(e) => {
+                                        onChange={(date) => {
                                             setItemContainer({
                                                 ...itemContainer,
-                                                birthDay: e.format('YYYY-MM-DD')
+                                                birthDay: date
                                             });
                                         }}
-                                        value={itemContainer?.birthDay ? moment(itemContainer.birthDay) : null}
+                                        value={itemContainer?.birthDay ? itemContainer.birthDay : null}
                                         placeholder="생년월일"
                                         style={{
                                             width: '48%'
@@ -1371,17 +1372,16 @@ export const Studentinformation = () => {
                                             picker="month"
                                             locale={locale}
                                             onChange={(dates) => {
-                                                const [start, end] = dates;
                                                 setItemContainer({
                                                     ...itemContainer,
-                                                    militaryEndDate: end.format('YYYY-MM'),
+                                                    militaryEndDate: dates[1],
                                                     ...itemContainer,
-                                                    militaryStartDate: start.format('YYYY-MM')
+                                                    militaryStartDate: dates[0]
                                                 });
                                             }}
                                             value={[
-                                                itemContainer?.militaryStartDate ? moment(itemContainer.militaryStartDate) : null,
-                                                itemContainer?.militaryEndDate ? moment(itemContainer.militaryEndDate) : null
+                                                itemContainer?.militaryStartDate ? itemContainer.militaryStartDate : null,
+                                                itemContainer?.militaryEndDate ? itemContainer.militaryEndDate : null
                                             ]}
                                         />
                                         <Input
@@ -1457,17 +1457,16 @@ export const Studentinformation = () => {
                                                     picker="month"
                                                     locale={locale}
                                                     onChange={(dates) => {
-                                                        const [start, end] = dates;
                                                         setItemContainer({
                                                             ...itemContainer,
-                                                            careerEndDate1: end.format('YYYY-MM'),
+                                                            careerEndDate1: dates[1],
                                                             ...itemContainer,
-                                                            careerStartDate1: start.format('YYYY-MM')
+                                                            careerStartDate1: dates[0]
                                                         });
                                                     }}
                                                     value={[
-                                                        itemContainer?.careerStartDate1 ? moment(itemContainer.careerStartDate1) : null,
-                                                        itemContainer?.careerEndDate1 ? moment(itemContainer.careerEndDate1) : null
+                                                        itemContainer?.careerStartDate1 ? itemContainer.careerStartDate1 : null,
+                                                        itemContainer?.careerEndDate1 ? itemContainer.careerEndDate1 : null
                                                     ]}
                                                 />
                                                 <Input
@@ -1516,13 +1515,16 @@ export const Studentinformation = () => {
                                                     picker="month"
                                                     locale={locale}
                                                     onChange={(dates) => {
-                                                        const [start2, end2] = dates;
-                                                        setItemContainer({ ...itemContainer, careerStartDate2: start2.format('YYYY-MM') });
-                                                        setItemContainer({ ...itemContainer, careerEndDate2: end2.format('YYYY-MM') });
+                                                        setItemContainer({
+                                                            ...itemContainer,
+                                                            careerEndDate2: dates[1],
+                                                            ...itemContainer,
+                                                            careerStartDate2: dates[0]
+                                                        });
                                                     }}
                                                     value={[
-                                                        itemContainer?.careerStartDate2 ? moment(itemContainer.careerStartDate2) : null,
-                                                        itemContainer?.careerEndDate2 ? moment(itemContainer.careerEndDate2) : null
+                                                        itemContainer?.careerStartDate2 ? itemContainer.careerStartDate2 : null,
+                                                        itemContainer?.careerEndDate2 ? itemContainer.careerEndDate2 : null
                                                     ]}
                                                 />
                                                 <Input

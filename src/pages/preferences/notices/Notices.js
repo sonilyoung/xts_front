@@ -5,7 +5,7 @@ import { Col, Row, Button, Form, Input, Drawer, Table, Space, Tooltip, Tag, Swit
 import dayjs from 'dayjs';
 import weekday from 'dayjs/plugin/weekday';
 import localeData from 'dayjs/plugin/localeData';
-import 'antd/dist/antd.css';
+// import 'antd/dist/antd.css';
 // import { useGetNoticeListMutation } from '../../../hooks/api/ContentsManagement/ContentsManagement';
 import { PlusOutlined, EditFilled, DeleteFilled, ExclamationCircleFilled } from '@ant-design/icons';
 
@@ -411,7 +411,7 @@ export const Notices = () => {
                 }}
                 extra={
                     <>
-                        <Space>
+                        <Space style={{ marginTop: '120px' }}>
                             <Tooltip title="취소" placement="bottom">
                                 <Button onClick={onAddClose} style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}>
                                     취소

@@ -318,7 +318,8 @@ export const EduProc = () => {
                                 </Tooltip>
                                 <Tooltip title="삭제">
                                     <Button
-                                        type="danger"
+                                        type="primary"
+                                        danger
                                         onClick={handleDel}
                                         style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
                                         icon={<DeleteFilled />}

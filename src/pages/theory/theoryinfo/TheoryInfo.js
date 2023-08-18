@@ -21,7 +21,7 @@ import {
     message
 } from 'antd';
 const { Text, Link } = Typography;
-import 'antd/dist/antd.css';
+// import 'antd/dist/antd.css';
 import { PlusOutlined, EditFilled, DeleteFilled, ExclamationCircleFilled, DeleteOutlined, UploadOutlined } from '@ant-design/icons';
 
 import { useDropzone } from 'react-dropzone';
@@ -664,7 +664,8 @@ export const TheoryInfo = () => {
                                 </Tooltip>
                                 <Tooltip title="삭제">
                                     <Button
-                                        type="danger"
+                                        type="primary"
+                                        danger
                                         onClick={handleDel}
                                         style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
                                         icon={<DeleteFilled />}
@@ -696,10 +697,9 @@ export const TheoryInfo = () => {
                 onClose={onAddClose}
                 open={open}
                 width={650}
-                style={{ top: '60px' }}
                 extra={
                     <>
-                        <Space>
+                        <Space style={{ marginTop: '120px' }}>
                             <Tooltip title="취소" placement="bottom">
                                 <Button onClick={onAddClose} style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}>
                                     취소

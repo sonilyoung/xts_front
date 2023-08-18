@@ -22,7 +22,7 @@ import {
     Tabs,
     Typography
 } from '@mui/material';
-import 'antd/dist/antd.css';
+// import 'antd/dist/antd.css';
 import { Modal, Tooltip } from 'antd';
 // import { ExclamationCircleOutlined } from '@ant-design/icons';
 
