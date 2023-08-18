@@ -70,7 +70,9 @@ export const Theoryinformation = () => {
     const [SelectTheoryFileListApi] = useSelectTheoryFileListMutation(); // 이론강의 정보 hooks api호출
     const [selectTheoryFileListData, setSelectTheoryFileListData] = useState(); // 이론강의 정보 리스트 값
     const handle_SelectTheoryFileList_Api = async () => {
-        const SelectTheoryFileListresponse = await SelectTheoryFileListApi({});
+        const SelectTheoryFileListresponse = await SelectTheoryFileListApi({
+            searchval: searchval
+        });
         // console.log(SelectTheoryFileListresponse?.data?.RET_DATA);
         setSelectTheoryFileListData(SelectTheoryFileListresponse?.data?.RET_DATA);
         // console.log(SelectTheoryFileListresponse?.data?.RET_DATA);
@@ -427,7 +429,7 @@ export const Theoryinformation = () => {
     useEffect(() => {
         setLoading(true);
         handle_SelectTheoryFileList_Api();
-    }, []);
+    }, [searchval]);
 
     return (
         <>

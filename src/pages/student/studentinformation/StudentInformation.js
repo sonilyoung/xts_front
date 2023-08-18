@@ -72,7 +72,9 @@ export const Studentinformation = () => {
     const [SelectUserListApi] = useSelectUserListMutation(); // 교육생 정보 hooks api호출
     const [selectUserListData, setSelectUserListData] = useState(); // 교육생 정보 리스트 값
     const handle_SelectUserList_Api = async () => {
-        const SelectUserListresponse = await SelectUserListApi({});
+        const SelectUserListresponse = await SelectUserListApi({
+            searchval: searchval
+        });
         setSelectUserListData(SelectUserListresponse?.data?.RET_DATA);
         setDataSource([
             ...SelectUserListresponse?.data?.RET_DATA.map((d, i) => ({
@@ -602,7 +604,7 @@ export const Studentinformation = () => {
         return () => {
             window.removeEventListener('beforeunload', handleUnload);
         };
-    }, []);
+    }, [searchval]);
 
     return (
         <>
@@ -612,7 +614,7 @@ export const Studentinformation = () => {
                         <Col span={12}>
                             <div style={{ display: 'flex', justifyContent: 'flex-start', fontSize: '14px' }}>
                                 <Input.Search
-                                    placeholder="※ 통합 검색 (이론 과정, 이론 강의명, 이론 강의내용)"
+                                    placeholder="※ 통합 검색 (교육생ID, 교육생명, 기관, 부서, 직위, 교육구분, 입교신청일)"
                                     style={{ width: 483 }}
                                     onSearch={onSearch}
                                     allowClear

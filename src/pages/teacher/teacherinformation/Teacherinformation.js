@@ -40,7 +40,9 @@ export const Teacherinformation = () => {
     const [SelectTeacherListApi] = useSelectTeacherListMutation(); // 강사 정보 hooks api호출
     const [selectTeacherListData, setSelectTeacherListData] = useState(); // 강사 정보 리스트 값
     const handle_SelectTeacherList_Api = async () => {
-        const SelectTeacherListresponse = await SelectTeacherListApi({});
+        const SelectTeacherListresponse = await SelectTeacherListApi({
+            searchval: searchval
+        });
         setSelectTeacherListData(SelectTeacherListresponse?.data?.RET_DATA);
         setDataSource([
             ...SelectTeacherListresponse?.data?.RET_DATA.map((d, i) => ({
@@ -390,7 +392,7 @@ export const Teacherinformation = () => {
     useEffect(() => {
         setLoading(true);
         handle_SelectTeacherList_Api();
-    }, []);
+    }, [searchval]);
 
     return (
         <>

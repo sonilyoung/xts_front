@@ -42,7 +42,7 @@ export const Goodsgroup = () => {
     const [form] = Form.useForm();
     const [imgFile1, setImgFile1] = useState('');
     const [imgFile, setImgFile] = useState(null); // 파일 업로드 실물 이미지
-    const [searchval, setSearchval] = useState();
+    const [searchval, setSearchval] = useState(null);
     const [unitGroupKey, setUnitGroupKey] = useState();
     const [unitParams, setUnitParams] = useState({
         parentUnitGroupCd: '',
@@ -57,7 +57,8 @@ export const Goodsgroup = () => {
     // 그룹 데이터 값 선언
     const handleGroup = async () => {
         const Groupresponse = await getGroupList({
-            languageCode: languageCode
+            languageCode: languageCode,
+            searchval: searchval
         });
         setGroupBodyList(Groupresponse?.data?.RET_DATA);
         setDataSource([

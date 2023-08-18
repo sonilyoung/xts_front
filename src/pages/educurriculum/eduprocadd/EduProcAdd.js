@@ -109,7 +109,9 @@ export const EduProcAdd = () => {
     const [SelectBaselineListApi] = useSelectBaselineListMutation(); // 콘텐츠 정보 관리 hooks api호출
     const [selectBaselineListData, setSelectBaselineListData] = useState(); // 콘텐츠 정보관리 리스트 상단 값
     const handel_SelectBaselineList_Api = async () => {
-        const SelectBaselineListresponse = await SelectBaselineListApi({});
+        const SelectBaselineListresponse = await SelectBaselineListApi({
+            searchval: searchval
+        });
         setSelectBaselineListData([
             ...SelectBaselineListresponse?.data?.RET_DATA.map((d, i) => ({
                 key: d.procCd,
@@ -670,7 +672,7 @@ export const EduProcAdd = () => {
     useEffect(() => {
         setLoading(true); // 로딩 호출
         handel_SelectBaselineList_Api(); // 조회
-    }, []);
+    }, [searchval]);
 
     return (
         <>

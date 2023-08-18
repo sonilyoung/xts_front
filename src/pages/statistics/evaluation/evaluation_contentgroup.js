@@ -16,7 +16,9 @@ export const Evaluation_Contentgroup = () => {
 
     const [SelectStatisticsEvaluationGroupListApi] = useSelectStatisticsEvaluationGroupListMutation(); // 콘텐츠 정보 관리 hooks api호출
     const handel_SelectStatisticsEvaluationGroupList_Api = async () => {
-        const SelectStatisticsEvaluationGroupListresponse = await SelectStatisticsEvaluationGroupListApi({});
+        const SelectStatisticsEvaluationGroupListresponse = await SelectStatisticsEvaluationGroupListApi({
+            searchval: searchval
+        });
         setDataSource([
             ...SelectStatisticsEvaluationGroupListresponse?.data?.RET_DATA.map((d, i) => ({
                 key: d.procCd /* 차수번호 */,
@@ -129,7 +131,7 @@ export const Evaluation_Contentgroup = () => {
     useEffect(() => {
         setLoading(true); // 로딩 호출
         handel_SelectStatisticsEvaluationGroupList_Api(); // 조회
-    }, []);
+    }, [searchval]);
 
     return (
         <>

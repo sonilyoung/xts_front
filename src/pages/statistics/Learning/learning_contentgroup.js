@@ -16,7 +16,9 @@ export const Learning_Contentgroup = () => {
 
     const [SelectStatisticsLearningGroupListApi] = useSelectStatisticsLearningGroupListMutation(); // 콘텐츠 정보 관리 hooks api호출
     const handel_SelectStatisticsLearningGroupList_Api = async () => {
-        const SelectStatisticsLearningGroupListresponse = await SelectStatisticsLearningGroupListApi({});
+        const SelectStatisticsLearningGroupListresponse = await SelectStatisticsLearningGroupListApi({
+            searchval: searchval
+        });
         setDataSource([
             ...SelectStatisticsLearningGroupListresponse?.data?.RET_DATA.map((d, i) => ({
                 key: d.procCd /* 차수번호 */,
@@ -129,7 +131,7 @@ export const Learning_Contentgroup = () => {
     useEffect(() => {
         setLoading(true); // 로딩 호출
         handel_SelectStatisticsLearningGroupList_Api(); // 조회
-    }, []);
+    }, [searchval]);
 
     return (
         <>

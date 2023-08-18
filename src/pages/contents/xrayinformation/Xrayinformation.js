@@ -89,6 +89,9 @@ export const Xrayinformation = () => {
 
     const [searchtext, setSearchtext] = useState('');
 
+    const [searchval_one, setSearchval_one] = useState(null);
+    const [searchval_two, setSearchval_two] = useState(null);
+
     // 통합검색 엔터처리
     const searchEnter = (e) => {
         if (e.key === 'Enter') {
@@ -99,7 +102,9 @@ export const Xrayinformation = () => {
 
     // 데이터 값 선언
     const handleXrayinformation = async () => {
-        const Xrayinformationresponse = await getXrayinformationList({});
+        const Xrayinformationresponse = await getXrayinformationList({
+            searchval: searchval_one
+        });
         setXrayinformationList(Xrayinformationresponse?.data?.RET_DATA);
         setDataSource([
             ...Xrayinformationresponse?.data?.RET_DATA.map((d, i) => ({
@@ -141,7 +146,8 @@ export const Xrayinformation = () => {
 
     const handleXrayinformationSub = async (Select_bagScanId) => {
         const XrayinformationresponseSub = await getXrayinformationSubList({
-            bagScanId: Select_bagScanId
+            bagScanId: Select_bagScanId,
+            searchval: searchval_two
         });
         setXrayinformationSubList(XrayinformationresponseSub?.data?.RET_DATA);
         setDataSourceSub([
@@ -1054,18 +1060,17 @@ export const Xrayinformation = () => {
 
     const onSearch_one = (value) => {
         setSearchval_one(value);
+        handleXrayinformation();
     };
     const onSearch_two = (value) => {
         setSearchval_two(value);
-    };
-    const onSearch_three = (value) => {
-        setSearchval_three(value);
+        handleXrayinformationSub(bagScanId);
     };
 
     useEffect(() => {
         setLoading(true); // 로딩 호출
         handleXrayinformation(); // 그룹 api 호출
-    }, []);
+    }, [searchval_one]);
 
     return (
         <>

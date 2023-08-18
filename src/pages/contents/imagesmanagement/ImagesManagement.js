@@ -105,10 +105,10 @@ export const ImagesManagement = () => {
     const [unitParams, setUnitParams] = useState({});
     const [unitMultiple, setUnitMultiple] = useState([]); //멀티업로드 이미지
     const [uploadXrayImg] = useXrayImageUploadMutation(); // xray이미지 서버저장 api
-    const [searchval, setSearchval] = useState();
+    const [searchval, setSearchval] = useState(null);
 
     const handleUnit = async () => {
-        const getUnitListResponse = await getUnitList({ languageCode: languageCode });
+        const getUnitListResponse = await getUnitList({ languageCode: languageCode, searchval: searchval });
         setUnitList(getUnitListResponse?.data?.RET_DATA);
         setDataSource([
             ...getUnitListResponse?.data?.RET_DATA.map((d, i) => ({
@@ -595,14 +595,10 @@ export const ImagesManagement = () => {
         setSearchval(value);
     };
 
-    useEffect(
-        () => {
-            setLoading(true); // 로딩 호출
-            handleUnit();
-        },
-        [refresh],
-        searchval
-    );
+    useEffect(() => {
+        setLoading(true); // 로딩 호출
+        handleUnit();
+    }, [refresh, searchval]);
 
     return (
         <>

@@ -69,7 +69,9 @@ export const TheoryInfo = () => {
     const [SelectTheoryListApi] = useSelectTheoryListMutation();
     const [selectTheoryListData, setSelectTheoryListData] = useState();
     const handle_SelectTheoryList_Api = async () => {
-        const SelectTheoryListresponse = await SelectTheoryListApi({});
+        const SelectTheoryListresponse = await SelectTheoryListApi({
+            searchval: searchval
+        });
         setSelectTheoryListData([
             ...SelectTheoryListresponse?.data?.RET_DATA.map((d, i) => ({
                 key: d.questionId,
@@ -620,9 +622,9 @@ export const TheoryInfo = () => {
     useEffect(() => {
         setLoading(true);
         handle_SelectTheoryList_Api();
-        setLoading_L(true); // 대분류 로딩
-        handle_L_TheoryGroup_Api(); // 대분류 Api
-    }, []);
+        // setLoading_L(true); // 대분류 로딩
+        // handle_L_TheoryGroup_Api(); // 대분류 Api
+    }, [searchval]);
 
     useEffect(() => {
         handle_L_TheoryGroup_Api(); // 대분류 Api

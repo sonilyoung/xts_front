@@ -30,7 +30,7 @@ export const Language = () => {
     const [loading, setLoading] = useState(false); // 로딩 초기값
     const [open, setOpen] = useState(false); // Drawer 추가 우측폼 상태
     const [dataEdit, setDataEdit] = useState(false); // Drawer 수정 우측폼 상태
-    const [searchval, setSearchval] = useState();
+    const [searchval, setSearchval] = useState(null);
 
     // 추가 및 수정 input 기본값 정리
     const [codeNo, setCodeNo] = useState();
@@ -38,7 +38,9 @@ export const Language = () => {
     const [refresh, setRefresh] = useState(false); //리프레쉬
 
     const handleLanguage = async () => {
-        const Languageresponse = await getLanguageList({});
+        const Languageresponse = await getLanguageList({
+            searchval: searchval
+        });
         setLanguageList(Languageresponse?.data?.RET_DATA);
         setDataSource([
             ...Languageresponse?.data?.RET_DATA.map((d, i) => ({

@@ -54,7 +54,7 @@ export const Curriculum = () => {
     const [moduleNm, setModuleNm] = useState(); // 모듈 복사 모듈명
     const [copyModuleNm, setCopyModuleNm] = useState(); // 모듈 복사 모듈명
     const [confirmLoading, setConfirmLoading] = useState(false); // 복사 버튼 로딩
-    const [searchval, setSearchval] = useState();
+    const [searchval, setSearchval] = useState(null);
 
     // ===============================
     // Api 호출 Start
@@ -63,7 +63,9 @@ export const Curriculum = () => {
     const [selectModuleListData, setSelectModuleListData] = useState([]); // 조회 Data 값
     const [selectModuleListLoading, setSelectModuleListLoading] = useState(false); // 로딩
     const handel_selectModuleList_Api = async () => {
-        const SelectModuleListresponse = await selectModuleListApi({});
+        const SelectModuleListresponse = await selectModuleListApi({
+            searchval: searchval
+        });
         setSelectModuleListData([
             ...SelectModuleListresponse?.data?.RET_DATA.map((d, i) => ({
                 key: d.moduleId,
@@ -484,7 +486,7 @@ export const Curriculum = () => {
     useEffect(() => {
         setSelectModuleListLoading(true); // 로딩 호출
         handel_selectModuleList_Api(); // 조회
-    }, []);
+    }, [searchval]);
 
     return (
         <>

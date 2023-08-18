@@ -27,7 +27,9 @@ export const Theory_Performance = () => {
     // 이론평가 실적 Data
     const [SelectStatisticsTheoryListApi] = useSelectStatisticsTheoryListMutation(); // 콘텐츠 정보 관리 hooks api호출
     const handel_SelectStatisticsTheoryList_Api = async () => {
-        const SelectStatisticsTheoryListresponse = await SelectStatisticsTheoryListApi({});
+        const SelectStatisticsTheoryListresponse = await SelectStatisticsTheoryListApi({
+            searchval: searchval
+        });
         setDataSource([
             ...SelectStatisticsTheoryListresponse?.data?.RET_DATA.map((d, i) => ({
                 key: d.procCd /* 차수번호 */,
@@ -253,7 +255,7 @@ export const Theory_Performance = () => {
     useEffect(() => {
         setLoading(true); // 로딩 호출
         handel_SelectStatisticsTheoryList_Api(); // 조회
-    }, []);
+    }, [searchval]);
 
     return (
         <>
