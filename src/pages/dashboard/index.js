@@ -1,7 +1,8 @@
 /* eslint-disable no-unused-vars */
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../../src/';
 // material-ui
+import { FloatButton } from 'antd';
 import { Box, Grid, Typography } from '@mui/material';
 
 // project import
@@ -84,6 +85,7 @@ export const DashboardDefault = () => {
                     </Grid>*/}
                 </Grid>
             ) : null}
+            <FloatButton.BackTop />
         </>
     );
 };
