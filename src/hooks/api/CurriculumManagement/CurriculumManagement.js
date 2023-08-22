@@ -249,6 +249,15 @@ export const curriculumManagement = createApi({
                 method: 'POST',
                 body: body
             })
+        }),
+
+        // Xray배점관리 > 삭제 (하단)
+        selectTeacherList: builder.mutation({
+            query: (body) => ({
+                url: 'adm/userMgr/selectTeacherList.do',
+                method: 'POST',
+                body: body
+            })
         })
     })
 });
@@ -284,5 +293,7 @@ export const {
     useInsertPointStdDetailMutation, // Xray배점관리 등록 (하단)
     useSelectPointStdDetailMutation, // Xray배점관리 상세 (하단)
     useUpdatePointStdDetailMutation, // Xray배점관리 수정 (하단)
-    useDeletePointStdDetailMutation // Xray배점관리 삭제 (하단)
+    useDeletePointStdDetailMutation, // Xray배점관리 삭제 (하단)
+
+    useSelectTeacherListMutation // 강사 리스트
 } = curriculumManagement;

@@ -30,7 +30,8 @@ import {
     useInsertBaselineMutation, // 차수 관리 등록
     useUpdateBaselineMutation, // 차수 관리 수정
     useDeleteBaselineMutation, // 차수 관리 삭제
-    useInsertBaselineCopyMutation // 차수 관리 차수 복사
+    useInsertBaselineCopyMutation, // 차수 관리 차수 복사
+    useSelectTeacherListMutation // 강사 리스트
 } from '../../../hooks/api/CurriculumManagement/CurriculumManagement';
 
 import dayjs from 'dayjs';
@@ -133,6 +134,21 @@ export const EduProcAdd = () => {
             }))
         ]);
         setLoading(false);
+    };
+
+    // 강사 리스트 조회
+    const [SelectTeacherListApi] = useSelectTeacherListMutation(); // 상세 hooks api호출
+    const [teacherValue, setTeacherValue] = useState();
+    const handel_SelectTeacherList_Api = async () => {
+        const SelectTeacherListResponse = await SelectTeacherListApi({});
+        // setTeacherValue(SelectTeacherListResponse?.data?.RET_DATA);
+
+        setTeacherValue(
+            SelectTeacherListResponse?.data?.RET_DATA.map((t) => ({
+                value: t.userId,
+                label: t.userNm
+            }))
+        );
     };
 
     const defaultColumns = [
@@ -319,7 +335,8 @@ export const EduProcAdd = () => {
             menuList: menuArry,
             moduleList: moduleArry,
             userList: stuList,
-            userId: localStorage.getItem('LoginId')
+            userId: localStorage.getItem('LoginId'),
+            teacherId: itemContainer.teacherId
         });
 
         InsertBaselineresponse?.data?.RET_CODE === '0100'
@@ -374,7 +391,8 @@ export const EduProcAdd = () => {
             scheduleList: studyDayArry,
             menuList: menuArry,
             moduleList: moduleArry,
-            userList: stuList
+            userList: stuList,
+            teacherId: itemContainer.teacherId
         });
 
         UpdateBaselineresponse?.data?.RET_CODE === '0100'
@@ -672,6 +690,7 @@ export const EduProcAdd = () => {
     useEffect(() => {
         setLoading(true); // 로딩 호출
         handel_SelectBaselineList_Api(); // 조회
+        handel_SelectTeacherList_Api(); // 강사 리스트
     }, [searchval]);
 
     return (
@@ -803,7 +822,7 @@ export const EduProcAdd = () => {
                                                               }
                                                             : itemContainer?.teacherId
                                                     }
-                                                    options={baseLineArr}
+                                                    options={teacherValue}
                                                 />
                                             ) : (
                                                 <Input

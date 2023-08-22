@@ -137,8 +137,10 @@ const LeftMenus = () => {
         <>
             <DrawerHeaderStyled sx={{ height: '130px' }}>
                 <Stack direction="row" spacing={1} alignItems="center" onClick={DashCalls}>
-                    <Link>
-                        <div style={{ textAlign: 'center', fontSize: '23px', paddingBottom: '10px' }}>XBT ADMINISTRATOR</div>
+                    <Link style={{ textDecoration: 'none' }}>
+                        <div style={{ textAlign: 'center', fontSize: '23px', paddingBottom: '10px', color: '#7da7cb' }}>
+                            XBT ADMINISTRATOR
+                        </div>
                         <div style={{ textAlign: 'center', fontSize: '15px', color: '#fff' }}>X-ray Based Training System</div>
                     </Link>
                 </Stack>

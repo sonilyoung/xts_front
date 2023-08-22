@@ -32,11 +32,10 @@ const items = [
         getItem('X-ray 콘텐츠 관리', 'g2', <BlockOutlined />, [
             getItem(<Link to="/contents/xrayinformation">정보 관리</Link>, '4', <FileTextOutlined />),
             getItem('이미지 관리', '5', <FileTextOutlined />)
-        ])
-         , getItem('실제사례 콘텐츠 관리', 'g4', <BlockOutlined />, [getItem('실제사례 관리', '8', <FileTextOutlined />)])
+        ]),
+        getItem('실제사례 콘텐츠 관리', 'g4', <BlockOutlined />, [getItem('실제사례 관리', '8', <FileTextOutlined />)])
     ]),
 
-    
     getItem('학습 관리', 'sub2', <AppstoreAddOutlined />, [
         getItem('교육 모듈구성', 'g5', <BlockOutlined />, [
             getItem(<Link to="/learning/xraymodule">X-ray 판독모듈 구성</Link>, '9', <FileTextOutlined />),
@@ -128,12 +127,12 @@ const LeftMenus = () => {
     return (
         <>
             <DrawerHeaderStyled sx={{ height: '120px' }}>
-                <Stack direction="row" spacing={1} alignItems="center" onClick={DashCalls}>
-                    <Link>
-                        <div style={{ textAlign: 'center', fontSize: '18px' }}>XBT ADMINISTRATOR</div>
+                <Link>
+                    <Stack direction="row" spacing={1} alignItems="center" onClick={DashCalls}>
+                        <div style={{ textAlign: 'center', fontSize: '18px', color: '#fff' }}>XBT ADMINISTRATOR</div>
                         <div style={{ textAlign: 'center', fontSize: '12px', color: '#fff' }}>X-ray Based Training System</div>
-                    </Link>
-                </Stack>
+                    </Stack>
+                </Link>
             </DrawerHeaderStyled>
 
             <Menu
