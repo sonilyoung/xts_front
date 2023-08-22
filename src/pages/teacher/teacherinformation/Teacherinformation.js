@@ -551,12 +551,28 @@ export const Teacherinformation = () => {
                                         value={itemContainer?.eduName}
                                         options={[
                                             {
-                                                label: '보안검색요원 초기교육',
-                                                value: '보안검색요원 초기교육'
+                                                label: '보안검색요원 초기 교육 [5일/40시간]',
+                                                value: '1'
                                             },
                                             {
-                                                label: '항공경비요원 초기교육',
-                                                value: '항공경비요원 초기교육'
+                                                label: '보안검색요원 정기 교육 [1일/8시간]',
+                                                value: '2'
+                                            },
+                                            {
+                                                label: '보안검색요원 인증평가 교육 [1일/4시간]',
+                                                value: '3'
+                                            },
+                                            {
+                                                label: '항공경비요원 초기교육 [4일/30시간]',
+                                                value: '4'
+                                            },
+                                            {
+                                                label: '항공경비요원 정기 교육 [1일/8시간]',
+                                                value: '5'
+                                            },
+                                            {
+                                                label: '항공경비요원 인증평가 교육 [1일/4시간]',
+                                                value: '6'
                                             }
                                         ]}
                                     />
