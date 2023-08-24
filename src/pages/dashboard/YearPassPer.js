@@ -5,6 +5,9 @@ import { useState, useEffect } from 'react';
 // third-party
 import ReactApexChart from 'react-apexcharts';
 
+// 연도별합격별
+import { useSelectMainYearStatisticsMutation } from '../../hooks/api/MainManagement/MainManagement';
+
 // chart options
 const areaChartOptions = {
     chart: {
@@ -61,12 +64,19 @@ const areaChartOptions = {
 // ==============================|| INCOME AREA CHART ||============================== //
 const IncomeAreaChart = () => {
     const [options, setOptions] = useState(areaChartOptions);
-    useEffect(() => {
+    const [series, setSeries] = useState([]);
+    const [loading, setLoading] = useState(false);
+
+    // ===============================
+    // Api 호출 Start
+    // 조회 ======================================================
+    const [SelectMainYearStatisticsApi] = useSelectMainYearStatisticsMutation(); // 콘텐츠 정보 관리 hooks api호출
+    const handel_SelectMainYearStatistics_Api = async () => {
+        const SelectMainYearStatisticsResponse = await SelectMainYearStatisticsApi({});
         setOptions((prevState) => ({
             ...prevState,
-            // colors: [theme.palette.primary.main, theme.palette.primary[400]],
             xaxis: {
-                categories: ['2016', '2017', '2018', '2019', '2020', '2021', '2022']
+                categories: SelectMainYearStatisticsResponse?.data?.RET_DATA?.categories
             },
             yaxis: {
                 title: {
@@ -74,26 +84,34 @@ const IncomeAreaChart = () => {
                 }
             }
         }));
-    }, []);
 
-    const [series, setSeries] = useState([
-        {
-            name: '교육인원',
-            data: [14, 20, 23, 25, 26, 15, 18]
-        },
-        {
-            name: '합격자',
-            data: [5, 9, 12, 18, 23, 10, 16]
-        },
-        {
-            name: '평균',
-            data: [7, 9, 18, 20, 25, 20, 15]
-        }
-    ]);
+        setSeries([
+            {
+                name: '교육인원',
+                data: SelectMainYearStatisticsResponse?.data?.RET_DATA?.totCntList
+            },
+            {
+                name: '합격자',
+                data: SelectMainYearStatisticsResponse?.data?.RET_DATA?.passCntList
+            },
+            {
+                name: '평균',
+                data: SelectMainYearStatisticsResponse?.data?.RET_DATA?.passPercentList
+            }
+        ]);
+        setLoading(false);
+    };
+    // Api 호출 Start
+    // ===============================
+
+    useEffect(() => {
+        setLoading(true);
+        handel_SelectMainYearStatistics_Api();
+    }, []);
 
     return (
         <div id="chart">
-            <ReactApexChart options={options} series={series} type="line" height={400} />
+            <ReactApexChart loading={loading} options={options} series={series} type="line" height={400} />
         </div>
     );
 };

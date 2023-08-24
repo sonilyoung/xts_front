@@ -21,7 +21,7 @@ function getItem(label, key, icon, children, type) {
     };
 }
 const items =
-    localStorage.getItem('authCd') === 'ADMIN'
+    localStorage.getItem('authCd') === '0000'
         ? [
               getItem('콘텐츠 관리', 'sub1', <AppstoreAddOutlined />, [
                   getItem('물품 콘텐츠 관리', 'g1', <BlockOutlined />, [
