@@ -185,9 +185,9 @@ export const StudySch = (props) => {
                                         }}
                                         disabled={
                                             totStudyDateList.length - 1 === index
-                                                ? [false, true]
+                                                ? [false, false]
                                                 : index === 0
-                                                ? [true, false]
+                                                ? [false, false]
                                                 : [false, false]
                                         }
                                     />
