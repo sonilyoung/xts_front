@@ -978,7 +978,7 @@ export const EduProcAdd = () => {
                                     onClick={EduDay_Modal}
                                     disabled={!itemContainer?.eduStartDate || !itemContainer?.eduEndDate || !itemContainer?.totStudyDate}
                                 >
-                                    학습일 설정
+                                    학습과정 설정
                                 </Button>
                             </Col>
                         </Row>

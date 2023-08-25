@@ -69,7 +69,6 @@ export const StudySch = (props) => {
             setTotStudyDateList(initialTotStudyDateList);
         }
 
-        // setModuleListSet(props.SetModuleList);
         setModuleListSet(props.SetModuleList !== null ? props.SetModuleList : Array(props.TotStudyDate).fill(0));
 
         setMenuListSet(props.SetMenuList);
@@ -87,13 +86,13 @@ export const StudySch = (props) => {
                                         style={{
                                             float: 'right',
                                             cursor: 'pointer',
-                                            padding: '11px 46px',
+                                            padding: '11px 40px',
                                             borderRadius: '5px',
                                             fontSize: '14px'
                                         }}
                                         onClick={handel_Add}
                                     >
-                                        저장
+                                        학습과정 적용
                                     </Tag>
                                 </Tooltip>
                             </Space>
