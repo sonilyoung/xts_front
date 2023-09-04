@@ -114,12 +114,16 @@ export const Notices = () => {
             align: 'center',
             render: (text) => (
                 <div style={{ cursor: 'pointer' }}>
-                    <Button type="text" onClick={(e) => 
-                        console.log(e)
-                        // setLoadingView(true)
-                        // setNoticeId(record.key);
-                        // handleCallView(record.rowdata0);
-                    }>{text}</Button>
+                    <Button
+                        type="text"
+                        onClick={() => {
+                            setLoadingView(true);
+                            setNoticeId(record.key);
+                            handleCallView(record.rowdata0);
+                        }}
+                    >
+                        {text}
+                    </Button>
                 </div>
             )
         },
