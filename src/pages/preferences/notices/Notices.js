@@ -1,11 +1,8 @@
 /* eslint-disable no-unused-vars */
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Typography } from '@mui/material';
-import { Col, Row, Button, Form, Input, Drawer, Table, Space, Tooltip, Tag, Switch, Modal, DatePicker, Descriptions } from 'antd';
-import dayjs from 'dayjs';
-import weekday from 'dayjs/plugin/weekday';
-import localeData from 'dayjs/plugin/localeData';
-//import 'antd/dist/antd.css';
+import { Col, Row, Button, Form, Input, Drawer, Table, Space, Tooltip, Tag, Switch, Modal, DatePicker, Descriptions, Radio } from 'antd';
+import MainCard from 'components/MainCard';
 import {
     useGetNoticeListMutation,
     useInsertNoticeMutation,
@@ -14,17 +11,23 @@ import {
 } from '../../../hooks/api/ContentsManagement/ContentsManagement';
 import { PlusOutlined, EditFilled, DeleteFilled, ExclamationCircleFilled } from '@ant-design/icons';
 
-// project import
-import MainCard from 'components/MainCard';
+import dayjs from 'dayjs';
+import weekday from 'dayjs/plugin/weekday';
+import localeData from 'dayjs/plugin/localeData';
+
+const { RangePicker } = DatePicker;
 
 export const Notices = () => {
-    const { confirm } = Modal;
-    const { TextArea } = Input;
     dayjs.extend(weekday);
     dayjs.extend(localeData);
+
+    const { confirm } = Modal;
+    const { TextArea } = Input;
     const [form] = Form.useForm();
 
-    const [getNoticeList] = useGetNoticeListMutation(); // hooks api호출
+    const [getNoticeList] = useGetNoticeListMutation(); // hooks api호출 리스트 호출
+    const [SelectNoticeApi] = useSelectNoticeMutation(); // hooks api호출 상세 호출
+
     const [itemContainer, setItemContainer] = useState({}); // 리스트 값(원래 변수명: noticeList)
     const [dataSource, setDataSource] = useState([]); // Table 데이터 값
     const [dataSourceView, setDataSourceView] = useState([]); // Table 데이터 값
@@ -41,7 +44,7 @@ export const Notices = () => {
         setDataSource([
             ...GetNoticeList?.data?.RET_DATA.map((noticeData, noticeIndex) => ({
                 key: noticeData.noticeId, //갱신, 삭제 등에 필요한 데이터
-                rowdata0: noticeIndex, //index값
+                rowdata0: noticeIndex + 1, //index값
                 rowdata1: noticeData.title, // 제목
                 rowdata2: noticeData.contents, // 내용
                 rowdata3: noticeData.insertDate, // 생성일자
@@ -50,48 +53,11 @@ export const Notices = () => {
         ]);
     };
 
-    const handleCallView = (ViewData) => {
-        setIsModalOpen(true);
-        console.log(`${dataSource[ViewData]?.rowdata4}`);
-        setDataSourceView(
-            dataSource[ViewData] != undefined
-                ? {
-                      key: `${dataSource[ViewData]?.key}`, //갱신, 삭제 등에 필요한 데이터
-                      rowdata0: `${ViewData}`, //index값
-                      rowdata1: `${dataSource[ViewData]?.rowdata1}`, // 제목
-                      rowdata2: `${dataSource[ViewData]?.rowdata2}`, // 내용
-                      rowdata3: `${dataSource[ViewData]?.rowdata3}`, // 생성일자
-                      rowdata4: `${dataSource[ViewData]?.rowdata4}` // 사용 여부
-                  }
-                : ''
-            /*ViewData === '1'
-                ? {
-                      key: '1',
-                      rowdata0: '1',
-                      rowdata1: '공지사항 테스트 1',
-                      rowdata2: '공지사항 테스트 1\nContents\t줄바꿈\n테스트',
-                      rowdata3: '2023-01-05'
-                  }
-                : ViewData === '2'
-                ? {
-                      key: '2',
-                      rowdata0: '2',
-                      rowdata1: '공지사항 테스트 2',
-                      rowdata2: '공지사항 테스트 2 Contents',
-                      rowdata3: '2023-01-12'
-                  }
-                : ViewData === '3'
-            */
-        );
-    };
-
-    // 상세
-    const [SelectNotice] = useSelectNoticeMutation();
-    const handle_SelectNotice_Api = async (noticeId) => {
-        const SelectNoticeDetailResponse = await SelectNotice({
-            noticeId: noticeId
+    const handleCallView = async (ViewData) => {
+        const SelectNoticeApiRequest = await SelectNoticeApi({
+            noticeId: ViewData
         });
-        setItemContainer(SelectNoticeDetailResponse.data.RET_DATA);
+        setItemContainer(SelectNoticeApiRequest.data.RET_DATA);
     };
 
     const defaultColumns = [
@@ -112,19 +78,18 @@ export const Notices = () => {
             title: '제목',
             dataIndex: 'rowdata1',
             align: 'center',
-            render: (text) => (
-                <div style={{ cursor: 'pointer' }}>
-                    <Button
-                        type="text"
-                        onClick={() => {
-                            setLoadingView(true);
-                            setNoticeId(record.key);
-                            handleCallView(record.rowdata0);
-                        }}
-                    >
-                        {text}
-                    </Button>
-                </div>
+            render: (_, { key, rowdata1 }) => (
+                <Button
+                    type="text"
+                    onClick={() => {
+                        setLoadingView(true);
+                        setIsModalOpen(true);
+                        // setNoticeId(rowdata0);
+                        handleCallView(key);
+                    }}
+                >
+                    {rowdata1}
+                </Button>
             )
         },
         {
@@ -134,11 +99,11 @@ export const Notices = () => {
             dataIndex: 'rowdata2',
             render: (_, { rowdata4 }) =>
                 rowdata4 === 'Y' ? (
-                    <Tag style={{ width: '60px', borderRadius: '5px', padding: '0 10px' }} color="#87d068">
-                        {rowdata4}
+                    <Tag style={{ width: '60px', borderRadius: '5px', padding: '0 10px', textAlign: 'center' }} color="#87d068">
+                        사용
                     </Tag>
                 ) : (
-                    <Tag style={{ width: '60px', borderRadius: '5px', padding: '0 10px' }}> {rowdata4}</Tag>
+                    <Tag style={{ width: '60px', borderRadius: '5px', padding: '0 10px', textAlign: 'center' }}> 미사용</Tag>
                 ),
             align: 'center'
         },
@@ -202,8 +167,9 @@ export const Notices = () => {
 
     // 수정버튼
     const handleEdit = async (key) => {
-        await handle_SelectNotice_Api(key);
         form.resetFields();
+        handleCallView(key);
+        setNoticeId(key);
         setIsModalOpen(false);
         setDataEdit(true);
         setOpen(true);
@@ -213,7 +179,6 @@ export const Notices = () => {
     const handleAdd = () => {
         setOpen(true);
         setDataEdit(false);
-        //setItemContainer({});
         console.log('add', itemContainer);
         form.resetFields();
     };
@@ -227,40 +192,57 @@ export const Notices = () => {
         form.resetFields();
     };
 
-    // 수정
+    // 수정 ======================================================
     const [UpdateNotice] = useUpdateNoticeMutation();
+    const Notice_Update_Submit = async () => {
+        const UpdateModulResponse = await UpdateNotice({
+            noticeId: noticeId,
+            title: itemContainer.moduleNm,
+            contents: itemContainer.moduleDesc,
+            useYn: itemContainer.useYn,
+            insertDate: itemContainer.insertDate
+        });
+
+        UpdateModulResponse?.data?.RET_CODE === '0100'
+            ? Modal.success({
+                  content: '수정 완료',
+                  onOk() {
+                      setOpen(false);
+                      setDataEdit(false);
+                      form.resetFields();
+                      handleCall();
+                  }
+              })
+            : Modal.error({
+                  content: '수정 오류',
+                  onOk() {}
+              });
+    };
+
     // 추가
     const [InsertNotice] = useInsertNoticeMutation();
-    // 등록자명(로그인 한 관리자명) 가져올 필요 있음
-    // 추가 등록 및 수정 처리
-    const NoticeSubmit = async () => {
-        if (dataEdit === true) {
-            setItemContainer({ ...itemContainer, updateDate: `${dayjs(new Date())}` });
-            console.table(itemContainer);
-            //await UpdateNotice(itemContainer);
-            Modal.success({
-                content: '수정 완료',
-                onOk() {
-                    setOpen(false);
-                    setIsModalOpen(true);
-                    handleCallView(noticeId);
-                    setDataEdit(false);
-                    form.resetFields();
-                }
-            });
-        } else {
-            setItemContainer({ ...itemContainer, insertDate: dayjs(new Date()) });
-            console.table(itemContainer);
-            //await InsertNotice(itemContainer);
-            Modal.success({
-                content: '추가 완료',
-                onOk() {
-                    setOpen(false);
-                    setDataEdit(false);
-                    form.resetFields();
-                }
-            });
-        }
+    const Notice_Insert_Submit = async () => {
+        const InsertModulResponse = await InsertNotice({
+            title: itemContainer.moduleNm,
+            contents: itemContainer.moduleDesc,
+            useYn: itemContainer.useYn,
+            insertDate: itemContainer.insertDate
+        });
+
+        InsertModulResponse?.data?.RET_CODE === '0100'
+            ? Modal.success({
+                  content: '추가 완료',
+                  onOk() {
+                      setOpen(false);
+                      setDataEdit(false);
+                      form.resetFields();
+                      handleCall();
+                  }
+              })
+            : Modal.error({
+                  content: '추가 오류',
+                  onOk() {}
+              });
     };
 
     // 삭제처리
@@ -363,7 +345,7 @@ export const Notices = () => {
                 title={`공지사항 ${dataEdit === true ? '수정' : '추가'}`}
                 onClose={onAddClose}
                 open={open}
-                width={400}
+                width={650}
                 style={{ top: '60px' }}
                 bodyStyle={{
                     Top: 100,
@@ -380,7 +362,7 @@ export const Notices = () => {
                             {dataEdit === true ? (
                                 <Tooltip title="수정" placement="bottom" color="#108ee9">
                                     <Button
-                                        onClick={NoticeSubmit}
+                                        onClick={Notice_Update_Submit}
                                         style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
                                         type="primary"
                                     >
@@ -390,7 +372,7 @@ export const Notices = () => {
                             ) : (
                                 <Tooltip title="추가" placement="bottom" color="#108ee9">
                                     <Button
-                                        onClick={NoticeSubmit}
+                                        onClick={Notice_Insert_Submit}
                                         style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
                                         type="primary"
                                     >
@@ -404,27 +386,39 @@ export const Notices = () => {
             >
                 <MainCard>
                     <Form layout="vertical" form={form}>
-                        <Row gutter={16}>
+                        <Row gutter={24}>
                             <Col span={24}>
                                 <Form.Item
-                                    name="NoticeData"
                                     label="공지일자"
                                     rules={[
                                         {
                                             required: true,
-                                            message: 'Please Enter Notice Subject'
+                                            message: '공지일자'
                                         }
                                     ]}
-                                    initialValue={dayjs(new Date())}
-                                    //defaultValue={dayjs(new Date())}
+                                    initialValue={itemContainer?.insertDate}
                                 >
-                                    <DatePicker style={{ width: '100%' }} />
+                                    <Row>
+                                        <Col>
+                                            <DatePicker
+                                                name="insertDate"
+                                                onChange={(date) => {
+                                                    setItemContainer({ ...itemContainer, insertDate: date });
+                                                }}
+                                                placeholder="공지일자"
+                                                style={{
+                                                    width: '560px'
+                                                }}
+                                                value={itemContainer?.insertDate ? dayjs(itemContainer.insertDate) : dayjs(new Date())}
+                                            />
+                                        </Col>
+                                    </Row>
                                 </Form.Item>
                             </Col>
                         </Row>
-                        <Row gutter={16}>
+
+                        <Row gutter={24}>
                             <Col span={24}>
-                                {/* label="제목" -> label="Subject"로 변경 : Sejun */}
                                 <Form.Item
                                     name="Subject"
                                     label="제목"
@@ -434,18 +428,23 @@ export const Notices = () => {
                                             message: 'Please Enter Notice Subject'
                                         }
                                     ]}
-                                    initialValue={dataSourceView?.rowdata1}
+                                    initialValue={itemContainer?.title}
                                 >
-                                    <Input
-                                        className="Subject"
-                                        placeholder="Please Enter Notice Subject"
-                                        onChange={(e) => setItemContainer({ ...itemContainer, title: e.target.value })}
-                                        value={itemContainer?.rowdata1}
-                                    />
+                                    <Row>
+                                        <Col>
+                                            <Input
+                                                name="title"
+                                                placeholder="Please Enter Notice title"
+                                                onChange={(e) => setItemContainer({ ...itemContainer, title: e.target.value })}
+                                                value={itemContainer?.title}
+                                                style={{ width: '560px' }}
+                                            />
+                                        </Col>
+                                    </Row>
                                 </Form.Item>
                             </Col>
                         </Row>
-                        <Row gutter={16}>
+                        <Row gutter={24}>
                             <Col span={24}>
                                 {/* label="내용" -> label="Contents"로 변경 : Sejun */}
                                 <Form.Item
@@ -457,35 +456,48 @@ export const Notices = () => {
                                             message: 'Please Enter Notice Contents'
                                         }
                                     ]}
-                                    initialValue={dataSourceView?.rowdata2}
+                                    initialValue={dataSourceView?.contents}
                                 >
-                                    <TextArea
-                                        className="Contents"
-                                        placeholder="Please Enter Notice Contents"
-                                        autoSize={{
-                                            minRows: 5,
-                                            maxRows: 10
-                                        }}
-                                        onChange={(e) => setItemContainer({ ...itemContainer, contents: e.target.value })}
-                                        value={itemContainer?.rowdata2}
-                                    />
+                                    <Row>
+                                        <Col>
+                                            <TextArea
+                                                name="contents"
+                                                placeholder="Please Enter Notice Contents"
+                                                autoSize={{
+                                                    minRows: 5,
+                                                    maxRows: 10
+                                                }}
+                                                onChange={(e) => setItemContainer({ ...itemContainer, contents: e.target.value })}
+                                                style={{ width: '560px' }}
+                                                value={itemContainer?.contents}
+                                            />
+                                        </Col>
+                                    </Row>
                                 </Form.Item>
                             </Col>
                         </Row>
-                        <Row gutter={16}>
+                        <Row gutter={24}>
                             <Col span={24}>
                                 {/* label="사용여부" -> label="UseYn"으로 변경 : Sejun */}
-                                <Form.Item label="사용여부" name="useYn" valuePropName="checked">
-                                    <Switch
-                                        className="UseYn"
-                                        checkedChildren="사용"
-                                        unCheckedChildren="미사용"
-                                        style={{ width: '80px' }}
-                                        defaultChecked={dataSourceView?.rowdata4 === 'Y' ? true : false}
-                                        onChange={(checked, event) => {
-                                            setItemContainer({ ...itemContainer, useYn: checked });
-                                        }}
-                                    />
+                                <Form.Item label="사용여부" name="useYn">
+                                    <Row>
+                                        <Col>
+                                            <Radio.Group
+                                                name="useYn"
+                                                onChange={(e) => setItemContainer({ ...itemContainer, useYn: e.target.value })}
+                                                buttonStyle="solid"
+                                                value={itemContainer?.useYn}
+                                            >
+                                                <Radio.Button value="Y">
+                                                    <span style={{ padding: '0 10px' }}>사용</span>
+                                                </Radio.Button>
+                                                <span style={{ padding: '0 10px' }}></span>
+                                                <Radio.Button value="N">
+                                                    <span style={{ padding: '0 10px' }}>미사용</span>
+                                                </Radio.Button>
+                                            </Radio.Group>
+                                        </Col>
+                                    </Row>
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -511,21 +523,11 @@ export const Notices = () => {
                     </Button>
                 ]}
             >
-                <Descriptions title={dataSourceView.rowdata1} style={{ marginTop: 20 }}>
+                <Descriptions title={itemContainer?.rowdata1} style={{ marginTop: 20 }}>
                     <Row>
                         <Col span={8}></Col>
                         <Col span={8} offset={8} style={{ textAlign: 'right' }}>
                             <Space>
-                                {/* <Tooltip title="수정" color="#108ee9">
-                                    <Button
-                                        type="primary"
-                                        onClick={handleEdit}
-                                        style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
-                                        icon={<EditFilled />}
-                                    >
-                                        수정
-                                    </Button>
-                                </Tooltip> */}
                                 <Tooltip title="삭제" color="#f50">
                                     <Button
                                         type="danger"
@@ -542,18 +544,18 @@ export const Notices = () => {
                 </Descriptions>
                 <Descriptions bordered style={{ marginTop: '-1px' }}>
                     <Descriptions.Item label="공지일자" style={{ textAlign: 'center', width: '150px' }}>
-                        <div style={{ textAlign: 'left' }}>{dataSourceView?.rowdata3}</div>
+                        <div style={{ textAlign: 'left' }}>{itemContainer?.insertDate}</div>
                     </Descriptions.Item>
                 </Descriptions>
                 <Descriptions bordered style={{ marginTop: '-1px' }}>
                     <Descriptions.Item label="제목" style={{ textAlign: 'center', width: '150px' }}>
-                        <div style={{ textAlign: 'left' }}>{dataSourceView?.rowdata1}</div>
+                        <div style={{ textAlign: 'left' }}>{itemContainer?.title}</div>
                     </Descriptions.Item>
                 </Descriptions>
                 <Descriptions bordered style={{ marginTop: '-1px' }}>
                     <Descriptions.Item label="내용" style={{ textAlign: 'center', width: '150px' }}>
                         <div style={{ textAlign: 'left' }}>
-                            {dataSourceView?.rowdata2?.split('/\n/g').map((line) => {
+                            {itemContainer?.contents?.split('/\n/g').map((line) => {
                                 return <div style={{ whiteSpace: 'pre-wrap' }}>{line}</div>;
                             })}
                         </div>
@@ -561,28 +563,6 @@ export const Notices = () => {
                 </Descriptions>
             </Modal>
             {/* 모달 창 End */}
-            {/* 테스트 */}
-            <Descriptions>
-                <Descriptions.Item label="title" style={{ textAlign: 'center', width: '150px' }}>
-                    <div style={{ textAlign: 'left' }}>{`${itemContainer?.title}`}</div>
-                </Descriptions.Item>
-            </Descriptions>
-            <Descriptions>
-                <Descriptions.Item label="contents" style={{ textAlign: 'center', width: '150px' }}>
-                    <div style={{ textAlign: 'left' }}>{`${itemContainer?.contents}`}</div>
-                </Descriptions.Item>
-            </Descriptions>
-            <Descriptions>
-                <Descriptions.Item label="useYn" style={{ textAlign: 'center', width: '150px' }}>
-                    <div style={{ textAlign: 'left' }}>{`${itemContainer?.useYn}`}</div>
-                </Descriptions.Item>
-            </Descriptions>
-            <Descriptions>
-                <Descriptions.Item label="DatasourceViewUseYn" style={{ textAlign: 'center', width: '150px' }}>
-                    <div style={{ textAlign: 'left' }}>{`${dataSourceView?.rowdata4}`}</div>
-                </Descriptions.Item>
-            </Descriptions>
-            {/* 테스트 */}
         </>
     );
 };
