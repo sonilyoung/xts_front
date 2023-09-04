@@ -68,7 +68,7 @@ export const Learning_Contentgroup = () => {
             render: (_, { rowdata7 }) => (
                 <>
                     <Badge
-                        style={{ width: '45px', height: '30px', lineHeight: '30px' }}
+                        style={{ width: '35px', height: '35px', lineHeight: '35px', borderRadius: '50%' }}
                         count={rowdata7.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                         color="blue"
                         overflowCount={999}
@@ -83,7 +83,7 @@ export const Learning_Contentgroup = () => {
             render: (_, { rowdata5 }) => (
                 <>
                     <Badge
-                        style={{ width: '45px', height: '30px', lineHeight: '30px' }}
+                        style={{ width: '35px', height: '35px', lineHeight: '35px', borderRadius: '50%' }}
                         count={rowdata5.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                         color="green"
                         overflowCount={999}
@@ -98,7 +98,7 @@ export const Learning_Contentgroup = () => {
             render: (_, { rowdata6 }) => (
                 <>
                     <Badge
-                        style={{ width: '45px', height: '30px', lineHeight: '30px' }}
+                        style={{ width: '35px', height: '35px', lineHeight: '35px', borderRadius: '50%' }}
                         count={rowdata6.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                         color="volcano"
                         overflowCount={999}
