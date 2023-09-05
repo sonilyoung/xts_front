@@ -21,7 +21,7 @@ const NavCard = () => (
                     Checkout Jun features
                 </Typography>
             </Stack> */}
-            <AnimateButton>JUN Copyright @2023 </AnimateButton>
+            <AnimateButton>KSSA Copyright @2023 </AnimateButton>
         </Stack>
     </MainCard>
 );

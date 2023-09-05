@@ -10,6 +10,7 @@ import { useTheme } from '@mui/material/styles';
 
 import { AppstoreAddOutlined, BlockOutlined, FileTextOutlined } from '@ant-design/icons';
 import { Menu, Divider } from 'antd';
+import Logo_Bottom from 'components/Logo_Bottom';
 
 function getItem(label, key, icon, children, type) {
     return {
@@ -135,6 +136,9 @@ const LeftMenus = () => {
 
     return (
         <>
+            <div style={{ textAlign: 'center', fontSize: '23px', paddingTop: '30px', color: '#7da7cb' }}>
+                <Logo_Bottom />
+            </div>
             <DrawerHeaderStyled sx={{ height: '130px' }}>
                 <Stack direction="row" spacing={1} alignItems="center" onClick={DashCalls}>
                     <Link style={{ textDecoration: 'none' }}>
