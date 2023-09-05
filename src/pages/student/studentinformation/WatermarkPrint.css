@@ -14,7 +14,7 @@
     transform: 'translate(-50%, -50%)';
     width: 80%;
     height: 80%;
-    background-image: url('../../../images/kssa_logo.png'); /* 로고 이미지 경로를 수정하세요 */
+    background-image: url('../../../assets/images/kssa_logo.png'); /* 로고 이미지 경로를 수정하세요 */
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
