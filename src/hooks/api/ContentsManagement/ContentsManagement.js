@@ -288,6 +288,51 @@ export const contentsManagement = createApi({
                 method: 'POST',
                 body: body
             })
+        }),
+
+        // 공지사항 조회
+        getNoticeList: builder.mutation({
+            query: (body) => ({
+                url: "/adm/system/selectNoticeList.do",
+                method: "POST",
+                body: body
+            })
+        }),
+
+        // 공지사항 등록
+        insertNotice: builder.mutation({
+            query: (body) => ({
+                url: "/adm/system/insertNotice.do",
+                method: "POST",
+                body: body
+            })
+        }),
+
+        // 공지사항 수정
+        updateNotice: builder.mutation({
+            query: (body) => ({
+                url: "/adm/system/updateNotice.do",
+                method: "POST",
+                body: body
+            })
+        }),
+
+        // 공지사항 상세
+        selectNotice: builder.mutation({
+            query: (body) => ({
+                url: "/adm/system/selectNotice.do",
+                method: "POST",
+                body: body
+            })
+        }),
+
+        // 공지사항 삭제
+        deleteNotice: builder.mutation({
+            query: (body) => ({
+                url: "/adm/system/deleteNotice.do",
+                method: "POST",
+                body: body
+            })
         })
     })
 });
@@ -322,5 +367,10 @@ export const {
     useSelectXrayImgContentsMutation, //xray컨텐츠 이미지상세정보가져오기
     useUpdateXrayContentsImgMutation, //xray컨텐츠 이미지업로드(db)
     useXrayImageUploadMutation, //xray컨텐츠 이미지업로드(db)
-    useSelectImgMutation
+    useSelectImgMutation,
+    useGetNoticeListMutation, //공지사항 조회
+    useInsertNoticeMutation, //공지사항 등록
+    useUpdateNoticeMutation, //공지사항 수정
+    useSelectNoticeMutation, //공지사항 상세
+    useDeleteNoticeMutation //공지사항 삭제
 } = contentsManagement;

@@ -1,26 +1,42 @@
 /* eslint-disable no-unused-vars */
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Typography } from '@mui/material';
-import { Col, Row, Button, Form, Input, Drawer, Table, Space, Tooltip, Tag, Switch, Modal, DatePicker, Descriptions } from 'antd';
+import { Col, Row, Button, Form, Input, Drawer, Table, Space, Tooltip, Tag, Switch, Modal, DatePicker, Descriptions, Radio } from 'antd';
+import MainCard from 'components/MainCard';
+import {
+    useGetNoticeListMutation,
+    useInsertNoticeMutation,
+    useSelectNoticeMutation,
+    useUpdateNoticeMutation,
+    useDeleteNoticeMutation
+} from '../../../hooks/api/ContentsManagement/ContentsManagement';
+import { PlusOutlined, EditFilled, DeleteFilled, ExclamationCircleFilled } from '@ant-design/icons';
+
 import dayjs from 'dayjs';
 import weekday from 'dayjs/plugin/weekday';
 import localeData from 'dayjs/plugin/localeData';
-// import 'antd/dist/antd.css';
-// import { useGetNoticeListMutation } from '../../../hooks/api/ContentsManagement/ContentsManagement';
-import { PlusOutlined, EditFilled, DeleteFilled, ExclamationCircleFilled } from '@ant-design/icons';
 
-// project import
-import MainCard from 'components/MainCard';
+//test
+import { NoticeEditor } from './NoticeEditor';
+
+const { RangePicker } = DatePicker;
 
 export const Notices = () => {
-    const { confirm } = Modal;
-    const { TextArea } = Input;
+    const currentDateTime = new Date();
+    const minutes = currentDateTime.getMinutes();
+    const seconds = currentDateTime.getSeconds();
+
     dayjs.extend(weekday);
     dayjs.extend(localeData);
+
+    const { confirm } = Modal;
+    const { TextArea } = Input;
     const [form] = Form.useForm();
 
-    // const [getNoticeList] = useGetNoticeListMutation(); // hooks api호출
-    // const [noticeList, setNoticeList] = useState(); // 리스트 값
+    const [getNoticeList] = useGetNoticeListMutation(); // hooks api호출 리스트 호출
+    const [SelectNoticeApi] = useSelectNoticeMutation(); // hooks api호출 상세 호출
+
+    const [itemContainer, setItemContainer] = useState({}); // 리스트 값(원래 변수명: noticeList)
     const [dataSource, setDataSource] = useState([]); // Table 데이터 값
     const [dataSourceView, setDataSourceView] = useState([]); // Table 데이터 값
     const [noticeId, setNoticeId] = useState(); //선택 값
@@ -31,166 +47,30 @@ export const Notices = () => {
     const [loadingView, setLoadingView] = useState(false); // 로딩 초기값
     const [open, setOpen] = useState(false); // Drawer 추가 우측폼 상태
 
-    const handleCall = () => {
+    //Editor
+    const editor = useRef(null);
+    const [uploadedFiles, setUploadedFiles] = useState([]); // 파일 업로드 값
+    const [selectedFiles, setSelectedFiles] = useState([]); // 파일 업로드
+
+    const handleCall = async () => {
+        const GetNoticeList = await getNoticeList({});
         setDataSource([
-            {
-                key: '1',
-                rowdata0: '1',
-                rowdata1: '공지사항 테스트 1',
-                rowdata2: '사용',
-                rowdata3: '2023-01-05'
-            },
-            {
-                key: '2',
-                rowdata0: '2',
-                rowdata1: '공지사항 테스트 2',
-                rowdata2: '사용',
-                rowdata3: '2023-01-12'
-            },
-            {
-                key: '3',
-                rowdata0: '3',
-                rowdata1: '공지사항 테스트 3',
-                rowdata2: '사용',
-                rowdata3: '2023-01-21'
-            },
-            {
-                key: '4',
-                rowdata0: '4',
-                rowdata1: '공지사항 테스트 4',
-                rowdata2: '미사용',
-                rowdata3: '2023-01-28'
-            },
-            {
-                key: '5',
-                rowdata0: '5',
-                rowdata1: '공지사항 테스트 5',
-                rowdata2: '사용',
-                rowdata3: '2023-02-01'
-            },
-            {
-                key: '6',
-                rowdata0: '6',
-                rowdata1: '공지사항 테스트 6',
-                rowdata2: '사용',
-                rowdata3: '2023-02-11'
-            },
-            {
-                key: '7',
-                rowdata0: '7',
-                rowdata1: '공지사항 테스트 7',
-                rowdata2: '미사용',
-                rowdata3: '2023-02-14'
-            },
-            {
-                key: '8',
-                rowdata0: '8',
-                rowdata1: '공지사항 테스트 8',
-                rowdata2: '사용',
-                rowdata3: '2023-02-19'
-            },
-            {
-                key: '9',
-                rowdata0: '9',
-                rowdata1: '공지사항 테스트 9',
-                rowdata2: '사용',
-                rowdata3: '2023-02-21'
-            },
-            {
-                key: '10',
-                rowdata0: '10',
-                rowdata1: '공지사항 테스트 10',
-                rowdata2: '사용',
-                rowdata3: '2023-02-24'
-            }
+            ...GetNoticeList?.data?.RET_DATA.map((noticeData, noticeIndex) => ({
+                key: noticeData.noticeId, //갱신, 삭제 등에 필요한 데이터
+                rowdata0: noticeIndex + 1, //index값
+                rowdata1: noticeData.title, // 제목
+                rowdata2: noticeData.contents, // 내용
+                rowdata3: noticeData.insertDate, // 생성일자
+                rowdata4: noticeData.useYn // 사용 여부
+            }))
         ]);
     };
 
-    const handleCallView = (ViewData) => {
-        setIsModalOpen(true);
-        setDataSourceView(
-            ViewData === '1'
-                ? {
-                      key: '1',
-                      rowdata0: '1',
-                      rowdata1: '공지사항 테스트 1',
-                      rowdata2: '공지사항 테스트 1\nContents\t줄바꿈\n테스트',
-                      rowdata3: '2023-01-05'
-                  }
-                : ViewData === '2'
-                ? {
-                      key: '2',
-                      rowdata0: '2',
-                      rowdata1: '공지사항 테스트 2',
-                      rowdata2: '공지사항 테스트 2 Contents',
-                      rowdata3: '2023-01-12'
-                  }
-                : ViewData === '3'
-                ? {
-                      key: '3',
-                      rowdata0: '3',
-                      rowdata1: '공지사항 테스트 3',
-                      rowdata2: '공지사항 테스트 3 Contents',
-                      rowdata3: '2023-01-21'
-                  }
-                : ViewData === '4'
-                ? {
-                      key: '4',
-                      rowdata0: '4',
-                      rowdata1: '공지사항 테스트 4',
-                      rowdata2: '공지사항 테스트 4 Contents',
-                      rowdata3: '2023-01-28'
-                  }
-                : ViewData === '5'
-                ? {
-                      key: '5',
-                      rowdata0: '5',
-                      rowdata1: '공지사항 테스트 5',
-                      rowdata2: '공지사항 테스트 5 Contents',
-                      rowdata3: '2023-02-01'
-                  }
-                : ViewData === '6'
-                ? {
-                      key: '6',
-                      rowdata0: '6',
-                      rowdata1: '공지사항 테스트 6',
-                      rowdata2: '공지사항 테스트 6 Contents',
-                      rowdata3: '2023-02-11'
-                  }
-                : ViewData === '7'
-                ? {
-                      key: '7',
-                      rowdata0: '7',
-                      rowdata1: '공지사항 테스트 7',
-                      rowdata2: '공지사항 테스트 7 Contents',
-                      rowdata3: '2023-02-14'
-                  }
-                : ViewData === '8'
-                ? {
-                      key: '8',
-                      rowdata0: '8',
-                      rowdata1: '공지사항 테스트 8',
-                      rowdata2: '공지사항 테스트 8 Contents',
-                      rowdata3: '2023-02-19'
-                  }
-                : ViewData === '9'
-                ? {
-                      key: '9',
-                      rowdata0: '9',
-                      rowdata1: '공지사항 테스트 9',
-                      rowdata2: '공지사항 테스트 9 Contents',
-                      rowdata3: '2023-02-21'
-                  }
-                : ViewData === '10'
-                ? {
-                      key: '10',
-                      rowdata0: '10',
-                      rowdata1: '공지사항 테스트 10',
-                      rowdata2: '공지사항 테스트 10 Contents',
-                      rowdata3: '2023-02-24'
-                  }
-                : ''
-        );
+    const handleCallView = async (ViewData) => {
+        const SelectNoticeApiRequest = await SelectNoticeApi({
+            noticeId: ViewData
+        });
+        setItemContainer(SelectNoticeApiRequest.data.RET_DATA);
     };
 
     const defaultColumns = [
@@ -211,12 +91,18 @@ export const Notices = () => {
             title: '제목',
             dataIndex: 'rowdata1',
             align: 'center',
-            render: (text) => (
-                <div style={{ cursor: 'pointer' }}>
-                    <Tooltip title="Click">
-                        <div>{text}</div>
-                    </Tooltip>
-                </div>
+            render: (_, { key, rowdata1 }) => (
+                <Button
+                    type="text"
+                    onClick={() => {
+                        setLoadingView(true);
+                        setIsModalOpen(true);
+                        // setNoticeId(rowdata0);
+                        handleCallView(key);
+                    }}
+                >
+                    {rowdata1}
+                </Button>
             )
         },
         {
@@ -224,13 +110,13 @@ export const Notices = () => {
             title: '사용여부',
             key: 'key',
             dataIndex: 'rowdata2',
-            render: (_, { rowdata2 }) =>
-                rowdata2 === '사용' ? (
-                    <Tag style={{ width: '60px', borderRadius: '5px', padding: '0 10px' }} color="#87d068">
-                        {rowdata2}
+            render: (_, { rowdata4 }) =>
+                rowdata4 === 'Y' ? (
+                    <Tag style={{ width: '60px', borderRadius: '5px', padding: '0 10px', textAlign: 'center' }} color="#87d068">
+                        사용
                     </Tag>
                 ) : (
-                    <Tag style={{ width: '60px', borderRadius: '5px', padding: '0 10px' }}> {rowdata2}</Tag>
+                    <Tag style={{ width: '60px', borderRadius: '5px', padding: '0 10px', textAlign: 'center' }}> 미사용</Tag>
                 ),
             align: 'center'
         },
@@ -240,11 +126,33 @@ export const Notices = () => {
             dataIndex: 'rowdata3',
             render: (_, { rowdata3 }) => <>{rowdata3 === '' || rowdata3 === null ? '-' : rowdata3}</>,
             align: 'center'
+        },
+        {
+            width: '120px',
+            title: '수정',
+            render: (_, { key }) => (
+                <>
+                    <Tooltip title="수정" color="#108ee9">
+                        <Button
+                            type="primary"
+                            onClick={() => {
+                                handleEdit(key);
+                            }}
+                            style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                            icon={<EditFilled />}
+                        >
+                            수정
+                        </Button>
+                    </Tooltip>
+                </>
+            ),
+            align: 'center'
         }
     ];
 
     const handleSave = (row) => {
         const newData = [...dataSource];
+        console.log('new Data: ', newData);
         const index = newData.findIndex((item) => row.key === item.key);
         const item = newData[index];
         newData.splice(index, 1, {
@@ -270,10 +178,21 @@ export const Notices = () => {
         };
     });
 
+    // 수정버튼
+    const handleEdit = async (key) => {
+        form.resetFields();
+        handleCallView(key);
+        setNoticeId(key);
+        setIsModalOpen(false);
+        setDataEdit(true);
+        setOpen(true);
+    };
+
     // 추가
     const handleAdd = () => {
         setOpen(true);
         setDataEdit(false);
+        console.log('add', itemContainer);
         form.resetFields();
     };
 
@@ -281,43 +200,89 @@ export const Notices = () => {
     const onAddClose = () => {
         setOpen(false);
         setDataEdit(false);
+        setItemContainer({});
+        console.log('cancel', itemContainer);
         form.resetFields();
     };
 
-    // 추가 등록 및 수정 처리
-    const NoticeSubmit = () => {
-        if (dataEdit === true) {
-            Modal.success({
-                content: '수정 완료',
-                onOk() {
-                    setOpen(false);
-                    setIsModalOpen(true);
-                    handleCallView(noticeId);
-                    setDataEdit(false);
-                    form.resetFields();
-                }
-            });
-        } else {
-            Modal.success({
-                content: '추가 완료',
-                onOk() {
-                    setOpen(false);
-                    setDataEdit(false);
-                    form.resetFields();
-                }
-            });
-        }
+    // Editor에서 수정된 값 적용
+    const editor_onChange = (html) => {
+        setItemContainer({ ...itemContainer, contents: html });
     };
 
-    // 수정버튼
-    const handleEdit = () => {
-        setDataEdit(true);
-        setIsModalOpen(false);
-        setOpen(true);
+    // Editor에서 업로드한 파일 추가
+    const editor_add_files = (files) => {
+        setSelectedFiles(files);
     };
 
+    // Editor에서 업로드 된 파일 삭제
+    const editor_delete_files = (index) => {
+        console.log('delete files');
+        console.log(index);
+        setUploadedFiles((prevFiles) => {
+            const updatedFiles = [...prevFiles];
+            updatedFiles.splice(index, 1);
+            return updatedFiles;
+        });
+    };
+
+    // TODO: useYn, Files 추가 요청
+    // 수정 ======================================================
+    const [UpdateNotice] = useUpdateNoticeMutation();
+    const Notice_Update_Submit = async () => {
+        const UpdateModulResponse = await UpdateNotice({
+            noticeId: noticeId,
+            title: itemContainer.moduleNm,
+            contents: itemContainer.moduleDesc,
+            useYn: itemContainer.useYn,
+            insertDate: itemContainer.insertDate
+        });
+
+        UpdateModulResponse?.data?.RET_CODE === '0100'
+            ? Modal.success({
+                  content: '수정 완료',
+                  onOk() {
+                      setOpen(false);
+                      setDataEdit(false);
+                      form.resetFields();
+                      handleCall();
+                  }
+              })
+            : Modal.error({
+                  content: '수정 오류',
+                  onOk() {}
+              });
+    };
+
+    // TODO: useYn 추가 요청
+    const [InsertNotice] = useInsertNoticeMutation();
+    const Notice_Insert_Submit = async () => {
+        const InsertModulResponse = await InsertNotice({
+            title: itemContainer.moduleNm,
+            contents: itemContainer.moduleDesc,
+            useYn: itemContainer.useYn,
+            insertDate: itemContainer.insertDate
+        });
+
+        InsertModulResponse?.data?.RET_CODE === '0100'
+            ? Modal.success({
+                  content: '추가 완료',
+                  onOk() {
+                      setOpen(false);
+                      setDataEdit(false);
+                      form.resetFields();
+                      handleCall();
+                  }
+              })
+            : Modal.error({
+                  content: '추가 오류',
+                  onOk() {}
+              });
+    };
+
+    const [DeleteNotice] = useDeleteNoticeMutation();
     // 삭제처리
-    const handleDel = () => {
+    const Notice_Delete_Submit = () => {
         setDataEdit(false);
         confirm({
             title: '선택한 항목을 삭제하시겠습니까?',
@@ -326,12 +291,20 @@ export const Notices = () => {
             okText: '예',
             okType: 'danger',
             cancelText: '아니오',
-            onOk() {
-                Modal.success({
-                    content: '삭제완료'
+            async onOk() {
+                const DeleteNoticeResponse = await DeleteNotice({
+                    noticeId: selectedRowKeys
                 });
+                DeleteNoticeResponse?.data?.RET_CODE === '0100'
+                    ? Modal.success({
+                          content: '삭제 완료'
+                      })
+                    : Modal.error({
+                          content: '삭제 오류'
+                      });
                 setIsModalOpen(false);
                 setDataEdit(false);
+                handleCall();
             },
             onCancel() {
                 Modal.error({
@@ -339,6 +312,18 @@ export const Notices = () => {
                 });
             }
         });
+    };
+
+    //체크 박스 이벤트
+    const onSelectChange = (newSelectedRowKeys) => {
+        console.log('selectedRowKeys changed: ', newSelectedRowKeys);
+        setSelectedRowKeys(newSelectedRowKeys);
+    };
+
+    //체크 박스 선택
+    const rowSelection = {
+        selectedRowKeys,
+        onChange: onSelectChange
     };
 
     const handleOk = () => {
@@ -372,26 +357,27 @@ export const Notices = () => {
                                         추가
                                     </Button>
                                 </Tooltip>
+                                <Tooltip title="삭제" color="#f50">
+                                    <Button
+                                        type="danger"
+                                        onClick={Notice_Delete_Submit}
+                                        style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                        icon={<DeleteFilled />}
+                                    >
+                                        삭제
+                                    </Button>
+                                </Tooltip>
                             </Space>
                         </Col>
                     </Row>
-
                     <Table
                         bordered={true}
                         dataSource={dataSource}
                         loading={loading}
                         columns={columns}
+                        rowSelection={{ ...rowSelection }}
                         rowClassName={(record) => {
-                            return record.rowdata0 === noticeId ? `table-row-lightblue` : '';
-                        }}
-                        onRow={(record) => {
-                            return {
-                                onClick: () => {
-                                    setLoadingView(true);
-                                    setNoticeId(record.rowdata0);
-                                    handleCallView(record.rowdata0);
-                                }
-                            };
+                            return record.key === noticeId ? `table-row-lightblue` : '';
                         }}
                     />
                 </Typography>
@@ -403,7 +389,7 @@ export const Notices = () => {
                 title={`공지사항 ${dataEdit === true ? '수정' : '추가'}`}
                 onClose={onAddClose}
                 open={open}
-                width={400}
+                width={1000}
                 style={{ top: '60px' }}
                 bodyStyle={{
                     Top: 100,
@@ -420,7 +406,7 @@ export const Notices = () => {
                             {dataEdit === true ? (
                                 <Tooltip title="수정" placement="bottom" color="#108ee9">
                                     <Button
-                                        onClick={NoticeSubmit}
+                                        onClick={Notice_Update_Submit}
                                         style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
                                         type="primary"
                                     >
@@ -430,7 +416,7 @@ export const Notices = () => {
                             ) : (
                                 <Tooltip title="추가" placement="bottom" color="#108ee9">
                                     <Button
-                                        onClick={NoticeSubmit}
+                                        onClick={Notice_Insert_Submit}
                                         style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
                                         type="primary"
                                     >
@@ -444,23 +430,38 @@ export const Notices = () => {
             >
                 <MainCard>
                     <Form layout="vertical" form={form}>
-                        <Row gutter={16}>
+                        <Row gutter={24}>
                             <Col span={24}>
                                 <Form.Item
-                                    name="NoticeData"
                                     label="공지일자"
                                     rules={[
                                         {
                                             required: true,
-                                            message: 'Please Enter Notice Subject'
+                                            message: '공지일자'
                                         }
                                     ]}
+                                    initialValue={itemContainer?.insertDate}
                                 >
-                                    <DatePicker defaultValue={dayjs(new Date())} style={{ width: '100%' }} />
+                                    <Row>
+                                        <Col>
+                                            <DatePicker
+                                                name="insertDate"
+                                                onChange={(date) => {
+                                                    setItemContainer({ ...itemContainer, insertDate: date });
+                                                }}
+                                                placeholder="공지일자"
+                                                style={{
+                                                    width: '560px'
+                                                }}
+                                                value={itemContainer?.insertDate ? dayjs(itemContainer.insertDate) : dayjs(new Date())}
+                                            />
+                                        </Col>
+                                    </Row>
                                 </Form.Item>
                             </Col>
-                        </Row>{' '}
-                        <Row gutter={16}>
+                        </Row>
+
+                        <Row gutter={24}>
                             <Col span={24}>
                                 <Form.Item
                                     name="Subject"
@@ -471,13 +472,25 @@ export const Notices = () => {
                                             message: 'Please Enter Notice Subject'
                                         }
                                     ]}
+                                    initialValue={itemContainer?.title}
                                 >
-                                    <Input placeholder="Please Enter Notice Subject" />
+                                    <Row>
+                                        <Col>
+                                            <Input
+                                                name="title"
+                                                placeholder="Please Enter Notice title"
+                                                onChange={(e) => setItemContainer({ ...itemContainer, title: e.target.value })}
+                                                value={itemContainer?.title}
+                                                style={{ width: '560px' }}
+                                            />
+                                        </Col>
+                                    </Row>
                                 </Form.Item>
                             </Col>
                         </Row>
-                        <Row gutter={16}>
+                        <Row gutter={24}>
                             <Col span={24}>
+                                {/* label="내용" -> label="Contents"로 변경 : Sejun */}
                                 <Form.Item
                                     name="Contents"
                                     label="내용"
@@ -487,21 +500,64 @@ export const Notices = () => {
                                             message: 'Please Enter Notice Contents'
                                         }
                                     ]}
+                                    initialValue={itemContainer?.contents}
                                 >
-                                    <TextArea
-                                        placeholder="Please Enter Notice Contents"
-                                        autoSize={{
-                                            minRows: 5,
-                                            maxRows: 10
-                                        }}
-                                    />
+                                    <Row>
+                                        <Col>
+                                            <NoticeEditor
+                                                itemContainer={itemContainer}
+                                                editor_onChange={editor_onChange}
+                                                editor_add_files={editor_add_files}
+                                                editor_delete_files={editor_delete_files}
+                                            ></NoticeEditor>
+                                            {/* <TextArea
+                                                name="contents"
+                                                placeholder="Please Enter Notice Contents"
+                                                autoSize={{
+                                                    minRows: 5,
+                                                    maxRows: 10
+                                                }}
+                                                onChange={(e) => setItemContainer({ ...itemContainer, contents: e.target.value })}
+                                                style={{ width: '560px' }}
+                                                value={itemContainer?.contents}
+                                            /> */}
+                                        </Col>
+                                    </Row>
+                                    {/* <Row>
+                                        <Col>
+                                            <NoticeModify
+                                                ModalClose={onAddClose}
+                                                seqIdProps={noticeId}
+                                                datetime={minutes + seconds}
+                                                SaveClose={handleCall}
+                                            ></NoticeModify>
+                                        </Col>
+                                    </Row> */}
                                 </Form.Item>
                             </Col>
                         </Row>
-                        <Row gutter={16}>
+                        <Row gutter={24}>
                             <Col span={24}>
-                                <Form.Item name="useYn" label="사용여부">
-                                    <Switch checkedChildren="사용" unCheckedChildren="미사용" style={{ width: '80px' }} />
+                                {/* label="사용여부" -> label="UseYn"으로 변경 : Sejun */}
+                                <Form.Item label="사용여부" name="useYn">
+                                    <Row>
+                                        <Col>
+                                            <Radio.Group
+                                                name="useYn"
+                                                onChange={(e) => setItemContainer({ ...itemContainer, useYn: e.target.value })}
+                                                buttonStyle="solid"
+                                                value={itemContainer?.useYn}
+                                            >
+                                                <Radio.Button value="Y">
+                                                    <span style={{ padding: '0 10px' }}>사용</span>
+                                                </Radio.Button>
+                                                <span style={{ padding: '0 10px' }}></span>
+                                                <Radio.Button value="N">
+                                                    <span style={{ padding: '0 10px' }}>미사용</span>
+                                                </Radio.Button>
+                                            </Radio.Group>
+                                        </Col>
+                                    </Row>
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -527,25 +583,15 @@ export const Notices = () => {
                     </Button>
                 ]}
             >
-                <Descriptions title={dataSourceView.rowdata1} style={{ marginTop: 20 }}>
+                <Descriptions title={itemContainer?.rowdata1} style={{ marginTop: 20 }}>
                     <Row>
                         <Col span={8}></Col>
                         <Col span={8} offset={8} style={{ textAlign: 'right' }}>
                             <Space>
-                                <Tooltip title="수정" color="#108ee9">
-                                    <Button
-                                        type="primary"
-                                        onClick={handleEdit}
-                                        style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
-                                        icon={<EditFilled />}
-                                    >
-                                        수정
-                                    </Button>
-                                </Tooltip>
                                 <Tooltip title="삭제" color="#f50">
                                     <Button
                                         type="danger"
-                                        onClick={handleDel}
+                                        onClick={Notice_Delete_Submit}
                                         style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
                                         icon={<DeleteFilled />}
                                     >
@@ -558,18 +604,18 @@ export const Notices = () => {
                 </Descriptions>
                 <Descriptions bordered style={{ marginTop: '-1px' }}>
                     <Descriptions.Item label="공지일자" style={{ textAlign: 'center', width: '150px' }}>
-                        <div style={{ textAlign: 'left' }}>{dataSourceView?.rowdata3}</div>
+                        <div style={{ textAlign: 'left' }}>{itemContainer?.insertDate}</div>
                     </Descriptions.Item>
                 </Descriptions>
                 <Descriptions bordered style={{ marginTop: '-1px' }}>
                     <Descriptions.Item label="제목" style={{ textAlign: 'center', width: '150px' }}>
-                        <div style={{ textAlign: 'left' }}>{dataSourceView?.rowdata1}</div>
+                        <div style={{ textAlign: 'left' }}>{itemContainer?.title}</div>
                     </Descriptions.Item>
                 </Descriptions>
                 <Descriptions bordered style={{ marginTop: '-1px' }}>
                     <Descriptions.Item label="내용" style={{ textAlign: 'center', width: '150px' }}>
                         <div style={{ textAlign: 'left' }}>
-                            {dataSourceView?.rowdata2?.split('/\n/g').map((line) => {
+                            {itemContainer?.contents?.split('/\n/g').map((line) => {
                                 return <div style={{ whiteSpace: 'pre-wrap' }}>{line}</div>;
                             })}
                         </div>
@@ -577,6 +623,35 @@ export const Notices = () => {
                 </Descriptions>
             </Modal>
             {/* 모달 창 End */}
+            <Descriptions bordered style={{ marginTop: '-1px' }}>
+                <Descriptions.Item label="공지일자" style={{ textAlign: 'center', width: '150px' }}>
+                    <div style={{ textAlign: 'left' }}>{itemContainer?.insertDate}</div>
+                </Descriptions.Item>
+            </Descriptions>
+            <Descriptions bordered style={{ marginTop: '-1px' }}>
+                <Descriptions.Item label="제목" style={{ textAlign: 'center', width: '150px' }}>
+                    <div style={{ textAlign: 'left' }}>{itemContainer?.title}</div>
+                </Descriptions.Item>
+            </Descriptions>
+            <Descriptions bordered style={{ marginTop: '-1px' }}>
+                <Descriptions.Item label="내용" style={{ textAlign: 'center', width: '150px' }}>
+                    <div style={{ textAlign: 'left' }}>
+                        {itemContainer?.contents?.split('/\n/g').map((line) => {
+                            return <div style={{ whiteSpace: 'pre-wrap' }}>{line}</div>;
+                        })}
+                    </div>
+                </Descriptions.Item>
+            </Descriptions>
+            <Descriptions bordered style={{ marginTop: '-1px' }}>
+                <Descriptions.Item label="첨부파일" style={{ textAlign: 'center', width: '150px' }}>
+                    <div style={{ textAlign: 'left' }}>{selectedFiles?.length}</div>
+                </Descriptions.Item>
+            </Descriptions>
+            <Descriptions bordered style={{ marginTop: '-1px' }}>
+                <Descriptions.Item label="내용" style={{ textAlign: 'center', width: '150px' }}>
+                    <div style={{ textAlign: 'left' }}>{itemContainer?.useYn}</div>
+                </Descriptions.Item>
+            </Descriptions>
         </>
     );
 };
