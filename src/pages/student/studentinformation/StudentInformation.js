@@ -39,7 +39,7 @@ import { CertificatesPrint } from './CertificatesPrint';
 
 // project import
 import MainCard from 'components/MainCard';
-// import moment from 'moment';
+import moment from 'moment';
 
 export const Studentinformation = () => {
     const { confirm } = Modal;
@@ -70,12 +70,10 @@ export const Studentinformation = () => {
     // Api 호출 Start
     // 조회 ======================================================
     const [SelectUserListApi] = useSelectUserListMutation(); // 교육생 정보 hooks api호출
-    const [selectUserListData, setSelectUserListData] = useState(); // 교육생 정보 리스트 값
     const handle_SelectUserList_Api = async () => {
         const SelectUserListresponse = await SelectUserListApi({
             searchval: searchval
         });
-        setSelectUserListData(SelectUserListresponse?.data?.RET_DATA);
         setDataSource([
             ...SelectUserListresponse?.data?.RET_DATA.map((d, i) => ({
                 key: d.userId,
@@ -157,21 +155,6 @@ export const Studentinformation = () => {
             careerEndDate2: itemContainer.careerEndDate2,
             careerCompany2: itemContainer.careerCompany2,
             careerPosition2: itemContainer.careerPosition2
-            // career3: itemContainer.career3,
-            // careerStartDate3: itemContainer.careerStartDate3,
-            // careerEndDate3: itemContainer.careerEndDate3,
-            // careerCompany3: itemContainer.careerCompany3,
-            // careerPosition3: itemContainer.careerPosition3,
-            // career4: itemContainer.career4,
-            // careerStartDate4: itemContainer.careerStartDate4,
-            // careerEndDate4: itemContainer.careerEndDate4,
-            // careerCompany4: itemContainer.careerCompany4,
-            // careerPosition4: itemContainer.careerPosition4,
-            // career5: itemContainer.career5,
-            // careerStartDate5: itemContainer.careerStartDate5,
-            // careerEndDate5: itemContainer.careerEndDate5,
-            // careerCompany5: itemContainer.careerCompany5,
-            // careerPosition5: itemContainer.careerPosition5
         });
         InsertUserresponse?.data?.RET_CODE === '0100'
             ? Modal.success({
@@ -212,6 +195,7 @@ export const Studentinformation = () => {
             userId: userId
         });
         setItemContainer(SelectUserresponse.data.RET_DATA);
+        console.log(SelectUserresponse.data.RET_DATA);
     };
 
     // 수정 ======================================================
@@ -260,24 +244,7 @@ export const Studentinformation = () => {
             careerEndDate2: itemContainer.careerEndDate2,
             careerCompany2: itemContainer.careerCompany2,
             careerPosition2: itemContainer.careerPosition2
-            // career3: itemContainer.career3,
-            // careerStartDate3: itemContainer.careerStartDate3,
-            // careerEndDate3: itemContainer.careerEndDate3,
-            // careerCompany3: itemContainer.careerCompany3,
-            // careerPosition3: itemContainer.careerPosition3,
-            // career4: itemContainer.career4,
-            // careerStartDate4: itemContainer.careerStartDate4,
-            // careerEndDate4: itemContainer.careerEndDate4,
-            // careerCompany4: itemContainer.careerCompany4,
-            // careerPosition4: itemContainer.careerPosition4,
-            // career5: itemContainer.career5,
-            // careerStartDate5: itemContainer.careerStartDate5,
-            // careerEndDate5: itemContainer.careerEndDate5,
-            // careerCompany5: itemContainer.careerCompany5,
-            // careerPosition5: itemContainer.careerPosition5
         });
-        // console.log(userId);
-        // console.log(UpdateUserresponse);
         UpdateUserresponse?.data?.RET_CODE === '0100'
             ? Modal.success({
                   content: '수정 완료',
@@ -668,8 +635,7 @@ export const Studentinformation = () => {
 
             {/* 교육생 등록 Start */}
             <Drawer
-                // maskClosable={false}
-
+                maskClosable={false}
                 title={`교육생 ${dataEdit === true ? '수정' : '추가'}`}
                 onClose={onAddClose}
                 open={open}
@@ -806,8 +772,8 @@ export const Studentinformation = () => {
                                     initialValue={itemContainer?.writeDate}
                                 >
                                     <DatePicker
+                                        locale={locale}
                                         name="writeDate"
-                                        // onChange={(e) => setItemContainer({ ...itemContainer, writeDate: e.format('YYYY-MM-DD') })}
                                         onChange={(date) => {
                                             setItemContainer({ ...itemContainer, writeDate: date });
                                         }}
@@ -815,7 +781,7 @@ export const Studentinformation = () => {
                                         style={{
                                             width: '100%'
                                         }}
-                                        value={itemContainer?.writeDate ? itemContainer.writeDate : null}
+                                        value={moment(itemContainer?.writeDate)}
                                     />
                                 </Form.Item>
                             </Col>
@@ -1019,6 +985,7 @@ export const Studentinformation = () => {
                                     ]}
                                 >
                                     <DatePicker
+                                        locale={locale}
                                         name="birthDay"
                                         onChange={(date) => {
                                             setItemContainer({
@@ -1026,7 +993,7 @@ export const Studentinformation = () => {
                                                 birthDay: date
                                             });
                                         }}
-                                        value={itemContainer?.birthDay ? itemContainer.birthDay : null}
+                                        value={moment(itemContainer?.birthDay)}
                                         placeholder="생년월일"
                                         style={{
                                             width: '48%'
@@ -1379,10 +1346,7 @@ export const Studentinformation = () => {
                                                     militaryStartDate: dates[0]
                                                 });
                                             }}
-                                            value={[
-                                                itemContainer?.militaryStartDate ? itemContainer.militaryStartDate : null,
-                                                itemContainer?.militaryEndDate ? itemContainer.militaryEndDate : null
-                                            ]}
+                                            value={[moment(itemContainer?.militaryStartDate), moment(itemContainer?.militaryEndDate)]}
                                         />
                                         <Input
                                             style={{
@@ -1464,10 +1428,7 @@ export const Studentinformation = () => {
                                                             careerStartDate1: dates[0]
                                                         });
                                                     }}
-                                                    value={[
-                                                        itemContainer?.careerStartDate1 ? itemContainer.careerStartDate1 : null,
-                                                        itemContainer?.careerEndDate1 ? itemContainer.careerEndDate1 : null
-                                                    ]}
+                                                    value={[moment(itemContainer?.careerStartDate1), moment(itemContainer?.careerEndDate1)]}
                                                 />
                                                 <Input
                                                     name="careerCompany1"
@@ -1522,10 +1483,7 @@ export const Studentinformation = () => {
                                                             careerStartDate2: dates[0]
                                                         });
                                                     }}
-                                                    value={[
-                                                        itemContainer?.careerStartDate2 ? itemContainer.careerStartDate2 : null,
-                                                        itemContainer?.careerEndDate2 ? itemContainer.careerEndDate2 : null
-                                                    ]}
+                                                    value={[moment(itemContainer?.careerStartDate2), moment(itemContainer?.careerEndDate2)]}
                                                 />
                                                 <Input
                                                     name="careerCompany2"
@@ -1559,162 +1517,6 @@ export const Studentinformation = () => {
                                         </Form.Item>
                                     </Col>
                                 </Row>
-                                {/* 3 ~ 5 */}
-                                {/* <Divider style={{ margin: '10px 0' }} />
-                                <Row gutter={24}>
-                                    <Col span={24}>
-                                        <Form.Item label="보안검색경력 [3]">
-                                            <Space>
-                                                <DatePicker.RangePicker
-                                                    style={{
-                                                        width: '100%'
-                                                    }}
-                                                    renderExtraFooter={() => 'extra footer'}
-                                                    picker="month"
-                                                    locale={locale}
-                                                    onChange={(dates) => {
-                                                        const [start3, end3] = dates;
-                                                        setItemContainer({ ...itemContainer, careerStartDate3: start3.format('YYYY-MM') });
-                                                        setItemContainer({ ...itemContainer, careerEndDate3: end3.format('YYYY-MM') });
-                                                    }}
-                                                    // value={[itemContainer?.careerStartDate3, itemContainer?.careerEndDate3]}
-                                                />
-                                                <Input
-                                                    name="careerCompany3"
-                                                    onChange={(e) => setItemContainer({ ...itemContainer, careerCompany3: e.target.value })}
-                                                    addonBefore="소속"
-                                                    placeholder="#소속"
-                                                    value={itemContainer?.careerCompany3}
-                                                />
-                                                <Input
-                                                    name="careerPosition3"
-                                                    onChange={(e) =>
-                                                        setItemContainer({ ...itemContainer, careerPosition3: e.target.value })
-                                                    }
-                                                    addonBefore="직책(직위)"
-                                                    placeholder="#직책(직위)"
-                                                    value={itemContainer?.careerPosition3}
-                                                />
-                                            </Space>
-                                            <br />
-                                            <br />
-                                            <Space direction="vertical">
-                                                <Input
-                                                    name="career3"
-                                                    onChange={(e) => setItemContainer({ ...itemContainer, career3: e.target.value })}
-                                                    addonBefore="담당업무"
-                                                    style={{ width: '585px' }}
-                                                    placeholder="#담당업무"
-                                                    value={itemContainer?.career3}
-                                                />
-                                            </Space>
-                                        </Form.Item>
-                                    </Col>
-                                </Row>
-                                
-                                <Divider style={{ margin: '10px 0' }} />
-                                <Row gutter={24}>
-                                    <Col span={24}>
-                                        <Form.Item label="보안검색경력 [4]">
-                                            <Space>
-                                                <DatePicker.RangePicker
-                                                    style={{
-                                                        width: '100%'
-                                                    }}
-                                                    renderExtraFooter={() => 'extra footer'}
-                                                    picker="month"
-                                                    locale={locale}
-                                                    onChange={(dates) => {
-                                                        const [start4, end4] = dates;
-                                                        setItemContainer({ ...itemContainer, careerStartDate4: start4.format('YYYY-MM') });
-                                                        setItemContainer({ ...itemContainer, careerEndDate4: end4.format('YYYY-MM') });
-                                                    }}
-                                                    // value={[itemContainer?.careerStartDate4, itemContainer?.careerEndDate4]}
-                                                />
-                                                <Input
-                                                    name="careerCompany4"
-                                                    onChange={(e) => setItemContainer({ ...itemContainer, careerCompany4: e.target.value })}
-                                                    addonBefore="소속"
-                                                    placeholder="#소속"
-                                                    value={itemContainer?.careerCompany4}
-                                                />
-                                                <Input
-                                                    name="careerPosition4"
-                                                    onChange={(e) =>
-                                                        setItemContainer({ ...itemContainer, careerPosition4: e.target.value })
-                                                    }
-                                                    addonBefore="직책(직위)"
-                                                    placeholder="#직책(직위)"
-                                                    value={itemContainer?.careerPosition4}
-                                                />
-                                            </Space>
-                                            <br />
-                                            <br />
-                                            <Space direction="vertical">
-                                                <Input
-                                                    name="career4"
-                                                    onChange={(e) => setItemContainer({ ...itemContainer, career4: e.target.value })}
-                                                    addonBefore="담당업무"
-                                                    style={{ width: '585px' }}
-                                                    placeholder="#담당업무"
-                                                    value={itemContainer?.career4}
-                                                />
-                                            </Space>
-                                        </Form.Item>
-                                    </Col>
-                                </Row>
-                                
-                                <Divider style={{ margin: '10px 0' }} />
-                                <Row gutter={24}>
-                                    <Col span={24}>
-                                        <Form.Item label="보안검색경력 [5]">
-                                            <Space>
-                                                <DatePicker.RangePicker
-                                                    style={{
-                                                        width: '100%'
-                                                    }}
-                                                    renderExtraFooter={() => 'extra footer'}
-                                                    picker="month"
-                                                    locale={locale}
-                                                    onChange={(dates) => {
-                                                        const [start5, end5] = dates;
-                                                        setItemContainer({ ...itemContainer, careerStartDate5: start5.format('YYYY-MM') });
-                                                        setItemContainer({ ...itemContainer, careerEndDate5: end5.format('YYYY-MM') });
-                                                    }}
-                                                    // value={[itemContainer?.careerStartDate5, itemContainer?.careerEndDate5]}
-                                                />
-                                                <Input
-                                                    name="careerCompany5"
-                                                    onChange={(e) => setItemContainer({ ...itemContainer, careerCompany5: e.target.value })}
-                                                    addonBefore="소속"
-                                                    placeholder="#소속"
-                                                    value={itemContainer?.careerCompany5}
-                                                />
-                                                <Input
-                                                    name="careerPosition5"
-                                                    onChange={(e) =>
-                                                        setItemContainer({ ...itemContainer, careerPosition5: e.target.value })
-                                                    }
-                                                    addonBefore="직책(직위)"
-                                                    placeholder="#직책(직위)"
-                                                    value={itemContainer?.careerPosition5}
-                                                />
-                                            </Space>
-                                            <br />
-                                            <br />
-                                            <Space direction="vertical">
-                                                <Input
-                                                    name="career5"
-                                                    onChange={(e) => setItemContainer({ ...itemContainer, career5: e.target.value })}
-                                                    addonBefore="담당업무"
-                                                    style={{ width: '585px' }}
-                                                    placeholder="#담당업무"
-                                                    value={itemContainer?.career5}
-                                                />
-                                            </Space>
-                                        </Form.Item>
-                                    </Col>
-                                </Row> */}
                             </>
                         ) : (
                             ''

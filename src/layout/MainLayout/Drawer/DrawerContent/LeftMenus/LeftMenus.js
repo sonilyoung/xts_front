@@ -10,6 +10,7 @@ import { useTheme } from '@mui/material/styles';
 
 import { AppstoreAddOutlined, BlockOutlined, FileTextOutlined } from '@ant-design/icons';
 import { Menu, Divider } from 'antd';
+import Logo_Bottom from 'components/Logo_Bottom';
 
 function getItem(label, key, icon, children, type) {
     return {
@@ -21,7 +22,7 @@ function getItem(label, key, icon, children, type) {
     };
 }
 const items =
-    localStorage.getItem('authCd') === 'ADMIN'
+    localStorage.getItem('authCd') === '0000'
         ? [
               getItem('콘텐츠 관리', 'sub1', <AppstoreAddOutlined />, [
                   getItem('물품 콘텐츠 관리', 'g1', <BlockOutlined />, [
@@ -135,10 +136,15 @@ const LeftMenus = () => {
 
     return (
         <>
+            <div style={{ textAlign: 'center', fontSize: '23px', paddingTop: '30px', color: '#7da7cb' }}>
+                <Logo_Bottom />
+            </div>
             <DrawerHeaderStyled sx={{ height: '130px' }}>
                 <Stack direction="row" spacing={1} alignItems="center" onClick={DashCalls}>
-                    <Link>
-                        <div style={{ textAlign: 'center', fontSize: '23px', paddingBottom: '10px' }}>XBT ADMINISTRATOR</div>
+                    <Link style={{ textDecoration: 'none' }}>
+                        <div style={{ textAlign: 'center', fontSize: '23px', paddingBottom: '10px', color: '#7da7cb' }}>
+                            XBT ADMINISTRATOR
+                        </div>
                         <div style={{ textAlign: 'center', fontSize: '15px', color: '#fff' }}>X-ray Based Training System</div>
                     </Link>
                 </Stack>

@@ -88,6 +88,7 @@ export const ImagesManagement = () => {
     const [fileFront, setFileFront] = useState(null);
     const [fileSide, setFileSide] = useState(null);
     const [fileThreed, setFileThreed] = useState(null); //3d 데모 이미지
+    const [lodingflag, setLodingflag] = useState(false);
 
     const [unitGroupCd, setUnitGroupCd] = useState(); // 단품그룹
     const [languageCode, setLanguageCode] = useState('kr'); // 언어코드
@@ -450,6 +451,7 @@ export const ImagesManagement = () => {
         console.log(unitScanThreed);
 
         //로딩이미지
+        setLodingflag(true);
         setFileThreed(loadingImg);
         const timer = setTimeout(() => {
             console.log('Initial timeout!');
@@ -493,8 +495,8 @@ export const ImagesManagement = () => {
                 //확인물품류
                 setFileThreed(dimg13);
             }
+            setLodingflag(false);
         }, 5000);
-
         //clearTimeout(timer);
     };
 
@@ -605,7 +607,7 @@ export const ImagesManagement = () => {
             <MainCard title="물품 이미지">
                 <Typography variant="body1">
                     <Row gutter={[16, 16]}>
-                        <Col span={11} style={{ textAlign: 'center', padding: '0 10px' }}>
+                        <Col span={12} style={{ textAlign: 'center', padding: '0 10px' }}>
                             <Row style={{ paddingBottom: '15px' }}>
                                 <Col span={16}>
                                     <div style={{ display: 'flex', justifyContent: 'flex-start', fontSize: '14px' }}>
@@ -655,7 +657,7 @@ export const ImagesManagement = () => {
                                 loading={loading}
                             />
                         </Col>
-                        <Col span={13} style={{ textAlign: 'center' }}>
+                        <Col span={12} style={{ textAlign: 'center' }}>
                             <Form
                                 layout="horizontal"
                                 // onValuesChange={onFormLayoutChange}
@@ -713,13 +715,14 @@ export const ImagesManagement = () => {
                                                 <Card
                                                     size="small"
                                                     style={{
-                                                        width: 350
+                                                        width: 300,
+                                                        borderColor: '#ed8f8d'
                                                     }}
                                                 >
                                                     <Button
                                                         onClick={handleButtonClick1}
                                                         icon={<UploadOutlined />}
-                                                        style={{ height: '40px', padding: '0 120px', backgroundColor: '#f0f0f0' }}
+                                                        style={{ height: '40px', padding: '0 75px', backgroundColor: '#f0f0f0' }}
                                                     >
                                                         real image
                                                     </Button>
@@ -734,7 +737,7 @@ export const ImagesManagement = () => {
                                                 </Card>
                                             </Space>
 
-                                            <Space direction="vertical">
+                                            <Space direction="vertical" style={{ marginTop: '20px' }}>
                                                 {realImgEdit === true ? (
                                                     <img
                                                         src={
@@ -742,12 +745,19 @@ export const ImagesManagement = () => {
                                                                 ? 'data:image/png;base64,' + unitParams?.realImg
                                                                 : noImage
                                                         }
-                                                        width={280}
-                                                        height={280}
+                                                        width={260}
+                                                        height={260}
                                                         alt="real image"
+                                                        style={{ borderRadius: '3%' }}
                                                     />
                                                 ) : (
-                                                    <img src={fileReal ? fileReal : noImage} width={280} height={280} alt="real image" />
+                                                    <img
+                                                        src={fileReal ? fileReal : noImage}
+                                                        style={{ borderRadius: '3%' }}
+                                                        width={260}
+                                                        height={260}
+                                                        alt="real image"
+                                                    />
                                                 )}
                                             </Space>
                                         </Form.Item>
@@ -758,17 +768,30 @@ export const ImagesManagement = () => {
                                                 <Card
                                                     size="small"
                                                     style={{
-                                                        width: 350
+                                                        width: 300,
+                                                        borderColor: '#ed8f8d'
                                                     }}
                                                 >
-                                                    <Button style={{ height: '40px', padding: '0 120px', backgroundColor: '#FFFFFF' }}>
+                                                    <Button style={{ height: '40px', padding: '0 75px', backgroundColor: '#FFFFFF' }}>
                                                         3D image
                                                     </Button>
                                                 </Card>
                                             </Space>
-                                            <Space direction="vertical">
-                                                <img src={fileThreed ? fileThreed : noImage} width={280} height={280} alt="3D image" />
-                                            </Space>
+                                            {lodingflag === true ? (
+                                                <Space direction="vertical" style={{ marginTop: '110px' }}>
+                                                    <img src={fileThreed ? fileThreed : noImage} width={100} height={100} alt="3D image" />
+                                                </Space>
+                                            ) : (
+                                                <Space direction="vertical" style={{ marginTop: '20px' }}>
+                                                    <img
+                                                        src={fileThreed ? fileThreed : noImage}
+                                                        style={{ borderRadius: '3%' }}
+                                                        width={260}
+                                                        height={260}
+                                                        alt="3D image"
+                                                    />
+                                                </Space>
+                                            )}
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -780,13 +803,14 @@ export const ImagesManagement = () => {
                                                 <Card
                                                     size="small"
                                                     style={{
-                                                        width: 350
+                                                        width: 300,
+                                                        borderColor: '#ed8f8d'
                                                     }}
                                                 >
                                                     <Button
                                                         onClick={handleButtonClick2}
                                                         icon={<UploadOutlined />}
-                                                        style={{ height: '40px', padding: '0 120px', backgroundColor: '#f0f0f0' }}
+                                                        style={{ height: '40px', padding: '0 75px', backgroundColor: '#f0f0f0' }}
                                                     >
                                                         front image
                                                     </Button>
@@ -800,7 +824,7 @@ export const ImagesManagement = () => {
                                                     />
                                                 </Card>
                                             </Space>
-                                            <Space direction="vertical">
+                                            <Space direction="vertical" style={{ marginTop: '20px' }}>
                                                 {frontImgEdit === true ? (
                                                     <img
                                                         src={
@@ -808,12 +832,19 @@ export const ImagesManagement = () => {
                                                                 ? 'data:image/png;base64,' + unitParams?.frontImg
                                                                 : noImage
                                                         }
-                                                        width={280}
-                                                        height={280}
+                                                        width={260}
+                                                        height={260}
                                                         alt="front image"
+                                                        style={{ borderRadius: '3%' }}
                                                     />
                                                 ) : (
-                                                    <img src={fileFront ? fileFront : noImage} width={280} height={280} alt="front image" />
+                                                    <img
+                                                        src={fileFront ? fileFront : noImage}
+                                                        style={{ borderRadius: '3%' }}
+                                                        width={260}
+                                                        height={260}
+                                                        alt="front image"
+                                                    />
                                                 )}
                                             </Space>
                                         </Form.Item>
@@ -824,13 +855,14 @@ export const ImagesManagement = () => {
                                                 <Card
                                                     size="small"
                                                     style={{
-                                                        width: 350
+                                                        width: 300,
+                                                        borderColor: '#ed8f8d'
                                                     }}
                                                 >
                                                     <Button
                                                         onClick={handleButtonClick3}
                                                         icon={<UploadOutlined />}
-                                                        style={{ height: '40px', padding: '0 120px', backgroundColor: '#f0f0f0' }}
+                                                        style={{ height: '40px', padding: '0 75px', backgroundColor: '#f0f0f0' }}
                                                     >
                                                         side image
                                                     </Button>
@@ -844,7 +876,7 @@ export const ImagesManagement = () => {
                                                     />
                                                 </Card>
                                             </Space>
-                                            <Space direction="vertical">
+                                            <Space direction="vertical" style={{ marginTop: '20px' }}>
                                                 {sideImgEdit === true ? (
                                                     <img
                                                         src={
@@ -852,12 +884,19 @@ export const ImagesManagement = () => {
                                                                 ? 'data:image/png;base64,' + unitParams?.sideImg
                                                                 : noImage
                                                         }
-                                                        width={280}
-                                                        height={280}
+                                                        width={260}
+                                                        height={260}
                                                         alt="side image"
+                                                        style={{ borderRadius: '3%' }}
                                                     />
                                                 ) : (
-                                                    <img src={fileSide ? fileSide : noImage} width={280} height={280} alt="side image" />
+                                                    <img
+                                                        src={fileSide ? fileSide : noImage}
+                                                        style={{ borderRadius: '3%' }}
+                                                        width={260}
+                                                        height={260}
+                                                        alt="side image"
+                                                    />
                                                 )}
                                             </Space>
                                         </Form.Item>

@@ -74,7 +74,7 @@ export const Evaluation_Performance = () => {
             render: (_, { rowdata4 }) => (
                 <>
                     <Badge
-                        style={{ width: '45px', height: '30px', lineHeight: '30px' }}
+                        style={{ width: '35px', height: '35px', lineHeight: '35px', borderRadius: '50%' }}
                         count={rowdata4.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                         status={rowdata4 >= '90' ? 'success' : rowdata4 < '80' ? 'error' : 'warning'}
                         overflowCount={999}
@@ -145,7 +145,7 @@ export const Evaluation_Performance = () => {
             render: (_, { rowdata2 }) => (
                 <>
                     <Badge
-                        style={{ width: '45px', height: '30px', lineHeight: '30px' }}
+                        style={{ width: '35px', height: '35px', lineHeight: '35px', borderRadius: '50%' }}
                         count={rowdata2.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                         color="blue"
                         overflowCount={999}
@@ -160,7 +160,7 @@ export const Evaluation_Performance = () => {
             render: (_, { rowdata3 }) => (
                 <>
                     <Badge
-                        style={{ width: '45px', height: '30px', lineHeight: '30px' }}
+                        style={{ width: '35px', height: '35px', lineHeight: '35px', borderRadius: '50%' }}
                         count={rowdata3.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                         color="gold"
                         overflowCount={999}
@@ -175,7 +175,7 @@ export const Evaluation_Performance = () => {
             render: (_, { rowdata4 }) => (
                 <>
                     <Badge
-                        style={{ width: '45px', height: '30px', lineHeight: '30px' }}
+                        style={{ width: '35px', height: '35px', lineHeight: '35px', borderRadius: '50%' }}
                         count={rowdata4.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                         color="green"
                         overflowCount={999}
@@ -190,7 +190,7 @@ export const Evaluation_Performance = () => {
             render: (_, { rowdata5 }) => (
                 <>
                     <Badge
-                        style={{ width: '45px', height: '30px', lineHeight: '30px' }}
+                        style={{ width: '35px', height: '35px', lineHeight: '35px', borderRadius: '50%' }}
                         count={rowdata5.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                         color="volcano"
                         overflowCount={999}

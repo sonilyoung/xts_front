@@ -13,7 +13,6 @@ const { RangePicker } = DatePicker;
 // ================================|| REGISTER ||================================ //
 
 const Register = () => {
-    const { RangePicker } = DatePicker;
     const [form] = Form.useForm();
     const [idChk, setIdChk] = useState(false); // 선택한 교육생 아이디 값
     const [itemContainer, setItemContainer] = useState({}); // 항목 컨테이너

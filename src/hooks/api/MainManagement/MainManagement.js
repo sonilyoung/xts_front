@@ -15,9 +15,26 @@ export const mainManagement = createApi({
         }
     }),
     endpoints: (builder) => ({
+        // 로그인 정보
         getLoginInfo: builder.mutation({
             query: (body) => ({
                 url: 'adm/getLoginInfo.do',
+                method: 'POST',
+                body: body
+            })
+        }),
+        // 통계 - 교육상황
+        selectMainEduStatistics: builder.mutation({
+            query: (body) => ({
+                url: 'adm/statistics/selectMainEduStatistics.do',
+                method: 'POST',
+                body: body
+            })
+        }),
+        // 통계 - 연도별합격별
+        selectMainYearStatistics: builder.mutation({
+            query: (body) => ({
+                url: 'adm/statistics/selectMainYearStatistics.do',
                 method: 'POST',
                 body: body
             })
@@ -25,4 +42,4 @@ export const mainManagement = createApi({
     })
 });
 
-export const { useGetLoginInfoMutation } = mainManagement;
+export const { useGetLoginInfoMutation, useSelectMainEduStatisticsMutation, useSelectMainYearStatisticsMutation } = mainManagement;

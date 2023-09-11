@@ -11,7 +11,7 @@ import logoDark from 'assets/images/kssa_logo.png';
 
 // ==============================|| LOGO SVG ||============================== //
 
-const Logo = () => {
+const Logo_Bottom = () => {
     const theme = useTheme();
 
     return (
@@ -60,4 +60,4 @@ const Logo = () => {
     );
 };
 
-export default Logo;
+export default Logo_Bottom;

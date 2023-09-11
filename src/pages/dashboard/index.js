@@ -6,7 +6,7 @@ import { FloatButton } from 'antd';
 import { Box, Grid, Typography } from '@mui/material';
 
 // project import
-import OrdersTable from './OrdersTable';
+import { OrdersTable } from './OrdersTable';
 import Schedule from './Schedule';
 import IncomeAreaChart from './IncomeAreaChart';
 import YearOrder from './YearOrder';
