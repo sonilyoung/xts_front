@@ -21,6 +21,10 @@ import {
     Descriptions
 } from 'antd';
 import locale from 'antd/es/date-picker/locale/ko_KR';
+
+import dayjs from 'dayjs';
+import weekday from 'dayjs/plugin/weekday';
+import localeData from 'dayjs/plugin/localeData';
 const { RangePicker } = DatePicker;
 
 import {
@@ -42,6 +46,9 @@ import MainCard from 'components/MainCard';
 import moment from 'moment';
 
 export const Studentinformation = () => {
+    dayjs.extend(weekday);
+    dayjs.extend(localeData);
+
     const { confirm } = Modal;
     const [form] = Form.useForm();
     const contentRef = useRef(null);
@@ -781,7 +788,7 @@ export const Studentinformation = () => {
                                         style={{
                                             width: '100%'
                                         }}
-                                        value={moment(itemContainer?.writeDate)}
+                                        value={itemContainer?.writeDate ? dayjs(itemContainer.writeDate) : dayjs(new Date())}
                                     />
                                 </Form.Item>
                             </Col>
@@ -993,7 +1000,7 @@ export const Studentinformation = () => {
                                                 birthDay: date
                                             });
                                         }}
-                                        value={moment(itemContainer?.birthDay)}
+                                        value={itemContainer?.birthDay ? dayjs(itemContainer.birthDay) : dayjs(new Date())}
                                         placeholder="생년월일"
                                         style={{
                                             width: '48%'
@@ -1346,7 +1353,7 @@ export const Studentinformation = () => {
                                                     militaryStartDate: dates[0]
                                                 });
                                             }}
-                                            value={[moment(itemContainer?.militaryStartDate), moment(itemContainer?.militaryEndDate)]}
+                                            value={[itemContainer?.militaryStartDate, itemContainer?.militaryEndDate]}
                                         />
                                         <Input
                                             style={{
@@ -1428,7 +1435,7 @@ export const Studentinformation = () => {
                                                             careerStartDate1: dates[0]
                                                         });
                                                     }}
-                                                    value={[moment(itemContainer?.careerStartDate1), moment(itemContainer?.careerEndDate1)]}
+                                                    value={[itemContainer?.careerStartDate1, itemContainer?.careerEndDate1]}
                                                 />
                                                 <Input
                                                     name="careerCompany1"
@@ -1483,7 +1490,7 @@ export const Studentinformation = () => {
                                                             careerStartDate2: dates[0]
                                                         });
                                                     }}
-                                                    value={[moment(itemContainer?.careerStartDate2), moment(itemContainer?.careerEndDate2)]}
+                                                    value={[itemContainer?.careerStartDate2, itemContainer?.careerEndDate2]}
                                                 />
                                                 <Input
                                                     name="careerCompany2"
