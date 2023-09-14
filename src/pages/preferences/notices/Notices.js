@@ -192,7 +192,6 @@ export const Notices = () => {
     const handleAdd = () => {
         setOpen(true);
         setDataEdit(false);
-        console.log('add', itemContainer);
         form.resetFields();
     };
 
@@ -201,7 +200,6 @@ export const Notices = () => {
         setOpen(false);
         setDataEdit(false);
         setItemContainer({});
-        console.log('cancel', itemContainer);
         form.resetFields();
     };
 
@@ -210,32 +208,15 @@ export const Notices = () => {
         setItemContainer({ ...itemContainer, contents: html });
     };
 
-    // Editor에서 업로드한 파일 추가
-    const editor_add_files = (files) => {
-        setSelectedFiles(files);
-    };
-
-    // Editor에서 업로드 된 파일 삭제
-    const editor_delete_files = (index) => {
-        console.log('delete files');
-        console.log(index);
-        setUploadedFiles((prevFiles) => {
-            const updatedFiles = [...prevFiles];
-            updatedFiles.splice(index, 1);
-            return updatedFiles;
-        });
-    };
-
-    // TODO: useYn, Files 추가 요청
+    // TODO: useYn
     // 수정 ======================================================
     const [UpdateNotice] = useUpdateNoticeMutation();
     const Notice_Update_Submit = async () => {
         const UpdateModulResponse = await UpdateNotice({
             noticeId: noticeId,
-            title: itemContainer.moduleNm,
-            contents: itemContainer.moduleDesc,
-            useYn: itemContainer.useYn,
-            insertDate: itemContainer.insertDate
+            title: itemContainer.title,
+            contents: itemContainer.contents
+            // useYn: itemContainer.useYn
         });
 
         UpdateModulResponse?.data?.RET_CODE === '0100'
@@ -504,35 +485,9 @@ export const Notices = () => {
                                 >
                                     <Row>
                                         <Col>
-                                            <NoticeEditor
-                                                itemContainer={itemContainer}
-                                                editor_onChange={editor_onChange}
-                                                editor_add_files={editor_add_files}
-                                                editor_delete_files={editor_delete_files}
-                                            ></NoticeEditor>
-                                            {/* <TextArea
-                                                name="contents"
-                                                placeholder="Please Enter Notice Contents"
-                                                autoSize={{
-                                                    minRows: 5,
-                                                    maxRows: 10
-                                                }}
-                                                onChange={(e) => setItemContainer({ ...itemContainer, contents: e.target.value })}
-                                                style={{ width: '560px' }}
-                                                value={itemContainer?.contents}
-                                            /> */}
+                                            <NoticeEditor noticeId={noticeId} editor_onChange={editor_onChange}></NoticeEditor>
                                         </Col>
                                     </Row>
-                                    {/* <Row>
-                                        <Col>
-                                            <NoticeModify
-                                                ModalClose={onAddClose}
-                                                seqIdProps={noticeId}
-                                                datetime={minutes + seconds}
-                                                SaveClose={handleCall}
-                                            ></NoticeModify>
-                                        </Col>
-                                    </Row> */}
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -623,35 +578,6 @@ export const Notices = () => {
                 </Descriptions>
             </Modal>
             {/* 모달 창 End */}
-            <Descriptions bordered style={{ marginTop: '-1px' }}>
-                <Descriptions.Item label="공지일자" style={{ textAlign: 'center', width: '150px' }}>
-                    <div style={{ textAlign: 'left' }}>{itemContainer?.insertDate}</div>
-                </Descriptions.Item>
-            </Descriptions>
-            <Descriptions bordered style={{ marginTop: '-1px' }}>
-                <Descriptions.Item label="제목" style={{ textAlign: 'center', width: '150px' }}>
-                    <div style={{ textAlign: 'left' }}>{itemContainer?.title}</div>
-                </Descriptions.Item>
-            </Descriptions>
-            <Descriptions bordered style={{ marginTop: '-1px' }}>
-                <Descriptions.Item label="내용" style={{ textAlign: 'center', width: '150px' }}>
-                    <div style={{ textAlign: 'left' }}>
-                        {itemContainer?.contents?.split('/\n/g').map((line) => {
-                            return <div style={{ whiteSpace: 'pre-wrap' }}>{line}</div>;
-                        })}
-                    </div>
-                </Descriptions.Item>
-            </Descriptions>
-            <Descriptions bordered style={{ marginTop: '-1px' }}>
-                <Descriptions.Item label="첨부파일" style={{ textAlign: 'center', width: '150px' }}>
-                    <div style={{ textAlign: 'left' }}>{selectedFiles?.length}</div>
-                </Descriptions.Item>
-            </Descriptions>
-            <Descriptions bordered style={{ marginTop: '-1px' }}>
-                <Descriptions.Item label="내용" style={{ textAlign: 'center', width: '150px' }}>
-                    <div style={{ textAlign: 'left' }}>{itemContainer?.useYn}</div>
-                </Descriptions.Item>
-            </Descriptions>
         </>
     );
 };
