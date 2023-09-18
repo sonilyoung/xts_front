@@ -9549,6 +9549,11 @@ react-perfect-scrollbar@^1.5.8:
     perfect-scrollbar "^1.5.0"
     prop-types "^15.6.1"
 
+react-rain-animation@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/react-rain-animation/-/react-rain-animation-1.0.4.tgz#cbe4c96d5825211a3cdfba6674d74afc8b2353c9"
+  integrity sha512-D+u59rSiv0GikgnhhgyRN1REwtzuCF8Q5/Bj1d418W+bu/XtJ/sGaYPy3kLbt4LWoVp5dac2ffP8vOZPsoK3tQ==
+
 react-redux@^8.0.5:
   version "8.1.2"
   resolved "https://registry.npmjs.org/react-redux/-/react-redux-8.1.2.tgz"

@@ -73,7 +73,10 @@ const items_0 = [
 
     getItem('환경설정', 'sub7', <AppstoreAddOutlined />, [
         getItem(<Link to="/preferences/notices">공지사항 관리</Link>, '34', <FileTextOutlined />),
-        getItem(<Link to="/preferences/commoncode">공통코드 관리</Link>, '37', <FileTextOutlined />),
+        // getItem(<Link to="/preferences/commoncode">공통코드 관리</Link>, '37', <FileTextOutlined />),
+        getItem(<Link to="/preferences/common/CommonFlower">효과1</Link>, '001', <FileTextOutlined />),
+        getItem(<Link to="/preferences/common/CommonRain">효과2</Link>, '002', <FileTextOutlined />),
+
         getItem('메뉴관리', '41', <FileTextOutlined />),
         getItem(<Link to="/preferences/system">시스템메세지 관리</Link>, '38', <FileTextOutlined />)
     ])

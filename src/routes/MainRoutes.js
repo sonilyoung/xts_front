@@ -58,8 +58,11 @@ import { Theory_Performance } from 'pages/statistics/theory/theory_performance';
 // 환경설정
 
 import { Notices } from 'pages/preferences/notices'; // 환경설정 / 공지사항 관리
-import { CommonCode } from 'pages/preferences/commoncode'; // 환경설정 / 공통코드 관리
+// import { CommonCode } from 'pages/preferences/commoncode'; // 환경설정 / 공통코드 관리
 import { SystemMessage } from 'pages/preferences/system'; // 환경설정 / 시스템메세지
+
+import { CommonFlower } from 'pages/preferences/common/CommonFlower'; // 환경설정 / 꽃가루
+import { CommonRain } from 'pages/preferences/common/CommonRain'; // 환경설정 / 비
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -245,11 +248,11 @@ const MainRoutes = {
             path: '/preferences/notices',
             element: <Notices />
         },
-        {
-            // 환경설정 > 공통코드 관리
-            path: '/preferences/commoncode',
-            element: <CommonCode />
-        },
+        // {
+        //     // 환경설정 > 공통코드 관리
+        //     path: '/preferences/common',
+        //     element: <CommonCode />
+        // },
         // {
         //     // 환경설정 > 메뉴관리
         //     path: '/system/systemmessage',
@@ -259,6 +262,16 @@ const MainRoutes = {
             // 환경설정 > 시스템메세지
             path: '/preferences/system',
             element: <SystemMessage />
+        },
+        {
+            // 환경설정 > 공통코드 관리
+            path: '/preferences/common/CommonFlower',
+            element: <CommonFlower />
+        },
+        {
+            // 환경설정 > 공통코드 관리
+            path: '/preferences/common/CommonRain',
+            element: <CommonRain />
         }
     ]
 };

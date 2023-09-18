@@ -80,7 +80,7 @@ const Profile = () => {
     const handleLoginInfo = async () => {
         const response = await getLoginInfo();
         setLoginInfo(response.data.RET_DATA);
-        localStorage.setItem('authCd', response.data.RET_DATA.authCd);
+        response.data.RET_DATA === null ? '' : localStorage.setItem('authCd', response.data.RET_DATA.authCd);
     };
 
     // 로그아웃 처리

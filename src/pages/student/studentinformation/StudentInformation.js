@@ -43,7 +43,6 @@ import { CertificatesPrint } from './CertificatesPrint';
 
 // project import
 import MainCard from 'components/MainCard';
-import moment from 'moment';
 
 export const Studentinformation = () => {
     dayjs.extend(weekday);
@@ -600,27 +599,33 @@ export const Studentinformation = () => {
                         </Col>
                         <Col span={12} style={{ textAlign: 'right' }}>
                             <Space>
-                                <Tooltip title="추가">
-                                    <Button
-                                        type="success"
-                                        onClick={handleAdd}
-                                        style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
-                                        icon={<PlusOutlined />}
-                                    >
-                                        추가
-                                    </Button>
-                                </Tooltip>
-                                <Tooltip title="삭제">
-                                    <Button
-                                        type="primary"
-                                        danger
-                                        onClick={handleDel}
-                                        style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
-                                        icon={<DeleteFilled />}
-                                    >
-                                        삭제
-                                    </Button>
-                                </Tooltip>
+                                {window.localStorage.getItem('authCd') === '0000' ? (
+                                    <>
+                                        <Tooltip title="추가">
+                                            <Button
+                                                type="success"
+                                                onClick={handleAdd}
+                                                style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                                icon={<PlusOutlined />}
+                                            >
+                                                추가
+                                            </Button>
+                                        </Tooltip>
+                                        <Tooltip title="삭제">
+                                            <Button
+                                                type="primary"
+                                                danger
+                                                onClick={handleDel}
+                                                style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                                icon={<DeleteFilled />}
+                                            >
+                                                삭제
+                                            </Button>
+                                        </Tooltip>
+                                    </>
+                                ) : (
+                                    ''
+                                )}
                             </Space>
                         </Col>
                     </Row>

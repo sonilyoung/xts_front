@@ -9,10 +9,17 @@ import MainCard from 'components/MainCard';
 import { Grid, Stack, Typography } from '@mui/material';
 import { useInsertStuUserMutation, useSelectStuUserCheckMutation } from '../../hooks/api/StudentsManagement/StudentsManagement';
 
+import dayjs from 'dayjs';
+import weekday from 'dayjs/plugin/weekday';
+import localeData from 'dayjs/plugin/localeData';
+
 const { RangePicker } = DatePicker;
 // ================================|| REGISTER ||================================ //
 
 const Register = () => {
+    dayjs.extend(weekday);
+    dayjs.extend(localeData);
+
     const [form] = Form.useForm();
     const [idChk, setIdChk] = useState(false); // 선택한 교육생 아이디 값
     const [itemContainer, setItemContainer] = useState({}); // 항목 컨테이너
@@ -258,7 +265,7 @@ const Register = () => {
                                             style={{
                                                 width: '100%'
                                             }}
-                                            value={itemContainer?.writeDate ? moment(itemContainer.writeDate) : null}
+                                            value={itemContainer?.writeDate ? dayjs(itemContainer.writeDate) : dayjs(new Date())}
                                         />
                                     </Form.Item>
                                 </Col>
@@ -474,7 +481,7 @@ const Register = () => {
                                             //     });
                                             // }}
                                             onChange={handleDOBChange}
-                                            value={itemContainer?.birthDay ? itemContainer.birthDay : null}
+                                            value={itemContainer?.birthDay ? dayjs(itemContainer.birthDay) : dayjs(new Date())}
                                             placeholder="생년월일"
                                             style={{
                                                 width: '48%'
@@ -917,8 +924,12 @@ const Register = () => {
                                                             });
                                                         }}
                                                         value={[
-                                                            itemContainer?.careerStartDate1 ? moment(itemContainer.careerStartDate1) : null,
-                                                            itemContainer?.careerEndDate1 ? moment(itemContainer.careerEndDate1) : null
+                                                            itemContainer?.careerStartDate1
+                                                                ? dayjs(itemContainer.careerStartDate1)
+                                                                : dayjs(new Date()),
+                                                            itemContainer?.careerEndDate1
+                                                                ? dayjs(itemContainer.careerEndDate1)
+                                                                : dayjs(new Date())
                                                         ]}
                                                     />
                                                     <Input
@@ -977,8 +988,12 @@ const Register = () => {
                                                             });
                                                         }}
                                                         value={[
-                                                            itemContainer?.careerStartDate2 ? moment(itemContainer.careerStartDate2) : null,
-                                                            itemContainer?.careerEndDate2 ? moment(itemContainer.careerEndDate2) : null
+                                                            itemContainer?.careerStartDate2
+                                                                ? dayjs(itemContainer.careerStartDate2)
+                                                                : dayjs(new Date()),
+                                                            itemContainer?.careerEndDate2
+                                                                ? dayjs(itemContainer.careerEndDate2)
+                                                                : dayjs(new Date())
                                                         ]}
                                                     />
                                                     <Input

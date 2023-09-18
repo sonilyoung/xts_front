@@ -1,0 +1,22 @@
+/* Define the raindrop animation */
+@keyframes raindropAnimation {
+    0% {
+        transform: translateY(-10%);
+        opacity: 0.6;
+    }
+    100% {
+        transform: translateY(100vh);
+        opacity: 1;
+    }
+}
+
+/* Apply the animation to the raindrop element */
+.raindrop {
+    position: absolute;
+    width: 5px;
+    border-radius: '50%';
+    height: 45px;
+    background: linear-gradient(rgba(212, 212, 250, 0), rgba(212, 212, 250, 0.6), rgba(212, 212, 250, 0));
+
+    /* background-color: rgb(212, 212, 250); Blue color, you can change it */
+}

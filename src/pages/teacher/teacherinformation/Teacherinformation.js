@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { Typography } from '@mui/material';
 import { Row, Col, Space, Table, Tag, Tooltip, Button, Drawer, Divider, Form, Input, DatePicker, Card, Radio, Select, Modal } from 'antd';
 import locale from 'antd/es/date-picker/locale/ko_KR';
-const { RangePicker } = DatePicker;
 
 import {
     useSelectTeacherListMutation, // 조회
@@ -16,11 +15,17 @@ import {
 
 import { PlusOutlined, EditFilled, DeleteFilled, ExclamationCircleFilled } from '@ant-design/icons';
 
-// project import
+import dayjs from 'dayjs';
+import weekday from 'dayjs/plugin/weekday';
+import localeData from 'dayjs/plugin/localeData';
+
 import MainCard from 'components/MainCard';
-// import moment from 'moment';
+
+const { RangePicker } = DatePicker;
 
 export const Teacherinformation = () => {
+    dayjs.extend(weekday);
+    dayjs.extend(localeData);
     const { confirm } = Modal;
     const [form] = Form.useForm();
 
@@ -414,27 +419,33 @@ export const Teacherinformation = () => {
                         </Col>
                         <Col span={12} style={{ textAlign: 'right' }}>
                             <Space>
-                                <Tooltip title="추가">
-                                    <Button
-                                        type="success"
-                                        onClick={handleAdd}
-                                        style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
-                                        icon={<PlusOutlined />}
-                                    >
-                                        추가
-                                    </Button>
-                                </Tooltip>
-                                <Tooltip title="삭제">
-                                    <Button
-                                        type="primary"
-                                        danger
-                                        onClick={handleDel}
-                                        style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
-                                        icon={<DeleteFilled />}
-                                    >
-                                        삭제
-                                    </Button>
-                                </Tooltip>
+                                {window.localStorage.getItem('authCd') === '0000' ? (
+                                    <>
+                                        <Tooltip title="추가">
+                                            <Button
+                                                type="success"
+                                                onClick={handleAdd}
+                                                style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                                icon={<PlusOutlined />}
+                                            >
+                                                추가
+                                            </Button>
+                                        </Tooltip>
+                                        <Tooltip title="삭제">
+                                            <Button
+                                                type="primary"
+                                                danger
+                                                onClick={handleDel}
+                                                style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                                icon={<DeleteFilled />}
+                                            >
+                                                삭제
+                                            </Button>
+                                        </Tooltip>
+                                    </>
+                                ) : (
+                                    ''
+                                )}
                             </Space>
                         </Col>
                     </Row>
@@ -601,7 +612,7 @@ export const Teacherinformation = () => {
                                         style={{
                                             width: '100%'
                                         }}
-                                        value={itemContainer?.writeDate ? moment(itemContainer.writeDate) : null}
+                                        value={itemContainer?.writeDate ? dayjs(itemContainer.writeDate) : dayjs(new Date())}
                                     />
                                 </Form.Item>
                             </Col>
@@ -812,7 +823,7 @@ export const Teacherinformation = () => {
                                                 birthDay: dates
                                             });
                                         }}
-                                        value={itemContainer?.birthDay ? moment(itemContainer.birthDay) : null}
+                                        value={itemContainer?.birthDay ? dayjs(itemContainer.birthDay) : dayjs(new Date())}
                                         placeholder="생년월일"
                                         style={{
                                             width: '48%'
@@ -1166,8 +1177,10 @@ export const Teacherinformation = () => {
                                                 });
                                             }}
                                             value={[
-                                                itemContainer?.militaryStartDate ? moment(itemContainer.militaryStartDate) : null,
-                                                itemContainer?.militaryEndDate ? moment(itemContainer.militaryEndDate) : null
+                                                itemContainer?.militaryStartDate
+                                                    ? dayjs(itemContainer.militaryStartDate)
+                                                    : dayjs(new Date()),
+                                                itemContainer?.militaryEndDate ? dayjs(itemContainer.militaryEndDate) : dayjs(new Date())
                                             ]}
                                         />
                                         <Input
@@ -1251,8 +1264,12 @@ export const Teacherinformation = () => {
                                                         });
                                                     }}
                                                     value={[
-                                                        itemContainer?.careerStartDate1 ? moment(itemContainer.careerStartDate1) : null,
-                                                        itemContainer?.careerEndDate1 ? moment(itemContainer.careerEndDate1) : null
+                                                        itemContainer?.careerStartDate1
+                                                            ? dayjs(itemContainer.careerStartDate1)
+                                                            : dayjs(new Date()),
+                                                        itemContainer?.careerEndDate1
+                                                            ? dayjs(itemContainer.careerEndDate1)
+                                                            : dayjs(new Date())
                                                     ]}
                                                 />
                                                 <Input
@@ -1305,8 +1322,12 @@ export const Teacherinformation = () => {
                                                         setItemContainer({ ...itemContainer, careerEndDate2: dates[1] });
                                                     }}
                                                     value={[
-                                                        itemContainer?.careerStartDate2 ? moment(itemContainer.careerStartDate2) : null,
-                                                        itemContainer?.careerEndDate2 ? moment(itemContainer.careerEndDate2) : null
+                                                        itemContainer?.careerStartDate2
+                                                            ? dayjs(itemContainer.careerStartDate2)
+                                                            : dayjs(new Date()),
+                                                        itemContainer?.careerEndDate2
+                                                            ? dayjs(itemContainer.careerEndDate2)
+                                                            : dayjs(new Date())
                                                     ]}
                                                 />
                                                 <Input
