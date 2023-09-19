@@ -12,8 +12,7 @@ export const CommonFlower = () => {
 
     // gravity 값을 조절하여 컨페티의 스피드를 설정합니다.
     const confettiOptions = {
-        gravity: 0.035, // 1보다 큰 값으로 설정하면 컨페티가 빠르게 떨어집니다.
-        Pieces: '2000'
+        gravity: 0.055 // 1보다 큰 값으로 설정하면 컨페티가 빠르게 떨어집니다.
     };
 
     return (

@@ -134,7 +134,7 @@ export const NoticeModify = (props) => {
                       }
                   }
               })
-            : itemContainer.contents === undefined || itemContainer.contents.trim() === ''
+            : itemContainer.contents.trim() === undefined || itemContainer.contents.trim() === ''
             ? Modal.error({
                   content: '공지 내용을 입력해주세요',
                   style: { top: 320 },

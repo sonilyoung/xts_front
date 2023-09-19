@@ -5,11 +5,10 @@ import RainEffect from './RainEffect';
 export const CommonRain = () => {
     const { confirm } = Modal;
     const [isModalOpen, setIsModalOpen] = useState(true);
-    const closeModal = () => {
-        setIsModalOpen(false);
-    };
+
     return (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <>
+            {/* <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}> */}
             <RainEffect />
             <Modal open={isModalOpen} width={620} centered={true} style={{ left: '5%' }} footer={[]}>
                 <div style={{ justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
@@ -24,6 +23,8 @@ export const CommonRain = () => {
                     <br />
                 </div>
             </Modal>
-        </div>
+
+            {/* </div> */}
+        </>
     );
 };

@@ -39,7 +39,7 @@ export const Notices = () => {
     const [itemContainer, setItemContainer] = useState({}); // 리스트 값(원래 변수명: noticeList)
     const [dataSource, setDataSource] = useState([]); // Table 데이터 값
     const [dataSourceView, setDataSourceView] = useState([]); // Table 데이터 값
-    const [noticeId, setNoticeId] = useState(); //선택 값
+    const [noticeId, setNoticeId] = useState(null); //선택 값
     const [selectedRowKeys, setSelectedRowKeys] = useState([]); //셀렉트 박스 option Selected 값
     const [dataEdit, setDataEdit] = useState(false); //수정
     const [isModalOpen, setIsModalOpen] = useState(false); // Modal창
@@ -200,6 +200,7 @@ export const Notices = () => {
         setOpen(false);
         setDataEdit(false);
         setItemContainer({});
+        setNoticeId(null);
         form.resetFields();
     };
 
@@ -238,12 +239,15 @@ export const Notices = () => {
     // TODO: useYn 추가 요청
     const [InsertNotice] = useInsertNoticeMutation();
     const Notice_Insert_Submit = async () => {
+        console.log(itemContainer);
+
         const InsertModulResponse = await InsertNotice({
-            title: itemContainer.moduleNm,
-            contents: itemContainer.moduleDesc,
+            title: itemContainer.title,
+            contents: itemContainer.contents,
             useYn: itemContainer.useYn,
             insertDate: itemContainer.insertDate
         });
+        console.log(InsertModulResponse.data);
 
         InsertModulResponse?.data?.RET_CODE === '0100'
             ? Modal.success({

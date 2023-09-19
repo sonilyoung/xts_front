@@ -28,8 +28,8 @@ export const NoticeEditor = (props) => {
     };
 
     useEffect(() => {
-        handleCallView();
-    }, [props.noticeId]);
+        props.noticeId === null ? '' : handleCallView();
+    }, []);
 
     return (
         <>

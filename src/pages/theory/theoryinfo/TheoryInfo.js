@@ -883,7 +883,7 @@ export const TheoryInfo = () => {
                         <Divider style={{ margin: '10px 0' }} />
 
                         <Row gutter={24}>
-                            <Col span={8}>
+                            <Col span={24}>
                                 <Form.Item
                                     name="form02"
                                     label="대분류"
@@ -903,7 +903,7 @@ export const TheoryInfo = () => {
                                                     label: '# 대분류'
                                                 }}
                                                 style={{
-                                                    width: '165px'
+                                                    width: '540px'
                                                 }}
                                                 loading={loading_L}
                                                 options={lTheoryGroupData}
@@ -918,7 +918,11 @@ export const TheoryInfo = () => {
                                     </Row>
                                 </Form.Item>
                             </Col>
-                            <Col span={8}>
+                        </Row>
+                        <Divider style={{ margin: '10px 0' }} />
+
+                        <Row gutter={24}>
+                            <Col span={24}>
                                 <Form.Item
                                     name="form03"
                                     label="중분류"
@@ -938,7 +942,7 @@ export const TheoryInfo = () => {
                                                     label: '# 중분류'
                                                 }}
                                                 style={{
-                                                    width: '165px'
+                                                    width: '540px'
                                                 }}
                                                 loading={loading_M}
                                                 options={mTheoryGroupData}
@@ -953,7 +957,11 @@ export const TheoryInfo = () => {
                                     </Row>
                                 </Form.Item>
                             </Col>
-                            <Col span={8}>
+                        </Row>
+                        <Divider style={{ margin: '10px 0' }} />
+
+                        <Row gutter={24}>
+                            <Col span={24}>
                                 <Form.Item
                                     name="form04"
                                     label="소분류"
@@ -973,7 +981,7 @@ export const TheoryInfo = () => {
                                                     label: '# 소분류'
                                                 }}
                                                 style={{
-                                                    width: '165px'
+                                                    width: '540px'
                                                 }}
                                                 loading={loading_S}
                                                 options={sTheoryGroupData}

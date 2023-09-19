@@ -32,7 +32,7 @@ const Register = () => {
     const handle_InsertStuUser_Api = async () => {
         const InsertStuUserresponse = await InsertStuUserApi({
             eduName: itemContainer.eduName, //                      교육과정명
-            writeDate: itemContainer.writeDate, //                  입교신청일
+            writeDate: itemContainer.writeDate === undefined ? dayjs(new Date()).format('YYYY-MM-DD') : itemContainer.writeDate, //                  입교신청일
             userId: itemContainer.userId, //                        아이디
             userPw: itemContainer.userPw, //                        패스워드
             userNm: itemContainer.userNm, //                        성명국문
@@ -74,6 +74,8 @@ const Register = () => {
             careerPosition2: itemContainer.careerPosition2
         });
         setLoading(false);
+        console.log('itemContainer', itemContainer);
+        console.log('InsertStuUserresponse : ', InsertStuUserresponse);
         InsertStuUserresponse?.data?.RET_CODE === '0100'
             ? Modal.success({
                   content: '등록 완료',
@@ -265,7 +267,7 @@ const Register = () => {
                                             style={{
                                                 width: '100%'
                                             }}
-                                            value={itemContainer?.writeDate ? dayjs(itemContainer.writeDate) : dayjs(new Date())}
+                                            value={dayjs(itemContainer?.writeDate)}
                                         />
                                     </Form.Item>
                                 </Col>
@@ -456,7 +458,6 @@ const Register = () => {
                                                 margin: '0 3px'
                                             }}
                                             placeholder="주민등록번호 (숫자만 입력)"
-                                            // onChange={(e) => setItemContainer({ ...itemContainer, registNumber: e.target.value })}
                                             onChange={(e) => handleResidentNumberChange(e.target.value)}
                                             value={itemContainer?.registNumber}
                                         />
@@ -474,14 +475,8 @@ const Register = () => {
                                     >
                                         <DatePicker
                                             name="birthDay"
-                                            // onChange={(e) => {
-                                            //     setItemContainer({
-                                            //         ...itemContainer,
-                                            //         birthDay: e.format('YYYY-MM-DD')
-                                            //     });
-                                            // }}
                                             onChange={handleDOBChange}
-                                            value={itemContainer?.birthDay ? dayjs(itemContainer.birthDay) : dayjs(new Date())}
+                                            value={itemContainer.birthDay === undefined ? '' : dayjs(itemContainer?.birthDay)}
                                             placeholder="생년월일"
                                             style={{
                                                 width: '48%'
@@ -825,20 +820,20 @@ const Register = () => {
                                                 style={{
                                                     width: '195px'
                                                 }}
-                                                renderExtraFooter={() => 'extra footer'}
+                                                // renderExtraFooter={() => 'extra footer'}
                                                 picker="month"
                                                 locale={locale}
                                                 onChange={(dates) => {
                                                     setItemContainer({
                                                         ...itemContainer,
-                                                        militaryEndDate: dates[1],
+                                                        militaryEndDate: dates[1].format('YYYY-MM-DD'),
                                                         ...itemContainer,
-                                                        militaryStartDate: dates[0]
+                                                        militaryStartDate: dates[0].format('YYYY-MM-DD')
                                                     });
                                                 }}
                                                 value={[
-                                                    itemContainer?.militaryStartDate ? itemContainer.militaryStartDate : null,
-                                                    itemContainer?.militaryEndDate ? itemContainer.militaryEndDate : null
+                                                    itemContainer?.militaryStartDate ? dayjs(itemContainer?.militaryStartDate) : '',
+                                                    itemContainer?.militaryEndDate ? dayjs(itemContainer?.militaryEndDate) : ''
                                                 ]}
                                             />
                                             <Input
@@ -918,18 +913,14 @@ const Register = () => {
                                                         onChange={(dates) => {
                                                             setItemContainer({
                                                                 ...itemContainer,
-                                                                careerEndDate1: dates[1],
+                                                                careerEndDate1: dates[1].format('YYYY-MM-DD'),
                                                                 ...itemContainer,
-                                                                careerStartDate1: dates[0]
+                                                                careerStartDate1: dates[0].format('YYYY-MM-DD')
                                                             });
                                                         }}
                                                         value={[
-                                                            itemContainer?.careerStartDate1
-                                                                ? dayjs(itemContainer.careerStartDate1)
-                                                                : dayjs(new Date()),
-                                                            itemContainer?.careerEndDate1
-                                                                ? dayjs(itemContainer.careerEndDate1)
-                                                                : dayjs(new Date())
+                                                            itemContainer?.careerStartDate1 ? dayjs(itemContainer.careerStartDate1) : '',
+                                                            itemContainer?.careerEndDate1 ? dayjs(itemContainer.careerEndDate1) : ''
                                                         ]}
                                                     />
                                                     <Input
@@ -982,18 +973,14 @@ const Register = () => {
                                                         onChange={(dates) => {
                                                             setItemContainer({
                                                                 ...itemContainer,
-                                                                careerEndDate2: dates[1],
+                                                                careerEndDate2: dates[1].format('YYYY-MM-DD'),
                                                                 ...itemContainer,
-                                                                careerStartDate2: dates[0]
+                                                                careerStartDate2: dates[0].format('YYYY-MM-DD')
                                                             });
                                                         }}
                                                         value={[
-                                                            itemContainer?.careerStartDate2
-                                                                ? dayjs(itemContainer.careerStartDate2)
-                                                                : dayjs(new Date()),
-                                                            itemContainer?.careerEndDate2
-                                                                ? dayjs(itemContainer.careerEndDate2)
-                                                                : dayjs(new Date())
+                                                            itemContainer?.careerStartDate2 ? dayjs(itemContainer.careerStartDate2) : '',
+                                                            itemContainer?.careerEndDate2 ? dayjs(itemContainer.careerEndDate2) : ''
                                                         ]}
                                                     />
                                                     <Input
