@@ -557,8 +557,24 @@ export const Theoryinformation = () => {
                                                 value: '1'
                                             },
                                             {
-                                                label: '항공경비요원 초기교육',
+                                                label: '보안검색요원 정기교육',
                                                 value: '2'
+                                            },
+                                            {
+                                                label: '보안검색요원 인증평가교육',
+                                                value: '3'
+                                            },
+                                            {
+                                                label: '항공경비요원 초기교육',
+                                                value: '4'
+                                            },
+                                            {
+                                                label: '항공경비요원 정기교육',
+                                                value: '5'
+                                            },
+                                            {
+                                                label: '항공경비요원 인증평가교육',
+                                                value: '6'
                                             }
                                         ]}
                                     />

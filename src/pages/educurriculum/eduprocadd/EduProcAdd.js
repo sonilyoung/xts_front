@@ -319,6 +319,7 @@ export const EduProcAdd = () => {
     // 등록 ======================================================
     const [InsertBaselineApi] = useInsertBaselineMutation(); // 등록 hooks api호출
     const handel_InsertBaseline_Api = async () => {
+        console.log(itemContainer);
         const InsertBaselineresponse = await InsertBaselineApi({
             procSeq: itemContainer.procSeq,
             procName: itemContainer.procName,
@@ -327,10 +328,15 @@ export const EduProcAdd = () => {
             totStudyDate: itemContainer.totStudyDate,
             studyLvl: itemContainer.studyLvl,
             limitPersonCnt: itemContainer.limitPersonCnt,
-            endingStdScore: itemContainer.endingStdScore,
-            practiceTotalScore: itemContainer.practiceTotalScore,
-            evaluationTotalScore: itemContainer.evaluationTotalScore,
-            theoryTotalScore: itemContainer.theoryTotalScore,
+
+            endingStdScore: itemContainer.endingStdScore === undefined ? '80' : itemContainer.endingStdScore, // 수료 기준점수
+            theoryTotalScore: itemContainer.theoryTotalScore === undefined ? '80' : itemContainer.theoryTotalScore, // 이론평가 가중치(%)
+            practiceTotalScore: itemContainer.practiceTotalScore === undefined ? '80' : itemContainer.practiceTotalScore, //실기평가 가중치(%)
+            evaluationTotalScore: itemContainer.evaluationTotalScore === undefined ? '80' : itemContainer.evaluationTotalScore, // XBT 평가 가중치(%)
+            passTheoryScore: itemContainer.passTheoryScore === undefined ? '30' : itemContainer.passTheoryScore, // 이론평가 과락점수 30
+            passPracticeScore: itemContainer.passPracticeScore === undefined ? '30' : itemContainer.passPracticeScore, // 실기평가 과락점수 30
+            passScore: itemContainer.passScore === undefined ? '40' : itemContainer.passScore, // XBT 평가 과락점수 40
+
             scheduleList: studyDayArry,
             menuList: menuArry,
             moduleList: moduleArry,
@@ -381,13 +387,15 @@ export const EduProcAdd = () => {
             totStudyDate: itemContainer.totStudyDate,
             studyLvl: itemContainer.studyLvl,
             limitPersonCnt: itemContainer.limitPersonCnt,
-            endingStdScore: itemContainer.endingStdScore,
-            practiceTotalScore: itemContainer.practiceTotalScore,
-            evaluationTotalScore: itemContainer.evaluationTotalScore,
-            theoryTotalScore: itemContainer.theoryTotalScore,
-            passScore: itemContainer.passScore,
-            passTheoryScore: itemContainer.passTheoryScore,
-            passPracticeScore: itemContainer.passPracticeScore,
+
+            endingStdScore: itemContainer.endingStdScore === undefined ? '80' : itemContainer.endingStdScore, // 수료 기준점수
+            theoryTotalScore: itemContainer.theoryTotalScore === undefined ? '80' : itemContainer.theoryTotalScore, // 이론평가 가중치(%)
+            practiceTotalScore: itemContainer.practiceTotalScore === undefined ? '80' : itemContainer.practiceTotalScore, //실기평가 가중치(%)
+            evaluationTotalScore: itemContainer.evaluationTotalScore === undefined ? '80' : itemContainer.evaluationTotalScore, // XBT 평가 가중치(%)
+            passTheoryScore: itemContainer.passTheoryScore === undefined ? '30' : itemContainer.passTheoryScore, // 이론평가 과락점수 30
+            passPracticeScore: itemContainer.passPracticeScore === undefined ? '30' : itemContainer.passPracticeScore, // 실기평가 과락점수 30
+            passScore: itemContainer.passScore === undefined ? '40' : itemContainer.passScore, // XBT 평가 과락점수 40
+
             scheduleList: studyDayArry,
             menuList: menuArry,
             moduleList: moduleArry,
@@ -1006,8 +1014,8 @@ export const EduProcAdd = () => {
                                                 value={
                                                     itemContainer?.endingStdScore === undefined || itemContainer?.endingStdScore === null
                                                         ? {
-                                                              value: 0,
-                                                              label: '# 수료 기준점수'
+                                                              value: 80,
+                                                              label: '80'
                                                           }
                                                         : itemContainer?.endingStdScore
                                                 }
@@ -1040,8 +1048,8 @@ export const EduProcAdd = () => {
                                                 value={
                                                     itemContainer?.passTheoryScore === undefined || itemContainer?.passTheoryScore === null
                                                         ? {
-                                                              value: 0,
-                                                              label: '# 이론평가 과락점수'
+                                                              value: 80,
+                                                              label: '80'
                                                           }
                                                         : itemContainer?.passTheoryScore
                                                 }
@@ -1075,7 +1083,7 @@ export const EduProcAdd = () => {
                                                 value={
                                                     itemContainer?.theoryTotalScore === undefined ||
                                                     itemContainer?.theoryTotalScore === null
-                                                        ? 0
+                                                        ? 30
                                                         : itemContainer?.theoryTotalScore
                                                 }
                                             />
@@ -1108,8 +1116,8 @@ export const EduProcAdd = () => {
                                                     itemContainer?.passPracticeScore === undefined ||
                                                     itemContainer?.passPracticeScore === null
                                                         ? {
-                                                              value: 0,
-                                                              label: '# 실기평가 과락점수'
+                                                              value: 80,
+                                                              label: '80'
                                                           }
                                                         : itemContainer?.passPracticeScore
                                                 }
@@ -1143,7 +1151,7 @@ export const EduProcAdd = () => {
                                                 value={
                                                     itemContainer?.practiceTotalScore === undefined ||
                                                     itemContainer?.practiceTotalScore === null
-                                                        ? 0
+                                                        ? 30
                                                         : itemContainer?.practiceTotalScore
                                                 }
                                             />
@@ -1175,8 +1183,8 @@ export const EduProcAdd = () => {
                                                 value={
                                                     itemContainer?.passScore === undefined || itemContainer?.passScore === null
                                                         ? {
-                                                              value: 0,
-                                                              label: '# XBT 평가 과락점수'
+                                                              value: 80,
+                                                              label: '80'
                                                           }
                                                         : itemContainer?.passScore
                                                 }
@@ -1210,7 +1218,7 @@ export const EduProcAdd = () => {
                                                 value={
                                                     itemContainer?.evaluationTotalScore === undefined ||
                                                     itemContainer?.evaluationTotalScore === null
-                                                        ? 0
+                                                        ? 40
                                                         : itemContainer?.evaluationTotalScore
                                                 }
                                             />
