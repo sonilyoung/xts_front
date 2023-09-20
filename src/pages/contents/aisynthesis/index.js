@@ -1,0 +1,1 @@
+export { Aisynthesis } from './Aisynthesis';
