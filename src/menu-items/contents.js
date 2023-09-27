@@ -159,6 +159,23 @@ export const teacherstudent = {
     ]
 };
 
+export const synthesis2d = {
+    id: '9',
+    title: 'Navigation',
+    type: 'group',
+    children: [
+        {
+            id: '/contents/synthesis2d',
+            title: '콘텐츠 관리 > X-ray 콘텐츠 관리 > 2D AI영상합성',
+            subtitle: '2D AI영상합성',
+            type: 'item',
+            url: '/contents/synthesis2d',
+            icon: icons.ProjectOutlined,
+            breadcrumbs: true
+        }
+    ]
+};
+
 // export const xrayModule = {
 //     id: '9',
 //     title: 'Navigation',

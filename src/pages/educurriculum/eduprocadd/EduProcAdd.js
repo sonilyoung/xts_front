@@ -130,7 +130,11 @@ export const EduProcAdd = () => {
                 rowdata11: d.totTimeDiff, // 총학습일
                 rowdata12: d.theoryTotalScore, // 이론기준점수
                 rowdata13: d.practiceTotalScore, // 실기기준점수
-                rowdata14: d.evaluationTotalScore // 평가기준점수
+                rowdata14: d.evaluationTotalScore, // 평가기준점수
+                rowdata15: d.practiceHumanTotalScore, //대인 가중치
+                rowdata16: d.practiceHumanScore, //대인 커트라인
+                rowdata17: d.practiceCarTotalScore, //차량 가중치
+                rowdata18: d.practiceCarScore //차량 커트라인
             }))
         ]);
         setLoading(false);
@@ -259,6 +263,31 @@ export const EduProcAdd = () => {
         {
             title: (
                 <div>
+                    대인
+                    <br />
+                    가중치
+                </div>
+            ),
+            dataIndex: 'rowdata15',
+            align: 'center',
+            render: (_, { rowdata15 }) => <> {rowdata15 === undefined ? 0 : rowdata15} </>
+        },
+        {
+            title: (
+                <div>
+                    차량
+                    <br />
+                    가중치
+                </div>
+            ),
+            dataIndex: 'rowdata17',
+            align: 'center',
+            render: (_, { rowdata17 }) => <> {rowdata17 === undefined ? 0 : rowdata17} </>
+        },
+
+        {
+            title: (
+                <div>
                     진행된
                     <br />
                     학습일
@@ -319,7 +348,6 @@ export const EduProcAdd = () => {
     // 등록 ======================================================
     const [InsertBaselineApi] = useInsertBaselineMutation(); // 등록 hooks api호출
     const handel_InsertBaseline_Api = async () => {
-        console.log(itemContainer);
         const InsertBaselineresponse = await InsertBaselineApi({
             procSeq: itemContainer.procSeq,
             procName: itemContainer.procName,
@@ -395,6 +423,11 @@ export const EduProcAdd = () => {
             passTheoryScore: itemContainer.passTheoryScore === undefined ? '30' : itemContainer.passTheoryScore, // 이론평가 과락점수 30
             passPracticeScore: itemContainer.passPracticeScore === undefined ? '30' : itemContainer.passPracticeScore, // 실기평가 과락점수 30
             passScore: itemContainer.passScore === undefined ? '40' : itemContainer.passScore, // XBT 평가 과락점수 40
+
+            practiceHumanTotalScore: itemContainer.practiceHumanTotalScore, //대인 가중치
+            practiceHumanScore: itemContainer.practiceHumanScore === undefined ? '80' : itemContainer.practiceHumanScore, //대인 커트라인
+            practiceCarTotalScore: itemContainer.practiceCarTotalScore, //차량 가중치
+            practiceCarScore: itemContainer.practiceCarScore === undefined ? '80' : itemContainer.practiceCarScore, //차량 커트라인
 
             scheduleList: studyDayArry,
             menuList: menuArry,
@@ -1227,7 +1260,146 @@ export const EduProcAdd = () => {
                                 </Form.Item>
                             </Col>
                         </Row>
+
                         <Row gutter={24}>
+                            <Col span={12}>
+                                <Form.Item
+                                    name="form08"
+                                    label="차량 실기 평가 과락점수"
+                                    rules={[
+                                        {
+                                            required: true
+                                        }
+                                    ]}
+                                >
+                                    <Row>
+                                        <Col>
+                                            <Select
+                                                name="practiceCarScore"
+                                                style={{
+                                                    width: '236px'
+                                                }}
+                                                options={Scoreoptions}
+                                                onChange={(e) => setItemContainer({ ...itemContainer, practiceCarScore: e })}
+                                                value={
+                                                    itemContainer?.practiceCarScore === undefined ||
+                                                    itemContainer?.practiceCarScore === null
+                                                        ? {
+                                                              value: 80,
+                                                              label: '80'
+                                                          }
+                                                        : itemContainer?.practiceCarScore
+                                                }
+                                            />
+                                        </Col>
+                                    </Row>
+                                </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                                <Form.Item
+                                    name="form08"
+                                    label="차량 실기 평가 가중치(%)"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: '※ 차량 실기 평가 가중치 선택'
+                                        }
+                                    ]}
+                                >
+                                    <Row>
+                                        <Col>
+                                            <Input
+                                                name="practiceCarTotalScore"
+                                                addonAfter="%"
+                                                onChange={(e) => {
+                                                    const value = parseInt(e.target.value);
+                                                    if (!isNaN(value) && value <= 100) {
+                                                        setItemContainer({ ...itemContainer, practiceCarTotalScore: value });
+                                                    }
+                                                }}
+                                                value={
+                                                    itemContainer?.practiceCarTotalScore === undefined ||
+                                                    itemContainer?.practiceCarTotalScore === null
+                                                        ? 0
+                                                        : itemContainer?.practiceCarTotalScore
+                                                }
+                                            />
+                                        </Col>
+                                    </Row>
+                                </Form.Item>
+                            </Col>
+                        </Row>
+
+                        <Row gutter={24}>
+                            <Col span={12}>
+                                <Form.Item
+                                    name="form08"
+                                    label="대인 실기 평가 과락점수"
+                                    rules={[
+                                        {
+                                            required: true
+                                        }
+                                    ]}
+                                >
+                                    <Row>
+                                        <Col>
+                                            <Select
+                                                name="practiceHumanScore"
+                                                style={{
+                                                    width: '236px'
+                                                }}
+                                                options={Scoreoptions}
+                                                onChange={(e) => setItemContainer({ ...itemContainer, practiceHumanScore: e })}
+                                                value={
+                                                    itemContainer?.practiceHumanScore === undefined ||
+                                                    itemContainer?.practiceHumanScore === null
+                                                        ? {
+                                                              value: 80,
+                                                              label: '80'
+                                                          }
+                                                        : itemContainer?.practiceHumanScore
+                                                }
+                                            />
+                                        </Col>
+                                    </Row>
+                                </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                                <Form.Item
+                                    name="form08"
+                                    label="대인 실기 평가 가중치(%)"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: '※ 대인 실기 평가 가중치 선택'
+                                        }
+                                    ]}
+                                >
+                                    <Row>
+                                        <Col>
+                                            <Input
+                                                name="practiceHumanTotalScore"
+                                                addonAfter="%"
+                                                onChange={(e) => {
+                                                    const value = parseInt(e.target.value);
+                                                    if (!isNaN(value) && value <= 100) {
+                                                        setItemContainer({ ...itemContainer, practiceHumanTotalScore: value });
+                                                    }
+                                                }}
+                                                value={
+                                                    itemContainer?.practiceHumanTotalScore === undefined ||
+                                                    itemContainer?.practiceHumanTotalScore === null
+                                                        ? 0
+                                                        : itemContainer?.practiceHumanTotalScore
+                                                }
+                                            />
+                                        </Col>
+                                    </Row>
+                                </Form.Item>
+                            </Col>
+                        </Row>
+
+                        {/* <Row gutter={24}>
                             <Col span={24}>
                                 <Descriptions title="" layout="vertical" bordered column={4}>
                                     <Descriptions.Item label="이론 평가" style={{ textAlign: 'center' }}>
@@ -1255,7 +1427,7 @@ export const EduProcAdd = () => {
                                     </Descriptions.Item>
                                 </Descriptions>
                             </Col>
-                        </Row>
+                        </Row> */}
                         <Divider style={{ margin: '10px 0' }} />
                         <Card bordered style={{ textAlign: 'center' }}>
                             <Row gutter={24}>

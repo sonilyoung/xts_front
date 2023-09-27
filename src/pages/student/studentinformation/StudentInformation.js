@@ -43,9 +43,9 @@ import { CertificatesPrint } from './CertificatesPrint';
 
 // project import
 import MainCard from 'components/MainCard';
+import moment from 'moment';
 
 export const Studentinformation = () => {
-    let printWindow;
     dayjs.extend(weekday);
     dayjs.extend(localeData);
 
@@ -122,7 +122,7 @@ export const Studentinformation = () => {
     const handle_InsertUser_Api = async () => {
         const InsertUserresponse = await InsertUserApi({
             eduName: itemContainer.eduName, //                      교육과정명
-            writeDate: itemContainer.writeDate === undefined ? dayjs(new Date()).format('YYYY-MM-DD') : itemContainer.writeDate, //                  입교신청일
+            writeDate: itemContainer.writeDate, //                  입교신청일
             userId: itemContainer.userId, //                        아이디
             userPw: itemContainer.userPw, //                        패스워드
             userNm: itemContainer.userNm, //                        성명국문
@@ -163,8 +163,6 @@ export const Studentinformation = () => {
             careerCompany2: itemContainer.careerCompany2,
             careerPosition2: itemContainer.careerPosition2
         });
-        console.log(itemContainer);
-        console.log(InsertUserresponse?.data);
         InsertUserresponse?.data?.RET_CODE === '0100'
             ? Modal.success({
                   content: '등록 완료',
@@ -467,68 +465,9 @@ export const Studentinformation = () => {
 
     // 아이디 중복 체크 버튼 클릭 이벤트
     const handel_IdChk = (user_id) => {
-        if (user_id === undefined) {
-            Modal.success({
-                content: '아이디를 입력해주세요!',
-                onOk() {}
-            });
-        } else {
-            if (user_id.length < '4') {
-                Modal.success({
-                    content: '아이디는 최소 "4"자 이상 입력해주시기 바랍니다.',
-                    onOk() {}
-                });
-            } else {
-                handel_SelectUserCheck_Api(user_id);
-            }
-        }
+        handel_SelectUserCheck_Api(user_id);
     };
 
-    const formatPhoneNumber = (input) => {
-        const cleanedInput = input.replace(/\D/g, '');
-        const formattedNumber = cleanedInput.replace(/^(\d{3})(\d{3,4})(\d{4})$/, '$1-$2-$3');
-        return formattedNumber;
-    };
-
-    const handlePhoneNumberChange = (fieldName, inputValue) => {
-        const formattedNumber = formatPhoneNumber(inputValue);
-        setItemContainer((prevValues) => ({
-            ...prevValues,
-            [fieldName]: formattedNumber
-        }));
-    };
-
-    const formatResidentRegistrationNumber = (input) => {
-        const cleanedInput = input.replace(/\D/g, '');
-        const formattedNumber = cleanedInput.replace(/^(\d{6})(\d{1,7})$/, '$1-$2');
-        return formattedNumber;
-    };
-
-    const handleResidentNumberChange = (inputValue) => {
-        const formattedNumber = formatResidentRegistrationNumber(inputValue);
-        setItemContainer((prevValues) => ({
-            ...prevValues,
-            registNumber: formattedNumber
-        }));
-    };
-
-    const calculateAge = (dob) => {
-        const today = new Date();
-        const birthDate = new Date(dob);
-        let age = today.getFullYear() - birthDate.getFullYear();
-        const monthDiff = today.getMonth() - birthDate.getMonth();
-        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-            age--;
-        }
-        return age;
-    };
-    const handleDOBChange = (date, dateString) => {
-        setItemContainer((prevValues) => ({
-            ...prevValues,
-            birthDay: dateString,
-            age: calculateAge(dateString).toString()
-        }));
-    };
     // 삭제
     const handleDel = () => {
         if (selectedRowKeys == '') {
@@ -805,15 +744,15 @@ export const Studentinformation = () => {
                                         value={itemContainer?.eduCode}
                                         options={[
                                             {
-                                                label: '보안검색요원 초기교육 [5일/40시간]',
+                                                label: '보안검색요원 초기 교육 [5일/40시간]',
                                                 value: '1'
                                             },
                                             {
-                                                label: '보안검색요원 정기교육 [1일/8시간]',
+                                                label: '보안검색요원 정기 교육 [1일/8시간]',
                                                 value: '2'
                                             },
                                             {
-                                                label: '보안검색요원 인증평가교육 [1일/4시간]',
+                                                label: '보안검색요원 인증평가 교육 [1일/4시간]',
                                                 value: '3'
                                             },
                                             {
@@ -821,11 +760,11 @@ export const Studentinformation = () => {
                                                 value: '4'
                                             },
                                             {
-                                                label: '항공경비요원 정기교육 [1일/8시간]',
+                                                label: '항공경비요원 정기 교육 [1일/8시간]',
                                                 value: '5'
                                             },
                                             {
-                                                label: '항공경비요원 인증평가교육 [1일/4시간]',
+                                                label: '항공경비요원 인증평가 교육 [1일/4시간]',
                                                 value: '6'
                                             }
                                         ]}
@@ -843,19 +782,19 @@ export const Studentinformation = () => {
                                             message: '입교신청일'
                                         }
                                     ]}
-                                    // initialValue={itemContainer?.writeDate}
+                                    initialValue={itemContainer?.writeDate}
                                 >
                                     <DatePicker
                                         locale={locale}
                                         name="writeDate"
                                         onChange={(date) => {
-                                            setItemContainer({ ...itemContainer, writeDate: date.format('YYYY-MM-DD') });
+                                            setItemContainer({ ...itemContainer, writeDate: date });
                                         }}
                                         placeholder="입교신청일"
                                         style={{
                                             width: '100%'
                                         }}
-                                        value={dayjs(itemContainer?.writeDate)}
+                                        value={itemContainer?.writeDate ? dayjs(itemContainer.writeDate) : dayjs(new Date())}
                                     />
                                 </Form.Item>
                             </Col>
@@ -873,8 +812,17 @@ export const Studentinformation = () => {
                                     ]}
                                     initialValue={itemContainer?.userId}
                                 >
-                                    <Space direction="horizontal">
-                                        <div className="form-group">
+                                    {idChk ? ( // 수정의 경우
+                                        <Input
+                                            name="userId"
+                                            placeholder="아이디"
+                                            onChange={(e) => setItemContainer({ ...itemContainer, userId: e.target.value })}
+                                            value={itemContainer?.userId}
+                                            disabled={idChk}
+                                        />
+                                    ) : (
+                                        // 등록의 경우
+                                        <Space direction="horizontal">
                                             <Input
                                                 name="userId"
                                                 placeholder="아이디"
@@ -882,8 +830,6 @@ export const Studentinformation = () => {
                                                 value={itemContainer?.userId}
                                                 disabled={idChk}
                                             />
-                                        </div>
-                                        {idChk === false ? (
                                             <Button
                                                 style={{
                                                     width: 80
@@ -891,19 +837,10 @@ export const Studentinformation = () => {
                                                 onClick={() => handel_IdChk(itemContainer?.userId)}
                                                 disabled={idChk}
                                             >
-                                                중복체크
-                                            </Button>
-                                        ) : (
-                                            <Button
-                                                style={{
-                                                    width: 80
-                                                }}
-                                                disabled={idChk}
-                                            >
                                                 사용가능
                                             </Button>
-                                        )}
-                                    </Space>
+                                        </Space>
+                                    )}
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
@@ -1045,8 +982,7 @@ export const Studentinformation = () => {
                                             width: '100%',
                                             margin: '0 3px'
                                         }}
-                                        // onChange={(e) => setItemContainer({ ...itemContainer, registNumber: e.target.value })}
-                                        onChange={(e) => handleResidentNumberChange(e.target.value)}
+                                        onChange={(e) => setItemContainer({ ...itemContainer, registNumber: e.target.value })}
                                         value={itemContainer?.registNumber}
                                     />
                                 </Form.Item>
@@ -1064,8 +1000,13 @@ export const Studentinformation = () => {
                                     <DatePicker
                                         locale={locale}
                                         name="birthDay"
-                                        onChange={handleDOBChange}
-                                        value={itemContainer.birthDay === undefined ? '' : dayjs(itemContainer?.birthDay)}
+                                        onChange={(date) => {
+                                            setItemContainer({
+                                                ...itemContainer,
+                                                birthDay: date
+                                            });
+                                        }}
+                                        value={itemContainer?.birthDay ? dayjs(itemContainer.birthDay) : dayjs(new Date())}
                                         placeholder="생년월일"
                                         style={{
                                             width: '48%'
@@ -1108,8 +1049,7 @@ export const Studentinformation = () => {
                                             width: '100%'
                                         }}
                                         placeholder="전화번호"
-                                        // onChange={(e) => setItemContainer({ ...itemContainer, telNo: e.target.value })}
-                                        onChange={(e) => handlePhoneNumberChange('telNo', e.target.value)}
+                                        onChange={(e) => setItemContainer({ ...itemContainer, telNo: e.target.value })}
                                         value={itemContainer?.telNo}
                                     />
                                 </Form.Item>
@@ -1131,8 +1071,7 @@ export const Studentinformation = () => {
                                             width: '100%'
                                         }}
                                         placeholder="휴대폰번호"
-                                        // onChange={(e) => setItemContainer({ ...itemContainer, hpNo: e.target.value })}
-                                        onChange={(e) => handlePhoneNumberChange('hpNo', e.target.value)}
+                                        onChange={(e) => setItemContainer({ ...itemContainer, hpNo: e.target.value })}
                                         value={itemContainer?.hpNo}
                                     />
                                 </Form.Item>
@@ -1415,14 +1354,14 @@ export const Studentinformation = () => {
                                             onChange={(dates) => {
                                                 setItemContainer({
                                                     ...itemContainer,
-                                                    militaryEndDate: dates[1].format('YYYY-MM-DD'),
+                                                    militaryEndDate: dates[1],
                                                     ...itemContainer,
-                                                    militaryStartDate: dates[0].format('YYYY-MM-DD')
+                                                    militaryStartDate: dates[0]
                                                 });
                                             }}
                                             value={[
-                                                itemContainer?.militaryStartDate ? dayjs(itemContainer?.militaryStartDate) : '',
-                                                itemContainer?.militaryEndDate ? dayjs(itemContainer?.militaryEndDate) : ''
+                                                itemContainer?.militaryStartDate ? dayjs(itemContainer.militaryStartDate) : '',
+                                                itemContainer?.militaryEndDate ? dayjs(itemContainer.militaryEndDate) : ''
                                             ]}
                                         />
                                         <Input
@@ -1500,9 +1439,9 @@ export const Studentinformation = () => {
                                                     onChange={(dates) => {
                                                         setItemContainer({
                                                             ...itemContainer,
-                                                            careerEndDate1: dates[1].format('YYYY-MM-DD'),
+                                                            careerEndDate1: dates[1],
                                                             ...itemContainer,
-                                                            careerStartDate1: dates[0].format('YYYY-MM-DD')
+                                                            careerStartDate1: dates[0]
                                                         });
                                                     }}
                                                     value={[
@@ -1558,9 +1497,9 @@ export const Studentinformation = () => {
                                                     onChange={(dates) => {
                                                         setItemContainer({
                                                             ...itemContainer,
-                                                            careerEndDate2: dates[1].format('YYYY-MM-DD'),
+                                                            careerEndDate2: dates[1],
                                                             ...itemContainer,
-                                                            careerStartDate2: dates[0].format('YYYY-MM-DD')
+                                                            careerStartDate2: dates[0]
                                                         });
                                                     }}
                                                     value={[

@@ -32,7 +32,8 @@ const items_0 = [
         getItem('X-ray 콘텐츠 관리', 'g2', <BlockOutlined />, [
             getItem(<Link to="/contents/xrayinformation">정보 관리</Link>, '3', <FileTextOutlined />),
             getItem(<Link to="/contents/xrayinformationimage">이미지 관리</Link>, '4', <FileTextOutlined />),
-            getItem(<Link to="/contents/aisynthesis">AI 영상합성</Link>, '5', <FileTextOutlined />)
+            getItem(<Link to="/contents/aisynthesis">의사색채 AI영상합성</Link>, '5', <FileTextOutlined />),
+            getItem(<Link to="/contents/synthesis2d">2D AI영상합성</Link>, '14', <FileTextOutlined />)
         ])
     ]),
 
@@ -92,7 +93,8 @@ const items_1 = [
         getItem('X-ray 콘텐츠 관리', 'g2', <BlockOutlined />, [
             getItem(<Link to="/contents/xrayinformation">정보 관리</Link>, '3', <FileTextOutlined />),
             getItem(<Link to="/contents/xrayinformationimage">이미지 관리</Link>, '4', <FileTextOutlined />),
-            getItem(<Link to="/contents/aisynthesis">AI 영상합성</Link>, '5', <FileTextOutlined />)
+            getItem(<Link to="/contents/aisynthesis">의사색채 AI영상합성</Link>, '5', <FileTextOutlined />),
+            getItem(<Link to="/contents/synthesis2d">2D AI영상합성</Link>, '14', <FileTextOutlined />)
         ])
     ]),
 

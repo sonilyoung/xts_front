@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React, { useState } from 'react';
-import { Row, Col, Form, Space, Card, Button, Input, Typography, Modal, Upload, Image, Progress } from 'antd';
+import { Row, Col, Form, Space, Card, Button, Input, Typography, Modal, Upload, Image, Progress, Select } from 'antd';
 // import { Typography } from '@mui/material';
 import { RetweetOutlined, DeleteFilled, UploadOutlined } from '@ant-design/icons';
 
@@ -18,7 +18,7 @@ import {
     useSyncImagesMutation
 } from '../../../hooks/api/AisynthesisManagement/AisynthesisManagement';
 
-export const Aisynthesis = () => {
+export const Synthesis2d = () => {
     const { confirm } = Modal;
     const [form] = Form.useForm();
     const { Text, Link } = Typography;
@@ -28,6 +28,7 @@ export const Aisynthesis = () => {
         '100%': '#ffccc7'
     };
 
+    const [itemContainer, setItemContainer] = useState([]); // 의사색채 이미지 생성 로딩 초기값
     const [prosess_percent, setProsess_percent] = useState('6'); // 의사색채 이미지 생성 로딩 초기값
     const [createLoding, setCreateLoding] = useState(false); // 의사색채 이미지 생성 로딩 초기값
     const [syncLoding, setSyncLoding] = useState(false); // 동기화 로딩 초기값
@@ -87,136 +88,17 @@ export const Aisynthesis = () => {
         setCreateLoding(false);
     };
 
-    // 이미지 동기화  ======================================================
-    const [SyncImagesApi] = useSyncImagesMutation(); // 콘텐츠 정보 관리 hooks api호출
-    const handel_SyncImages_Api = async () => {
-        const SyncImagesResponse = await SyncImagesApi({});
-        if (SyncImagesResponse?.data?.RET_CODE === '0000') {
-            Modal.success({
-                title: 'Success Message',
-                content: '동기화 성공'
-            });
-            setFrontImg(null);
-            setSideImg(null);
-            setFrontImg_Base(null);
-            setSideImg_Base(null);
-            setBagScanId();
-            setSelectKaistXrayImgContentsData();
-        } else {
-            Modal.error({
-                title: 'Error Message',
-                content: '동기화 실패'
-            });
-        }
-        setSyncLoding(false);
-    };
-
     // Api 호출 End
     // ===============================
 
-    // ===============================
-    // 정면 이미지 업로드(의사색채) Start
-    const FrontImgUpload = (frontfile) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(frontfile);
-        reader.onloadend = () => {
-            setFrontImg_Base(reader.result);
-            setFrontImg(frontfile);
-        };
-    };
-    // 삭제
-    const FrontRemove = () => {
-        setFrontImg(null);
-        setFrontImg_Base(null);
-    };
-    // 정면 이미지 업로드(의사색채) End
-    // ===============================
-
-    // ===============================
-    // 측면 이미지 업로드(의사색채) Start
-    const SideImgUpload = (sidefile) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(sidefile);
-        reader.onloadend = () => {
-            setSideImg_Base(reader.result);
-            setSideImg(sidefile);
-        };
-    };
-    // 삭제
-    const SideRemove = () => {
-        setSideImg(null);
-        setSideImg_Base(null);
-    };
-    // 측면 이미지 업로드(의사색채) End
-    // ===============================
-
-    // ===============================
-    // 2D 정면 이미지 업로드(의사색채) Start
-    const FrontImg2DUpload = (frontfile) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(frontfile);
-        reader.onloadend = () => {
-            setFrontImg_2D(frontfile);
-            setFrontImg_2D_Base(reader.result);
-        };
-    };
-    // 삭제
-    const Front2DRemove = () => {
-        setFrontImg_2D(null);
-        setFrontImg_2D_Base(null);
-    };
-    // 2D 정면 이미지 업로드(의사색채) End
-    // ===============================
-
-    // ===============================
-    // 2D 측면 이미지 업로드(의사색채) Start
-    const SideImg2DUpload = (sidefile) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(sidefile);
-        reader.onloadend = () => {
-            setSideImg_2D(sidefile);
-            setSideImg_2D_Base(reader.result);
-        };
-    };
-    // 삭제
-    const Side2DRemove = () => {
-        setSideImg_2D(null);
-        setSideImg_2D_Base(null);
-    };
-    // 2D 측면 이미지 업로드(의사색채) End
-    // ===============================
-
-    // 의사색체 영상합성 버튼 클릭
-    const SudoCreate = () => {
-        if (frontImg === null) {
-            Modal.warning({
-                title: 'Warning Message',
-                content: '정면 이미지를 업로드해 주세요!'
-            });
-        } else if (sideImg === null) {
-            Modal.warning({
-                title: 'Warning Message',
-                content: '측면 이미지를 업로드해 주세요!'
-            });
-        } else {
-            handel_SudoImgExcute_Api();
-            setCreateLoding(true);
-        }
-    };
-
-    // 동기화
-    const handel_sync = () => {
-        handel_SyncImages_Api();
-        setSyncLoding(true);
-    };
     return (
         <>
             <Typography variant="body1">
                 <MainCard>
-                    <Row>
-                        <Col span={24}>
+                    <Row gutter={[24, 24]}>
+                        <Col span={16}>
                             <Card
-                                title={<span style={{ fontSize: '0.9rem' }}>의사색채 영상합성</span>}
+                                title={<span style={{ fontSize: '0.9rem' }}>2D 영상합성</span>}
                                 extra={
                                     <Space>
                                         <Input
@@ -233,7 +115,7 @@ export const Aisynthesis = () => {
                                             readonly
                                         />
                                         <Button type="primary" onClick={() => SudoCreate()}>
-                                            의사색채 영상합성
+                                            2D 영상합성
                                         </Button>
                                     </Space>
                                 }
@@ -374,147 +256,162 @@ export const Aisynthesis = () => {
                                 </Space>
                             </Card>
                         </Col>
-                        {/* <Col span={12}>
-                            <Card
-                                title={<span style={{ fontSize: '0.9rem' }}>2D 영상합성</span>}
-                                extra={<Button type="primary">2D 영상합성</Button>}
-                            >
-                                <Space style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                    <Row gutter={[24, 24]}>
-                                        <Col span={12}>
-                                            <Space direction="vertical">
-                                                <Upload
-                                                    maxCount={1}
-                                                    customRequest={({ file }) => FrontImg2DUpload(file)}
-                                                    showUploadList={false}
+                        <Col span={8}>
+                            <Card title={<span style={{ fontSize: '0.9rem' }}>추출 설정</span>}>
+                                <Space>
+                                    <Form layout="horizontal" form={form}>
+                                        <Row gutter={[24, 24]}>
+                                            <Col span={24}>
+                                                <Form.Item
+                                                    name="form05"
+                                                    label="Category"
+                                                    rules={[
+                                                        {
+                                                            required: true,
+                                                            message: '※ Category'
+                                                        }
+                                                    ]}
                                                 >
-                                                    <Button
-                                                        type="text"
-                                                        style={{
-                                                            width: '320px',
-                                                            height: '40px',
-                                                            padding: '10px',
-                                                            backgroundColor: '#f0f0f0',
-                                                            marginBottom: '10px'
-                                                        }}
-                                                        icon={<UploadOutlined />}
-                                                    >
-                                                        정면이미지
-                                                    </Button>
-                                                </Upload>
-                                                {frontImg_2D_Base === null ? (
-                                                    <img src={noImage} width={320} height={220} alt="Side image" />
-                                                ) : (
-                                                    <>
-                                                        <Space
-                                                            style={{
-                                                                width: '100%',
-                                                                justifyContent: 'space-between',
-                                                                border: '1px solid #f39898',
-                                                                padding: '3px 5px'
-                                                            }}
-                                                        >
-                                                            <span>{frontImg_2D?.name}</span>
-                                                            <Button onClick={Front2DRemove} type="text">
-                                                                <DeleteFilled />
-                                                                삭제
-                                                            </Button>
-                                                        </Space>
-                                                        <div
-                                                            style={{
-                                                                width: '320px',
-                                                                height: '220px',
-                                                                padding: '10px',
-                                                                backgroundColor: '#f0f0f0',
-                                                                display: 'flex',
-                                                                alignItems: 'center',
-                                                                justifyContent: 'center'
-                                                            }}
-                                                        >
-                                                            <Image
-                                                                src={frontImg_2D_Base}
-                                                                alt="Side image"
-                                                                style={{
-                                                                    maxWidth: '100%',
-                                                                    maxHeight: '100%',
-                                                                    width: 'auto',
-                                                                    height: 'auto'
-                                                                }}
-                                                            />
-                                                        </div>
-                                                    </>
-                                                )}
-                                            </Space>
-                                        </Col>
-                                        <Col span={12}>
-                                            <Space direction="vertical">
-                                                <Upload
-                                                    maxCount={1}
-                                                    customRequest={({ file }) => SideImg2DUpload(file)}
-                                                    showUploadList={false}
+                                                    <Row>
+                                                        <Col>
+                                                            <Space.Compact size="large">
+                                                                <Select
+                                                                    style={{ width: '400px' }}
+                                                                    label="Select"
+                                                                    allowClear
+                                                                    placeholder="Select a Category"
+                                                                    options={[
+                                                                        { value: 'Aerosol', label: 'Aerosol' },
+                                                                        { value: 'Alcohol', label: 'Alcohol' },
+                                                                        { value: 'Axe', label: 'Axe' },
+                                                                        { value: 'Bat', label: 'Bat' },
+                                                                        { value: 'Battery', label: 'Battery' },
+                                                                        { value: 'Bullet', label: 'Bullet' },
+                                                                        { value: 'Chisel', label: 'Chisel' },
+                                                                        { value: 'Electronic cigarettes', label: 'Electronic cigarettes' },
+                                                                        {
+                                                                            value: 'Electronic cigarettes(Liquid)',
+                                                                            label: 'Electronic cigarettes(Liquid)'
+                                                                        },
+                                                                        { value: 'Firecracker', label: 'Firecracker' },
+                                                                        { value: 'Gun', label: 'Gun' },
+                                                                        { value: 'GunParts', label: 'GunParts' },
+                                                                        { value: 'Hammer', label: 'Hammer' },
+                                                                        { value: 'HandCuffs', label: 'HandCuffs' },
+                                                                        { value: 'HDD', label: 'HDD' },
+                                                                        { value: 'Knife', label: 'Knife' },
+                                                                        { value: 'Laptop', label: 'Laptop' },
+                                                                        { value: 'Lighter', label: 'Lighter' },
+                                                                        { value: 'Liquid', label: 'Liquid' },
+                                                                        { value: 'Match', label: 'Match' },
+                                                                        { value: 'MetalPipe', label: 'MetalPipe' },
+                                                                        { value: 'NailClippers', label: 'NailClippers' },
+                                                                        { value: 'Plier', label: 'Plier' },
+                                                                        { value: 'PrtableGas', label: 'PrtableGas' },
+                                                                        { value: 'Saw', label: 'Saw' },
+                                                                        { value: 'Scissors', label: 'Scissors' },
+                                                                        { value: 'Screwdriver', label: 'Screwdriver' },
+                                                                        { value: 'SmartPhone', label: 'SmartPhone' },
+                                                                        { value: 'SolidFuel', label: 'SolidFuel' },
+                                                                        { value: 'Spanner', label: 'Spanner' },
+                                                                        { value: 'SSD', label: 'SSD' },
+                                                                        { value: 'stun gun', label: 'stun gun' },
+                                                                        { value: 'SupplymentaryBattery', label: 'SupplymentaryBattery' },
+                                                                        { value: 'TabletPC', label: 'TabletPC' },
+                                                                        { value: 'Thinner', label: 'Thinner' },
+                                                                        { value: 'Throwing Knife', label: 'Throwing Knife' },
+                                                                        { value: 'USB', label: 'USB' },
+                                                                        { value: 'ZippoOil', label: 'ZippoOil' }
+                                                                    ]}
+                                                                    onChange={(e) => setItemContainer({ ...itemContainer, category: e })}
+                                                                    value={itemContainer?.category}
+                                                                />
+                                                            </Space.Compact>
+                                                        </Col>
+                                                    </Row>
+                                                </Form.Item>
+                                            </Col>
+                                            <Col span={24}>
+                                                <Form.Item
+                                                    name="form05"
+                                                    label="추출 수량"
+                                                    rules={[
+                                                        {
+                                                            required: true,
+                                                            message: '※ 추출 수량'
+                                                        }
+                                                    ]}
                                                 >
-                                                    <Button
-                                                        type="text"
-                                                        style={{
-                                                            width: '320px',
-                                                            height: '40px',
-                                                            padding: '10px',
-                                                            backgroundColor: '#f0f0f0',
-                                                            marginBottom: '10px'
-                                                        }}
-                                                        icon={<UploadOutlined />}
-                                                    >
-                                                        측면이미지
-                                                    </Button>
-                                                </Upload>
-                                                {sideImg_2D_Base === null ? (
-                                                    <img src={noImage} width={320} height={220} alt="Side image" />
-                                                ) : (
-                                                    <>
-                                                        <Space
-                                                            style={{
-                                                                width: '100%',
-                                                                justifyContent: 'space-between',
-                                                                border: '1px solid #f39898',
-                                                                padding: '3px 5px'
-                                                            }}
-                                                        >
-                                                            <span>{sideImg_2D?.name}</span>
-                                                            <Button onClick={Side2DRemove} type="text">
-                                                                <DeleteFilled />
-                                                                삭제
-                                                            </Button>
-                                                        </Space>
-                                                        <div
-                                                            style={{
-                                                                width: '320px',
-                                                                height: '220px',
-                                                                padding: '10px',
-                                                                backgroundColor: '#f0f0f0',
-                                                                display: 'flex',
-                                                                alignItems: 'center',
-                                                                justifyContent: 'center'
-                                                            }}
-                                                        >
-                                                            <Image
-                                                                src={sideImg_2D_Base}
-                                                                alt="Side image"
-                                                                style={{
-                                                                    maxWidth: '100%',
-                                                                    maxHeight: '100%',
-                                                                    width: 'auto',
-                                                                    height: 'auto'
-                                                                }}
-                                                            />
-                                                        </div>
-                                                    </>
-                                                )}
-                                            </Space>
-                                        </Col>
-                                    </Row>
+                                                    <Row>
+                                                        <Col>
+                                                            <Space.Compact size="large">
+                                                                <Select
+                                                                    style={{ width: '400px' }}
+                                                                    label="Select"
+                                                                    allowClear
+                                                                    placeholder="Select a Extraction Quantity"
+                                                                    options={[
+                                                                        { value: '1', label: '1' },
+                                                                        { value: '2', label: '2' },
+                                                                        { value: '3', label: '3' },
+                                                                        { value: '4', label: '4' },
+                                                                        { value: '5', label: '5' },
+                                                                        { value: '6', label: '6' },
+                                                                        { value: '7', label: '7' },
+                                                                        { value: '8', label: '8' },
+                                                                        { value: '9', label: '9' },
+                                                                        { value: '10', label: '10' },
+                                                                        { value: '11', label: '11' },
+                                                                        { value: '12', label: '12' },
+                                                                        { value: '13', label: '13' },
+                                                                        { value: '14', label: '14' },
+                                                                        { value: '15', label: '15' },
+                                                                        { value: '16', label: '16' },
+                                                                        { value: '17', label: '17' },
+                                                                        { value: '18', label: '18' },
+                                                                        { value: '19', label: '19' },
+                                                                        { value: '20', label: '20' }
+                                                                    ]}
+                                                                    onChange={(e) => setItemContainer({ ...itemContainer, categoryCnt: e })}
+                                                                    value={itemContainer?.categoryCnt}
+                                                                />
+                                                            </Space.Compact>
+                                                        </Col>
+                                                    </Row>
+                                                </Form.Item>
+                                            </Col>
+                                            <Col span={24}>
+                                                <Form.Item
+                                                    name="form05"
+                                                    label="파일명"
+                                                    rules={[
+                                                        {
+                                                            required: true,
+                                                            message: '※ 파일명'
+                                                        }
+                                                    ]}
+                                                >
+                                                    <Row>
+                                                        <Col>
+                                                            <Space.Compact size="large">
+                                                                <Input
+                                                                    style={{ width: '420px' }}
+                                                                    name="fileName"
+                                                                    onChange={(e) =>
+                                                                        setItemContainer({ ...itemContainer, fileName: e.target.value })
+                                                                    }
+                                                                    value={itemContainer?.fileName}
+                                                                />
+                                                            </Space.Compact>
+                                                        </Col>
+                                                    </Row>
+                                                </Form.Item>
+                                            </Col>
+                                        </Row>
+                                    </Form>
                                 </Space>
                             </Card>
-                        </Col> */}
+                        </Col>
                     </Row>
                 </MainCard>
                 <br />
@@ -527,7 +424,7 @@ export const Aisynthesis = () => {
                                 <Row justify="space-around" style={{ margin: '15px -15px 0px -15px' }}>
                                     <Col span={4}>
                                         <Card
-                                            title="컬러"
+                                            title="컬러 1"
                                             size="small"
                                             style={{
                                                 width: '140px',
@@ -535,16 +432,17 @@ export const Aisynthesis = () => {
                                                 textAlign: 'center'
                                             }}
                                         >
-                                            {selectKaistXrayImgContentsData?.imgFrontColor !== undefined ? (
-                                                <Image
-                                                    src={`data:image/png;base64, ${selectKaistXrayImgContentsData?.imgFrontColor}`}
-                                                    width={110}
-                                                    height={110}
-                                                    alt="imgFrontColor"
-                                                />
-                                            ) : (
-                                                <img src={noImage} width={110} height={110} alt="imgFrontColor" />
-                                            )}
+                                            <input type="file" name="imgFrontColor" style={{ display: 'none' }} />
+                                            <img
+                                                src={
+                                                    selectKaistXrayImgContentsData?.imgFrontColor !== undefined
+                                                        ? `data:image/png;base64, ${selectKaistXrayImgContentsData?.imgFrontColor}`
+                                                        : noImage
+                                                }
+                                                width={110}
+                                                height={110}
+                                                alt="imgFrontColor"
+                                            />
                                         </Card>
                                     </Col>
                                     <Col span={4}>
@@ -557,16 +455,16 @@ export const Aisynthesis = () => {
                                                 textAlign: 'center'
                                             }}
                                         >
-                                            {selectKaistXrayImgContentsData?.imgFrontColorMineral !== undefined ? (
-                                                <Image
-                                                    src={`data:image/png;base64, ${selectKaistXrayImgContentsData?.imgFrontColorMineral}`}
-                                                    width={110}
-                                                    height={110}
-                                                    alt="imgFrontColorMineral"
-                                                />
-                                            ) : (
-                                                <img src={noImage} width={110} height={110} alt="imgFrontColorMineral" />
-                                            )}
+                                            <img
+                                                src={
+                                                    selectKaistXrayImgContentsData?.imgFrontColorMineral !== undefined
+                                                        ? `data:image/png;base64, ${selectKaistXrayImgContentsData?.imgFrontColorMineral}`
+                                                        : noImage
+                                                }
+                                                width={110}
+                                                height={110}
+                                                alt="real image"
+                                            />
                                         </Card>
                                     </Col>
                                     <Col span={4}>
@@ -579,16 +477,16 @@ export const Aisynthesis = () => {
                                                 textAlign: 'center'
                                             }}
                                         >
-                                            {selectKaistXrayImgContentsData?.imgFrontColorOrganism !== undefined ? (
-                                                <Image
-                                                    src={`data:image/png;base64, ${selectKaistXrayImgContentsData?.imgFrontColorOrganism}`}
-                                                    width={110}
-                                                    height={110}
-                                                    alt="imgFrontColorOrganism"
-                                                />
-                                            ) : (
-                                                <img src={noImage} width={110} height={110} alt="imgFrontColorOrganism" />
-                                            )}
+                                            <img
+                                                src={
+                                                    selectKaistXrayImgContentsData?.imgFrontColorOrganism !== undefined
+                                                        ? `data:image/png;base64, ${selectKaistXrayImgContentsData?.imgFrontColorOrganism}`
+                                                        : noImage
+                                                }
+                                                width={110}
+                                                height={110}
+                                                alt="real image"
+                                            />
                                         </Card>
                                     </Col>
                                     <Col span={4}>
@@ -601,16 +499,16 @@ export const Aisynthesis = () => {
                                                 textAlign: 'center'
                                             }}
                                         >
-                                            {selectKaistXrayImgContentsData?.imgFrontColorReversal !== undefined ? (
-                                                <Image
-                                                    src={`data:image/png;base64, ${selectKaistXrayImgContentsData?.imgFrontColorReversal}`}
-                                                    width={110}
-                                                    height={110}
-                                                    alt="imgFrontColorReversal"
-                                                />
-                                            ) : (
-                                                <img src={noImage} width={110} height={110} alt="imgFrontColorReversal" />
-                                            )}
+                                            <img
+                                                src={
+                                                    selectKaistXrayImgContentsData?.imgFrontColorReversal !== undefined
+                                                        ? `data:image/png;base64, ${selectKaistXrayImgContentsData?.imgFrontColorReversal}`
+                                                        : noImage
+                                                }
+                                                width={110}
+                                                height={110}
+                                                alt="real image"
+                                            />
                                         </Card>
                                     </Col>
                                     <Col span={4}>
@@ -623,16 +521,16 @@ export const Aisynthesis = () => {
                                                 textAlign: 'center'
                                             }}
                                         >
-                                            {selectKaistXrayImgContentsData?.imgFrontColorBwRate1 !== undefined ? (
-                                                <Image
-                                                    src={`data:image/png;base64, ${selectKaistXrayImgContentsData?.imgFrontColorBwRate1}`}
-                                                    width={110}
-                                                    height={110}
-                                                    alt="imgFrontColorBwRate1"
-                                                />
-                                            ) : (
-                                                <img src={noImage} width={110} height={110} alt="imgFrontColorBwRate1" />
-                                            )}
+                                            <img
+                                                src={
+                                                    selectKaistXrayImgContentsData?.imgFrontColorBwRate1 !== undefined
+                                                        ? `data:image/png;base64, ${selectKaistXrayImgContentsData?.imgFrontColorBwRate1}`
+                                                        : noImage
+                                                }
+                                                width={110}
+                                                height={110}
+                                                alt="real image"
+                                            />
                                         </Card>
                                     </Col>
                                 </Row>
@@ -648,16 +546,16 @@ export const Aisynthesis = () => {
                                                 textAlign: 'center'
                                             }}
                                         >
-                                            {selectKaistXrayImgContentsData?.imgFrontColorBwRate2 !== undefined ? (
-                                                <Image
-                                                    src={`data:image/png;base64, ${selectKaistXrayImgContentsData?.imgFrontColorBwRate2}`}
-                                                    width={110}
-                                                    height={110}
-                                                    alt="imgFrontColorBwRate2"
-                                                />
-                                            ) : (
-                                                <img src={noImage} width={110} height={110} alt="imgFrontColorBwRate2" />
-                                            )}
+                                            <img
+                                                src={
+                                                    selectKaistXrayImgContentsData?.imgFrontColorBwRate2 !== undefined
+                                                        ? `data:image/png;base64, ${selectKaistXrayImgContentsData?.imgFrontColorBwRate2}`
+                                                        : noImage
+                                                }
+                                                width={110}
+                                                height={110}
+                                                alt="real image"
+                                            />
                                         </Card>
                                     </Col>
                                     <Col span={4}>
@@ -670,16 +568,16 @@ export const Aisynthesis = () => {
                                                 textAlign: 'center'
                                             }}
                                         >
-                                            {selectKaistXrayImgContentsData?.imgFrontColorBwRate3 !== undefined ? (
-                                                <Image
-                                                    src={`data:image/png;base64, ${selectKaistXrayImgContentsData?.imgFrontColorBwRate3}`}
-                                                    width={110}
-                                                    height={110}
-                                                    alt="imgFrontColorBwRate3"
-                                                />
-                                            ) : (
-                                                <img src={noImage} width={110} height={110} alt="imgFrontColorBwRate3" />
-                                            )}
+                                            <img
+                                                src={
+                                                    selectKaistXrayImgContentsData?.imgFrontColorBwRate3 !== undefined
+                                                        ? `data:image/png;base64, ${selectKaistXrayImgContentsData?.imgFrontColorBwRate3}`
+                                                        : noImage
+                                                }
+                                                width={110}
+                                                height={110}
+                                                alt="real image"
+                                            />
                                         </Card>
                                     </Col>
                                     <Col span={4}>
@@ -692,16 +590,16 @@ export const Aisynthesis = () => {
                                                 textAlign: 'center'
                                             }}
                                         >
-                                            {selectKaistXrayImgContentsData?.imgFrontColorBwRate4 !== undefined ? (
-                                                <Image
-                                                    src={`data:image/png;base64, ${selectKaistXrayImgContentsData?.imgFrontColorBwRate4}`}
-                                                    width={110}
-                                                    height={110}
-                                                    alt="imgFrontColorBwRate4"
-                                                />
-                                            ) : (
-                                                <img src={noImage} width={110} height={110} alt="imgFrontColorBwRate4" />
-                                            )}
+                                            <img
+                                                src={
+                                                    selectKaistXrayImgContentsData?.imgFrontColorBwRate4 !== undefined
+                                                        ? `data:image/png;base64, ${selectKaistXrayImgContentsData?.imgFrontColorBwRate4}`
+                                                        : noImage
+                                                }
+                                                width={110}
+                                                height={110}
+                                                alt="real image"
+                                            />
                                         </Card>
                                     </Col>
                                     <Col span={4}>
@@ -714,16 +612,16 @@ export const Aisynthesis = () => {
                                                 textAlign: 'center'
                                             }}
                                         >
-                                            {selectKaistXrayImgContentsData?.imgFrontColorBwRate5 !== undefined ? (
-                                                <Image
-                                                    src={`data:image/png;base64, ${selectKaistXrayImgContentsData?.imgFrontColorBwRate5}`}
-                                                    width={110}
-                                                    height={110}
-                                                    alt="imgFrontColorBwRate5"
-                                                />
-                                            ) : (
-                                                <img src={noImage} width={110} height={110} alt="imgFrontColorBwRate5" />
-                                            )}
+                                            <img
+                                                src={
+                                                    selectKaistXrayImgContentsData?.imgFrontColorBwRate5 !== undefined
+                                                        ? `data:image/png;base64, ${selectKaistXrayImgContentsData?.imgFrontColorBwRate5}`
+                                                        : noImage
+                                                }
+                                                width={110}
+                                                height={110}
+                                                alt="real image"
+                                            />
                                         </Card>
                                     </Col>
                                     <Col span={4}>
@@ -736,16 +634,16 @@ export const Aisynthesis = () => {
                                                 textAlign: 'center'
                                             }}
                                         >
-                                            {selectKaistXrayImgContentsData?.imgFrontColorBwRate6 !== undefined ? (
-                                                <Image
-                                                    src={`data:image/png;base64, ${selectKaistXrayImgContentsData?.imgFrontColorBwRate6}`}
-                                                    width={110}
-                                                    height={110}
-                                                    alt="imgFrontColorBwRate6"
-                                                />
-                                            ) : (
-                                                <img src={noImage} width={110} height={110} alt="imgFrontColorBwRate6" />
-                                            )}
+                                            <img
+                                                src={
+                                                    selectKaistXrayImgContentsData?.imgFrontColorBwRate6 !== undefined
+                                                        ? `data:image/png;base64, ${selectKaistXrayImgContentsData?.imgFrontColorBwRate6}`
+                                                        : noImage
+                                                }
+                                                width={110}
+                                                height={110}
+                                                alt="real image"
+                                            />
                                         </Card>
                                     </Col>
                                 </Row>
@@ -761,16 +659,16 @@ export const Aisynthesis = () => {
                                                 textAlign: 'center'
                                             }}
                                         >
-                                            {selectKaistXrayImgContentsData?.imgFrontBw !== undefined ? (
-                                                <Image
-                                                    src={`data:image/png;base64, ${selectKaistXrayImgContentsData?.imgFrontBw}`}
-                                                    width={110}
-                                                    height={110}
-                                                    alt="imgFrontBw"
-                                                />
-                                            ) : (
-                                                <img src={noImage} width={110} height={110} alt="imgFrontBw" />
-                                            )}
+                                            <img
+                                                src={
+                                                    selectKaistXrayImgContentsData?.imgFrontBw !== undefined
+                                                        ? `data:image/png;base64, ${selectKaistXrayImgContentsData?.imgFrontBw}`
+                                                        : noImage
+                                                }
+                                                width={110}
+                                                height={110}
+                                                alt="real image"
+                                            />
                                         </Card>
                                     </Col>
                                     <Col span={4}>
@@ -783,16 +681,16 @@ export const Aisynthesis = () => {
                                                 textAlign: 'center'
                                             }}
                                         >
-                                            {selectKaistXrayImgContentsData?.imgFrontBwMineral !== undefined ? (
-                                                <Image
-                                                    src={`data:image/png;base64, ${selectKaistXrayImgContentsData?.imgFrontBwMineral}`}
-                                                    width={110}
-                                                    height={110}
-                                                    alt="imgFrontBwMineral"
-                                                />
-                                            ) : (
-                                                <img src={noImage} width={110} height={110} alt="imgFrontBwMineral" />
-                                            )}
+                                            <img
+                                                src={
+                                                    selectKaistXrayImgContentsData?.imgFrontBwMineral !== undefined
+                                                        ? `data:image/png;base64, ${selectKaistXrayImgContentsData?.imgFrontBwMineral}`
+                                                        : noImage
+                                                }
+                                                width={110}
+                                                height={110}
+                                                alt="real image"
+                                            />
                                         </Card>
                                     </Col>
                                     <Col span={4}>
@@ -805,16 +703,16 @@ export const Aisynthesis = () => {
                                                 textAlign: 'center'
                                             }}
                                         >
-                                            {selectKaistXrayImgContentsData?.imgFrontBwOrganism !== undefined ? (
-                                                <Image
-                                                    src={`data:image/png;base64, ${selectKaistXrayImgContentsData?.imgFrontBwOrganism}`}
-                                                    width={110}
-                                                    height={110}
-                                                    alt="imgFrontBwOrganism"
-                                                />
-                                            ) : (
-                                                <img src={noImage} width={110} height={110} alt="imgFrontBwOrganism" />
-                                            )}
+                                            <img
+                                                src={
+                                                    selectKaistXrayImgContentsData?.imgFrontBwOrganism !== undefined
+                                                        ? `data:image/png;base64, ${selectKaistXrayImgContentsData?.imgFrontBwOrganism}`
+                                                        : noImage
+                                                }
+                                                width={110}
+                                                height={110}
+                                                alt="real image"
+                                            />
                                         </Card>
                                     </Col>
                                     <Col span={4}>
@@ -827,16 +725,16 @@ export const Aisynthesis = () => {
                                                 textAlign: 'center'
                                             }}
                                         >
-                                            {selectKaistXrayImgContentsData?.imgFrontBwReversal !== undefined ? (
-                                                <Image
-                                                    src={`data:image/png;base64, ${selectKaistXrayImgContentsData?.imgFrontBwReversal}`}
-                                                    width={110}
-                                                    height={110}
-                                                    alt="imgFrontBwReversal"
-                                                />
-                                            ) : (
-                                                <img src={noImage} width={110} height={110} alt="imgFrontBwReversal" />
-                                            )}
+                                            <img
+                                                src={
+                                                    selectKaistXrayImgContentsData?.imgFrontBwReversal !== undefined
+                                                        ? `data:image/png;base64, ${selectKaistXrayImgContentsData?.imgFrontBwReversal}`
+                                                        : noImage
+                                                }
+                                                width={110}
+                                                height={110}
+                                                alt="real image"
+                                            />
                                         </Card>
                                     </Col>
                                     <Col span={4}>
@@ -849,16 +747,16 @@ export const Aisynthesis = () => {
                                                 textAlign: 'center'
                                             }}
                                         >
-                                            {selectKaistXrayImgContentsData?.imgFrontBwBwRate1 !== undefined ? (
-                                                <Image
-                                                    src={`data:image/png;base64, ${selectKaistXrayImgContentsData?.imgFrontBwBwRate1}`}
-                                                    width={110}
-                                                    height={110}
-                                                    alt="imgFrontBwBwRate1"
-                                                />
-                                            ) : (
-                                                <img src={noImage} width={110} height={110} alt="imgFrontBwBwRate1" />
-                                            )}
+                                            <img
+                                                src={
+                                                    selectKaistXrayImgContentsData?.imgFrontBwBwRate1 !== undefined
+                                                        ? `data:image/png;base64, ${selectKaistXrayImgContentsData?.imgFrontBwBwRate1}`
+                                                        : noImage
+                                                }
+                                                width={110}
+                                                height={110}
+                                                alt="real image"
+                                            />
                                         </Card>
                                     </Col>
                                 </Row>
@@ -874,16 +772,16 @@ export const Aisynthesis = () => {
                                                 textAlign: 'center'
                                             }}
                                         >
-                                            {selectKaistXrayImgContentsData?.imgFrontBwBwRate2 !== undefined ? (
-                                                <Image
-                                                    src={`data:image/png;base64, ${selectKaistXrayImgContentsData?.imgFrontBwBwRate2}`}
-                                                    width={110}
-                                                    height={110}
-                                                    alt="imgFrontBwBwRate2"
-                                                />
-                                            ) : (
-                                                <img src={noImage} width={110} height={110} alt="imgFrontBwBwRate2" />
-                                            )}
+                                            <img
+                                                src={
+                                                    selectKaistXrayImgContentsData?.imgFrontBwBwRate2 !== undefined
+                                                        ? `data:image/png;base64, ${selectKaistXrayImgContentsData?.imgFrontBwBwRate2}`
+                                                        : noImage
+                                                }
+                                                width={110}
+                                                height={110}
+                                                alt="real image"
+                                            />
                                         </Card>
                                     </Col>
                                     <Col span={4}>
@@ -896,16 +794,16 @@ export const Aisynthesis = () => {
                                                 textAlign: 'center'
                                             }}
                                         >
-                                            {selectKaistXrayImgContentsData?.imgFrontBwBwRate3 !== undefined ? (
-                                                <Image
-                                                    src={`data:image/png;base64, ${selectKaistXrayImgContentsData?.imgFrontBwBwRate3}`}
-                                                    width={110}
-                                                    height={110}
-                                                    alt="imgFrontBwBwRate3"
-                                                />
-                                            ) : (
-                                                <img src={noImage} width={110} height={110} alt="imgFrontBwBwRate3" />
-                                            )}
+                                            <img
+                                                src={
+                                                    selectKaistXrayImgContentsData?.imgFrontBwBwRate3 !== undefined
+                                                        ? `data:image/png;base64, ${selectKaistXrayImgContentsData?.imgFrontBwBwRate3}`
+                                                        : noImage
+                                                }
+                                                width={110}
+                                                height={110}
+                                                alt="real image"
+                                            />
                                         </Card>
                                     </Col>
                                     <Col span={4}>
@@ -918,16 +816,16 @@ export const Aisynthesis = () => {
                                                 textAlign: 'center'
                                             }}
                                         >
-                                            {selectKaistXrayImgContentsData?.imgFrontBwBwRate4 !== undefined ? (
-                                                <Image
-                                                    src={`data:image/png;base64, ${selectKaistXrayImgContentsData?.imgFrontBwBwRate4}`}
-                                                    width={110}
-                                                    height={110}
-                                                    alt="imgFrontBwBwRate4"
-                                                />
-                                            ) : (
-                                                <img src={noImage} width={110} height={110} alt="imgFrontBwBwRate4" />
-                                            )}
+                                            <img
+                                                src={
+                                                    selectKaistXrayImgContentsData?.imgFrontBwBwRate4 !== undefined
+                                                        ? `data:image/png;base64, ${selectKaistXrayImgContentsData?.imgFrontBwBwRate4}`
+                                                        : noImage
+                                                }
+                                                width={110}
+                                                height={110}
+                                                alt="real image"
+                                            />
                                         </Card>
                                     </Col>
                                     <Col span={4}>
@@ -940,16 +838,16 @@ export const Aisynthesis = () => {
                                                 textAlign: 'center'
                                             }}
                                         >
-                                            {selectKaistXrayImgContentsData?.imgFrontBwBwRate5 !== undefined ? (
-                                                <Image
-                                                    src={`data:image/png;base64, ${selectKaistXrayImgContentsData?.imgFrontBwBwRate5}`}
-                                                    width={110}
-                                                    height={110}
-                                                    alt="imgFrontBwBwRate5"
-                                                />
-                                            ) : (
-                                                <img src={noImage} width={110} height={110} alt="imgFrontBwBwRate5" />
-                                            )}
+                                            <img
+                                                src={
+                                                    selectKaistXrayImgContentsData?.imgFrontBwBwRate5 !== undefined
+                                                        ? `data:image/png;base64, ${selectKaistXrayImgContentsData?.imgFrontBwBwRate5}`
+                                                        : noImage
+                                                }
+                                                width={110}
+                                                height={110}
+                                                alt="real image"
+                                            />
                                         </Card>
                                     </Col>
                                     <Col span={4}>
@@ -962,16 +860,16 @@ export const Aisynthesis = () => {
                                                 textAlign: 'center'
                                             }}
                                         >
-                                            {selectKaistXrayImgContentsData?.imgFrontBwBwRate6 !== undefined ? (
-                                                <Image
-                                                    src={`data:image/png;base64, ${selectKaistXrayImgContentsData?.imgFrontBwBwRate6}`}
-                                                    width={110}
-                                                    height={110}
-                                                    alt="imgFrontBwBwRate6"
-                                                />
-                                            ) : (
-                                                <img src={noImage} width={110} height={110} alt="imgFrontBwBwRate6" />
-                                            )}
+                                            <img
+                                                src={
+                                                    selectKaistXrayImgContentsData?.imgFrontBwBwRate6 !== undefined
+                                                        ? `data:image/png;base64, ${selectKaistXrayImgContentsData?.imgFrontBwBwRate6}`
+                                                        : noImage
+                                                }
+                                                width={110}
+                                                height={110}
+                                                alt="real image"
+                                            />
                                         </Card>
                                     </Col>
                                 </Row>
@@ -992,16 +890,16 @@ export const Aisynthesis = () => {
                                                 textAlign: 'center'
                                             }}
                                         >
-                                            {selectKaistXrayImgContentsData?.imgSideColor !== undefined ? (
-                                                <Image
-                                                    src={`data:image/png;base64, ${selectKaistXrayImgContentsData?.imgSideColor}`}
-                                                    width={110}
-                                                    height={110}
-                                                    alt="imgSideColor"
-                                                />
-                                            ) : (
-                                                <img src={noImage} width={110} height={110} alt="imgSideColor" />
-                                            )}
+                                            <img
+                                                src={
+                                                    selectKaistXrayImgContentsData?.imgSideColor !== undefined
+                                                        ? `data:image/png;base64, ${selectKaistXrayImgContentsData?.imgSideColor}`
+                                                        : noImage
+                                                }
+                                                width={110}
+                                                height={110}
+                                                alt="real image"
+                                            />
                                         </Card>
                                     </Col>
                                     <Col span={4}>
@@ -1014,16 +912,16 @@ export const Aisynthesis = () => {
                                                 textAlign: 'center'
                                             }}
                                         >
-                                            {selectKaistXrayImgContentsData?.imgSideColorMineral !== undefined ? (
-                                                <Image
-                                                    src={`data:image/png;base64, ${selectKaistXrayImgContentsData?.imgSideColorMineral}`}
-                                                    width={110}
-                                                    height={110}
-                                                    alt="imgSideColorMineral"
-                                                />
-                                            ) : (
-                                                <img src={noImage} width={110} height={110} alt="imgSideColorMineral" />
-                                            )}
+                                            <img
+                                                src={
+                                                    selectKaistXrayImgContentsData?.imgSideColorMineral !== undefined
+                                                        ? `data:image/png;base64, ${selectKaistXrayImgContentsData?.imgSideColorMineral}`
+                                                        : noImage
+                                                }
+                                                width={110}
+                                                height={110}
+                                                alt="real image"
+                                            />
                                         </Card>
                                     </Col>
                                     <Col span={4}>
@@ -1036,16 +934,16 @@ export const Aisynthesis = () => {
                                                 textAlign: 'center'
                                             }}
                                         >
-                                            {selectKaistXrayImgContentsData?.imgSideColorOrganism !== undefined ? (
-                                                <Image
-                                                    src={`data:image/png;base64, ${selectKaistXrayImgContentsData?.imgSideColorOrganism}`}
-                                                    width={110}
-                                                    height={110}
-                                                    alt="imgSideColorOrganism"
-                                                />
-                                            ) : (
-                                                <img src={noImage} width={110} height={110} alt="imgSideColorOrganism" />
-                                            )}
+                                            <img
+                                                src={
+                                                    selectKaistXrayImgContentsData?.imgSideColorOrganism !== undefined
+                                                        ? `data:image/png;base64, ${selectKaistXrayImgContentsData?.imgSideColorOrganism}`
+                                                        : noImage
+                                                }
+                                                width={110}
+                                                height={110}
+                                                alt="real image"
+                                            />
                                         </Card>
                                     </Col>
                                     <Col span={4}>
@@ -1058,16 +956,16 @@ export const Aisynthesis = () => {
                                                 textAlign: 'center'
                                             }}
                                         >
-                                            {selectKaistXrayImgContentsData?.imgSideColorReversal !== undefined ? (
-                                                <Image
-                                                    src={`data:image/png;base64, ${selectKaistXrayImgContentsData?.imgSideColorReversal}`}
-                                                    width={110}
-                                                    height={110}
-                                                    alt="imgSideColorReversal"
-                                                />
-                                            ) : (
-                                                <img src={noImage} width={110} height={110} alt="imgSideColorReversal" />
-                                            )}
+                                            <img
+                                                src={
+                                                    selectKaistXrayImgContentsData?.imgSideColorReversal !== undefined
+                                                        ? `data:image/png;base64, ${selectKaistXrayImgContentsData?.imgSideColorReversal}`
+                                                        : noImage
+                                                }
+                                                width={100}
+                                                height={100}
+                                                alt="real image"
+                                            />
                                         </Card>
                                     </Col>
                                     <Col span={4}>
@@ -1080,16 +978,16 @@ export const Aisynthesis = () => {
                                                 textAlign: 'center'
                                             }}
                                         >
-                                            {selectKaistXrayImgContentsData?.imgSideColorBwRate1 !== undefined ? (
-                                                <Image
-                                                    src={`data:image/png;base64, ${selectKaistXrayImgContentsData?.imgSideColorBwRate1}`}
-                                                    width={110}
-                                                    height={110}
-                                                    alt="imgSideColorBwRate1"
-                                                />
-                                            ) : (
-                                                <img src={noImage} width={110} height={110} alt="imgSideColorBwRate1" />
-                                            )}
+                                            <img
+                                                src={
+                                                    selectKaistXrayImgContentsData?.imgSideColorBwRate1 !== undefined
+                                                        ? `data:image/png;base64, ${selectKaistXrayImgContentsData?.imgSideColorBwRate1}`
+                                                        : noImage
+                                                }
+                                                width={110}
+                                                height={110}
+                                                alt="real image"
+                                            />
                                         </Card>
                                     </Col>
                                 </Row>
@@ -1105,16 +1003,16 @@ export const Aisynthesis = () => {
                                                 textAlign: 'center'
                                             }}
                                         >
-                                            {selectKaistXrayImgContentsData?.imgSideColorBwRate2 !== undefined ? (
-                                                <Image
-                                                    src={`data:image/png;base64, ${selectKaistXrayImgContentsData?.imgSideColorBwRate2}`}
-                                                    width={110}
-                                                    height={110}
-                                                    alt="imgSideColorBwRate2"
-                                                />
-                                            ) : (
-                                                <img src={noImage} width={110} height={110} alt="imgSideColorBwRate2" />
-                                            )}
+                                            <img
+                                                src={
+                                                    selectKaistXrayImgContentsData?.imgSideColorBwRate2 !== undefined
+                                                        ? `data:image/png;base64, ${selectKaistXrayImgContentsData?.imgSideColorBwRate2}`
+                                                        : noImage
+                                                }
+                                                width={110}
+                                                height={110}
+                                                alt="real image"
+                                            />
                                         </Card>
                                     </Col>
                                     <Col span={4}>
@@ -1127,16 +1025,16 @@ export const Aisynthesis = () => {
                                                 textAlign: 'center'
                                             }}
                                         >
-                                            {selectKaistXrayImgContentsData?.imgSideColorBwRate3 !== undefined ? (
-                                                <Image
-                                                    src={`data:image/png;base64, ${selectKaistXrayImgContentsData?.imgSideColorBwRate3}`}
-                                                    width={110}
-                                                    height={110}
-                                                    alt="imgSideColorBwRate3"
-                                                />
-                                            ) : (
-                                                <img src={noImage} width={110} height={110} alt="imgSideColorBwRate3" />
-                                            )}
+                                            <img
+                                                src={
+                                                    selectKaistXrayImgContentsData?.imgSideColorBwRate3 !== undefined
+                                                        ? `data:image/png;base64, ${selectKaistXrayImgContentsData?.imgSideColorBwRate3}`
+                                                        : noImage
+                                                }
+                                                width={110}
+                                                height={110}
+                                                alt="real image"
+                                            />
                                         </Card>
                                     </Col>
                                     <Col span={4}>
@@ -1149,16 +1047,16 @@ export const Aisynthesis = () => {
                                                 textAlign: 'center'
                                             }}
                                         >
-                                            {selectKaistXrayImgContentsData?.imgSideColorBwRate4 !== undefined ? (
-                                                <Image
-                                                    src={`data:image/png;base64, ${selectKaistXrayImgContentsData?.imgSideColorBwRate4}`}
-                                                    width={110}
-                                                    height={110}
-                                                    alt="imgSideColorBwRate4"
-                                                />
-                                            ) : (
-                                                <img src={noImage} width={110} height={110} alt="imgSideColorBwRate4" />
-                                            )}
+                                            <img
+                                                src={
+                                                    selectKaistXrayImgContentsData?.imgSideColorBwRate4 !== undefined
+                                                        ? `data:image/png;base64, ${selectKaistXrayImgContentsData?.imgSideColorBwRate4}`
+                                                        : noImage
+                                                }
+                                                width={110}
+                                                height={110}
+                                                alt="real image"
+                                            />
                                         </Card>
                                     </Col>
                                     <Col span={4}>
@@ -1171,16 +1069,16 @@ export const Aisynthesis = () => {
                                                 textAlign: 'center'
                                             }}
                                         >
-                                            {selectKaistXrayImgContentsData?.imgSideColorBwRate5 !== undefined ? (
-                                                <Image
-                                                    src={`data:image/png;base64, ${selectKaistXrayImgContentsData?.imgSideColorBwRate5}`}
-                                                    width={110}
-                                                    height={110}
-                                                    alt="imgSideColorBwRate5"
-                                                />
-                                            ) : (
-                                                <img src={noImage} width={110} height={110} alt="imgSideColorBwRate5" />
-                                            )}
+                                            <img
+                                                src={
+                                                    selectKaistXrayImgContentsData?.imgSideColorBwRate5 !== undefined
+                                                        ? `data:image/png;base64, ${selectKaistXrayImgContentsData?.imgSideColorBwRate5}`
+                                                        : noImage
+                                                }
+                                                width={110}
+                                                height={110}
+                                                alt="real image"
+                                            />
                                         </Card>
                                     </Col>
                                     <Col span={4}>
@@ -1193,16 +1091,16 @@ export const Aisynthesis = () => {
                                                 textAlign: 'center'
                                             }}
                                         >
-                                            {selectKaistXrayImgContentsData?.imgSideColorBwRate6 !== undefined ? (
-                                                <Image
-                                                    src={`data:image/png;base64, ${selectKaistXrayImgContentsData?.imgSideColorBwRate6}`}
-                                                    width={110}
-                                                    height={110}
-                                                    alt="imgSideColorBwRate6"
-                                                />
-                                            ) : (
-                                                <img src={noImage} width={110} height={110} alt="imgSideColorBwRate6" />
-                                            )}
+                                            <img
+                                                src={
+                                                    selectKaistXrayImgContentsData?.imgSideColorBwRate6 !== undefined
+                                                        ? `data:image/png;base64, ${selectKaistXrayImgContentsData?.imgSideColorBwRate6}`
+                                                        : noImage
+                                                }
+                                                width={110}
+                                                height={110}
+                                                alt="real image"
+                                            />
                                         </Card>
                                     </Col>
                                 </Row>
@@ -1218,16 +1116,16 @@ export const Aisynthesis = () => {
                                                 textAlign: 'center'
                                             }}
                                         >
-                                            {selectKaistXrayImgContentsData?.imgSideBw !== undefined ? (
-                                                <Image
-                                                    src={`data:image/png;base64, ${selectKaistXrayImgContentsData?.imgSideBw}`}
-                                                    width={110}
-                                                    height={110}
-                                                    alt="imgSideBw"
-                                                />
-                                            ) : (
-                                                <img src={noImage} width={110} height={110} alt="imgSideBw" />
-                                            )}
+                                            <img
+                                                src={
+                                                    selectKaistXrayImgContentsData?.imgSideBw !== undefined
+                                                        ? `data:image/png;base64, ${selectKaistXrayImgContentsData?.imgSideBw}`
+                                                        : noImage
+                                                }
+                                                width={110}
+                                                height={110}
+                                                alt="real image"
+                                            />
                                         </Card>
                                     </Col>
                                     <Col span={4}>
@@ -1240,16 +1138,16 @@ export const Aisynthesis = () => {
                                                 textAlign: 'center'
                                             }}
                                         >
-                                            {selectKaistXrayImgContentsData?.imgSideBwMinerals !== undefined ? (
-                                                <Image
-                                                    src={`data:image/png;base64, ${selectKaistXrayImgContentsData?.imgSideBwMinerals}`}
-                                                    width={110}
-                                                    height={110}
-                                                    alt="imgSideBwMinerals"
-                                                />
-                                            ) : (
-                                                <img src={noImage} width={110} height={110} alt="imgSideBwMinerals" />
-                                            )}
+                                            <img
+                                                src={
+                                                    selectKaistXrayImgContentsData?.imgSideBwMinerals !== undefined
+                                                        ? `data:image/png;base64, ${selectKaistXrayImgContentsData?.imgSideBwMinerals}`
+                                                        : noImage
+                                                }
+                                                width={110}
+                                                height={110}
+                                                alt="real image"
+                                            />
                                         </Card>
                                     </Col>
                                     <Col span={4}>
@@ -1262,16 +1160,16 @@ export const Aisynthesis = () => {
                                                 textAlign: 'center'
                                             }}
                                         >
-                                            {selectKaistXrayImgContentsData?.imgSideBwOrganism !== undefined ? (
-                                                <Image
-                                                    src={`data:image/png;base64, ${selectKaistXrayImgContentsData?.imgSideBwOrganism}`}
-                                                    width={110}
-                                                    height={110}
-                                                    alt="imgSideBwOrganism"
-                                                />
-                                            ) : (
-                                                <img src={noImage} width={110} height={110} alt="imgSideBwOrganism" />
-                                            )}
+                                            <img
+                                                src={
+                                                    selectKaistXrayImgContentsData?.imgSideBwOrganism !== undefined
+                                                        ? `data:image/png;base64, ${selectKaistXrayImgContentsData?.imgSideBwOrganism}`
+                                                        : noImage
+                                                }
+                                                width={110}
+                                                height={110}
+                                                alt="real image"
+                                            />
                                         </Card>
                                     </Col>
                                     <Col span={4}>
@@ -1284,16 +1182,16 @@ export const Aisynthesis = () => {
                                                 textAlign: 'center'
                                             }}
                                         >
-                                            {selectKaistXrayImgContentsData?.imgSideBwReversal !== undefined ? (
-                                                <Image
-                                                    src={`data:image/png;base64, ${selectKaistXrayImgContentsData?.imgSideBwReversal}`}
-                                                    width={110}
-                                                    height={110}
-                                                    alt="imgSideBwReversal"
-                                                />
-                                            ) : (
-                                                <img src={noImage} width={110} height={110} alt="imgSideBwReversal" />
-                                            )}
+                                            <img
+                                                src={
+                                                    selectKaistXrayImgContentsData?.imgSideBwReversal !== undefined
+                                                        ? `data:image/png;base64, ${selectKaistXrayImgContentsData?.imgSideBwReversal}`
+                                                        : noImage
+                                                }
+                                                width={110}
+                                                height={110}
+                                                alt="real image"
+                                            />
                                         </Card>
                                     </Col>
                                     <Col span={4}>
@@ -1306,16 +1204,16 @@ export const Aisynthesis = () => {
                                                 textAlign: 'center'
                                             }}
                                         >
-                                            {selectKaistXrayImgContentsData?.imgSideBwBwRate1 !== undefined ? (
-                                                <Image
-                                                    src={`data:image/png;base64, ${selectKaistXrayImgContentsData?.imgSideBwBwRate1}`}
-                                                    width={110}
-                                                    height={110}
-                                                    alt="imgSideBwBwRate1"
-                                                />
-                                            ) : (
-                                                <img src={noImage} width={110} height={110} alt="imgSideBwBwRate1" />
-                                            )}
+                                            <img
+                                                src={
+                                                    selectKaistXrayImgContentsData?.imgSideBwBwRate1 !== undefined
+                                                        ? `data:image/png;base64, ${selectKaistXrayImgContentsData?.imgSideBwBwRate1}`
+                                                        : noImage
+                                                }
+                                                width={110}
+                                                height={110}
+                                                alt="real image"
+                                            />
                                         </Card>
                                     </Col>
                                 </Row>
@@ -1332,16 +1230,16 @@ export const Aisynthesis = () => {
                                                 textAlign: 'center'
                                             }}
                                         >
-                                            {selectKaistXrayImgContentsData?.imgSideBwBwRate2 !== undefined ? (
-                                                <Image
-                                                    src={`data:image/png;base64, ${selectKaistXrayImgContentsData?.imgSideBwBwRate2}`}
-                                                    width={110}
-                                                    height={110}
-                                                    alt="imgSideBwBwRate2"
-                                                />
-                                            ) : (
-                                                <img src={noImage} width={110} height={110} alt="imgSideBwBwRate2" />
-                                            )}
+                                            <img
+                                                src={
+                                                    selectKaistXrayImgContentsData?.imgSideBwBwRate2 !== undefined
+                                                        ? `data:image/png;base64, ${selectKaistXrayImgContentsData?.imgSideBwBwRate2}`
+                                                        : noImage
+                                                }
+                                                width={110}
+                                                height={110}
+                                                alt="real image"
+                                            />
                                         </Card>
                                     </Col>
                                     <Col span={4}>
@@ -1354,16 +1252,16 @@ export const Aisynthesis = () => {
                                                 textAlign: 'center'
                                             }}
                                         >
-                                            {selectKaistXrayImgContentsData?.imgSideBwBwRate3 !== undefined ? (
-                                                <Image
-                                                    src={`data:image/png;base64, ${selectKaistXrayImgContentsData?.imgSideBwBwRate3}`}
-                                                    width={110}
-                                                    height={110}
-                                                    alt="imgSideBwBwRate3"
-                                                />
-                                            ) : (
-                                                <img src={noImage} width={110} height={110} alt="imgSideBwBwRate3" />
-                                            )}
+                                            <img
+                                                src={
+                                                    selectKaistXrayImgContentsData?.imgSideBwBwRate3 !== undefined
+                                                        ? `data:image/png;base64, ${selectKaistXrayImgContentsData?.imgSideBwBwRate3}`
+                                                        : noImage
+                                                }
+                                                width={110}
+                                                height={110}
+                                                alt="real image"
+                                            />
                                         </Card>
                                     </Col>
                                     <Col span={4}>
@@ -1376,16 +1274,16 @@ export const Aisynthesis = () => {
                                                 textAlign: 'center'
                                             }}
                                         >
-                                            {selectKaistXrayImgContentsData?.imgSideBwBwRate4 !== undefined ? (
-                                                <Image
-                                                    src={`data:image/png;base64, ${selectKaistXrayImgContentsData?.imgSideBwBwRate4}`}
-                                                    width={110}
-                                                    height={110}
-                                                    alt="imgSideBwBwRate4"
-                                                />
-                                            ) : (
-                                                <img src={noImage} width={110} height={110} alt="imgSideBwBwRate4" />
-                                            )}
+                                            <img
+                                                src={
+                                                    selectKaistXrayImgContentsData?.imgSideBwBwRate4 !== undefined
+                                                        ? `data:image/png;base64, ${selectKaistXrayImgContentsData?.imgSideBwBwRate4}`
+                                                        : noImage
+                                                }
+                                                width={110}
+                                                height={110}
+                                                alt="real image"
+                                            />
                                         </Card>
                                     </Col>
                                     <Col span={4}>
@@ -1398,16 +1296,16 @@ export const Aisynthesis = () => {
                                                 textAlign: 'center'
                                             }}
                                         >
-                                            {selectKaistXrayImgContentsData?.imgSideBwBwRate5 !== undefined ? (
-                                                <Image
-                                                    src={`data:image/png;base64, ${selectKaistXrayImgContentsData?.imgSideBwBwRate5}`}
-                                                    width={110}
-                                                    height={110}
-                                                    alt="imgSideBwBwRate5"
-                                                />
-                                            ) : (
-                                                <img src={noImage} width={110} height={110} alt="imgSideBwBwRate5" />
-                                            )}
+                                            <img
+                                                src={
+                                                    selectKaistXrayImgContentsData?.imgSideBwBwRate5 !== undefined
+                                                        ? `data:image/png;base64, ${selectKaistXrayImgContentsData?.imgSideBwBwRate5}`
+                                                        : noImage
+                                                }
+                                                width={110}
+                                                height={110}
+                                                alt="real image"
+                                            />
                                         </Card>
                                     </Col>
                                     <Col span={4}>
@@ -1420,16 +1318,16 @@ export const Aisynthesis = () => {
                                                 textAlign: 'center'
                                             }}
                                         >
-                                            {selectKaistXrayImgContentsData?.imgSideBwBwRate6 !== undefined ? (
-                                                <Image
-                                                    src={`data:image/png;base64, ${selectKaistXrayImgContentsData?.imgSideBwBwRate6}`}
-                                                    width={110}
-                                                    height={110}
-                                                    alt="imgSideBwBwRate6"
-                                                />
-                                            ) : (
-                                                <img src={noImage} width={110} height={110} alt="imgSideBwBwRate6" />
-                                            )}
+                                            <img
+                                                src={
+                                                    selectKaistXrayImgContentsData?.imgSideBwBwRate6 !== undefined
+                                                        ? `data:image/png;base64, ${selectKaistXrayImgContentsData?.imgSideBwBwRate6}`
+                                                        : noImage
+                                                }
+                                                width={110}
+                                                height={110}
+                                                alt="real image"
+                                            />
                                         </Card>
                                     </Col>
                                 </Row>

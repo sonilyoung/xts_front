@@ -26,8 +26,12 @@ export const Teacherstudent = () => {
     const [dataSource, setDataSource] = useState([]); // Table 데이터 값
     const [loading, setLoading] = useState(false);
     const [practiceScoreValue, setPracticeScoreValue] = useState(null); // 실습 점수
-    const [procCdChk, setProcCdChk] = useState(''); // 실습 점수
-    const [userIdChk, setUserIdChk] = useState(''); // 실습 점수
+    const [practiceHumanScoreValue, setPracticeHumanScoreValue] = useState(null); // 대인 점수
+    const [practiceCarScoreValue, setPracticeCarScoreValue] = useState(null); // 차량 점수
+    const [procCdChk, setProcCdChk] = useState(''); // 차수 코드
+    const [userIdChk, setUserIdChk] = useState(''); // 교육생 아이디
+    const [eduCd, setEduCd] = useState(''); // 교육 코드
+
     const [evalOpen, setEvalOpen] = useState(false);
     const [searchval, setSearchval] = useState();
 
@@ -52,6 +56,7 @@ export const Teacherstudent = () => {
                 compNm: d.compNm, //회사명
                 gainScore: d.gainScore, //총 획득점수
                 passYn: d.passYn, //합격 불합격 여부 (Y 합격 N 불합격 ING 진행중)
+                eduCode: d.eduCode,
                 eduName: d.eduName,
                 eduStartDate: d.eduStartDate, //교육시작일
                 eduEndDate: d.eduEndDate, //교육종료일
@@ -66,6 +71,7 @@ export const Teacherstudent = () => {
     const [evaluationInfoData, setEvaluationInfoData] = useState(); // XBT 평가 정보
     const [theoryInfoData, setTheoryInfoData] = useState(); // 이론 평가 정보
     const [practiceInfoData, setPracticeInfoData] = useState(); // 실습 평가 정보
+
     const handle_SelectBaselineUser_Api = async (procCd, userId) => {
         const SelectBaselineUserResponse = await SelectBaselineUserApi({
             procCd: procCd,
@@ -82,7 +88,9 @@ export const Teacherstudent = () => {
         const UpdateBaselineUserResponse = await UpdateBaselineUserApi({
             procCd: procCdChk,
             userId: userIdChk,
-            practiceScore: practiceScoreValue
+            practiceScore: practiceScoreValue === null ? '0' : practiceScoreValue, // 실습 점수
+            practiceHumanScore: practiceHumanScoreValue, // 대인 점수
+            practiceCarScore: practiceCarScoreValue // 차량 점수
         });
         if (UpdateBaselineUserResponse?.data?.RET_CODE === '0100') {
             Modal.success({
@@ -158,15 +166,16 @@ export const Teacherstudent = () => {
             title: '평가 가중치',
             dataIndex: 'gainScore',
             align: 'center',
-            render: (_, { gainScore, procCd, userId }) => (
+            render: (_, { gainScore, procCd, userId, eduCode }) => (
                 <>
                     <Space>
                         <Tooltip title="평가 가중치" color="#108ee9">
+                            {eduCode}
                             <Button
                                 type="primary"
                                 style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
                                 icon={<FileProtectOutlined />}
-                                onClick={() => handle_Score(procCd, userId)}
+                                onClick={() => handle_Score(procCd, userId, eduCode)}
                             >
                                 {gainScore === '0' || gainScore === null || gainScore === undefined ? '0' : gainScore}
                             </Button>
@@ -237,9 +246,10 @@ export const Teacherstudent = () => {
         }
     ];
 
-    const handle_Score = (procCd, userId) => {
+    const handle_Score = (procCd, userId, eduCode) => {
         setProcCdChk(procCd);
         setUserIdChk(userId);
+        setEduCd(eduCode);
         handle_SelectBaselineUser_Api(procCd, userId);
         setEvalOpen(true);
     };
@@ -247,6 +257,7 @@ export const Teacherstudent = () => {
     const handel_practiceScore = () => {
         handle_UpdateBaselineUser_Api();
     };
+
     // Modal 닫기
     const handleCancel = () => {
         setEvalOpen(false);
@@ -320,44 +331,208 @@ export const Teacherstudent = () => {
                     </Button>
                 ]}
             >
-                <Space>
-                    <Descriptions title="※ XBT 평가" layout="vertical" bordered column={5}>
-                        <Descriptions.Item style={{ textAlign: 'center', width: '190px' }} label="평가명">
-                            {evaluationInfoData?.procNm || '-'}
-                        </Descriptions.Item>
-                        <Descriptions.Item style={{ textAlign: 'center' }} label="문항수">
-                            {evaluationInfoData?.questionCnt || '-'}
-                        </Descriptions.Item>
-                        <Descriptions.Item style={{ textAlign: 'center' }} label="정답">
-                            {evaluationInfoData?.rightCnt || '-'}
-                        </Descriptions.Item>
-                        <Descriptions.Item style={{ textAlign: 'center' }} label="오답">
-                            {evaluationInfoData?.wrongCnt || '-'}
-                        </Descriptions.Item>
-                        <Descriptions.Item style={{ textAlign: 'center', fontWeight: 'bold' }} label="평점">
-                            {evaluationInfoData?.evaluationScore || '-'}
-                        </Descriptions.Item>
-                    </Descriptions>
-                    <Title level={1} style={{ marginTop: '65px', marginLeft: '30px' }}>
-                        X
-                    </Title>
-                    <Descriptions layout="vertical" bordered style={{ marginTop: '45px', marginLeft: '30px' }}>
-                        <Descriptions.Item style={{ textAlign: 'center', fontWeight: 'bold' }} label="XBT 평가 가중치(%) ">
-                            {evaluationInfoData?.evaluationTotalScore || '0'}%
-                        </Descriptions.Item>
-                    </Descriptions>
-                    <Title level={1} style={{ marginTop: '65px', marginLeft: '30px' }}>
-                        =
-                    </Title>
-                    <Descriptions layout="vertical" bordered style={{ marginTop: '45px', marginLeft: '30px' }}>
-                        <Descriptions.Item style={{ textAlign: 'center', fontWeight: 'bold' }} label="XBT 평가 최종 점수">
-                            <space style={{ color: '#108ee9' }}>{evaluationInfoData?.gainScore || '-'}</space>
-                        </Descriptions.Item>
-                    </Descriptions>
-                </Space>
-                <br />
-                <br />
-                <br />
+                {eduCd !== '4' && eduCd !== '6' ? (
+                    <>
+                        <Space>
+                            <Descriptions title="※ XBT 평가" layout="vertical" bordered column={5}>
+                                <Descriptions.Item style={{ textAlign: 'center', width: '190px' }} label="평가명">
+                                    {evaluationInfoData?.procNm || '-'}
+                                </Descriptions.Item>
+                                <Descriptions.Item style={{ textAlign: 'center' }} label="문항수">
+                                    {evaluationInfoData?.questionCnt || '-'}
+                                </Descriptions.Item>
+                                <Descriptions.Item style={{ textAlign: 'center' }} label="정답">
+                                    {evaluationInfoData?.rightCnt || '-'}
+                                </Descriptions.Item>
+                                <Descriptions.Item style={{ textAlign: 'center' }} label="오답">
+                                    {evaluationInfoData?.wrongCnt || '-'}
+                                </Descriptions.Item>
+                                <Descriptions.Item style={{ textAlign: 'center', fontWeight: 'bold' }} label="평점">
+                                    {evaluationInfoData?.evaluationScore || '-'}
+                                </Descriptions.Item>
+                            </Descriptions>
+                            <Title level={1} style={{ marginTop: '65px', marginLeft: '30px' }}>
+                                X
+                            </Title>
+                            <Descriptions layout="vertical" bordered style={{ marginTop: '45px', marginLeft: '30px' }}>
+                                <Descriptions.Item style={{ textAlign: 'center', fontWeight: 'bold' }} label="XBT 평가 가중치(%) ">
+                                    {evaluationInfoData?.evaluationTotalScore || '0'}%
+                                </Descriptions.Item>
+                            </Descriptions>
+                            <Title level={1} style={{ marginTop: '65px', marginLeft: '30px' }}>
+                                =
+                            </Title>
+                            <Descriptions layout="vertical" bordered style={{ marginTop: '45px', marginLeft: '30px' }}>
+                                <Descriptions.Item style={{ textAlign: 'center', fontWeight: 'bold' }} label="XBT 평가 최종 점수">
+                                    <space style={{ color: '#108ee9' }}>{evaluationInfoData?.gainScore || '-'}</space>
+                                </Descriptions.Item>
+                            </Descriptions>
+                        </Space>
+                        <br />
+                        <br />
+                        <br />
+                    </>
+                ) : eduCd === '4' ? (
+                    <>
+                        <Space>
+                            <Descriptions title="※ 대인 실기평가" layout="vertical" bordered column={3}>
+                                <Descriptions.Item style={{ textAlign: 'center', width: '190px' }} label="평가명">
+                                    {practiceInfoData?.procNm || '-'}
+                                </Descriptions.Item>
+                                <Descriptions.Item style={{ textAlign: 'center' }} label="점수">
+                                    <Input
+                                        name="choice"
+                                        placeholder="※ 대인 실기평가 점수"
+                                        value={
+                                            practiceHumanScoreValue === null
+                                                ? practiceInfoData?.practiceHumanScore
+                                                : practiceHumanScoreValue
+                                        }
+                                        onChange={(e) => {
+                                            setPracticeHumanScoreValue(e.target.value);
+                                        }}
+                                        style={{ width: '145px' }}
+                                    />
+                                </Descriptions.Item>
+                                <Descriptions.Item style={{ textAlign: 'center' }} label="저장">
+                                    <Tooltip title="저장" placement="bottom" color="#108ee9">
+                                        <Button
+                                            onClick={() => handel_practiceScore()}
+                                            style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                            type="primary"
+                                        >
+                                            저장
+                                        </Button>
+                                    </Tooltip>
+                                </Descriptions.Item>
+                            </Descriptions>
+                            <Title level={1} style={{ marginTop: '65px', marginLeft: '30px' }}>
+                                X
+                            </Title>
+                            <Descriptions layout="vertical" bordered style={{ marginTop: '45px', marginLeft: '30px' }}>
+                                <Descriptions.Item style={{ textAlign: 'center', fontWeight: 'bold' }} label="대인 실기 평가 가중치(%) ">
+                                    {practiceInfoData?.practiceHumanTotalScore || '0'}%
+                                </Descriptions.Item>
+                            </Descriptions>
+                            <Title level={1} style={{ marginTop: '65px', marginLeft: '30px' }}>
+                                =
+                            </Title>
+                            <Descriptions layout="vertical" bordered style={{ marginTop: '45px', marginLeft: '30px' }}>
+                                <Descriptions.Item style={{ textAlign: 'center', fontWeight: 'bold' }} label="대인 실기 평가 최종 점수">
+                                    <space style={{ color: '#108ee9' }}>{practiceInfoData?.humanGainScore || '-'}</space>
+                                </Descriptions.Item>
+                            </Descriptions>
+                        </Space>
+                        <br />
+                        <br />
+                        <br />
+                    </>
+                ) : eduCd === '6' ? (
+                    <>
+                        <Space>
+                            <Descriptions title="※ 대인 실기평가" layout="vertical" bordered column={3}>
+                                <Descriptions.Item style={{ textAlign: 'center', width: '190px' }} label="평가명">
+                                    {practiceInfoData?.procNm || '-'}
+                                </Descriptions.Item>
+                                <Descriptions.Item style={{ textAlign: 'center' }} label="점수">
+                                    <Input
+                                        name="choice"
+                                        placeholder="※ 대인 실기평가 점수"
+                                        value={
+                                            practiceHumanScoreValue === null
+                                                ? practiceInfoData?.practiceHumanScore
+                                                : practiceHumanScoreValue
+                                        }
+                                        onChange={(e) => {
+                                            setPracticeHumanScoreValue(e.target.value);
+                                        }}
+                                        style={{ width: '145px' }}
+                                    />
+                                </Descriptions.Item>
+                                <Descriptions.Item style={{ textAlign: 'center' }} label="저장">
+                                    <Tooltip title="저장" placement="bottom" color="#108ee9">
+                                        <Button
+                                            onClick={() => handel_practiceScore()}
+                                            style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                            type="primary"
+                                        >
+                                            저장
+                                        </Button>
+                                    </Tooltip>
+                                </Descriptions.Item>
+                            </Descriptions>
+                            <Title level={1} style={{ marginTop: '65px', marginLeft: '30px' }}>
+                                X
+                            </Title>
+                            <Descriptions layout="vertical" bordered style={{ marginTop: '45px', marginLeft: '30px' }}>
+                                <Descriptions.Item style={{ textAlign: 'center', fontWeight: 'bold' }} label="대인 실기 평가 가중치(%) ">
+                                    {practiceInfoData?.practiceHumanTotalScore || '0'}%
+                                </Descriptions.Item>
+                            </Descriptions>
+                            <Title level={1} style={{ marginTop: '65px', marginLeft: '30px' }}>
+                                =
+                            </Title>
+                            <Descriptions layout="vertical" bordered style={{ marginTop: '45px', marginLeft: '30px' }}>
+                                <Descriptions.Item style={{ textAlign: 'center', fontWeight: 'bold' }} label="대인 실기 평가 최종 점수">
+                                    <space style={{ color: '#108ee9' }}>{practiceInfoData?.humanGainScore || '-'}</space>
+                                </Descriptions.Item>
+                            </Descriptions>
+                        </Space>
+                        <br />
+                        <br />
+                        <br />
+                        <Space>
+                            <Descriptions title="※ 차량 실기평가" layout="vertical" bordered column={3}>
+                                <Descriptions.Item style={{ textAlign: 'center', width: '190px' }} label="평가명">
+                                    {practiceInfoData?.procNm || '-'}
+                                </Descriptions.Item>
+                                <Descriptions.Item style={{ textAlign: 'center' }} label="점수">
+                                    <Input
+                                        name="choice"
+                                        placeholder="※ 차량 실기평가 점수"
+                                        value={practiceCarScoreValue === null ? practiceInfoData?.practiceCarScore : practiceCarScoreValue}
+                                        onChange={(e) => {
+                                            setPracticeCarScoreValue(e.target.value);
+                                        }}
+                                        style={{ width: '145px' }}
+                                    />
+                                </Descriptions.Item>
+                                <Descriptions.Item style={{ textAlign: 'center' }} label="저장">
+                                    <Tooltip title="저장" placement="bottom" color="#108ee9">
+                                        <Button
+                                            onClick={() => handel_practiceScore()}
+                                            style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                            type="primary"
+                                        >
+                                            저장
+                                        </Button>
+                                    </Tooltip>
+                                </Descriptions.Item>
+                            </Descriptions>
+                            <Title level={1} style={{ marginTop: '65px', marginLeft: '30px' }}>
+                                X
+                            </Title>
+                            <Descriptions layout="vertical" bordered style={{ marginTop: '45px', marginLeft: '30px' }}>
+                                <Descriptions.Item style={{ textAlign: 'center', fontWeight: 'bold' }} label="차량 실기 평가 가중치(%) ">
+                                    {practiceInfoData?.practiceCarTotalScore || '0'}%
+                                </Descriptions.Item>
+                            </Descriptions>
+                            <Title level={1} style={{ marginTop: '65px', marginLeft: '30px' }}>
+                                =
+                            </Title>
+                            <Descriptions layout="vertical" bordered style={{ marginTop: '45px', marginLeft: '30px' }}>
+                                <Descriptions.Item style={{ textAlign: 'center', fontWeight: 'bold' }} label="차량 실기 평가 최종 점수">
+                                    <space style={{ color: '#108ee9' }}>{practiceInfoData?.carGainScore || '-'}</space>
+                                </Descriptions.Item>
+                            </Descriptions>
+                        </Space>
+                        <br />
+                        <br />
+                        <br />
+                    </>
+                ) : (
+                    ''
+                )}
                 <Space>
                     <Descriptions title="※ 이론 평가" layout="vertical" bordered column={5}>
                         <Descriptions.Item style={{ textAlign: 'center', width: '190px' }} label="평가명">
@@ -396,51 +571,55 @@ export const Teacherstudent = () => {
                 <br />
                 <br />
                 <br />
-                <Space>
-                    <Descriptions title="※ 실습 평가" layout="vertical" bordered column={3}>
-                        <Descriptions.Item style={{ textAlign: 'center', width: '190px' }} label="평가명">
-                            {practiceInfoData?.procNm || '-'}
-                        </Descriptions.Item>
-                        <Descriptions.Item style={{ textAlign: 'center' }} label="점수">
-                            <Input
-                                name="choice"
-                                placeholder="※ 실습 평가 점수"
-                                value={practiceScoreValue === null ? practiceInfoData?.practiceScore : practiceScoreValue}
-                                onChange={(e) => {
-                                    setPracticeScoreValue(e.target.value);
-                                }}
-                                style={{ width: '145px' }}
-                            />
-                        </Descriptions.Item>
-                        <Descriptions.Item style={{ textAlign: 'center' }} label="저장">
-                            <Tooltip title="저장" placement="bottom" color="#108ee9">
-                                <Button
-                                    onClick={() => handel_practiceScore()}
-                                    style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
-                                    type="primary"
-                                >
-                                    저장
-                                </Button>
-                            </Tooltip>
-                        </Descriptions.Item>
-                    </Descriptions>
-                    <Title level={1} style={{ marginTop: '65px', marginLeft: '30px' }}>
-                        X
-                    </Title>
-                    <Descriptions layout="vertical" bordered style={{ marginTop: '45px', marginLeft: '30px' }}>
-                        <Descriptions.Item style={{ textAlign: 'center', fontWeight: 'bold' }} label="실습 평가 가중치(%) ">
-                            {practiceInfoData?.practiceTotalScore || '0'}%
-                        </Descriptions.Item>
-                    </Descriptions>
-                    <Title level={1} style={{ marginTop: '65px', marginLeft: '30px' }}>
-                        =
-                    </Title>
-                    <Descriptions layout="vertical" bordered style={{ marginTop: '45px', marginLeft: '30px' }}>
-                        <Descriptions.Item style={{ textAlign: 'center', fontWeight: 'bold' }} label="실습 평가 최종 점수">
-                            <space style={{ color: '#108ee9' }}>{practiceInfoData?.gainScore || '-'}</space>
-                        </Descriptions.Item>
-                    </Descriptions>
-                </Space>
+                {eduCd !== '4' && eduCd !== '6' ? (
+                    <Space>
+                        <Descriptions title="※ 실습 평가" layout="vertical" bordered column={3}>
+                            <Descriptions.Item style={{ textAlign: 'center', width: '190px' }} label="평가명">
+                                {practiceInfoData?.procNm || '-'}
+                            </Descriptions.Item>
+                            <Descriptions.Item style={{ textAlign: 'center' }} label="점수">
+                                <Input
+                                    name="choice"
+                                    placeholder="※ 실습 평가 점수"
+                                    value={practiceScoreValue === null ? practiceInfoData?.practiceScore : practiceScoreValue}
+                                    onChange={(e) => {
+                                        setPracticeScoreValue(e.target.value);
+                                    }}
+                                    style={{ width: '145px' }}
+                                />
+                            </Descriptions.Item>
+                            <Descriptions.Item style={{ textAlign: 'center' }} label="저장">
+                                <Tooltip title="저장" placement="bottom" color="#108ee9">
+                                    <Button
+                                        onClick={() => handel_practiceScore()}
+                                        style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                        type="primary"
+                                    >
+                                        저장
+                                    </Button>
+                                </Tooltip>
+                            </Descriptions.Item>
+                        </Descriptions>
+                        <Title level={1} style={{ marginTop: '65px', marginLeft: '30px' }}>
+                            X
+                        </Title>
+                        <Descriptions layout="vertical" bordered style={{ marginTop: '45px', marginLeft: '30px' }}>
+                            <Descriptions.Item style={{ textAlign: 'center', fontWeight: 'bold' }} label="실습 평가 가중치(%) ">
+                                {practiceInfoData?.practiceTotalScore || '0'}%
+                            </Descriptions.Item>
+                        </Descriptions>
+                        <Title level={1} style={{ marginTop: '65px', marginLeft: '30px' }}>
+                            =
+                        </Title>
+                        <Descriptions layout="vertical" bordered style={{ marginTop: '45px', marginLeft: '30px' }}>
+                            <Descriptions.Item style={{ textAlign: 'center', fontWeight: 'bold' }} label="실습 평가 최종 점수">
+                                <space style={{ color: '#108ee9' }}>{practiceInfoData?.gainScore || '-'}</space>
+                            </Descriptions.Item>
+                        </Descriptions>
+                    </Space>
+                ) : (
+                    ''
+                )}
             </Modal>
         </>
     );
