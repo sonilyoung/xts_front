@@ -154,11 +154,14 @@ export const Teacherstudent = () => {
         {
             title: '교육 구분',
             dataIndex: 'eduName',
+            sorter: (a, b) => a.userNm.localeCompare(b.eduName, 'ko', { sensitivity: 'base' }),
+            ellipsis: true,
             align: 'center'
         },
         {
             title: '기관',
             dataIndex: 'compNm',
+            ellipsis: true,
             align: 'center'
         },
         {
@@ -170,7 +173,6 @@ export const Teacherstudent = () => {
                 <>
                     <Space>
                         <Tooltip title="평가 가중치" color="#108ee9">
-                            {eduCode}
                             <Button
                                 type="primary"
                                 style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
