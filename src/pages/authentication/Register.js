@@ -882,7 +882,7 @@ const Register = () => {
                                             name="careerYn"
                                             buttonStyle="solid"
                                             onChange={(e) => setItemContainer({ ...itemContainer, careerYn: e.target.value })}
-                                            value={itemContainer?.careerYn}
+                                            value={itemContainer?.careerYn || 'N'}
                                         >
                                             <Radio.Button value="Y">
                                                 <span style={{ padding: '0 10px' }}>유</span>

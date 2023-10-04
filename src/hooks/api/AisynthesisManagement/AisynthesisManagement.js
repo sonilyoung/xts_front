@@ -59,6 +59,51 @@ export const aisynthesisManagement = createApi({
                 method: 'POST',
                 body: body
             })
+        }),
+
+        // 콘텐츠 관리 > X-ray 콘텐츠 관리 > 카이스트2d생성
+        twodGeneration: builder.mutation({
+            query: (body) => ({
+                url: 'api/twodGeneration.do',
+                method: 'POST',
+                body: body
+            })
+        }),
+
+        // 콘텐츠 관리 > X-ray 콘텐츠 관리 > 카이스트2d이미지가져오기
+        selectTwodImg: builder.mutation({
+            query: (body) => ({
+                url: 'api/selectTwodImg.do',
+                method: 'POST',
+                body: body
+            })
+        }),
+
+        // 콘텐츠 관리 > X-ray 콘텐츠 관리 > 카이스트2d생성 이미지상세
+        selectKaistTwodGeneration: builder.mutation({
+            query: (body) => ({
+                url: 'api/selectKaistTwodGeneration.do',
+                method: 'POST',
+                body: body
+            })
+        }),
+
+        // 콘텐츠 관리 > X-ray 콘텐츠 관리 > 카이스트3d생성
+        threedImgExcute: builder.mutation({
+            query: (body) => ({
+                url: 'api/threedImgExcute.do',
+                method: 'POST',
+                body: body
+            })
+        }),
+
+        // 콘텐츠 관리 > X-ray 콘텐츠 관리 > 카이스트3d이미지가져오기
+        selectThreedProgressPer: builder.mutation({
+            query: (body) => ({
+                url: 'api/selectThreedProgressPer.do',
+                method: 'POST',
+                body: body
+            })
         })
     })
 });
@@ -68,5 +113,12 @@ export const {
     useSelectProgressPerMutation,
     useSelectKaistXrayContentsListMutation,
     useSelectKaistXrayImgContentsMutation,
-    useSyncImagesMutation
+    useSyncImagesMutation,
+
+    useTwodGenerationMutation, // 카이스트2d생성
+    useSelectTwodImgMutation, // 카이스트2d이미지가져오기
+    useSelectKaistTwodGenerationMutation, // 카이스트2d생성 이미지상세
+
+    useThreedImgExcuteMutation, // 카이스트3d생성
+    useSelectThreedProgressPerMutation // 카이스트3d이미지가져오기
 } = aisynthesisManagement;

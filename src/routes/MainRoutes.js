@@ -13,6 +13,7 @@ import { ImagesManagement } from 'pages/contents/imagesmanagement'; // 콘텐츠
 import { Xrayinformation } from 'pages/contents/xrayinformation'; // 콘텐츠 관리 / X-ray 콘텐츠 관리 / 정보 관리
 import { XrayinfoWrite } from 'pages/contents/xrayinformationimage'; // 콘텐츠 관리 / X-ray 콘텐츠 관리 / 정보 관리 등록
 import { Aisynthesis } from 'pages/contents/aisynthesis'; // 콘텐츠 관리 / X-ray 콘텐츠 관리 / AI 영상합성
+import { Synthesis2d } from 'pages/contents/synthesis2d'; // 콘텐츠 관리 / X-ray 콘텐츠 관리 / 2D 영상합성
 
 import { Teacherinformation } from 'pages/teacher/teacherinformation'; // 강사 관리 / 강사정보 관리
 import { Theoryinformation } from 'pages/teacher/theoryinformation'; // 강사 관리 / 이론정보 관리
@@ -112,9 +113,14 @@ const MainRoutes = {
             element: <XrayinfoWrite />
         },
         {
-            // 콘텐츠 관리 > X-ray 콘텐츠 관리 > AI 영상합성
+            // 콘텐츠 관리 > X-ray 콘텐츠 관리 > 의사색채 AI영상합성
             path: '/contents/aisynthesis',
             element: <Aisynthesis />
+        },
+        {
+            // 콘텐츠 관리 > X-ray 콘텐츠 관리 > 2D 영상합성
+            path: '/contents/synthesis2d',
+            element: <Synthesis2d />
         },
         {
             // 강사 관리 > 강사정보 관리
