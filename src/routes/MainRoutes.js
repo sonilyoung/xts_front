@@ -45,8 +45,8 @@ import { Studentinformation } from 'pages/student/studentinformation'; // 교육
 // 통계
 // import { Evaluationscore } from 'pages/statistics/evaluationscore'; // 통계 / 교육실적 조회 / 교육생 평가점수 조회
 
-import { Learning_Performance } from 'pages/statistics/Learning/learning_performance'; // 통계 / 학습 / 학습 실적 조회
-import { Learning_Contentgroup } from 'pages/statistics/Learning/learning_contentgroup'; //통계 / 학습 / 컨텐츠 그룹 조회
+import { Learning_Performance } from 'pages/statistics/learning/learning_performance'; // 통계 / 학습 / 학습 실적 조회
+import { Learning_Contentgroup } from 'pages/statistics/learning/learning_contentgroup'; //통계 / 학습 / 컨텐츠 그룹 조회
 import { Evaluation_Performance } from 'pages/statistics/evaluation/evaluation_performance'; // 통계 / 평가 / 평가 실적 조회
 import { Evaluation_Contentgroup } from 'pages/statistics/evaluation/evaluation_contentgroup'; //통계 / 평가 / 컨텐츠 그룹 조회
 import { Theory_Performance } from 'pages/statistics/theory/theory_performance'; // 통계 / 이론평가 / 이론평가 실적 조회
