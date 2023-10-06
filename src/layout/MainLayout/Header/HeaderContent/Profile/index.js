@@ -206,7 +206,7 @@ const Profile = () => {
                                                 {open && (
                                                     <>
                                                         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                                                            <Tabs
+                                                            {/* <Tabs
                                                                 variant="fullWidth"
                                                                 value={value}
                                                                 onChange={handleChange}
@@ -232,7 +232,7 @@ const Profile = () => {
                                                                     label="Profile"
                                                                     {...a11yProps(0)}
                                                                 />
-                                                                {/* <Tab
+                                                                <Tab
                                                                     sx={{
                                                                         display: 'flex',
                                                                         flexDirection: 'row',
@@ -245,8 +245,9 @@ const Profile = () => {
                                                                     }
                                                                     label="Setting"
                                                                     {...a11yProps(1)}
-                                                                /> */}
+                                                                /> 
                                                             </Tabs>
+                                                            */}
                                                         </Box>
                                                         <TabPanel value={value} index={0} dir={theme.direction}>
                                                             <ProfileTab handleLogout={() => setModal_Out(true)} />

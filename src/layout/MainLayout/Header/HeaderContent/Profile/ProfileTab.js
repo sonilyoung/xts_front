@@ -21,6 +21,7 @@ const ProfileTab = ({ handleLogout }) => {
 
     return (
         <List component="nav" sx={{ p: 0, '& .MuiListItemIcon-root': { minWidth: 32, color: theme.palette.grey[500] } }}>
+            {/*
             <ListItemButton selected={selectedIndex === 0} onClick={(event) => handleListItemClick(event, 0)}>
                 <ListItemIcon>
                     <EditOutlined />
@@ -34,7 +35,6 @@ const ProfileTab = ({ handleLogout }) => {
                 <ListItemText primary="View Profile" />
             </ListItemButton>
 
-            {/*
             <ListItemButton selected={selectedIndex === 3} onClick={(event) => handleListItemClick(event, 3)}>
                 <ListItemIcon>
                     <ProfileOutlined />
