@@ -100,174 +100,183 @@ export const Synthesis2d = () => {
                 <MainCard>
                     <Row>
                         <Col span={24}>
-                            <Card title={<span style={{ fontSize: '0.9rem' }}>2D 영상합성</span>}>
+                            <Card title={<span style={{ fontSize: '1.0rem' }}>2D 영상합성</span>}>
                                 <Space style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                                     <Form layout="horizontal" form={form}>
-                                        <Row gutter={[24, 8]}>
-                                            <Col span={8} offset={4}>
-                                                <Row>
-                                                    <Col span={24}>
-                                                        <Form.Item
-                                                            name="form05"
-                                                            label="카테고리"
-                                                            rules={[
-                                                                {
-                                                                    required: true,
-                                                                    message: '※ 카테고리'
-                                                                }
-                                                            ]}
-                                                        >
-                                                            <Row>
-                                                                <Col>
-                                                                    <Space.Compact size="large">
-                                                                        <Select
-                                                                            style={{ width: '405px' }}
-                                                                            label="Select"
-                                                                            allowClear
-                                                                            placeholder="Select a Category"
-                                                                            options={[
-                                                                                { value: 'Aerosol', label: 'Aerosol' },
-                                                                                { value: 'Alcohol', label: 'Alcohol' },
-                                                                                { value: 'Axe', label: 'Axe' },
-                                                                                { value: 'Bat', label: 'Bat' },
-                                                                                { value: 'Battery', label: 'Battery' },
-                                                                                { value: 'Bullet', label: 'Bullet' },
-                                                                                { value: 'Chisel', label: 'Chisel' },
-                                                                                {
-                                                                                    value: 'Electronic cigarettes',
-                                                                                    label: 'Electronic cigarettes'
-                                                                                },
-                                                                                {
-                                                                                    value: 'Electronic cigarettes(Liquid)',
-                                                                                    label: 'Electronic cigarettes(Liquid)'
-                                                                                },
-                                                                                { value: 'Firecracker', label: 'Firecracker' },
-                                                                                { value: 'Gun', label: 'Gun' },
-                                                                                { value: 'GunParts', label: 'GunParts' },
-                                                                                { value: 'Hammer', label: 'Hammer' },
-                                                                                { value: 'HandCuffs', label: 'HandCuffs' },
-                                                                                { value: 'HDD', label: 'HDD' },
-                                                                                { value: 'Knife', label: 'Knife' },
-                                                                                { value: 'Laptop', label: 'Laptop' },
-                                                                                { value: 'Lighter', label: 'Lighter' },
-                                                                                { value: 'Liquid', label: 'Liquid' },
-                                                                                { value: 'Match', label: 'Match' },
-                                                                                { value: 'MetalPipe', label: 'MetalPipe' },
-                                                                                { value: 'NailClippers', label: 'NailClippers' },
-                                                                                { value: 'Plier', label: 'Plier' },
-                                                                                { value: 'PrtableGas', label: 'PrtableGas' },
-                                                                                { value: 'Saw', label: 'Saw' },
-                                                                                { value: 'Scissors', label: 'Scissors' },
-                                                                                { value: 'Screwdriver', label: 'Screwdriver' },
-                                                                                { value: 'SmartPhone', label: 'SmartPhone' },
-                                                                                { value: 'SolidFuel', label: 'SolidFuel' },
-                                                                                { value: 'Spanner', label: 'Spanner' },
-                                                                                { value: 'SSD', label: 'SSD' },
-                                                                                { value: 'stun gun', label: 'stun gun' },
-                                                                                {
-                                                                                    value: 'SupplymentaryBattery',
-                                                                                    label: 'SupplymentaryBattery'
-                                                                                },
-                                                                                { value: 'TabletPC', label: 'TabletPC' },
-                                                                                { value: 'Thinner', label: 'Thinner' },
-                                                                                { value: 'Throwing Knife', label: 'Throwing Knife' },
-                                                                                { value: 'USB', label: 'USB' },
-                                                                                { value: 'ZippoOil', label: 'ZippoOil' }
-                                                                            ]}
-                                                                            onChange={(e) =>
-                                                                                setItemContainer({ ...itemContainer, category: e })
-                                                                            }
-                                                                            value={itemContainer?.category}
-                                                                        />
-                                                                    </Space.Compact>
-                                                                </Col>
-                                                            </Row>
-                                                        </Form.Item>
-                                                    </Col>
-                                                    <Col span={12}>
-                                                        <Form.Item
-                                                            name="form05"
-                                                            label="추출 수량"
-                                                            rules={[
-                                                                {
-                                                                    required: true,
-                                                                    message: '※ 추출 수량'
-                                                                }
-                                                            ]}
-                                                        >
-                                                            <Row>
-                                                                <Col>
-                                                                    <Space.Compact size="large">
-                                                                        <Select
-                                                                            style={{ width: '400px' }}
-                                                                            label="Select"
-                                                                            allowClear
-                                                                            placeholder="Select a Extraction Quantity"
-                                                                            options={[
-                                                                                { value: '1', label: '1' },
-                                                                                { value: '2', label: '2' },
-                                                                                { value: '3', label: '3' },
-                                                                                { value: '4', label: '4' },
-                                                                                { value: '5', label: '5' },
-                                                                                { value: '6', label: '6' },
-                                                                                { value: '7', label: '7' },
-                                                                                { value: '8', label: '8' },
-                                                                                { value: '9', label: '9' },
-                                                                                { value: '10', label: '10' },
-                                                                                { value: '11', label: '11' },
-                                                                                { value: '12', label: '12' },
-                                                                                { value: '13', label: '13' },
-                                                                                { value: '14', label: '14' },
-                                                                                { value: '15', label: '15' },
-                                                                                { value: '16', label: '16' },
-                                                                                { value: '17', label: '17' },
-                                                                                { value: '18', label: '18' },
-                                                                                { value: '19', label: '19' },
-                                                                                { value: '20', label: '20' }
-                                                                            ]}
-                                                                            onChange={(e) =>
-                                                                                setItemContainer({ ...itemContainer, categoryCnt: e })
-                                                                            }
-                                                                            value={itemContainer?.categoryCnt}
-                                                                        />
-                                                                    </Space.Compact>
-                                                                </Col>
-                                                            </Row>
-                                                        </Form.Item>
-                                                    </Col>
-                                                    <Col span={24}>
-                                                        <Form.Item
-                                                            name="form05"
-                                                            label="파일명"
-                                                            rules={[
-                                                                {
-                                                                    required: true,
-                                                                    message: '※ 파일명'
-                                                                }
-                                                            ]}
-                                                        >
-                                                            <Row>
-                                                                <Col>
-                                                                    <Space.Compact size="large">
-                                                                        <Input
-                                                                            style={{ width: '418px' }}
-                                                                            name="fileName"
-                                                                            onChange={(e) =>
-                                                                                setItemContainer({
-                                                                                    ...itemContainer,
-                                                                                    fileName: e.target.value
-                                                                                })
-                                                                            }
-                                                                            value={itemContainer?.fileName}
-                                                                        />
-                                                                    </Space.Compact>
-                                                                </Col>
-                                                            </Row>
-                                                        </Form.Item>
-                                                    </Col>
-                                                </Row>
+                                        <Row>
+                                            <Col
+                                                xs={{
+                                                    span: 24,
+                                                    offset: 1
+                                                }}
+                                                lg={{
+                                                    span: 16,
+                                                    offset: 2
+                                                }}
+                                            >
+                                                <Form.Item
+                                                    name="form05"
+                                                    label="카테고리"
+                                                    rules={[
+                                                        {
+                                                            required: true,
+                                                            message: '※ 카테고리'
+                                                        }
+                                                    ]}
+                                                >
+                                                    <Row>
+                                                        <Col>
+                                                            <Space.Compact size="large">
+                                                                <Select
+                                                                    style={{ width: '405px' }}
+                                                                    label="Select"
+                                                                    allowClear
+                                                                    placeholder="Select a Category"
+                                                                    options={[
+                                                                        { value: 'Aerosol', label: 'Aerosol' },
+                                                                        { value: 'Alcohol', label: 'Alcohol' },
+                                                                        { value: 'Axe', label: 'Axe' },
+                                                                        { value: 'Bat', label: 'Bat' },
+                                                                        { value: 'Battery', label: 'Battery' },
+                                                                        { value: 'Bullet', label: 'Bullet' },
+                                                                        { value: 'Chisel', label: 'Chisel' },
+                                                                        {
+                                                                            value: 'Electronic cigarettes',
+                                                                            label: 'Electronic cigarettes'
+                                                                        },
+                                                                        {
+                                                                            value: 'Electronic cigarettes(Liquid)',
+                                                                            label: 'Electronic cigarettes(Liquid)'
+                                                                        },
+                                                                        { value: 'Firecracker', label: 'Firecracker' },
+                                                                        { value: 'Gun', label: 'Gun' },
+                                                                        { value: 'GunParts', label: 'GunParts' },
+                                                                        { value: 'Hammer', label: 'Hammer' },
+                                                                        { value: 'HandCuffs', label: 'HandCuffs' },
+                                                                        { value: 'HDD', label: 'HDD' },
+                                                                        { value: 'Knife', label: 'Knife' },
+                                                                        { value: 'Laptop', label: 'Laptop' },
+                                                                        { value: 'Lighter', label: 'Lighter' },
+                                                                        { value: 'Liquid', label: 'Liquid' },
+                                                                        { value: 'Match', label: 'Match' },
+                                                                        { value: 'MetalPipe', label: 'MetalPipe' },
+                                                                        { value: 'NailClippers', label: 'NailClippers' },
+                                                                        { value: 'Plier', label: 'Plier' },
+                                                                        { value: 'PrtableGas', label: 'PrtableGas' },
+                                                                        { value: 'Saw', label: 'Saw' },
+                                                                        { value: 'Scissors', label: 'Scissors' },
+                                                                        { value: 'Screwdriver', label: 'Screwdriver' },
+                                                                        { value: 'SmartPhone', label: 'SmartPhone' },
+                                                                        { value: 'SolidFuel', label: 'SolidFuel' },
+                                                                        { value: 'Spanner', label: 'Spanner' },
+                                                                        { value: 'SSD', label: 'SSD' },
+                                                                        { value: 'stun gun', label: 'stun gun' },
+                                                                        {
+                                                                            value: 'SupplymentaryBattery',
+                                                                            label: 'SupplymentaryBattery'
+                                                                        },
+                                                                        { value: 'TabletPC', label: 'TabletPC' },
+                                                                        { value: 'Thinner', label: 'Thinner' },
+                                                                        { value: 'Throwing Knife', label: 'Throwing Knife' },
+                                                                        { value: 'USB', label: 'USB' },
+                                                                        { value: 'ZippoOil', label: 'ZippoOil' }
+                                                                    ]}
+                                                                    onChange={(e) => setItemContainer({ ...itemContainer, category: e })}
+                                                                    value={itemContainer?.category}
+                                                                />
+                                                            </Space.Compact>
+                                                        </Col>
+                                                    </Row>
+                                                </Form.Item>
+
+                                                <Form.Item
+                                                    name="form05"
+                                                    label="추출 수량"
+                                                    rules={[
+                                                        {
+                                                            required: true,
+                                                            message: '※ 추출 수량'
+                                                        }
+                                                    ]}
+                                                >
+                                                    <Row>
+                                                        <Col>
+                                                            <Space.Compact size="large">
+                                                                <Select
+                                                                    style={{ width: '400px' }}
+                                                                    label="Select"
+                                                                    allowClear
+                                                                    placeholder="Select a Extraction Quantity"
+                                                                    options={[
+                                                                        { value: '1', label: '1' },
+                                                                        { value: '2', label: '2' },
+                                                                        { value: '3', label: '3' },
+                                                                        { value: '4', label: '4' },
+                                                                        { value: '5', label: '5' },
+                                                                        { value: '6', label: '6' },
+                                                                        { value: '7', label: '7' },
+                                                                        { value: '8', label: '8' },
+                                                                        { value: '9', label: '9' },
+                                                                        { value: '10', label: '10' },
+                                                                        { value: '11', label: '11' },
+                                                                        { value: '12', label: '12' },
+                                                                        { value: '13', label: '13' },
+                                                                        { value: '14', label: '14' },
+                                                                        { value: '15', label: '15' },
+                                                                        { value: '16', label: '16' },
+                                                                        { value: '17', label: '17' },
+                                                                        { value: '18', label: '18' },
+                                                                        { value: '19', label: '19' },
+                                                                        { value: '20', label: '20' }
+                                                                    ]}
+                                                                    onChange={(e) => setItemContainer({ ...itemContainer, categoryCnt: e })}
+                                                                    value={itemContainer?.categoryCnt}
+                                                                />
+                                                            </Space.Compact>
+                                                        </Col>
+                                                    </Row>
+                                                </Form.Item>
+
+                                                <Form.Item
+                                                    name="form05"
+                                                    label="파일명"
+                                                    rules={[
+                                                        {
+                                                            required: true,
+                                                            message: '※ 파일명'
+                                                        }
+                                                    ]}
+                                                >
+                                                    <Row>
+                                                        <Col>
+                                                            <Space.Compact size="large">
+                                                                <Input
+                                                                    style={{ width: '418px' }}
+                                                                    name="fileName"
+                                                                    onChange={(e) =>
+                                                                        setItemContainer({
+                                                                            ...itemContainer,
+                                                                            fileName: e.target.value
+                                                                        })
+                                                                    }
+                                                                    value={itemContainer?.fileName}
+                                                                />
+                                                            </Space.Compact>
+                                                        </Col>
+                                                    </Row>
+                                                </Form.Item>
                                             </Col>
-                                            <Col span={12}>
+
+                                            <Col
+                                                xs={{
+                                                    span: 24,
+                                                    offset: 1
+                                                }}
+                                                lg={{
+                                                    span: 4,
+                                                    offset: 2
+                                                }}
+                                            >
                                                 <Space>
                                                     <Button
                                                         type="primary"
