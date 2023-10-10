@@ -22,6 +22,8 @@ import {
 } from 'antd';
 import locale from 'antd/es/date-picker/locale/ko_KR';
 
+import excel from '../../../assets/xbt_file/File_Excel.png';
+
 import dayjs from 'dayjs';
 import weekday from 'dayjs/plugin/weekday';
 import localeData from 'dayjs/plugin/localeData';
@@ -37,7 +39,16 @@ import {
     useSelectCertificationUserListMutation
 } from '../../../hooks/api/StudentsManagement/StudentsManagement';
 
-import { PlusOutlined, EditFilled, DeleteFilled, ExclamationCircleFilled, FileProtectOutlined } from '@ant-design/icons';
+import {
+    PlusOutlined,
+    EditFilled,
+    DeleteFilled,
+    ExclamationCircleFilled,
+    FileProtectOutlined,
+    DownloadOutlined,
+    UploadOutlined,
+    FileExcelTwoTone
+} from '@ant-design/icons';
 
 import { CertificatesPrint } from './CertificatesPrint';
 
@@ -577,6 +588,12 @@ export const Studentinformation = () => {
         }));
     };
 
+    // 회원 엑셀 샘플
+    const handle_sample = () => {};
+
+    // 회원 엑셀 업로드
+    const handle_upload = () => {};
+
     useEffect(() => {
         setLoading(true);
         handle_SelectUserList_Api();
@@ -616,6 +633,44 @@ export const Studentinformation = () => {
                             <Space>
                                 {window.localStorage.getItem('authCd') === '0000' ? (
                                     <>
+                                        <Tooltip title="Member Sample">
+                                            <Button
+                                                type="default"
+                                                onClick={handle_sample}
+                                                style={{
+                                                    borderRadius: '5px',
+                                                    boxShadow: '2px 3px 0px 0px #dbdbdb',
+                                                    borderColor: '#4da462',
+                                                    backgroundColor: '#4da462',
+                                                    display: 'flex',
+                                                    justifyContent: 'center',
+                                                    alignItems: 'center',
+                                                    color: '#ffffff'
+                                                }}
+                                            >
+                                                <img src={excel} alt="Excel Icon" style={{ marginRight: '8px', width: '35px' }} />
+                                                Member Excel Sample
+                                            </Button>
+                                        </Tooltip>
+                                        <Tooltip title="Member Sample">
+                                            <Button
+                                                type="default"
+                                                onClick={handle_upload}
+                                                style={{
+                                                    borderRadius: '5px',
+                                                    boxShadow: '2px 3px 0px 0px #dbdbdb',
+                                                    borderColor: '#4da462',
+                                                    backgroundColor: '#4da462',
+                                                    display: 'flex',
+                                                    justifyContent: 'center',
+                                                    alignItems: 'center',
+                                                    color: '#ffffff'
+                                                }}
+                                            >
+                                                <img src={excel} alt="Excel Icon" style={{ marginRight: '8px', width: '35px' }} />
+                                                Member Excel Upload
+                                            </Button>
+                                        </Tooltip>
                                         <Tooltip title="추가">
                                             <Button
                                                 type="success"
@@ -739,7 +794,11 @@ export const Studentinformation = () => {
                         <Row gutter={24}>
                             <Col span={12}>
                                 <Form.Item
-                                    label="교육과정명"
+                                    label={
+                                        <span style={{ fontSize: '15px' }}>
+                                            <span style={{ color: 'red', paddingRight: '5px' }}>*</span>교육과정명
+                                        </span>
+                                    }
                                     rules={[
                                         {
                                             required: true,
@@ -787,7 +846,11 @@ export const Studentinformation = () => {
                             </Col>
                             <Col span={12}>
                                 <Form.Item
-                                    label="입교신청일"
+                                    label={
+                                        <span style={{ fontSize: '15px' }}>
+                                            <span style={{ color: 'red', paddingRight: '5px' }}>*</span>입교신청일
+                                        </span>
+                                    }
                                     rules={[
                                         {
                                             required: true,
@@ -880,7 +943,11 @@ export const Studentinformation = () => {
                         <Row gutter={24}>
                             <Col span={12}>
                                 <Form.Item
-                                    label="성명(국문)"
+                                    label={
+                                        <span style={{ fontSize: '15px' }}>
+                                            <span style={{ color: 'red', paddingRight: '5px' }}>*</span>성명(국문)
+                                        </span>
+                                    }
                                     rules={[
                                         {
                                             required: true,
@@ -922,7 +989,11 @@ export const Studentinformation = () => {
                                     />
                                 </Form.Item> */}
                                 <Form.Item
-                                    label="성명(영문)"
+                                    label={
+                                        <span style={{ fontSize: '15px' }}>
+                                            <span style={{ color: 'red', paddingRight: '5px' }}>*</span>성명(영문)
+                                        </span>
+                                    }
                                     rules={[
                                         {
                                             required: true,
@@ -999,7 +1070,11 @@ export const Studentinformation = () => {
                         <Row gutter={24}>
                             <Col span={12}>
                                 <Form.Item
-                                    label="생년월일"
+                                    label={
+                                        <span style={{ fontSize: '15px' }}>
+                                            <span style={{ color: 'red', paddingRight: '5px' }}>*</span>생년월일
+                                        </span>
+                                    }
                                     rules={[
                                         {
                                             required: true,
@@ -1061,7 +1136,11 @@ export const Studentinformation = () => {
                                     />
                                 </Form.Item> */}
                                 <Form.Item
-                                    label="성별"
+                                    label={
+                                        <span style={{ fontSize: '15px' }}>
+                                            <span style={{ color: 'red', paddingRight: '5px' }}>*</span>성별
+                                        </span>
+                                    }
                                     rules={[
                                         {
                                             required: true,
@@ -1138,7 +1217,7 @@ export const Studentinformation = () => {
                         <Row gutter={24}>
                             <Col span={12}>
                                 <Form.Item
-                                    label="E-mail"
+                                    label={<span style={{ fontSize: '15px' }}>E-mail</span>}
                                     rules={[
                                         {
                                             required: true,
@@ -1160,7 +1239,11 @@ export const Studentinformation = () => {
                             </Col>
                             <Col span={12}>
                                 <Form.Item
-                                    label="휴대폰번호"
+                                    label={
+                                        <span style={{ fontSize: '15px' }}>
+                                            <span style={{ color: 'red', paddingRight: '5px' }}>*</span>휴대폰번호
+                                        </span>
+                                    }
                                     rules={[
                                         {
                                             required: true,
@@ -1186,7 +1269,11 @@ export const Studentinformation = () => {
                         <Row gutter={24}>
                             <Col span={24}>
                                 <Form.Item
-                                    label="주소"
+                                    label={
+                                        <span style={{ fontSize: '15px' }}>
+                                            <span style={{ color: 'red', paddingRight: '5px' }}>*</span>주소
+                                        </span>
+                                    }
                                     rules={[
                                         {
                                             required: true,
@@ -1211,11 +1298,15 @@ export const Studentinformation = () => {
                         <Row gutter={24}>
                             <Col span={24}>
                                 <Form.Item
-                                    label="소속 회사명"
+                                    label={
+                                        <span style={{ fontSize: '15px' }}>
+                                            <span style={{ color: 'red', paddingRight: '5px' }}>*</span>소속
+                                        </span>
+                                    }
                                     rules={[
                                         {
                                             required: true,
-                                            message: '소속 회사명'
+                                            message: '소속'
                                         }
                                     ]}
                                     initialValue={itemContainer?.company}
@@ -1225,7 +1316,7 @@ export const Studentinformation = () => {
                                         style={{
                                             width: '100%'
                                         }}
-                                        placeholder="소속 회사명"
+                                        placeholder="소속"
                                         onChange={(e) => setItemContainer({ ...itemContainer, company: e.target.value })}
                                         value={itemContainer?.company}
                                     />

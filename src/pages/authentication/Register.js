@@ -199,7 +199,11 @@ const Register = () => {
                             <Row gutter={24}>
                                 <Col span={12}>
                                     <Form.Item
-                                        label="교육과정"
+                                        label={
+                                            <span style={{ fontSize: '15px' }}>
+                                                <span style={{ color: 'red', paddingRight: '5px' }}>*</span>교육과정
+                                            </span>
+                                        }
                                         rules={[
                                             {
                                                 required: true,
@@ -247,7 +251,11 @@ const Register = () => {
                                 </Col>
                                 <Col span={12}>
                                     <Form.Item
-                                        label="입교신청일"
+                                        label={
+                                            <span style={{ fontSize: '15px' }}>
+                                                <span style={{ color: 'red', paddingRight: '5px' }}>*</span>입교신청일
+                                            </span>
+                                        }
                                         rules={[
                                             {
                                                 required: true,
@@ -341,7 +349,11 @@ const Register = () => {
                             <Row gutter={24}>
                                 <Col span={12}>
                                     <Form.Item
-                                        label="성명(국문)"
+                                        label={
+                                            <span style={{ fontSize: '15px' }}>
+                                                <span style={{ color: 'red', paddingRight: '5px' }}>*</span>성명(국문)
+                                            </span>
+                                        }
                                         rules={[
                                             {
                                                 required: true,
@@ -384,7 +396,11 @@ const Register = () => {
                                         />
                                     </Form.Item> */}
                                     <Form.Item
-                                        label="성명(영문)"
+                                        label={
+                                            <span style={{ fontSize: '15px' }}>
+                                                <span style={{ color: 'red', paddingRight: '5px' }}>*</span>성명(영문)
+                                            </span>
+                                        }
                                         rules={[
                                             {
                                                 required: true,
@@ -463,7 +479,11 @@ const Register = () => {
                             <Row gutter={24}>
                                 <Col span={12}>
                                     <Form.Item
-                                        label="생년월일"
+                                        label={
+                                            <span style={{ fontSize: '15px' }}>
+                                                <span style={{ color: 'red', paddingRight: '5px' }}>*</span>생년월일
+                                            </span>
+                                        }
                                         rules={[
                                             {
                                                 required: true,
@@ -521,7 +541,11 @@ const Register = () => {
                                         />
                                     </Form.Item> */}
                                     <Form.Item
-                                        label="성별"
+                                        label={
+                                            <span style={{ fontSize: '15px' }}>
+                                                <span style={{ color: 'red', paddingRight: '5px' }}>*</span>성별
+                                            </span>
+                                        }
                                         rules={[
                                             {
                                                 required: true,
@@ -572,7 +596,7 @@ const Register = () => {
                                         />
                                     </Form.Item> */}
                                     <Form.Item
-                                        label="E-mail"
+                                        label={<span style={{ fontSize: '15px' }}>E-mail</span>}
                                         rules={[
                                             {
                                                 required: true,
@@ -595,7 +619,11 @@ const Register = () => {
                                 </Col>
                                 <Col span={12}>
                                     <Form.Item
-                                        label="휴대폰번호"
+                                        label={
+                                            <span style={{ fontSize: '15px' }}>
+                                                <span style={{ color: 'red', paddingRight: '5px' }}>*</span>휴대폰번호
+                                            </span>
+                                        }
                                         rules={[
                                             {
                                                 required: true,
@@ -647,7 +675,11 @@ const Register = () => {
                             <Row gutter={24}>
                                 <Col span={24}>
                                     <Form.Item
-                                        label="주소"
+                                        label={
+                                            <span style={{ fontSize: '15px' }}>
+                                                <span style={{ color: 'red', paddingRight: '5px' }}>*</span>주소
+                                            </span>
+                                        }
                                         rules={[
                                             {
                                                 required: true,
@@ -673,11 +705,15 @@ const Register = () => {
                             <Row gutter={24}>
                                 <Col span={24}>
                                     <Form.Item
-                                        label="소속회사명"
+                                        label={
+                                            <span style={{ fontSize: '15px' }}>
+                                                <span style={{ color: 'red', paddingRight: '5px' }}>*</span>소속
+                                            </span>
+                                        }
                                         rules={[
                                             {
                                                 required: true,
-                                                message: '소속회사명'
+                                                message: '소속'
                                             }
                                         ]}
                                         initialValue={itemContainer?.company}
@@ -687,7 +723,7 @@ const Register = () => {
                                             style={{
                                                 width: '100%'
                                             }}
-                                            placeholder="소속회사명"
+                                            placeholder="소속"
                                             onChange={(e) => setItemContainer({ ...itemContainer, company: e.target.value })}
                                             value={itemContainer?.company}
                                             autoComplete="off"

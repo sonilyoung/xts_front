@@ -510,7 +510,11 @@ export const Teacherinformation = () => {
                             <Row gutter={24}>
                                 <Col span={24}>
                                     <Form.Item
-                                        label="사용여부"
+                                        label={
+                                            <span style={{ fontSize: '15px' }}>
+                                                <span style={{ color: 'red', paddingRight: '5px' }}>*</span>사용여부
+                                            </span>
+                                        }
                                         rules={[
                                             {
                                                 required: true,
@@ -621,7 +625,11 @@ export const Teacherinformation = () => {
                         <Row gutter={24}>
                             <Col span={12}>
                                 <Form.Item
-                                    label="아이디"
+                                    label={
+                                        <span style={{ fontSize: '15px' }}>
+                                            <span style={{ color: 'red', paddingRight: '5px' }}>*</span>아이디
+                                        </span>
+                                    }
                                     rules={[
                                         {
                                             required: true,
@@ -663,7 +671,11 @@ export const Teacherinformation = () => {
                             </Col>
                             <Col span={12}>
                                 <Form.Item
-                                    label="비밀번호"
+                                    label={
+                                        <span style={{ fontSize: '15px' }}>
+                                            <span style={{ color: 'red', paddingRight: '5px' }}>*</span>비밀번호
+                                        </span>
+                                    }
                                     rules={[
                                         {
                                             required: true,
@@ -686,7 +698,11 @@ export const Teacherinformation = () => {
                         <Row gutter={24}>
                             <Col span={12}>
                                 <Form.Item
-                                    label="성명(국문)"
+                                    label={
+                                        <span style={{ fontSize: '15px' }}>
+                                            <span style={{ color: 'red', paddingRight: '5px' }}>*</span>성명(국문)
+                                        </span>
+                                    }
                                     rules={[
                                         {
                                             required: true,
@@ -728,7 +744,11 @@ export const Teacherinformation = () => {
                                     />
                                 </Form.Item> */}
                                 <Form.Item
-                                    label="성명(영문)"
+                                    label={
+                                        <span style={{ fontSize: '15px' }}>
+                                            <span style={{ color: 'red', paddingRight: '5px' }}>*</span>성명(영문)
+                                        </span>
+                                    }
                                     rules={[
                                         {
                                             required: true,
@@ -805,7 +825,11 @@ export const Teacherinformation = () => {
                         <Row gutter={24}>
                             <Col span={12}>
                                 <Form.Item
-                                    label="생년월일"
+                                    label={
+                                        <span style={{ fontSize: '15px' }}>
+                                            <span style={{ color: 'red', paddingRight: '5px' }}>*</span>생년월일
+                                        </span>
+                                    }
                                     rules={[
                                         {
                                             required: true,
@@ -846,7 +870,11 @@ export const Teacherinformation = () => {
                             </Col>
                             <Col span={12}>
                                 <Form.Item
-                                    label="성별"
+                                    label={
+                                        <span style={{ fontSize: '15px' }}>
+                                            <span style={{ color: 'red', paddingRight: '5px' }}>*</span>성별
+                                        </span>
+                                    }
                                     rules={[
                                         {
                                             required: true,
@@ -916,7 +944,7 @@ export const Teacherinformation = () => {
                                     />
                                 </Form.Item> */}
                                 <Form.Item
-                                    label="E-mail"
+                                    label={<span style={{ fontSize: '15px' }}>E-mail</span>}
                                     rules={[
                                         {
                                             required: true,
@@ -938,7 +966,11 @@ export const Teacherinformation = () => {
                             </Col>
                             <Col span={12}>
                                 <Form.Item
-                                    label="휴대폰번호"
+                                    label={
+                                        <span style={{ fontSize: '15px' }}>
+                                            <span style={{ color: 'red', paddingRight: '5px' }}>*</span>휴대폰번호
+                                        </span>
+                                    }
                                     rules={[
                                         {
                                             required: true,
@@ -988,7 +1020,11 @@ export const Teacherinformation = () => {
                         <Row gutter={24}>
                             <Col span={24}>
                                 <Form.Item
-                                    label="주소"
+                                    label={
+                                        <span style={{ fontSize: '15px' }}>
+                                            <span style={{ color: 'red', paddingRight: '5px' }}>*</span>주소
+                                        </span>
+                                    }
                                     rules={[
                                         {
                                             required: true,
