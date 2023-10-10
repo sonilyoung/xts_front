@@ -540,7 +540,7 @@ export const Teacherinformation = () => {
                             ''
                         )}
 
-                        <Row gutter={24}>
+                        {/* <Row gutter={24}>
                             <Col span={24}>
                                 <Form.Item
                                     label="교육과정명"
@@ -617,7 +617,7 @@ export const Teacherinformation = () => {
                                 </Form.Item>
                             </Col>
                         </Row>
-                        <Divider style={{ margin: '10px 0' }} />
+                        <Divider style={{ margin: '10px 0' }} /> */}
                         <Row gutter={24}>
                             <Col span={12}>
                                 <Form.Item
@@ -707,7 +707,7 @@ export const Teacherinformation = () => {
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
-                                <Form.Item
+                                {/* <Form.Item
                                     label="성명(한문)"
                                     rules={[
                                         {
@@ -726,11 +726,31 @@ export const Teacherinformation = () => {
                                         onChange={(e) => setItemContainer({ ...itemContainer, userNmCh: e.target.value })}
                                         value={itemContainer?.userNmCh}
                                     />
+                                </Form.Item> */}
+                                <Form.Item
+                                    label="성명(영문)"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: '성명(영문)'
+                                        }
+                                    ]}
+                                    initialValue={itemContainer?.userNmEn}
+                                >
+                                    <Input
+                                        name="userNmEn"
+                                        style={{
+                                            width: '100%'
+                                        }}
+                                        placeholder="성명(영문)"
+                                        onChange={(e) => setItemContainer({ ...itemContainer, userNmEn: e.target.value })}
+                                        value={itemContainer?.userNmEn}
+                                    />
                                 </Form.Item>
                             </Col>
                         </Row>
                         <Divider style={{ margin: '10px 0' }} />
-                        <Row gutter={24}>
+                        {/* <Row gutter={24}>
                             <Col span={12}>
                                 <Form.Item
                                     label="성명(영문)"
@@ -781,30 +801,8 @@ export const Teacherinformation = () => {
                                 </Form.Item>
                             </Col>
                         </Row>
-                        <Divider style={{ margin: '10px 0' }} />
+                        <Divider style={{ margin: '10px 0' }} /> */}
                         <Row gutter={24}>
-                            <Col span={12}>
-                                <Form.Item
-                                    label="주민등록번호"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: '주민등록번호'
-                                        }
-                                    ]}
-                                    initialValue={itemContainer?.registNumber}
-                                >
-                                    <Input
-                                        name="registNumber"
-                                        style={{
-                                            width: '100%',
-                                            margin: '0 3px'
-                                        }}
-                                        onChange={(e) => setItemContainer({ ...itemContainer, registNumber: e.target.value })}
-                                        value={itemContainer?.registNumber}
-                                    />
-                                </Form.Item>
-                            </Col>
                             <Col span={12}>
                                 <Form.Item
                                     label="생년월일"
@@ -846,11 +844,58 @@ export const Teacherinformation = () => {
                                     </span>
                                 </Form.Item>
                             </Col>
+                            <Col span={12}>
+                                <Form.Item
+                                    label="성별"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: '성별'
+                                        }
+                                    ]}
+                                    initialValue={itemContainer?.sex}
+                                >
+                                    <Radio.Group
+                                        name="sex"
+                                        onChange={(e) => setItemContainer({ ...itemContainer, sex: e.target.value })}
+                                        buttonStyle="solid"
+                                        value={itemContainer?.sex}
+                                    >
+                                        <Radio.Button value="1">
+                                            <span style={{ padding: '0 15px' }}>남</span>
+                                        </Radio.Button>
+                                        <span style={{ padding: '0 10px' }}></span>
+                                        <Radio.Button value="2">
+                                            <span style={{ padding: '0 15px' }}>여</span>
+                                        </Radio.Button>
+                                    </Radio.Group>
+                                </Form.Item>
+                                {/* <Form.Item
+                                    label="주민등록번호"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: '주민등록번호'
+                                        }
+                                    ]}
+                                    initialValue={itemContainer?.registNumber}
+                                >
+                                    <Input
+                                        name="registNumber"
+                                        style={{
+                                            width: '100%',
+                                            margin: '0 3px'
+                                        }}
+                                        onChange={(e) => setItemContainer({ ...itemContainer, registNumber: e.target.value })}
+                                        value={itemContainer?.registNumber}
+                                    />
+                                </Form.Item> */}
+                            </Col>
                         </Row>
                         <Divider style={{ margin: '10px 0' }} />
                         <Row gutter={24}>
                             <Col span={12}>
-                                <Form.Item
+                                {/* <Form.Item
                                     label="전화번호"
                                     rules={[
                                         {
@@ -868,6 +913,26 @@ export const Teacherinformation = () => {
                                         placeholder="전화번호"
                                         onChange={(e) => setItemContainer({ ...itemContainer, telNo: e.target.value })}
                                         value={itemContainer?.telNo}
+                                    />
+                                </Form.Item> */}
+                                <Form.Item
+                                    label="E-mail"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'E-mail'
+                                        }
+                                    ]}
+                                    initialValue={itemContainer?.email}
+                                >
+                                    <Input
+                                        name="email"
+                                        style={{
+                                            width: '100%'
+                                        }}
+                                        placeholder="E-mail"
+                                        onChange={(e) => setItemContainer({ ...itemContainer, email: e.target.value })}
+                                        value={itemContainer?.email}
                                     />
                                 </Form.Item>
                             </Col>
@@ -895,7 +960,7 @@ export const Teacherinformation = () => {
                             </Col>
                         </Row>
                         <Divider style={{ margin: '10px 0' }} />
-                        <Row gutter={24}>
+                        {/* <Row gutter={24}>
                             <Col span={24}>
                                 <Form.Item
                                     label="E-mail"
@@ -919,7 +984,7 @@ export const Teacherinformation = () => {
                                 </Form.Item>
                             </Col>
                         </Row>
-                        <Divider style={{ margin: '10px 0' }} />
+                        <Divider style={{ margin: '10px 0' }} /> */}
                         <Row gutter={24}>
                             <Col span={24}>
                                 <Form.Item
@@ -945,7 +1010,7 @@ export const Teacherinformation = () => {
                             </Col>
                         </Row>
                     </Card>
-                    <Divider style={{ margin: '10px 0' }} />
+                    {/* <Divider style={{ margin: '10px 0' }} />
                     <Card>
                         <Row gutter={24}>
                             <Col span={24}>
@@ -1218,7 +1283,8 @@ export const Teacherinformation = () => {
                             </Col>
                         </Row>
                     </Card>
-                    <Divider style={{ margin: '10px 0' }} />
+                     */}
+                    {/* <Divider style={{ margin: '10px 0' }} />
                     <Card>
                         <Row gutter={24}>
                             <Col span={24}>
@@ -1227,7 +1293,7 @@ export const Teacherinformation = () => {
                                         name="careerYn"
                                         buttonStyle="solid"
                                         onChange={(e) => setItemContainer({ ...itemContainer, careerYn: e.target.value })}
-                                        value={itemContainer?.careerYn}
+                                        value={itemContainer?.careerYn || 'N'}
                                     >
                                         <Radio.Button value="Y">
                                             <span style={{ padding: '0 10px' }}>유</span>
@@ -1242,7 +1308,7 @@ export const Teacherinformation = () => {
                         </Row>
                         {itemContainer?.careerYn === 'Y' ? (
                             <>
-                                {/* 1 */}
+                               
                                 <Divider style={{ margin: '10px 0' }} />
                                 <Row gutter={24}>
                                     <Col span={24}>
@@ -1304,7 +1370,7 @@ export const Teacherinformation = () => {
                                         </Form.Item>
                                     </Col>
                                 </Row>
-                                {/* 2 */}
+                               
                                 <Divider style={{ margin: '10px 0' }} />
                                 <Row gutter={24}>
                                     <Col span={24}>
@@ -1362,167 +1428,11 @@ export const Teacherinformation = () => {
                                         </Form.Item>
                                     </Col>
                                 </Row>
-                                {/* 3 ~ 5 */}
-                                {/* <Divider style={{ margin: '10px 0' }} />
-                                <Row gutter={24}>
-                                    <Col span={24}>
-                                        <Form.Item label="보안검색경력 [3]">
-                                            <Space>
-                                                <DatePicker.RangePicker
-                                                    style={{
-                                                        width: '100%'
-                                                    }}
-                                                    renderExtraFooter={() => 'extra footer'}
-                                                    picker="month"
-                                                    locale={locale}
-                                                    onChange={(dates) => {
-                                                        const [start3, end3] = dates;
-                                                        setItemContainer({ ...itemContainer, careerStartDate3: start3.format('YYYY-MM') });
-                                                        setItemContainer({ ...itemContainer, careerEndDate3: end3.format('YYYY-MM') });
-                                                    }}
-                                                    // value={[itemContainer?.careerStartDate3, itemContainer?.careerEndDate3]}
-                                                />
-                                                <Input
-                                                    name="careerCompany3"
-                                                    onChange={(e) => setItemContainer({ ...itemContainer, careerCompany3: e.target.value })}
-                                                    addonBefore="소속"
-                                                    placeholder="#소속"
-                                                    value={itemContainer?.careerCompany3}
-                                                />
-                                                <Input
-                                                    name="careerPosition3"
-                                                    onChange={(e) =>
-                                                        setItemContainer({ ...itemContainer, careerPosition3: e.target.value })
-                                                    }
-                                                    addonBefore="직책(직위)"
-                                                    placeholder="#직책(직위)"
-                                                    value={itemContainer?.careerPosition3}
-                                                />
-                                            </Space>
-                                            <br />
-                                            <br />
-                                            <Space direction="vertical">
-                                                <Input
-                                                    name="career3"
-                                                    onChange={(e) => setItemContainer({ ...itemContainer, career3: e.target.value })}
-                                                    addonBefore="담당업무"
-                                                    style={{ width: '585px' }}
-                                                    placeholder="#담당업무"
-                                                    value={itemContainer?.career3}
-                                                />
-                                            </Space>
-                                        </Form.Item>
-                                    </Col>
-                                </Row>
-                                
-                                <Divider style={{ margin: '10px 0' }} />
-                                <Row gutter={24}>
-                                    <Col span={24}>
-                                        <Form.Item label="보안검색경력 [4]">
-                                            <Space>
-                                                <DatePicker.RangePicker
-                                                    style={{
-                                                        width: '100%'
-                                                    }}
-                                                    renderExtraFooter={() => 'extra footer'}
-                                                    picker="month"
-                                                    locale={locale}
-                                                    onChange={(dates) => {
-                                                        const [start4, end4] = dates;
-                                                        setItemContainer({ ...itemContainer, careerStartDate4: start4.format('YYYY-MM') });
-                                                        setItemContainer({ ...itemContainer, careerEndDate4: end4.format('YYYY-MM') });
-                                                    }}
-                                                    // value={[itemContainer?.careerStartDate4, itemContainer?.careerEndDate4]}
-                                                />
-                                                <Input
-                                                    name="careerCompany4"
-                                                    onChange={(e) => setItemContainer({ ...itemContainer, careerCompany4: e.target.value })}
-                                                    addonBefore="소속"
-                                                    placeholder="#소속"
-                                                    value={itemContainer?.careerCompany4}
-                                                />
-                                                <Input
-                                                    name="careerPosition4"
-                                                    onChange={(e) =>
-                                                        setItemContainer({ ...itemContainer, careerPosition4: e.target.value })
-                                                    }
-                                                    addonBefore="직책(직위)"
-                                                    placeholder="#직책(직위)"
-                                                    value={itemContainer?.careerPosition4}
-                                                />
-                                            </Space>
-                                            <br />
-                                            <br />
-                                            <Space direction="vertical">
-                                                <Input
-                                                    name="career4"
-                                                    onChange={(e) => setItemContainer({ ...itemContainer, career4: e.target.value })}
-                                                    addonBefore="담당업무"
-                                                    style={{ width: '585px' }}
-                                                    placeholder="#담당업무"
-                                                    value={itemContainer?.career4}
-                                                />
-                                            </Space>
-                                        </Form.Item>
-                                    </Col>
-                                </Row>
-                                
-                                <Divider style={{ margin: '10px 0' }} />
-                                <Row gutter={24}>
-                                    <Col span={24}>
-                                        <Form.Item label="보안검색경력 [5]">
-                                            <Space>
-                                                <DatePicker.RangePicker
-                                                    style={{
-                                                        width: '100%'
-                                                    }}
-                                                    renderExtraFooter={() => 'extra footer'}
-                                                    picker="month"
-                                                    locale={locale}
-                                                    onChange={(dates) => {
-                                                        const [start5, end5] = dates;
-                                                        setItemContainer({ ...itemContainer, careerStartDate5: start5.format('YYYY-MM') });
-                                                        setItemContainer({ ...itemContainer, careerEndDate5: end5.format('YYYY-MM') });
-                                                    }}
-                                                    // value={[itemContainer?.careerStartDate5, itemContainer?.careerEndDate5]}
-                                                />
-                                                <Input
-                                                    name="careerCompany5"
-                                                    onChange={(e) => setItemContainer({ ...itemContainer, careerCompany5: e.target.value })}
-                                                    addonBefore="소속"
-                                                    placeholder="#소속"
-                                                    value={itemContainer?.careerCompany5}
-                                                />
-                                                <Input
-                                                    name="careerPosition5"
-                                                    onChange={(e) =>
-                                                        setItemContainer({ ...itemContainer, careerPosition5: e.target.value })
-                                                    }
-                                                    addonBefore="직책(직위)"
-                                                    placeholder="#직책(직위)"
-                                                    value={itemContainer?.careerPosition5}
-                                                />
-                                            </Space>
-                                            <br />
-                                            <br />
-                                            <Space direction="vertical">
-                                                <Input
-                                                    name="career5"
-                                                    onChange={(e) => setItemContainer({ ...itemContainer, career5: e.target.value })}
-                                                    addonBefore="담당업무"
-                                                    style={{ width: '585px' }}
-                                                    placeholder="#담당업무"
-                                                    value={itemContainer?.career5}
-                                                />
-                                            </Space>
-                                        </Form.Item>
-                                    </Col>
-                                </Row> */}
                             </>
                         ) : (
                             ''
                         )}
-                    </Card>
+                    </Card> */}
                 </Form>
             </Drawer>
             {/* 강사 등록 End */}

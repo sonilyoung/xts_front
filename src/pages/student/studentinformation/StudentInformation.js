@@ -322,22 +322,22 @@ export const Studentinformation = () => {
             align: 'center'
         },
         {
-            title: '기관',
+            title: '소속',
             dataIndex: 'company',
             align: 'center'
         },
-        {
-            width: '110px',
-            title: '부서',
-            dataIndex: 'dept',
-            align: 'center'
-        },
-        {
-            width: '110px',
-            title: '직위',
-            dataIndex: 'position',
-            align: 'center'
-        },
+        // {
+        //     width: '110px',
+        //     title: '부서',
+        //     dataIndex: 'dept',
+        //     align: 'center'
+        // },
+        // {
+        //     width: '110px',
+        //     title: '직위',
+        //     dataIndex: 'position',
+        //     align: 'center'
+        // },
         {
             title: '교육 구분',
             dataIndex: 'eduName',
@@ -561,6 +561,20 @@ export const Studentinformation = () => {
 
     const onSearch = (value) => {
         setSearchval(value);
+    };
+
+    const formatPhoneNumber = (input) => {
+        const cleanedInput = input.replace(/\D/g, '');
+        const formattedNumber = cleanedInput.replace(/^(\d{3})(\d{3,4})(\d{4})$/, '$1$2$3');
+        return formattedNumber;
+    };
+
+    const handlePhoneNumberChange = (fieldName, inputValue) => {
+        const formattedNumber = formatPhoneNumber(inputValue);
+        setItemContainer((prevValues) => ({
+            ...prevValues,
+            [fieldName]: formattedNumber
+        }));
     };
 
     useEffect(() => {
@@ -800,7 +814,7 @@ export const Studentinformation = () => {
                             </Col>
                         </Row>
                         <Divider style={{ margin: '10px 0' }} />
-                        <Row gutter={24}>
+                        {/* <Row gutter={24}>
                             <Col span={12}>
                                 <Form.Item
                                     label="아이디"
@@ -864,7 +878,7 @@ export const Studentinformation = () => {
                                 </Form.Item>
                             </Col>
                         </Row>
-                        <Divider style={{ margin: '10px 0' }} />
+                        <Divider style={{ margin: '10px 0' }} /> */}
                         <Row gutter={24}>
                             <Col span={12}>
                                 <Form.Item
@@ -889,7 +903,7 @@ export const Studentinformation = () => {
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
-                                <Form.Item
+                                {/* <Form.Item
                                     label="성명(한문)"
                                     rules={[
                                         {
@@ -908,11 +922,31 @@ export const Studentinformation = () => {
                                         onChange={(e) => setItemContainer({ ...itemContainer, userNmCh: e.target.value })}
                                         value={itemContainer?.userNmCh}
                                     />
+                                </Form.Item> */}
+                                <Form.Item
+                                    label="성명(영문)"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: '성명(영문)'
+                                        }
+                                    ]}
+                                    initialValue={itemContainer?.userNmEn}
+                                >
+                                    <Input
+                                        name="userNmEn"
+                                        style={{
+                                            width: '100%'
+                                        }}
+                                        placeholder="성명(영문)"
+                                        onChange={(e) => setItemContainer({ ...itemContainer, userNmEn: e.target.value })}
+                                        value={itemContainer?.userNmEn}
+                                    />
                                 </Form.Item>
                             </Col>
                         </Row>
                         <Divider style={{ margin: '10px 0' }} />
-                        <Row gutter={24}>
+                        {/* <Row gutter={24}>
                             <Col span={12}>
                                 <Form.Item
                                     label="성명(영문)"
@@ -963,30 +997,8 @@ export const Studentinformation = () => {
                                 </Form.Item>
                             </Col>
                         </Row>
-                        <Divider style={{ margin: '10px 0' }} />
+                        <Divider style={{ margin: '10px 0' }} /> */}
                         <Row gutter={24}>
-                            <Col span={12}>
-                                <Form.Item
-                                    label="주민등록번호"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: '주민등록번호'
-                                        }
-                                    ]}
-                                    initialValue={itemContainer?.registNumber}
-                                >
-                                    <Input
-                                        name="registNumber"
-                                        style={{
-                                            width: '100%',
-                                            margin: '0 3px'
-                                        }}
-                                        onChange={(e) => setItemContainer({ ...itemContainer, registNumber: e.target.value })}
-                                        value={itemContainer?.registNumber}
-                                    />
-                                </Form.Item>
-                            </Col>
                             <Col span={12}>
                                 <Form.Item
                                     label="생년월일"
@@ -1029,8 +1041,55 @@ export const Studentinformation = () => {
                                     </span>
                                 </Form.Item>
                             </Col>
+                            <Col span={12}>
+                                {/* <Form.Item
+                                    label="주민등록번호"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: '주민등록번호'
+                                        }
+                                    ]}
+                                    initialValue={itemContainer?.registNumber}
+                                >
+                                    <Input
+                                        name="registNumber"
+                                        style={{
+                                            width: '100%',
+                                            margin: '0 3px'
+                                        }}
+                                        onChange={(e) => setItemContainer({ ...itemContainer, registNumber: e.target.value })}
+                                        value={itemContainer?.registNumber}
+                                    />
+                                </Form.Item> */}
+                                <Form.Item
+                                    label="성별"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: '성별'
+                                        }
+                                    ]}
+                                    initialValue={itemContainer?.sex}
+                                >
+                                    <Radio.Group
+                                        name="sex"
+                                        onChange={(e) => setItemContainer({ ...itemContainer, sex: e.target.value })}
+                                        buttonStyle="solid"
+                                        value={itemContainer?.sex}
+                                    >
+                                        <Radio.Button value="1">
+                                            <span style={{ padding: '0 15px' }}>남</span>
+                                        </Radio.Button>
+                                        <span style={{ padding: '0 10px' }}></span>
+                                        <Radio.Button value="2">
+                                            <span style={{ padding: '0 15px' }}>여</span>
+                                        </Radio.Button>
+                                    </Radio.Group>
+                                </Form.Item>
+                            </Col>
                         </Row>
-                        <Divider style={{ margin: '10px 0' }} />
+                        {/* <Divider style={{ margin: '10px 0' }} />
                         <Row gutter={24}>
                             <Col span={12}>
                                 <Form.Item
@@ -1076,10 +1135,10 @@ export const Studentinformation = () => {
                                     />
                                 </Form.Item>
                             </Col>
-                        </Row>
+                        </Row> */}
                         <Divider style={{ margin: '10px 0' }} />
                         <Row gutter={24}>
-                            <Col span={24}>
+                            <Col span={12}>
                                 <Form.Item
                                     label="E-mail"
                                     rules={[
@@ -1098,6 +1157,29 @@ export const Studentinformation = () => {
                                         placeholder="E-mail"
                                         onChange={(e) => setItemContainer({ ...itemContainer, email: e.target.value })}
                                         value={itemContainer?.email}
+                                    />
+                                </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                                <Form.Item
+                                    label="휴대폰번호"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: '휴대폰번호'
+                                        }
+                                    ]}
+                                    initialValue={itemContainer?.hpNo}
+                                >
+                                    <Input
+                                        name="hpNo"
+                                        style={{
+                                            width: '100%'
+                                        }}
+                                        placeholder="휴대폰번호"
+                                        // onChange={(e) => setItemContainer({ ...itemContainer, hpNo: e.target.value })}
+                                        onChange={(e) => handlePhoneNumberChange('hpNo', e.target.value)}
+                                        value={itemContainer?.hpNo}
                                     />
                                 </Form.Item>
                             </Col>
@@ -1127,8 +1209,33 @@ export const Studentinformation = () => {
                                 </Form.Item>
                             </Col>
                         </Row>
+                        <Divider style={{ margin: '10px 0' }} />
+                        <Row gutter={24}>
+                            <Col span={24}>
+                                <Form.Item
+                                    label="소속 회사명"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: '소속 회사명'
+                                        }
+                                    ]}
+                                    initialValue={itemContainer?.company}
+                                >
+                                    <Input
+                                        name="company"
+                                        style={{
+                                            width: '100%'
+                                        }}
+                                        placeholder="소속 회사명"
+                                        onChange={(e) => setItemContainer({ ...itemContainer, company: e.target.value })}
+                                        value={itemContainer?.company}
+                                    />
+                                </Form.Item>
+                            </Col>
+                        </Row>
                     </Card>
-                    <Divider style={{ margin: '10px 0' }} />
+                    {/* <Divider style={{ margin: '10px 0' }} />
                     <Card>
                         <Row gutter={24}>
                             <Col span={24}>
@@ -1244,8 +1351,8 @@ export const Studentinformation = () => {
                             </Col>
                         </Row>
                     </Card>
-                    <Divider style={{ margin: '10px 0' }} />
-                    <Card>
+                    <Divider style={{ margin: '10px 0' }} /> */}
+                    {/* <Card>
                         <Row gutter={24}>
                             <Col span={24}>
                                 <Form.Item label="최종학력">
@@ -1399,7 +1506,7 @@ export const Studentinformation = () => {
                             </Col>
                         </Row>
                     </Card>
-                    <Divider style={{ margin: '10px 0' }} />
+                    <Divider style={{ margin: '10px 0' }} /> */}
                     <Card>
                         <Row gutter={24}>
                             <Col span={24}>
@@ -1408,7 +1515,7 @@ export const Studentinformation = () => {
                                         name="careerYn"
                                         buttonStyle="solid"
                                         onChange={(e) => setItemContainer({ ...itemContainer, careerYn: e.target.value })}
-                                        value={itemContainer?.careerYn}
+                                        value={itemContainer?.careerYn || 'N'}
                                     >
                                         <Radio.Button value="Y">
                                             <span style={{ padding: '0 10px' }}>유</span>
@@ -1427,7 +1534,7 @@ export const Studentinformation = () => {
                                 <Divider style={{ margin: '10px 0' }} />
                                 <Row gutter={24}>
                                     <Col span={24}>
-                                        <Form.Item label="보안검색경력 [1]">
+                                        <Form.Item label="보안검색경력">
                                             <Space>
                                                 <DatePicker.RangePicker
                                                     style={{
@@ -1482,7 +1589,7 @@ export const Studentinformation = () => {
                                     </Col>
                                 </Row>
                                 {/* 2 */}
-                                <Divider style={{ margin: '10px 0' }} />
+                                {/* <Divider style={{ margin: '10px 0' }} />
                                 <Row gutter={24}>
                                     <Col span={24}>
                                         <Form.Item label="보안검색경력 [2]">
@@ -1538,7 +1645,7 @@ export const Studentinformation = () => {
                                             </Space>
                                         </Form.Item>
                                     </Col>
-                                </Row>
+                                </Row> */}
                             </>
                         ) : (
                             ''

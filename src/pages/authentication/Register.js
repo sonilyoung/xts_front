@@ -144,7 +144,7 @@ const Register = () => {
 
     const formatPhoneNumber = (input) => {
         const cleanedInput = input.replace(/\D/g, '');
-        const formattedNumber = cleanedInput.replace(/^(\d{3})(\d{3,4})(\d{4})$/, '$1-$2-$3');
+        const formattedNumber = cleanedInput.replace(/^(\d{3})(\d{3,4})(\d{4})$/, '$1$2$3');
         return formattedNumber;
     };
 
