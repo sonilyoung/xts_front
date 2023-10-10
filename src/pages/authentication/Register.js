@@ -272,7 +272,7 @@ const Register = () => {
                                     </Form.Item>
                                 </Col>
                             </Row>
-                            <Divider style={{ margin: '10px 0' }} />
+                            {/* <Divider style={{ margin: '10px 0' }} />
                             <Row gutter={24}>
                                 <Col span={12}>
                                     <Form.Item
@@ -338,7 +338,7 @@ const Register = () => {
                                         />
                                     </Form.Item>
                                 </Col>
-                            </Row>
+                            </Row> */}
                             <Divider style={{ margin: '10px 0' }} />
                             <Row gutter={24}>
                                 <Col span={12}>
@@ -360,11 +360,12 @@ const Register = () => {
                                             placeholder="성명(국문)"
                                             onChange={(e) => setItemContainer({ ...itemContainer, userNm: e.target.value })}
                                             value={itemContainer?.userNm}
+                                            autoComplete="off"
                                         />
                                     </Form.Item>
                                 </Col>
                                 <Col span={12}>
-                                    <Form.Item
+                                    {/* <Form.Item
                                         label="성명(한문)"
                                         rules={[
                                             {
@@ -383,11 +384,32 @@ const Register = () => {
                                             onChange={(e) => setItemContainer({ ...itemContainer, userNmCh: e.target.value })}
                                             value={itemContainer?.userNmCh}
                                         />
+                                    </Form.Item> */}
+                                    <Form.Item
+                                        label="성명(영문)"
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: '성명(영문)'
+                                            }
+                                        ]}
+                                        initialValue={itemContainer?.userNmEn}
+                                    >
+                                        <Input
+                                            name="userNmEn"
+                                            style={{
+                                                width: '100%'
+                                            }}
+                                            placeholder="성명(영문)"
+                                            onChange={(e) => setItemContainer({ ...itemContainer, userNmEn: e.target.value })}
+                                            value={itemContainer?.userNmEn}
+                                            autoComplete="off"
+                                        />
                                     </Form.Item>
                                 </Col>
                             </Row>
                             <Divider style={{ margin: '10px 0' }} />
-                            <Row gutter={24}>
+                            {/* <Row gutter={24}>
                                 <Col span={12}>
                                     <Form.Item
                                         label="성명(영문)"
@@ -437,32 +459,10 @@ const Register = () => {
                                         </Radio.Group>
                                     </Form.Item>
                                 </Col>
-                            </Row>
+                            </Row> 
                             <Divider style={{ margin: '10px 0' }} />
+                            */}
                             <Row gutter={24}>
-                                <Col span={12}>
-                                    <Form.Item
-                                        label="주민등록번호"
-                                        rules={[
-                                            {
-                                                required: true,
-                                                message: '주민등록번호'
-                                            }
-                                        ]}
-                                        initialValue={itemContainer?.registNumber}
-                                    >
-                                        <Input
-                                            name="registNumber"
-                                            style={{
-                                                width: '100%',
-                                                margin: '0 3px'
-                                            }}
-                                            placeholder="주민등록번호 (숫자만 입력)"
-                                            onChange={(e) => handleResidentNumberChange(e.target.value)}
-                                            value={itemContainer?.registNumber}
-                                        />
-                                    </Form.Item>
-                                </Col>
                                 <Col span={12}>
                                     <Form.Item
                                         label="생년월일"
@@ -495,15 +495,64 @@ const Register = () => {
                                                     margin: '0 3px'
                                                 }}
                                                 value={itemContainer?.age}
+                                                autoComplete="off"
                                             />
                                         </span>
+                                    </Form.Item>
+                                </Col>
+                                <Col span={12}>
+                                    {/* <Form.Item
+                                        label="주민등록번호"
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: '주민등록번호'
+                                            }
+                                        ]}
+                                        initialValue={itemContainer?.registNumber}
+                                    >
+                                        <Input
+                                            name="registNumber"
+                                            style={{
+                                                width: '100%',
+                                                margin: '0 3px'
+                                            }}
+                                            placeholder="주민등록번호 (숫자만 입력)"
+                                            onChange={(e) => handleResidentNumberChange(e.target.value)}
+                                            value={itemContainer?.registNumber}
+                                        />
+                                    </Form.Item> */}
+                                    <Form.Item
+                                        label="성별"
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: '성별'
+                                            }
+                                        ]}
+                                        initialValue={itemContainer?.sex}
+                                    >
+                                        <Radio.Group
+                                            name="sex"
+                                            onChange={(e) => setItemContainer({ ...itemContainer, sex: e.target.value })}
+                                            buttonStyle="solid"
+                                            value={itemContainer?.sex}
+                                        >
+                                            <Radio.Button value="1">
+                                                <span style={{ padding: '0 15px' }}>남</span>
+                                            </Radio.Button>
+                                            <span style={{ padding: '0 10px' }}></span>
+                                            <Radio.Button value="2">
+                                                <span style={{ padding: '0 15px' }}>여</span>
+                                            </Radio.Button>
+                                        </Radio.Group>
                                     </Form.Item>
                                 </Col>
                             </Row>
                             <Divider style={{ margin: '10px 0' }} />
                             <Row gutter={24}>
                                 <Col span={12}>
-                                    <Form.Item
+                                    {/* <Form.Item
                                         label="전화번호"
                                         rules={[
                                             {
@@ -522,6 +571,27 @@ const Register = () => {
                                             // onChange={(e) => setItemContainer({ ...itemContainer, telNo: e.target.value })}
                                             onChange={(e) => handlePhoneNumberChange('telNo', e.target.value)}
                                             value={itemContainer?.telNo}
+                                        />
+                                    </Form.Item> */}
+                                    <Form.Item
+                                        label="E-mail"
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: 'E-mail'
+                                            }
+                                        ]}
+                                        initialValue={itemContainer?.email}
+                                    >
+                                        <Input
+                                            name="email"
+                                            style={{
+                                                width: '100%'
+                                            }}
+                                            placeholder="E-mail"
+                                            onChange={(e) => setItemContainer({ ...itemContainer, email: e.target.value })}
+                                            value={itemContainer?.email}
+                                            autoComplete="off"
                                         />
                                     </Form.Item>
                                 </Col>
@@ -545,11 +615,12 @@ const Register = () => {
                                             // onChange={(e) => setItemContainer({ ...itemContainer, hpNo: e.target.value })}
                                             onChange={(e) => handlePhoneNumberChange('hpNo', e.target.value)}
                                             value={itemContainer?.hpNo}
+                                            autoComplete="off"
                                         />
                                     </Form.Item>
                                 </Col>
                             </Row>
-                            <Divider style={{ margin: '10px 0' }} />
+                            {/* <Divider style={{ margin: '10px 0' }} />
                             <Row gutter={24}>
                                 <Col span={24}>
                                     <Form.Item
@@ -573,7 +644,7 @@ const Register = () => {
                                         />
                                     </Form.Item>
                                 </Col>
-                            </Row>
+                            </Row> */}
                             <Divider style={{ margin: '10px 0' }} />
                             <Row gutter={24}>
                                 <Col span={24}>
@@ -595,12 +666,39 @@ const Register = () => {
                                             placeholder="주소"
                                             onChange={(e) => setItemContainer({ ...itemContainer, address: e.target.value })}
                                             value={itemContainer?.address}
+                                            autoComplete="off"
+                                        />
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+                            <Divider style={{ margin: '10px 0' }} />
+                            <Row gutter={24}>
+                                <Col span={24}>
+                                    <Form.Item
+                                        label="소속회사명"
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message: '소속회사명'
+                                            }
+                                        ]}
+                                        initialValue={itemContainer?.company}
+                                    >
+                                        <Input
+                                            name="company"
+                                            style={{
+                                                width: '100%'
+                                            }}
+                                            placeholder="소속회사명"
+                                            onChange={(e) => setItemContainer({ ...itemContainer, company: e.target.value })}
+                                            value={itemContainer?.company}
+                                            autoComplete="off"
                                         />
                                     </Form.Item>
                                 </Col>
                             </Row>
                         </Card>
-                        <Divider style={{ margin: '10px 0' }} />
+                        {/* <Divider style={{ margin: '10px 0' }} />
                         <Card>
                             <Row gutter={24}>
                                 <Col span={24}>
@@ -714,10 +812,10 @@ const Register = () => {
                                         />
                                     </Form.Item>
                                 </Col>
-                            </Row>
+                            </Row> 
                         </Card>
                         <Divider style={{ margin: '10px 0' }} />
-                        <Card>
+                         <Card>
                             <Row gutter={24}>
                                 <Col span={24}>
                                     <Form.Item label="최종학력">
@@ -872,7 +970,7 @@ const Register = () => {
                                     </Form.Item>
                                 </Col>
                             </Row>
-                        </Card>
+                        </Card> */}
                         <Divider style={{ margin: '10px 0' }} />
                         <Card>
                             <Row gutter={24}>
@@ -901,13 +999,13 @@ const Register = () => {
                                     <Divider style={{ margin: '10px 0' }} />
                                     <Row gutter={24}>
                                         <Col span={24}>
-                                            <Form.Item label="보안검색경력 [1]">
+                                            <Form.Item label="보안검색경력">
                                                 <Space>
                                                     <DatePicker.RangePicker
                                                         style={{
                                                             width: '100%'
                                                         }}
-                                                        renderExtraFooter={() => 'extra footer'}
+                                                        // renderExtraFooter={() => 'extra footer'}
                                                         picker="month"
                                                         locale={locale}
                                                         onChange={(dates) => {
@@ -922,6 +1020,7 @@ const Register = () => {
                                                             itemContainer?.careerStartDate1 ? dayjs(itemContainer.careerStartDate1) : '',
                                                             itemContainer?.careerEndDate1 ? dayjs(itemContainer.careerEndDate1) : ''
                                                         ]}
+                                                        autoComplete="off"
                                                     />
                                                     <Input
                                                         name="careerCompany1"
@@ -931,6 +1030,7 @@ const Register = () => {
                                                         addonBefore="소속"
                                                         placeholder="#소속"
                                                         value={itemContainer?.careerCompany1}
+                                                        autoComplete="off"
                                                     />
                                                     <Input
                                                         name="careerPosition1"
@@ -940,6 +1040,7 @@ const Register = () => {
                                                         addonBefore="직책(직위)"
                                                         placeholder="#직책(직위)"
                                                         value={itemContainer?.careerPosition1}
+                                                        autoComplete="off"
                                                     />
                                                 </Space>
                                                 <br />
@@ -949,16 +1050,17 @@ const Register = () => {
                                                         name="career1"
                                                         onChange={(e) => setItemContainer({ ...itemContainer, career1: e.target.value })}
                                                         addonBefore="담당업무"
-                                                        style={{ width: '585px' }}
+                                                        style={{ width: '41.3vw' }}
                                                         placeholder="#담당업무"
                                                         value={itemContainer?.career1}
+                                                        autoComplete="off"
                                                     />
                                                 </Space>
                                             </Form.Item>
                                         </Col>
                                     </Row>
                                     {/* 2 */}
-                                    <Divider style={{ margin: '10px 0' }} />
+                                    {/* <Divider style={{ margin: '10px 0' }} />
                                     <Row gutter={24}>
                                         <Col span={24}>
                                             <Form.Item label="보안검색경력 [2]">
@@ -1016,7 +1118,7 @@ const Register = () => {
                                                 </Space>
                                             </Form.Item>
                                         </Col>
-                                    </Row>
+                                    </Row> */}
                                 </>
                             ) : (
                                 ''
