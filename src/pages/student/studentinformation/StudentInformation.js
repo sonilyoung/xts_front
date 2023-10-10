@@ -737,7 +737,7 @@ export const Studentinformation = () => {
                         )}
 
                         <Row gutter={24}>
-                            <Col span={24}>
+                            <Col span={12}>
                                 <Form.Item
                                     label="교육과정명"
                                     rules={[
@@ -785,9 +785,7 @@ export const Studentinformation = () => {
                                     />
                                 </Form.Item>
                             </Col>
-                        </Row>
-                        <Row gutter={24}>
-                            <Col span={24}>
+                            <Col span={12}>
                                 <Form.Item
                                     label="입교신청일"
                                     rules={[

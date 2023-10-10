@@ -197,13 +197,13 @@ const Register = () => {
                     <Form layout="horizontal" form={form}>
                         <Card loading={loading}>
                             <Row gutter={24}>
-                                <Col span={24}>
+                                <Col span={12}>
                                     <Form.Item
-                                        label="교육과정명"
+                                        label="교육과정"
                                         rules={[
                                             {
                                                 required: true,
-                                                message: '교육과정명'
+                                                message: '교육과정'
                                             }
                                         ]}
                                         initialValue={itemContainer?.eduName}
@@ -245,9 +245,7 @@ const Register = () => {
                                         />
                                     </Form.Item>
                                 </Col>
-                            </Row>
-                            <Row gutter={24}>
-                                <Col span={24}>
+                                <Col span={12}>
                                     <Form.Item
                                         label="입교신청일"
                                         rules={[
