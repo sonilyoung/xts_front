@@ -97,6 +97,7 @@ export const Teacherstudent = () => {
                 content: '실습 점수 저장 완료',
                 onOk() {
                     handle_SelectBaselineUser_Api(procCdChk, userIdChk);
+                    handle_SelectBaselineUserList_Api();
                 }
             });
         } else {

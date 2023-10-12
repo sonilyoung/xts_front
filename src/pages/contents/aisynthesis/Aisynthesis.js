@@ -11,11 +11,12 @@ import sync_01 from '../../../assets/images/sync_01.svg';
 
 // AI 의사색채 : 이미지생성, 진행률, 목록, 상세, 동기화
 import {
-    useSudoImgExcuteMutation,
-    useSelectProgressPerMutation,
-    useSelectKaistXrayContentsListMutation,
-    useSelectKaistXrayImgContentsMutation,
-    useSyncImagesMutation
+    useSudoImgExcuteMutation, // 이미지 생성
+    useSelectSudoImgMutation, // 이미지 가져오기
+    // useSelectProgressPerMutation, // 이미지 생성 진행률
+    useSelectKaistXrayContentsListMutation, // 이미지 목록
+    useSelectKaistXrayImgContentsMutation, // 이미지 상세
+    useSyncImagesMutation // 이미지 동기화
 } from '../../../hooks/api/AisynthesisManagement/AisynthesisManagement';
 
 export const Aisynthesis = () => {
@@ -67,13 +68,34 @@ export const Aisynthesis = () => {
         if (SudoImgExcuteResponse?.data?.RET_CODE === '0000') {
             setBagScanId(SudoImgExcuteResponse?.data?.RET_DATA?.bagScanId);
             clearInterval(intervalId);
-            handel_SelectKaistXrayImgContents_Api(SudoImgExcuteResponse?.data?.RET_DATA?.bagScanId);
             setProsess_percent('100');
             // console.log('성공');
         } else {
             clearInterval(intervalId);
             // console.log('실패');
         }
+    };
+
+    // 이미지 가져오기 ======================================================
+    const [SelectSudoImgApi] = useSelectSudoImgMutation(); // 콘텐츠 정보 관리 hooks api호출
+    const [selectSudoImgData, setSelectSudoImgData] = useState(); // 콘텐츠 정보관리 리스트 상단 값
+    const handel_SelectSudoImg_Api = async (bagScanId) => {
+        const SelectSudoImgResponse = await SelectSudoImgApi({
+            bagScanId: bagScanId
+        });
+        setSelectSudoImgData(SelectSudoImgResponse?.data?.RET_DATA);
+        setCreateLoding(false);
+    };
+
+    // 이미지 목록 ======================================================
+    const [SelectKaistXrayContentsListApi] = useSelectKaistXrayContentsListMutation(); // 콘텐츠 정보 관리 hooks api호출
+    const [selectKaistXrayContentsListData, setSelectKaistXrayContentsListData] = useState(); // 콘텐츠 정보관리 리스트 상단 값
+    const handel_SelectKaistXrayContentsList_Api = async (bagScanId) => {
+        const SelectKaistXrayContentsListResponse = await SelectKaistXrayContentsListApi({
+            bagScanId: bagScanId
+        });
+        setSelectKaistXrayContentsListData(SelectKaistXrayContentsListResponse?.data?.RET_DATA);
+        setCreateLoding(false);
     };
 
     // 이미지 상세 ======================================================
@@ -202,6 +224,11 @@ export const Aisynthesis = () => {
             handel_SudoImgExcute_Api();
             setCreateLoding(true);
         }
+    };
+
+    // 의사색체 이미지 가져오기
+    const importImg = () => {
+        handel_SelectSudoImg_Api();
     };
 
     // 동기화

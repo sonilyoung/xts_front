@@ -16,10 +16,19 @@ export const aisynthesisManagement = createApi({
         }
     }),
     endpoints: (builder) => ({
-        // 콘텐츠 관리 > X-ray 콘텐츠 관리 > AI 영상합성 (정면/측면 이미지객체 전송)
+        // 콘텐츠 관리 > X-ray 콘텐츠 관리 > AI 영상합성 (정면/측면 이미지객체 전송 > 이미지 생성)
         sudoImgExcute: builder.mutation({
             query: (body) => ({
                 url: 'api/sudoImgExcute.do',
+                method: 'POST',
+                body: body
+            })
+        }),
+
+        // 콘텐츠 관리 > X-ray 콘텐츠 관리 > AI 영상합성 (이미지 이미지 가져오기)
+        selectSudoImg: builder.mutation({
+            query: (body) => ({
+                url: 'api/selectSudoImg.do',
                 method: 'POST',
                 body: body
             })
@@ -110,6 +119,7 @@ export const aisynthesisManagement = createApi({
 
 export const {
     useSudoImgExcuteMutation,
+    useSelectSudoImgMutation,
     useSelectProgressPerMutation,
     useSelectKaistXrayContentsListMutation,
     useSelectKaistXrayImgContentsMutation,
