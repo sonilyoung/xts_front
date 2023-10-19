@@ -148,6 +148,15 @@ export const studentsManagement = createApi({
                 method: 'POST',
                 body: body
             })
+        }),
+
+        // 교육생 엑셀 업로드
+        insertStudentExcel: builder.mutation({
+            query: (body) => ({
+                url: 'adm/userMgr/insertStudentExcel.do',
+                method: 'POST',
+                body: body
+            })
         })
     })
 });
@@ -166,5 +175,6 @@ export const {
     useInsertStuUserMutation,
     useSelectStuUserCheckMutation,
     useSelectCertificationUserListMutation,
-    useSelectCertificationUserMutation
+    useSelectCertificationUserMutation,
+    useInsertStudentExcelMutation
 } = studentsManagement;

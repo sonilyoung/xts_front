@@ -6,8 +6,9 @@ import {
     useSelectBaselineUserMutation,
     useUpdateBaselineUserMutation
 } from '../../../hooks/api/StudentsManagement/StudentsManagement';
+import excel from '../../../assets/xbt_file/File_Excel.png';
+import { PlusOutlined, DeleteFilled, FileProtectOutlined, AudioOutlined } from '@ant-design/icons';
 
-import { FileProtectOutlined, AudioOutlined } from '@ant-design/icons';
 const { Title } = Typography;
 const { Search } = Input;
 const suffix = (
@@ -299,7 +300,94 @@ export const Teacherstudent = () => {
                                 />
                             </div>
                         </Col>
-                        <Col span={12}></Col>
+                        <Col span={12} style={{ textAlign: 'right' }}>
+                            <Space>
+                                {window.localStorage.getItem('authCd') === '0000' ? (
+                                    <>
+                                        <Tooltip title="교육생 평가표 샘플">
+                                            <Button
+                                                type="default"
+                                                onClick={() => handle_sample()}
+                                                style={{
+                                                    borderRadius: '5px',
+                                                    boxShadow: '2px 3px 0px 0px #dbdbdb',
+                                                    borderColor: '#4da462',
+                                                    backgroundColor: '#4da462',
+                                                    display: 'flex',
+                                                    justifyContent: 'center',
+                                                    alignItems: 'center',
+                                                    color: '#ffffff'
+                                                }}
+                                            >
+                                                <img src={excel} alt="Excel Icon" style={{ marginRight: '8px', width: '35px' }} />
+                                                교육생 평가표 샘플
+                                            </Button>
+                                        </Tooltip>
+                                        <Tooltip title="교육생 평가점수 업로드">
+                                            <Button
+                                                type="default"
+                                                // onClick={() => setExceluploadModal(true)}
+                                                style={{
+                                                    borderRadius: '5px',
+                                                    boxShadow: '2px 3px 0px 0px #dbdbdb',
+                                                    borderColor: '#4da462',
+                                                    backgroundColor: '#4da462',
+                                                    display: 'flex',
+                                                    justifyContent: 'center',
+                                                    alignItems: 'center',
+                                                    color: '#ffffff'
+                                                }}
+                                            >
+                                                <img src={excel} alt="Excel Icon" style={{ marginRight: '8px', width: '35px' }} />
+                                                교육생 평가점수 업로드
+                                            </Button>
+                                        </Tooltip>
+                                        <Tooltip title="교육생 평가표 다운로드 [평가완료]">
+                                            <Button
+                                                type="default"
+                                                // onClick={handle_download}
+                                                style={{
+                                                    borderRadius: '5px',
+                                                    boxShadow: '2px 3px 0px 0px #dbdbdb',
+                                                    borderColor: '#4da462',
+                                                    backgroundColor: '#4da462',
+                                                    display: 'flex',
+                                                    justifyContent: 'center',
+                                                    alignItems: 'center',
+                                                    color: '#ffffff'
+                                                }}
+                                            >
+                                                <img src={excel} alt="Excel Icon" style={{ marginRight: '8px', width: '35px' }} />
+                                                교육생 평가표 다운로드 [평가완료]
+                                            </Button>
+                                        </Tooltip>
+                                        <Tooltip title="추가">
+                                            <Button
+                                                type="success"
+                                                // onClick={handleAdd}
+                                                style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                                icon={<PlusOutlined />}
+                                            >
+                                                추가
+                                            </Button>
+                                        </Tooltip>
+                                        <Tooltip title="삭제">
+                                            <Button
+                                                type="primary"
+                                                danger
+                                                // onClick={handleDel}
+                                                style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                                icon={<DeleteFilled />}
+                                            >
+                                                삭제
+                                            </Button>
+                                        </Tooltip>
+                                    </>
+                                ) : (
+                                    ''
+                                )}
+                            </Space>
+                        </Col>
                     </Row>
                     <Descriptions style={{ marginTop: '20px' }}></Descriptions>
                     <Table
