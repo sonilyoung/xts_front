@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
-import { Typography, Table, Tag, Tooltip, Button, Descriptions, Modal, Input, Space, Row, Col } from 'antd';
+import { Typography, Table, Tag, Tooltip, Button, Descriptions, Modal, Input, Space, Row, Col, Card } from 'antd';
 import {
     useSelectBaselineUserListMutation,
     useSelectBaselineUserMutation,
@@ -8,6 +8,9 @@ import {
 } from '../../../hooks/api/StudentsManagement/StudentsManagement';
 import excel from '../../../assets/xbt_file/File_Excel.png';
 import { PlusOutlined, DeleteFilled, FileProtectOutlined, AudioOutlined } from '@ant-design/icons';
+
+import * as XLSX from 'xlsx-js-style';
+import { saveAs } from 'file-saver';
 
 const { Title } = Typography;
 const { Search } = Input;
@@ -277,6 +280,561 @@ export const Teacherstudent = () => {
         setSearchval(value);
     };
 
+    // ===============================
+    // 교육생 인증평가표 다운로드(검색조건) Start
+    const handle_cer_down = () => {
+        const currentDate = new Date();
+        const year = currentDate.getFullYear();
+        const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+        const day = String(currentDate.getDate()).padStart(2, '0');
+        const down_fileName = `certification_evaluation_${year}${month}${day}.xlsx`;
+        const headers = ['번호', '소속', '성명', '이론점수', '실기점수', '평가결과'];
+
+        // body 데이터 Css적용
+        const allBordersStyle = {
+            style: 'thin',
+            color: { rgb: '000000' }
+        };
+
+        // body 데이터 Css적용
+        const allBordersStyle_2 = {
+            style: 'medium',
+            color: { rgb: '000000' }
+        };
+
+        const data = [
+            [
+                {
+                    v: '자격 인증평가결과 총괄표',
+                    s: {
+                        font: { sz: 18, bold: true, name: 'HY헤드라인M' },
+                        alignment: { horizontal: 'center', vertical: 'center' }
+                    }
+                }
+            ],
+            [],
+            [
+                {
+                    v: '○ 자격인증 : 제1 차 항공경비초기 인증평가',
+                    s: {
+                        font: { sz: 13, bold: true, name: '굴림' },
+                        alignment: { vertical: 'center' }
+                    }
+                }
+            ],
+            [
+                {
+                    v: `○ 평가일자 : ${year}. ${month}. ${day}`,
+                    s: {
+                        font: { sz: 13, bold: true, name: '굴림' },
+                        alignment: { vertical: 'center' }
+                    }
+                }
+            ],
+            [
+                {
+                    v: '○ 평가장소 : 한국보안인재개발원',
+                    s: {
+                        font: { sz: 13, bold: true, name: '굴림' },
+                        alignment: { vertical: 'center' }
+                    }
+                }
+            ],
+            [],
+            [
+                {
+                    v: '○ 평가결과 확인',
+                    s: {
+                        font: { sz: 13, bold: true, name: '굴림' },
+                        alignment: { vertical: 'center' }
+                    }
+                }
+            ],
+            [
+                {
+                    v: '구분',
+                    s: {
+                        font: { sz: 11, bold: true, bold: true, name: '굴림', color: { rgb: '000000' } },
+                        fill: { fgColor: { rgb: 'e3e3e3' } },
+                        alignment: { horizontal: 'center', vertical: 'center' },
+                        border: {
+                            top: allBordersStyle,
+                            bottom: allBordersStyle,
+                            right: allBordersStyle,
+                            left: allBordersStyle
+                        }
+                    }
+                },
+                {
+                    v: '소속',
+                    s: {
+                        font: { sz: 11, bold: true, bold: true, name: '굴림', color: { rgb: '000000' } },
+                        fill: { fgColor: { rgb: 'e3e3e3' } },
+                        alignment: { horizontal: 'center', vertical: 'center' },
+                        border: {
+                            top: allBordersStyle,
+                            bottom: allBordersStyle,
+                            right: allBordersStyle,
+                            left: allBordersStyle
+                        }
+                    }
+                },
+                {
+                    v: '성명',
+                    s: {
+                        font: { sz: 11, bold: true, bold: true, name: '굴림', color: { rgb: '000000' } },
+                        fill: { fgColor: { rgb: 'e3e3e3' } },
+                        alignment: { horizontal: 'center', vertical: 'center' },
+                        border: {
+                            top: allBordersStyle,
+                            bottom: allBordersStyle,
+                            right: allBordersStyle,
+                            left: allBordersStyle
+                        }
+                    }
+                },
+                {
+                    v: '',
+                    s: {
+                        font: { sz: 11, bold: true, bold: true, name: '굴림', color: { rgb: '000000' } },
+                        fill: { fgColor: { rgb: 'e3e3e3' } },
+                        alignment: { horizontal: 'center', vertical: 'center' },
+                        border: {
+                            top: allBordersStyle,
+                            bottom: allBordersStyle,
+                            right: allBordersStyle,
+                            left: allBordersStyle
+                        }
+                    }
+                },
+                {
+                    v: '서명',
+                    s: {
+                        font: { sz: 11, bold: true, bold: true, name: '굴림', color: { rgb: '000000' } },
+                        fill: { fgColor: { rgb: 'e3e3e3' } },
+                        alignment: { horizontal: 'center', vertical: 'center' },
+                        border: {
+                            top: allBordersStyle,
+                            bottom: allBordersStyle,
+                            right: allBordersStyle,
+                            left: allBordersStyle
+                        }
+                    }
+                },
+                {
+                    v: '',
+                    s: {
+                        font: { sz: 11, bold: true, bold: true, name: '굴림', color: { rgb: '000000' } },
+                        fill: { fgColor: { rgb: 'e3e3e3' } },
+                        alignment: { horizontal: 'center', vertical: 'center' },
+                        border: {
+                            top: allBordersStyle,
+                            bottom: allBordersStyle,
+                            right: allBordersStyle,
+                            left: allBordersStyle
+                        }
+                    }
+                }
+            ],
+            [
+                {
+                    v: '평가관',
+                    s: {
+                        font: { sz: 12, bold: true, name: '굴림' },
+                        alignment: { horizontal: 'center', vertical: 'center' },
+                        border: {
+                            top: allBordersStyle,
+                            bottom: allBordersStyle,
+                            right: allBordersStyle,
+                            left: allBordersStyle
+                        }
+                    }
+                },
+                {
+                    v: '한국보안인재개발원 교수',
+                    s: {
+                        font: { sz: 12, bold: true, name: '굴림' },
+                        alignment: { horizontal: 'center', vertical: 'center' },
+                        border: {
+                            top: allBordersStyle,
+                            bottom: allBordersStyle,
+                            right: allBordersStyle
+                        }
+                    }
+                },
+                {
+                    v: '',
+                    s: {
+                        font: { sz: 12, bold: true, name: '굴림' },
+                        alignment: { horizontal: 'center', vertical: 'center' },
+                        border: {
+                            top: allBordersStyle,
+                            bottom: allBordersStyle,
+                            right: allBordersStyle
+                        }
+                    }
+                },
+                {
+                    v: '',
+                    s: {
+                        font: { sz: 12, bold: true, name: '굴림' },
+                        alignment: { horizontal: 'center', vertical: 'center' },
+                        border: {
+                            top: allBordersStyle,
+                            bottom: allBordersStyle,
+                            right: allBordersStyle
+                        }
+                    }
+                },
+                {
+                    v: '',
+                    s: {
+                        font: { sz: 12, bold: true, name: '굴림' },
+                        alignment: { horizontal: 'center', vertical: 'center' },
+                        border: {
+                            top: allBordersStyle,
+                            bottom: allBordersStyle,
+                            right: allBordersStyle
+                        }
+                    }
+                },
+                {
+                    v: '',
+                    s: {
+                        font: { sz: 12, bold: true, name: '굴림' },
+                        alignment: { horizontal: 'center', vertical: 'center' },
+                        border: {
+                            top: allBordersStyle,
+                            bottom: allBordersStyle,
+                            right: allBordersStyle
+                        }
+                    }
+                }
+            ],
+            [
+                {
+                    v: '입회관',
+                    s: {
+                        font: { sz: 12, bold: true, name: '굴림' },
+                        alignment: { horizontal: 'center', vertical: 'center' },
+                        border: {
+                            top: allBordersStyle,
+                            bottom: allBordersStyle,
+                            right: allBordersStyle,
+                            left: allBordersStyle
+                        }
+                    }
+                },
+                {
+                    v: '국토교통부 항공보안감독관',
+                    s: {
+                        font: { sz: 12, bold: true, name: '굴림' },
+                        alignment: { horizontal: 'center', vertical: 'center' },
+                        border: {
+                            top: allBordersStyle,
+                            bottom: allBordersStyle,
+                            right: allBordersStyle,
+                            left: allBordersStyle
+                        }
+                    }
+                },
+                {
+                    v: '',
+                    s: {
+                        font: { sz: 12, bold: true, name: '굴림' },
+                        alignment: { horizontal: 'center', vertical: 'center' },
+                        border: {
+                            top: allBordersStyle,
+                            bottom: allBordersStyle,
+                            right: allBordersStyle,
+                            left: allBordersStyle
+                        }
+                    }
+                },
+                {
+                    v: '',
+                    s: {
+                        font: { sz: 12, bold: true, name: '굴림' },
+                        alignment: { horizontal: 'center', vertical: 'center' },
+                        border: {
+                            top: allBordersStyle,
+                            bottom: allBordersStyle,
+                            right: allBordersStyle,
+                            left: allBordersStyle
+                        }
+                    }
+                },
+                {
+                    v: '',
+                    s: {
+                        font: { sz: 12, bold: true, name: '굴림' },
+                        alignment: { horizontal: 'center', vertical: 'center' },
+                        border: {
+                            top: allBordersStyle,
+                            bottom: allBordersStyle,
+                            right: allBordersStyle,
+                            left: allBordersStyle
+                        }
+                    }
+                },
+                {
+                    v: '',
+                    s: {
+                        font: { sz: 12, bold: true, name: '굴림' },
+                        alignment: { horizontal: 'center', vertical: 'center' },
+                        border: {
+                            top: allBordersStyle,
+                            bottom: allBordersStyle,
+                            right: allBordersStyle,
+                            left: allBordersStyle
+                        }
+                    }
+                }
+            ],
+            [],
+            [
+                {
+                    v: '○ 인증평가 결과',
+                    s: {
+                        font: { sz: 13, bold: true, name: '굴림' },
+                        alignment: { vertical: 'center' }
+                    }
+                }
+            ],
+            [
+                {
+                    v: `평가인원  ${dataSource.length} 명,        합격     명,        불합격     명`,
+                    s: {
+                        font: { sz: 12, bold: true, name: '굴림' },
+                        alignment: { horizontal: 'center', vertical: 'center' },
+                        border: {
+                            top: allBordersStyle,
+                            bottom: allBordersStyle,
+                            right: allBordersStyle,
+                            left: allBordersStyle
+                        }
+                    }
+                },
+                {
+                    v: '',
+                    s: {
+                        border: {
+                            top: allBordersStyle,
+                            bottom: allBordersStyle,
+                            right: allBordersStyle,
+                            left: allBordersStyle
+                        }
+                    }
+                },
+                {
+                    v: '',
+                    s: {
+                        border: {
+                            top: allBordersStyle,
+                            bottom: allBordersStyle,
+                            right: allBordersStyle,
+                            left: allBordersStyle
+                        }
+                    }
+                },
+                {
+                    v: '',
+                    s: {
+                        border: {
+                            top: allBordersStyle,
+                            bottom: allBordersStyle,
+                            right: allBordersStyle,
+                            left: allBordersStyle
+                        }
+                    }
+                },
+                {
+                    v: '',
+                    s: {
+                        border: {
+                            top: allBordersStyle,
+                            bottom: allBordersStyle,
+                            right: allBordersStyle,
+                            left: allBordersStyle
+                        }
+                    }
+                },
+                {
+                    v: '',
+                    s: {
+                        border: {
+                            top: allBordersStyle,
+                            bottom: allBordersStyle,
+                            right: allBordersStyle,
+                            left: allBordersStyle
+                        }
+                    }
+                }
+            ],
+            headers
+        ];
+
+        dataSource.forEach((item, index) => {
+            data.push([
+                {
+                    v: index + 1,
+                    s: {
+                        font: { sz: 11, bold: true, name: '굴림' },
+                        alignment: { horizontal: 'center', vertical: 'center' },
+                        border: {
+                            top: allBordersStyle,
+                            bottom: allBordersStyle,
+                            right: allBordersStyle,
+                            left: allBordersStyle
+                        }
+                    }
+                },
+                {
+                    v: item.compNm,
+                    s: {
+                        font: { sz: 11, bold: true, name: '굴림' },
+                        alignment: { horizontal: 'center', vertical: 'center' },
+                        border: {
+                            top: allBordersStyle,
+                            bottom: allBordersStyle,
+                            right: allBordersStyle,
+                            left: allBordersStyle
+                        }
+                    }
+                },
+                {
+                    v: item.userNm,
+                    s: {
+                        font: { sz: 11, bold: true, name: '굴림' },
+                        alignment: { horizontal: 'center', vertical: 'center' },
+                        border: {
+                            top: allBordersStyle,
+                            bottom: allBordersStyle,
+                            right: allBordersStyle,
+                            left: allBordersStyle
+                        }
+                    }
+                },
+                {
+                    v: item.theoryScore === undefined ? 0 : item.theoryScore,
+                    s: {
+                        font: { sz: 11, bold: true, name: '굴림' },
+                        alignment: { horizontal: 'center', vertical: 'center' },
+                        border: {
+                            top: allBordersStyle,
+                            bottom: allBordersStyle,
+                            right: allBordersStyle,
+                            left: allBordersStyle
+                        }
+                    }
+                },
+                {
+                    v: item.practiceScore === undefined ? 0 : item.practiceScore,
+                    s: {
+                        font: { sz: 11, bold: true, name: '굴림' },
+                        alignment: { horizontal: 'center', vertical: 'center' },
+                        border: {
+                            top: allBordersStyle,
+                            bottom: allBordersStyle,
+                            right: allBordersStyle,
+                            left: allBordersStyle
+                        }
+                    }
+                },
+                {
+                    v: item.passYn,
+                    s: {
+                        font: { sz: 11, bold: true, name: '굴림' },
+                        alignment: { horizontal: 'center', vertical: 'center' },
+                        border: {
+                            top: allBordersStyle,
+                            bottom: allBordersStyle,
+                            right: allBordersStyle,
+                            left: allBordersStyle
+                        }
+                    }
+                }
+            ]);
+        });
+
+        const workbook = XLSX.utils.book_new();
+        const worksheet = XLSX.utils.aoa_to_sheet(data);
+
+        // 병합할 셀 범위 지정
+        worksheet['!merges'] = [
+            { s: { r: 0, c: 0 }, e: { r: 0, c: 5 } }, // Merging A1 to F1
+            { s: { r: 1, c: 0 }, e: { r: 1, c: 5 } }, // Merging A2 to F2
+            { s: { r: 2, c: 0 }, e: { r: 2, c: 5 } }, // Merging A3 to F3
+            { s: { r: 3, c: 0 }, e: { r: 3, c: 5 } }, // Merging A4 to F4
+            { s: { r: 4, c: 0 }, e: { r: 4, c: 5 } }, // Merging A5 to F5
+            { s: { r: 5, c: 0 }, e: { r: 5, c: 5 } }, // Merging A6 to F6
+            { s: { r: 6, c: 0 }, e: { r: 6, c: 5 } }, // Merging A7 to F7
+
+            { s: { r: 7, c: 2 }, e: { r: 7, c: 3 } }, // Merging E8 to F8 (성명)
+            { s: { r: 7, c: 4 }, e: { r: 7, c: 5 } }, // Merging E8 to F8 (서명)
+            { s: { r: 8, c: 2 }, e: { r: 8, c: 3 } }, // Merging C9 to D9 (성명)
+            { s: { r: 8, c: 4 }, e: { r: 8, c: 5 } }, // Merging E9 to F9 (서명)
+            { s: { r: 9, c: 2 }, e: { r: 9, c: 3 } }, // Merging C10 to D10 (성명)
+            { s: { r: 9, c: 4 }, e: { r: 9, c: 5 } }, // Merging E10 to F10 (서명)
+            { s: { r: 10, c: 0 }, e: { r: 10, c: 5 } }, // Merging A11 to F11
+            { s: { r: 11, c: 0 }, e: { r: 11, c: 5 } }, // Merging A12 to F12
+            { s: { r: 12, c: 0 }, e: { r: 12, c: 5 } } // Merging A13 to F13
+        ];
+
+        worksheet['!rows'] = [
+            { hpt: 45, hpx: 45, level: 0 }, // 1라인
+            { hpt: 10, hpx: 10, level: 0 }, // 2라인
+            { hpt: 25, hpx: 25, level: 0 }, // 3라인
+            { hpt: 25, hpx: 25, level: 0 }, // 4라인
+            { hpt: 25, hpx: 25, level: 0 }, // 5라인
+            { hpt: 10, hpx: 10, level: 0 }, // 6라인
+            { hpt: 25, hpx: 25, level: 0 }, // 7라인
+            { hpt: 35, hpx: 35, level: 0 }, // 8라인
+            { hpt: 62, hpx: 62, level: 0 }, // 9라인
+            { hpt: 62, hpx: 62, level: 0 }, // 10라인
+            { hpt: 20, hpx: 20, level: 0 }, // 11라인
+            { hpt: 25, hpx: 25, level: 0 }, // 12라인
+            { hpt: 45, hpx: 45, level: 0 }, // 13라인
+            { hpt: 35, hpx: 35, level: 0 } // 14라인
+        ];
+
+        for (let c = 0; c < data[13].length; c++) {
+            worksheet['!cols'] = [];
+            worksheet['!cols'][0] = { wpx: 70 };
+            worksheet['!cols'][1] = { wpx: 260 };
+            worksheet['!cols'][2] = { wpx: 100 };
+            worksheet['!cols'][3] = { wpx: 100 };
+            worksheet['!cols'][4] = { wpx: 100 };
+            worksheet['!cols'][5] = { wpx: 100 };
+            worksheet[XLSX.utils.encode_cell({ r: 13, c })].s = {
+                font: { sz: 11, bold: true, bold: true, name: '굴림', color: { rgb: '000000' } },
+                fill: { fgColor: { rgb: 'e3e3e3' } },
+                alignment: { horizontal: 'center', vertical: 'center' },
+                border: {
+                    top: allBordersStyle,
+                    bottom: allBordersStyle,
+                    right: allBordersStyle,
+                    left: allBordersStyle
+                }
+            };
+        }
+
+        for (let r = 1; r < data.length; r++) {
+            if (r > 13) {
+                worksheet['!rows'][r] = { hpx: 25 };
+                // worksheet['!rows'] = Array(data[r].length).fill({ hpx: 30 });
+            }
+        }
+
+        XLSX.utils.book_append_sheet(workbook, worksheet, '인증 평가');
+        const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+        const blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
+        saveAs(blob, down_fileName);
+    };
+
+    // 교육생 인증평가표 다운로드(검색조건) End
+    // ===============================
+
     useEffect(() => {
         setLoading(true);
         handle_SelectBaselineUserList_Api();
@@ -287,7 +845,7 @@ export const Teacherstudent = () => {
             <MainCard title="교육생 정보조회">
                 <Typography variant="body1">
                     <Row gutter={[8, 8]} style={{ marginBottom: 16 }}>
-                        <Col span={12}>
+                        <Col span={8}>
                             <div style={{ display: 'flex', justifyContent: 'flex-start', fontSize: '14px' }}>
                                 <Input.Search
                                     placeholder="※ 통합 검색 (차수명, 교육생ID, 교육생명, 교육구분, 기관)"
@@ -300,14 +858,14 @@ export const Teacherstudent = () => {
                                 />
                             </div>
                         </Col>
-                        <Col span={12} style={{ textAlign: 'right' }}>
+                        <Col span={16} style={{ textAlign: 'right' }}>
                             <Space>
                                 {window.localStorage.getItem('authCd') === '0000' ? (
                                     <>
-                                        <Tooltip title="교육생 평가표 샘플">
+                                        <Tooltip title="인증평가표 다운로드(검색조건)">
                                             <Button
                                                 type="default"
-                                                onClick={() => handle_sample()}
+                                                onClick={() => handle_cer_down()}
                                                 style={{
                                                     borderRadius: '5px',
                                                     boxShadow: '2px 3px 0px 0px #dbdbdb',
@@ -318,9 +876,15 @@ export const Teacherstudent = () => {
                                                     alignItems: 'center',
                                                     color: '#ffffff'
                                                 }}
+                                                onMouseEnter={(e) => {
+                                                    e.target.style.color = '#1677ff';
+                                                }}
+                                                onMouseLeave={(e) => {
+                                                    e.target.style.color = '#ffffff';
+                                                }}
                                             >
                                                 <img src={excel} alt="Excel Icon" style={{ marginRight: '8px', width: '35px' }} />
-                                                교육생 평가표 샘플
+                                                인증평가표 다운로드(검색조건)
                                             </Button>
                                         </Tooltip>
                                         <Tooltip title="교육생 평가점수 업로드">
@@ -336,6 +900,12 @@ export const Teacherstudent = () => {
                                                     justifyContent: 'center',
                                                     alignItems: 'center',
                                                     color: '#ffffff'
+                                                }}
+                                                onMouseEnter={(e) => {
+                                                    e.target.style.color = '#1677ff';
+                                                }}
+                                                onMouseLeave={(e) => {
+                                                    e.target.style.color = '#ffffff';
                                                 }}
                                             >
                                                 <img src={excel} alt="Excel Icon" style={{ marginRight: '8px', width: '35px' }} />
@@ -355,6 +925,12 @@ export const Teacherstudent = () => {
                                                     justifyContent: 'center',
                                                     alignItems: 'center',
                                                     color: '#ffffff'
+                                                }}
+                                                onMouseEnter={(e) => {
+                                                    e.target.style.color = '#1677ff';
+                                                }}
+                                                onMouseLeave={(e) => {
+                                                    e.target.style.color = '#ffffff';
                                                 }}
                                             >
                                                 <img src={excel} alt="Excel Icon" style={{ marginRight: '8px', width: '35px' }} />
@@ -422,7 +998,136 @@ export const Teacherstudent = () => {
                     </Button>
                 ]}
             >
-                {eduCd !== '4' && eduCd !== '6' ? (
+                <>
+                    <Card style={{ width: '100%' }} title={<span style={{ fontSize: '15px' }}>※ XBT 평가</span>}>
+                        <Space>
+                            <Descriptions layout="vertical" bordered column={5}>
+                                <Descriptions.Item style={{ textAlign: 'center', width: '240px' }} label="평가명">
+                                    {evaluationInfoData?.procNm || '-'}
+                                </Descriptions.Item>
+                                <Descriptions.Item style={{ textAlign: 'center' }} label="문항수">
+                                    {evaluationInfoData?.questionCnt || '-'}
+                                </Descriptions.Item>
+                                <Descriptions.Item style={{ textAlign: 'center' }} label="정답">
+                                    {evaluationInfoData?.rightCnt || '-'}
+                                </Descriptions.Item>
+                                <Descriptions.Item style={{ textAlign: 'center' }} label="오답">
+                                    {evaluationInfoData?.wrongCnt || '-'}
+                                </Descriptions.Item>
+                                <Descriptions.Item style={{ textAlign: 'center', fontWeight: 'bold' }} label="평점">
+                                    {evaluationInfoData?.evaluationScore || '-'}
+                                </Descriptions.Item>
+                            </Descriptions>
+                            <Title level={2} style={{ marginLeft: '20px' }}>
+                                X
+                            </Title>
+                            <Descriptions layout="vertical" bordered style={{ marginLeft: '20px' }}>
+                                <Descriptions.Item style={{ textAlign: 'center', fontWeight: 'bold' }} label="XBT평가 비중율(%) ">
+                                    {evaluationInfoData?.evaluationTotalScore || '0'}%
+                                </Descriptions.Item>
+                            </Descriptions>
+                            <Title level={2} style={{ marginLeft: '20px' }}>
+                                =
+                            </Title>
+                            <Descriptions layout="vertical" bordered style={{ marginLeft: '20px' }}>
+                                <Descriptions.Item style={{ textAlign: 'center', fontWeight: 'bold' }} label="XBT평가 최종점수">
+                                    <space style={{ color: '#108ee9' }}>{evaluationInfoData?.gainScore || '-'}</space>
+                                </Descriptions.Item>
+                            </Descriptions>
+                        </Space>
+                    </Card>
+                    <br />
+                    <br />
+                    <Card style={{ width: '100%' }} title={<span style={{ fontSize: '15px' }}>※ 이론 평가</span>}>
+                        <Space>
+                            <Descriptions layout="vertical" bordered column={5}>
+                                <Descriptions.Item style={{ textAlign: 'center', width: '240px' }} label="평가명">
+                                    {theoryInfoData?.procNm || '-'}
+                                </Descriptions.Item>
+                                <Descriptions.Item style={{ textAlign: 'center' }} label="문항수">
+                                    {theoryInfoData?.questionCnt || '-'}
+                                </Descriptions.Item>
+                                <Descriptions.Item style={{ textAlign: 'center' }} label="정답">
+                                    {theoryInfoData?.rightCnt || '-'}
+                                </Descriptions.Item>
+                                <Descriptions.Item style={{ textAlign: 'center' }} label="오답">
+                                    {theoryInfoData?.wrongCnt || '-'}
+                                </Descriptions.Item>
+                                <Descriptions.Item style={{ textAlign: 'center', fontWeight: 'bold' }} label="평점">
+                                    {theoryInfoData?.theoryScore || '-'}
+                                </Descriptions.Item>
+                            </Descriptions>
+                            <Title level={2} style={{ marginLeft: '20px' }}>
+                                X
+                            </Title>
+                            <Descriptions layout="vertical" bordered style={{ marginLeft: '20px' }}>
+                                <Descriptions.Item style={{ textAlign: 'center', fontWeight: 'bold' }} label="이론평가 비중율(%) ">
+                                    {theoryInfoData?.theoryTotalScore || '0'}%
+                                </Descriptions.Item>
+                            </Descriptions>
+                            <Title level={2} style={{ marginLeft: '20px' }}>
+                                =
+                            </Title>
+                            <Descriptions layout="vertical" bordered style={{ marginLeft: '20px' }}>
+                                <Descriptions.Item style={{ textAlign: 'center', fontWeight: 'bold' }} label="이론평가 최종점수">
+                                    <space style={{ color: '#108ee9' }}>{theoryInfoData?.gainScore || '-'}</space>
+                                </Descriptions.Item>
+                            </Descriptions>
+                        </Space>
+                    </Card>
+                    <br />
+                    <br />
+                    <Card style={{ width: '100%' }} title={<span style={{ fontSize: '15px' }}>※ 실습 평가</span>}>
+                        <Space>
+                            <Descriptions layout="vertical" bordered column={3}>
+                                <Descriptions.Item style={{ textAlign: 'center', width: '240px' }} label="평가명">
+                                    {practiceInfoData?.procNm || '-'}
+                                </Descriptions.Item>
+                                <Descriptions.Item style={{ textAlign: 'center' }} label="점수">
+                                    <Input
+                                        name="choice"
+                                        placeholder="※ 실습 평가 점수"
+                                        value={practiceScoreValue === null ? practiceInfoData?.practiceScore : practiceScoreValue}
+                                        onChange={(e) => {
+                                            setPracticeScoreValue(e.target.value);
+                                        }}
+                                        style={{ width: '125px', textAlign: 'center' }}
+                                    />
+                                </Descriptions.Item>
+                                <Descriptions.Item style={{ textAlign: 'center' }} label="저장">
+                                    <Tooltip title="저장" placement="bottom" color="#108ee9">
+                                        <Button
+                                            onClick={() => handel_practiceScore()}
+                                            style={{ width: '75px', tborderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                            type="primary"
+                                        >
+                                            저장
+                                        </Button>
+                                    </Tooltip>
+                                </Descriptions.Item>
+                            </Descriptions>
+                            <Title level={2} style={{ marginLeft: '20px' }}>
+                                X
+                            </Title>
+                            <Descriptions layout="vertical" bordered style={{ marginLeft: '20px' }}>
+                                <Descriptions.Item style={{ textAlign: 'center', fontWeight: 'bold' }} label="실습평가 비중율(%) ">
+                                    {practiceInfoData?.practiceTotalScore || '0'}%
+                                </Descriptions.Item>
+                            </Descriptions>
+                            <Title level={2} style={{ marginLeft: '20px' }}>
+                                =
+                            </Title>
+                            <Descriptions layout="vertical" bordered style={{ marginLeft: '20px' }}>
+                                <Descriptions.Item style={{ textAlign: 'center', fontWeight: 'bold' }} label="실습평가 최종점수">
+                                    <space style={{ color: '#108ee9' }}>{practiceInfoData?.gainScore || '-'}</space>
+                                </Descriptions.Item>
+                            </Descriptions>
+                        </Space>
+                    </Card>
+                    <br />
+                </>
+
+                {/* {eduCd !== '4' && eduCd !== '6' ? (
                     <>
                         <Space>
                             <Descriptions title="※ XBT 평가" layout="vertical" bordered column={5}>
@@ -710,7 +1415,7 @@ export const Teacherstudent = () => {
                     </Space>
                 ) : (
                     ''
-                )}
+                )} */}
             </Modal>
         </>
     );

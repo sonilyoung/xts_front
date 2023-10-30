@@ -130,11 +130,11 @@ export const EduProcAdd = () => {
                 rowdata11: d.totTimeDiff, // 총학습일
                 rowdata12: d.theoryTotalScore, // 이론기준점수
                 rowdata13: d.practiceTotalScore, // 실기기준점수
-                rowdata14: d.evaluationTotalScore, // 평가기준점수
-                rowdata15: d.practiceHumanTotalScore, //대인 가중치
-                rowdata16: d.practiceHumanScore, //대인 커트라인
-                rowdata17: d.practiceCarTotalScore, //차량 가중치
-                rowdata18: d.practiceCarScore //차량 커트라인
+                rowdata14: d.evaluationTotalScore // 평가기준점수
+                // rowdata15: d.practiceHumanTotalScore, //대인 비중율
+                // rowdata16: d.practiceHumanScore, //대인 커트라인
+                // rowdata17: d.practiceCarTotalScore, //차량 비중율
+                // rowdata18: d.practiceCarScore //차량 커트라인
             }))
         ]);
         setLoading(false);
@@ -232,7 +232,7 @@ export const EduProcAdd = () => {
                 <div>
                     이론
                     <br />
-                    가중치
+                    비중율
                 </div>
             ),
             dataIndex: 'rowdata12',
@@ -243,7 +243,7 @@ export const EduProcAdd = () => {
                 <div>
                     실기
                     <br />
-                    가중치
+                    비중율
                 </div>
             ),
             dataIndex: 'rowdata13',
@@ -254,36 +254,36 @@ export const EduProcAdd = () => {
                 <div>
                     평가
                     <br />
-                    가중치
+                    비중율
                 </div>
             ),
             dataIndex: 'rowdata14',
             align: 'center'
         },
-        {
-            title: (
-                <div>
-                    대인
-                    <br />
-                    가중치
-                </div>
-            ),
-            dataIndex: 'rowdata15',
-            align: 'center',
-            render: (_, { rowdata15 }) => <> {rowdata15 === undefined ? 0 : rowdata15} </>
-        },
-        {
-            title: (
-                <div>
-                    차량
-                    <br />
-                    가중치
-                </div>
-            ),
-            dataIndex: 'rowdata17',
-            align: 'center',
-            render: (_, { rowdata17 }) => <> {rowdata17 === undefined ? 0 : rowdata17} </>
-        },
+        // {
+        //     title: (
+        //         <div>
+        //             대인
+        //             <br />
+        //             비중율
+        //         </div>
+        //     ),
+        //     dataIndex: 'rowdata15',
+        //     align: 'center',
+        //     render: (_, { rowdata15 }) => <> {rowdata15 === undefined ? 0 : rowdata15} </>
+        // },
+        // {
+        //     title: (
+        //         <div>
+        //             차량
+        //             <br />
+        //             비중율
+        //         </div>
+        //     ),
+        //     dataIndex: 'rowdata17',
+        //     align: 'center',
+        //     render: (_, { rowdata17 }) => <> {rowdata17 === undefined ? 0 : rowdata17} </>
+        // },
 
         {
             title: (
@@ -424,10 +424,10 @@ export const EduProcAdd = () => {
             passPracticeScore: itemContainer.passPracticeScore === undefined ? '30' : itemContainer.passPracticeScore, // 실기평가 과락점수 30
             passScore: itemContainer.passScore === undefined ? '40' : itemContainer.passScore, // XBT 평가 과락점수 40
 
-            practiceHumanTotalScore: itemContainer.practiceHumanTotalScore, //대인 가중치
-            practiceHumanScore: itemContainer.practiceHumanScore === undefined ? '80' : itemContainer.practiceHumanScore, //대인 커트라인
-            practiceCarTotalScore: itemContainer.practiceCarTotalScore, //차량 가중치
-            practiceCarScore: itemContainer.practiceCarScore === undefined ? '80' : itemContainer.practiceCarScore, //차량 커트라인
+            // practiceHumanTotalScore: itemContainer.practiceHumanTotalScore, //대인 가중치
+            // practiceHumanScore: itemContainer.practiceHumanScore === undefined ? '80' : itemContainer.practiceHumanScore, //대인 커트라인
+            // practiceCarTotalScore: itemContainer.practiceCarTotalScore, //차량 가중치
+            // practiceCarScore: itemContainer.practiceCarScore === undefined ? '80' : itemContainer.practiceCarScore, //차량 커트라인
 
             scheduleList: studyDayArry,
             menuList: menuArry,
@@ -1094,11 +1094,11 @@ export const EduProcAdd = () => {
                             <Col span={12}>
                                 <Form.Item
                                     name="form06"
-                                    label="이론평가 가중치(%)"
+                                    label="이론평가 비중율(%)"
                                     rules={[
                                         {
                                             required: true,
-                                            message: '※ 이론평가 가중치 선택'
+                                            message: '※ 이론평가 비중율 선택'
                                         }
                                     ]}
                                 >
@@ -1162,11 +1162,11 @@ export const EduProcAdd = () => {
                             <Col span={12}>
                                 <Form.Item
                                     name="form07"
-                                    label="실기평가 가중치(%)"
+                                    label="실기평가 비중율(%)"
                                     rules={[
                                         {
                                             required: true,
-                                            message: '※ 실기평가 가중치 선택'
+                                            message: '※ 실기평가 비중율 선택'
                                         }
                                     ]}
                                 >
@@ -1229,11 +1229,11 @@ export const EduProcAdd = () => {
                             <Col span={12}>
                                 <Form.Item
                                     name="form08"
-                                    label="XBT 평가 가중치(%)"
+                                    label="XBT 평가 비중율(%)"
                                     rules={[
                                         {
                                             required: true,
-                                            message: '※ XBT 평가 가중치 선택'
+                                            message: '※ XBT 평가 비중율 선택'
                                         }
                                     ]}
                                 >
@@ -1261,7 +1261,7 @@ export const EduProcAdd = () => {
                             </Col>
                         </Row>
 
-                        <Row gutter={24}>
+                        {/* <Row gutter={24}>
                             <Col span={12}>
                                 <Form.Item
                                     name="form08"
@@ -1298,11 +1298,11 @@ export const EduProcAdd = () => {
                             <Col span={12}>
                                 <Form.Item
                                     name="form08"
-                                    label="차량 실기 평가 가중치(%)"
+                                    label="차량 실기 평가 비중율(%)"
                                     rules={[
                                         {
                                             required: true,
-                                            message: '※ 차량 실기 평가 가중치 선택'
+                                            message: '※ 차량 실기 평가 비중율 선택'
                                         }
                                     ]}
                                 >
@@ -1328,9 +1328,9 @@ export const EduProcAdd = () => {
                                     </Row>
                                 </Form.Item>
                             </Col>
-                        </Row>
+                        </Row> */}
 
-                        <Row gutter={24}>
+                        {/* <Row gutter={24}>
                             <Col span={12}>
                                 <Form.Item
                                     name="form08"
@@ -1367,11 +1367,11 @@ export const EduProcAdd = () => {
                             <Col span={12}>
                                 <Form.Item
                                     name="form08"
-                                    label="대인 실기 평가 가중치(%)"
+                                    label="대인 실기 평가 비중율(%)"
                                     rules={[
                                         {
                                             required: true,
-                                            message: '※ 대인 실기 평가 가중치 선택'
+                                            message: '※ 대인 실기 평가 비중율 선택'
                                         }
                                     ]}
                                 >
@@ -1397,7 +1397,7 @@ export const EduProcAdd = () => {
                                     </Row>
                                 </Form.Item>
                             </Col>
-                        </Row>
+                        </Row> */}
 
                         {/* <Row gutter={24}>
                             <Col span={24}>
@@ -1417,7 +1417,7 @@ export const EduProcAdd = () => {
                                             {itemContainer?.evaluationTotalScore || 0}%
                                         </Tag>
                                     </Descriptions.Item>
-                                    <Descriptions.Item label="가중치 비율(%)" style={{ textAlign: 'center' }}>
+                                    <Descriptions.Item label="비중율(%)" style={{ textAlign: 'center' }}>
                                         <Tag color="processing" style={{ padding: '5px 10px', borderRadius: '8px' }}>
                                             {parseInt(itemContainer?.theoryTotalScore || 0) +
                                                 parseInt(itemContainer?.practiceTotalScore || 0) +

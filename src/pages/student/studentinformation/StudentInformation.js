@@ -121,6 +121,7 @@ export const Studentinformation = () => {
                 hpNo: d.hpNo,
                 email: d.email,
                 eduName: d.eduName,
+                classType: d.classType,
                 writeDate: d.writeDate,
                 loginStart: d.loginStart,
                 loginLast: d.loginLast,
@@ -144,6 +145,7 @@ export const Studentinformation = () => {
     const handle_InsertUser_Api = async () => {
         const InsertUserresponse = await InsertUserApi({
             eduName: itemContainer.eduName, //                      교육과정명
+            classType: itemContainer.classType, //                  반
             writeDate: itemContainer.writeDate, //                  입교신청일
             userId: itemContainer.userId, //                        아이디
             userPw: itemContainer.userPw, //                        패스워드
@@ -224,7 +226,7 @@ export const Studentinformation = () => {
             userId: userId
         });
         setItemContainer(SelectUserresponse.data.RET_DATA);
-        console.log(SelectUserresponse.data.RET_DATA);
+        //console.log(SelectUserresponse.data.RET_DATA);
     };
 
     // 수정 ======================================================
@@ -233,6 +235,7 @@ export const Studentinformation = () => {
         const UpdateUserresponse = await UpdateUserApi({
             useYn: itemContainer.useYn, //                          사용여부
             eduName: itemContainer.eduName, //                      교육과정명
+            classType: itemContainer.classType, //                  반
             writeDate: itemContainer.writeDate, //                  입교신청일
             userId: userId, //                                      아이디
             userPw: itemContainer.userPw, //                        패스워드
@@ -832,6 +835,12 @@ export const Studentinformation = () => {
                                                     alignItems: 'center',
                                                     color: '#ffffff'
                                                 }}
+                                                onMouseEnter={(e) => {
+                                                    e.target.style.color = '#1677ff';
+                                                }}
+                                                onMouseLeave={(e) => {
+                                                    e.target.style.color = '#ffffff';
+                                                }}
                                             >
                                                 <img src={excel} alt="Excel Icon" style={{ marginRight: '8px', width: '35px' }} />
                                                 Member Sample
@@ -851,6 +860,12 @@ export const Studentinformation = () => {
                                                     alignItems: 'center',
                                                     color: '#ffffff'
                                                 }}
+                                                onMouseEnter={(e) => {
+                                                    e.target.style.color = '#1677ff';
+                                                }}
+                                                onMouseLeave={(e) => {
+                                                    e.target.style.color = '#ffffff';
+                                                }}
                                             >
                                                 <img src={excel} alt="Excel Icon" style={{ marginRight: '8px', width: '35px' }} />
                                                 Member Upload
@@ -869,6 +884,12 @@ export const Studentinformation = () => {
                                                     justifyContent: 'center',
                                                     alignItems: 'center',
                                                     color: '#ffffff'
+                                                }}
+                                                onMouseEnter={(e) => {
+                                                    e.target.style.color = '#1677ff';
+                                                }}
+                                                onMouseLeave={(e) => {
+                                                    e.target.style.color = '#ffffff';
                                                 }}
                                             >
                                                 <img src={excel} alt="Excel Icon" style={{ marginRight: '8px', width: '35px' }} />
@@ -1011,41 +1032,65 @@ export const Studentinformation = () => {
                                     ]}
                                     initialValue={itemContainer?.eduName}
                                 >
-                                    <Select
-                                        name="eduName"
-                                        defaultValue={[{ label: '# 교육과정', value: '0' }]}
-                                        style={{
-                                            width: '100%'
-                                        }}
-                                        onChange={(e) => setItemContainer({ ...itemContainer, eduName: e })}
-                                        value={itemContainer?.eduCode}
-                                        options={[
-                                            {
-                                                label: '보안검색요원 초기 교육 [5일/40시간]',
-                                                value: '1'
-                                            },
-                                            {
-                                                label: '보안검색요원 정기 교육 [1일/8시간]',
-                                                value: '2'
-                                            },
-                                            {
-                                                label: '보안검색요원 인증평가 교육 [1일/4시간]',
-                                                value: '3'
-                                            },
-                                            {
-                                                label: '항공경비요원 초기교육 [4일/30시간]',
-                                                value: '4'
-                                            },
-                                            {
-                                                label: '항공경비요원 정기 교육 [1일/8시간]',
-                                                value: '5'
-                                            },
-                                            {
-                                                label: '항공경비요원 인증평가 교육 [1일/4시간]',
-                                                value: '6'
-                                            }
-                                        ]}
-                                    />
+                                    <Space direction="vertical">
+                                        <Select
+                                            name="eduName"
+                                            defaultValue={[{ label: '# 교육과정', value: '0' }]}
+                                            style={{ width: '280px' }}
+                                            onChange={(e) => setItemContainer({ ...itemContainer, eduName: e })}
+                                            value={itemContainer?.eduCode}
+                                            options={[
+                                                {
+                                                    label: '보안검색요원 초기 교육 [5일/40시간]',
+                                                    value: '1'
+                                                },
+                                                {
+                                                    label: '보안검색요원 정기 교육 [1일/8시간]',
+                                                    value: '2'
+                                                },
+                                                {
+                                                    label: '보안검색요원 인증평가 교육 [1일/4시간]',
+                                                    value: '3'
+                                                },
+                                                {
+                                                    label: '항공경비요원 초기교육 [4일/30시간]',
+                                                    value: '4'
+                                                },
+                                                {
+                                                    label: '항공경비요원 정기 교육 [1일/8시간]',
+                                                    value: '5'
+                                                },
+                                                {
+                                                    label: '항공경비요원 인증평가 교육 [1일/4시간]',
+                                                    value: '6'
+                                                }
+                                            ]}
+                                        />
+
+                                        {itemContainer?.eduName > 3 ? (
+                                            <Select
+                                                name="classType"
+                                                defaultValue={[{ label: '# Class', value: '0' }]}
+                                                style={{
+                                                    width: '280px'
+                                                }}
+                                                onChange={(e) => setItemContainer({ ...itemContainer, classType: e })}
+                                                value={itemContainer?.classType}
+                                                options={[
+                                                    {
+                                                        label: 'A반',
+                                                        value: 'A'
+                                                    },
+                                                    {
+                                                        label: 'B반',
+                                                        value: 'B'
+                                                    }
+                                                ]}
+                                            />
+                                        ) : (
+                                            ''
+                                        )}
+                                    </Space>
                                 </Form.Item>
                             </Col>
                             <Col span={12}>

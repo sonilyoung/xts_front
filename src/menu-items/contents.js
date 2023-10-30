@@ -543,3 +543,20 @@ export const system = {
         }
     ]
 };
+
+export const cameracontrol = {
+    id: '38',
+    title: 'CameraControl',
+    type: 'group',
+    children: [
+        {
+            id: '/cameracontrol/CameraControl',
+            title: '환경설정 > 웹캠 관리',
+            subtitle: '웹캠 관리',
+            type: 'item',
+            url: '/cameracontrol/CameraControl',
+            icon: icons.ProjectOutlined,
+            breadcrumbs: true
+        }
+    ]
+};
