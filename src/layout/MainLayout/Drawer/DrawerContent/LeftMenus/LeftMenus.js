@@ -79,7 +79,8 @@ const items_0 = [
         getItem(<Link to="/preferences/common/CommonRain">효과2</Link>, '002', <FileTextOutlined />),
 
         getItem('메뉴관리', '41', <FileTextOutlined />),
-        getItem(<Link to="/preferences/system">시스템메세지 관리</Link>, '38', <FileTextOutlined />)
+        getItem(<Link to="/preferences/system">시스템메세지 관리</Link>, '38', <FileTextOutlined />),
+        getItem(<Link to="/cameracontrol/CameraControl">웹캠 관리</Link>, '39', <FileTextOutlined />)
     ])
 ];
 

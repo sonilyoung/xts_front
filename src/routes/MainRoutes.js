@@ -66,6 +66,8 @@ import { SystemMessage } from 'pages/preferences/system'; // 환경설정 / 시�
 import { CommonFlower } from 'pages/preferences/common/CommonFlower'; // 환경설정 / 꽃가루
 import { CommonRain } from 'pages/preferences/common/CommonRain'; // 환경설정 / 비
 
+import { CameraControl } from 'pages/cameracontrol/CameraControl'; // 환경설정 / 웹캠
+
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
@@ -284,6 +286,11 @@ const MainRoutes = {
             // 환경설정 > 공통코드 관리
             path: '/preferences/common/CommonRain',
             element: <CommonRain />
+        },
+        {
+            // 환경설정 > 웹캠 관리
+            path: '/cameracontrol/CameraControl',
+            element: <CameraControl />
         }
     ]
 };

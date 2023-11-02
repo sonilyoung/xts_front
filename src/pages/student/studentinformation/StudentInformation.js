@@ -18,11 +18,17 @@ import {
     Radio,
     Select,
     Modal,
-    Descriptions
+    Descriptions,
+    Upload,
+    Spin
 } from 'antd';
 import locale from 'antd/es/date-picker/locale/ko_KR';
 
 import excel from '../../../assets/xbt_file/File_Excel.png';
+
+//import * as XLSX from 'xlsx';
+import * as XLSX from 'xlsx-js-style';
+import { saveAs } from 'file-saver';
 
 import dayjs from 'dayjs';
 import weekday from 'dayjs/plugin/weekday';
@@ -36,7 +42,8 @@ import {
     useUpdateUserMutation,
     useDeleteUserMutation,
     useSelectUserCheckMutation,
-    useSelectCertificationUserListMutation
+    useSelectCertificationUserListMutation,
+    useInsertStudentExcelMutation
 } from '../../../hooks/api/StudentsManagement/StudentsManagement';
 
 import {
@@ -66,18 +73,22 @@ export const Studentinformation = () => {
 
     const [dataSource, setDataSource] = useState([]); // Table 데이터 값
     const [loading, setLoading] = useState(false);
+    const [excelloading, setExcelloading] = useState(false);
     const [open, setOpen] = useState(false); // Drawer 추가 우측폼 상태
     const [dataEdit, setDataEdit] = useState(false); // Drawer 수정 우측폼 상태
 
     const [selectedRowKeys, setSelectedRowKeys] = useState([]); //셀렉트 박스 option Selected 값
     const [userId, setUserId] = useState([]); // 선택한 교육생 아이디 값
     const [userNmValue, setUserNmValue] = useState([]); // 선택한 교육생 이름 값
+    const [excelfile_base, setExcelfile_base] = useState(null); // 엑셀 파일 초기값
+    const [fileVale, setFileVale] = useState(null); // 엑셀 파일 정보
 
     const [idChk, setIdChk] = useState(false); // 선택한 교육생 아이디 값
     const [itemContainer, setItemContainer] = useState({}); // 항목 컨테이너
 
     const [passResultModal, setPassResultModal] = useState(false); // 합격 여부 modal
     const [certificatesModal, setCertificatesModal] = useState(false); // 수료증(이수증) modal
+    const [exceluploadModal, setExceluploadModal] = useState(false); // 엑셀 업로드 modal
 
     const [userId_props, setUserId_props] = useState(null); // 수료증(이수증) props
     const [procCd_props, setProcCd_props] = useState(null); // 수료증(이수증) props
@@ -110,6 +121,7 @@ export const Studentinformation = () => {
                 hpNo: d.hpNo,
                 email: d.email,
                 eduName: d.eduName,
+                classType: d.classType,
                 writeDate: d.writeDate,
                 loginStart: d.loginStart,
                 loginLast: d.loginLast,
@@ -133,6 +145,7 @@ export const Studentinformation = () => {
     const handle_InsertUser_Api = async () => {
         const InsertUserresponse = await InsertUserApi({
             eduName: itemContainer.eduName, //                      교육과정명
+            classType: itemContainer.classType, //                  반
             writeDate: itemContainer.writeDate, //                  입교신청일
             userId: itemContainer.userId, //                        아이디
             userPw: itemContainer.userPw, //                        패스워드
@@ -213,7 +226,7 @@ export const Studentinformation = () => {
             userId: userId
         });
         setItemContainer(SelectUserresponse.data.RET_DATA);
-        console.log(SelectUserresponse.data.RET_DATA);
+        //console.log(SelectUserresponse.data.RET_DATA);
     };
 
     // 수정 ======================================================
@@ -222,6 +235,7 @@ export const Studentinformation = () => {
         const UpdateUserresponse = await UpdateUserApi({
             useYn: itemContainer.useYn, //                          사용여부
             eduName: itemContainer.eduName, //                      교육과정명
+            classType: itemContainer.classType, //                  반
             writeDate: itemContainer.writeDate, //                  입교신청일
             userId: userId, //                                      아이디
             userPw: itemContainer.userPw, //                        패스워드
@@ -307,6 +321,40 @@ export const Studentinformation = () => {
         setCertificationUserList(SelectCertificationUserListResponse.data.RET_DATA);
     };
 
+    // 교육생 엑셀 파일 업로드
+    const [InsertStudentExcelApi] = useInsertStudentExcelMutation(); // 상세 hooks api호출
+    const handel_InsertStudentExcel_Api = async () => {
+        let formData = new FormData();
+        const params = {};
+        formData.append('params', new Blob([JSON.stringify(params)], { type: 'application/json' }));
+        console.log(excelfile_base);
+        formData.append('excelFile', fileVale);
+
+        const InsertStudentExcelResponse = await InsertStudentExcelApi(formData);
+
+        InsertStudentExcelResponse?.data?.RET_CODE === '9996'
+            ? Modal.success({
+                  content: InsertStudentExcelResponse?.data?.RET_DESC,
+                  onOk() {
+                      handle_SelectUserList_Api();
+                  }
+              })
+            : InsertStudentExcelResponse?.data?.RET_CODE === '0100'
+            ? Modal.success({
+                  content: InsertStudentExcelResponse?.data?.RET_DESC,
+                  onOk() {
+                      handle_SelectUserList_Api();
+                  }
+              })
+            : Modal.error({
+                  content: '삭제 오류',
+                  onOk() {}
+              });
+
+        console.log(InsertStudentExcelResponse);
+        setExcelloading(false);
+    };
+
     // Api 호출 End
     // ===============================
     const columns = [
@@ -326,6 +374,7 @@ export const Studentinformation = () => {
             align: 'center'
         },
         {
+            width: '130px',
             title: '교육생 명',
             dataIndex: 'userNm',
             sorter: (a, b) => a.userNm.length - b.userNm.length,
@@ -350,6 +399,7 @@ export const Studentinformation = () => {
         //     align: 'center'
         // },
         {
+            width: '250px',
             title: '교육 구분',
             dataIndex: 'eduName',
             align: 'center'
@@ -588,11 +638,149 @@ export const Studentinformation = () => {
         }));
     };
 
-    // 회원 엑셀 샘플
-    const handle_sample = () => {};
+    // ===============================
+    // 회원 엑셀 샘플 Start
+    const handle_sample = () => {
+        const fileName = 'xbt_member_sample.xlsx';
+        const filePath = `${process.env.PUBLIC_URL}/${fileName}`;
+        fetch(filePath)
+            .then((response) => response.blob())
+            .then((blob) => {
+                saveAs(blob, fileName);
+            })
+            .catch((error) => {
+                console.error('Error fetching or saving the file:', error);
+            });
+    };
+    // 회원 엑셀 샘플 End
+    // ===============================
 
-    // 회원 엑셀 업로드
-    const handle_upload = () => {};
+    // ===============================
+    // 교육생 엑셀 업로드 Start
+    const handle_upload = (file_excel) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file_excel);
+        reader.onloadend = () => {
+            setExcelfile_base(reader.result);
+            setFileVale(file_excel);
+        };
+    };
+
+    // 엑셀파일 삭제
+    const FrontRemove = () => {
+        setExcelfile_base(null);
+    };
+
+    // Modal Close
+    const upload_handleCancel = () => {
+        setExcelfile_base(null);
+        setExceluploadModal(false);
+    };
+    // 교육생 엑셀 업로드 End
+    // ===============================
+
+    // ===============================
+    // 회원 리스트 다운로드 (검색별) Start
+    const generateWorksheet = (data) => {
+        const worksheet = XLSX.utils.json_to_sheet(data);
+        const headers = Object.keys(data[0]);
+        const content = Object.keys(data);
+
+        // header 데이터 Css적용
+        for (let i = 0; i < headers.length; i++) {
+            const cellAddress = XLSX.utils.encode_cell({ r: 0, c: i });
+
+            worksheet['!rows'] = [{ hpx: 30 }];
+
+            worksheet['!cols'] = [];
+            worksheet['!cols'][1] = { wpx: 80 };
+            worksheet['!cols'][2] = { wpx: 80 };
+            worksheet['!cols'][3] = { wpx: 80 };
+            worksheet['!cols'][4] = { wpx: 80 };
+            worksheet['!cols'][5] = { wpx: 80 };
+            worksheet['!cols'][6] = { wpx: 110 };
+            worksheet['!cols'][7] = { wpx: 110 };
+            worksheet['!cols'][8] = { wpx: 150 };
+            worksheet['!cols'][9] = { wpx: 230 };
+            worksheet['!cols'][10] = { wpx: 95 };
+            worksheet['!cols'][11] = { wpx: 95 };
+            worksheet['!cols'][12] = { wpx: 95 };
+            worksheet['!cols'][14] = { wpx: 95 };
+            worksheet['!cols'][15] = { wpx: 95 };
+            worksheet['!cols'][16] = { wpx: 95 };
+
+            worksheet[cellAddress].s = {
+                font: { sz: 10, bold: true, color: { rgb: 'ffffff' } },
+                fill: { fgColor: { rgb: '000000' } },
+                alignment: { horizontal: 'center', vertical: 'center' },
+                border: { left: { style: 'thin', color: { rgb: 'ffffff' } } }
+            };
+        }
+
+        // body 데이터 Css적용
+        const allBordersStyle = {
+            style: 'thin',
+            color: { rgb: '000000' }
+        };
+
+        for (let r = 1; r <= data.length; r++) {
+            for (let c = 0; c < headers.length; c++) {
+                const cellAddress = XLSX.utils.encode_cell({ r: r, c: c });
+                worksheet[cellAddress].s = {
+                    hpx: 80,
+                    font: { sz: 10 },
+                    alignment: { horizontal: 'center', vertical: 'center' },
+                    border: {
+                        top: allBordersStyle,
+                        bottom: allBordersStyle,
+                        right: allBordersStyle,
+                        left: allBordersStyle
+                    }
+                };
+            }
+        }
+
+        return worksheet;
+    };
+
+    const searchData = dataSource.map((d, i) => ({
+        번호: i + 1,
+        아이디: d.userId,
+        이름: d.userNm,
+        소속: d.company,
+        부서: d.dept,
+        직급: d.position,
+        전화번호: d.telNo,
+        휴대폰번호: d.hpNo,
+        이메일: d.email,
+        교육명: d.eduName,
+        등록일자: d.writeDate,
+        최초로그인: d.loginStart,
+        마지막로그인: d.loginLast,
+        사용여부: d.useYn,
+        등록자: d.insertId,
+        수정자: d.updateId,
+        수정일자: d.updateDate
+    }));
+
+    const handle_download = () => {
+        const currentDate = new Date();
+        const year = currentDate.getFullYear();
+        const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+        const day = String(currentDate.getDate()).padStart(2, '0');
+        const down_fileName = `member_list_${year}${month}${day}.xlsx`;
+
+        // const worksheet = XLSX.utils.json_to_sheet(searchData);
+        const worksheet = generateWorksheet(searchData);
+
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'XBT MEMBER LIST');
+        const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+        const blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
+        saveAs(blob, down_fileName);
+    };
+    // 회원 리스트 다운로드 (검색별) End
+    // ===============================
 
     useEffect(() => {
         setLoading(true);
@@ -633,10 +821,10 @@ export const Studentinformation = () => {
                             <Space>
                                 {window.localStorage.getItem('authCd') === '0000' ? (
                                     <>
-                                        <Tooltip title="Member Sample">
+                                        <Tooltip title="교육생 다중 추가 샘플">
                                             <Button
                                                 type="default"
-                                                onClick={handle_sample}
+                                                onClick={() => handle_sample()}
                                                 style={{
                                                     borderRadius: '5px',
                                                     boxShadow: '2px 3px 0px 0px #dbdbdb',
@@ -647,15 +835,21 @@ export const Studentinformation = () => {
                                                     alignItems: 'center',
                                                     color: '#ffffff'
                                                 }}
+                                                onMouseEnter={(e) => {
+                                                    e.target.style.color = '#1677ff';
+                                                }}
+                                                onMouseLeave={(e) => {
+                                                    e.target.style.color = '#ffffff';
+                                                }}
                                             >
                                                 <img src={excel} alt="Excel Icon" style={{ marginRight: '8px', width: '35px' }} />
-                                                Member Excel Sample
+                                                Member Sample
                                             </Button>
                                         </Tooltip>
-                                        <Tooltip title="Member Sample">
+                                        <Tooltip title="교육생 다중 추가 업로드">
                                             <Button
                                                 type="default"
-                                                onClick={handle_upload}
+                                                onClick={() => setExceluploadModal(true)}
                                                 style={{
                                                     borderRadius: '5px',
                                                     boxShadow: '2px 3px 0px 0px #dbdbdb',
@@ -666,9 +860,40 @@ export const Studentinformation = () => {
                                                     alignItems: 'center',
                                                     color: '#ffffff'
                                                 }}
+                                                onMouseEnter={(e) => {
+                                                    e.target.style.color = '#1677ff';
+                                                }}
+                                                onMouseLeave={(e) => {
+                                                    e.target.style.color = '#ffffff';
+                                                }}
                                             >
                                                 <img src={excel} alt="Excel Icon" style={{ marginRight: '8px', width: '35px' }} />
-                                                Member Excel Upload
+                                                Member Upload
+                                            </Button>
+                                        </Tooltip>
+                                        <Tooltip title="교육생 리스트 다운로드 [검색별]">
+                                            <Button
+                                                type="default"
+                                                onClick={handle_download}
+                                                style={{
+                                                    borderRadius: '5px',
+                                                    boxShadow: '2px 3px 0px 0px #dbdbdb',
+                                                    borderColor: '#4da462',
+                                                    backgroundColor: '#4da462',
+                                                    display: 'flex',
+                                                    justifyContent: 'center',
+                                                    alignItems: 'center',
+                                                    color: '#ffffff'
+                                                }}
+                                                onMouseEnter={(e) => {
+                                                    e.target.style.color = '#1677ff';
+                                                }}
+                                                onMouseLeave={(e) => {
+                                                    e.target.style.color = '#ffffff';
+                                                }}
+                                            >
+                                                <img src={excel} alt="Excel Icon" style={{ marginRight: '8px', width: '35px' }} />
+                                                Member List Download
                                             </Button>
                                         </Tooltip>
                                         <Tooltip title="추가">
@@ -807,41 +1032,65 @@ export const Studentinformation = () => {
                                     ]}
                                     initialValue={itemContainer?.eduName}
                                 >
-                                    <Select
-                                        name="eduName"
-                                        defaultValue={[{ label: '# 교육과정', value: '0' }]}
-                                        style={{
-                                            width: '100%'
-                                        }}
-                                        onChange={(e) => setItemContainer({ ...itemContainer, eduName: e })}
-                                        value={itemContainer?.eduCode}
-                                        options={[
-                                            {
-                                                label: '보안검색요원 초기 교육 [5일/40시간]',
-                                                value: '1'
-                                            },
-                                            {
-                                                label: '보안검색요원 정기 교육 [1일/8시간]',
-                                                value: '2'
-                                            },
-                                            {
-                                                label: '보안검색요원 인증평가 교육 [1일/4시간]',
-                                                value: '3'
-                                            },
-                                            {
-                                                label: '항공경비요원 초기교육 [4일/30시간]',
-                                                value: '4'
-                                            },
-                                            {
-                                                label: '항공경비요원 정기 교육 [1일/8시간]',
-                                                value: '5'
-                                            },
-                                            {
-                                                label: '항공경비요원 인증평가 교육 [1일/4시간]',
-                                                value: '6'
-                                            }
-                                        ]}
-                                    />
+                                    <Space direction="vertical">
+                                        <Select
+                                            name="eduName"
+                                            defaultValue={[{ label: '# 교육과정', value: '0' }]}
+                                            style={{ width: '280px' }}
+                                            onChange={(e) => setItemContainer({ ...itemContainer, eduName: e })}
+                                            value={itemContainer?.eduCode}
+                                            options={[
+                                                {
+                                                    label: '보안검색요원 초기 교육 [5일/40시간]',
+                                                    value: '1'
+                                                },
+                                                {
+                                                    label: '보안검색요원 정기 교육 [1일/8시간]',
+                                                    value: '2'
+                                                },
+                                                {
+                                                    label: '보안검색요원 인증평가 교육 [1일/4시간]',
+                                                    value: '3'
+                                                },
+                                                {
+                                                    label: '항공경비요원 초기교육 [4일/30시간]',
+                                                    value: '4'
+                                                },
+                                                {
+                                                    label: '항공경비요원 정기 교육 [1일/8시간]',
+                                                    value: '5'
+                                                },
+                                                {
+                                                    label: '항공경비요원 인증평가 교육 [1일/4시간]',
+                                                    value: '6'
+                                                }
+                                            ]}
+                                        />
+
+                                        {itemContainer?.eduName > 3 ? (
+                                            <Select
+                                                name="classType"
+                                                defaultValue={[{ label: '# Class', value: '0' }]}
+                                                style={{
+                                                    width: '280px'
+                                                }}
+                                                onChange={(e) => setItemContainer({ ...itemContainer, classType: e })}
+                                                value={itemContainer?.classType}
+                                                options={[
+                                                    {
+                                                        label: 'A반',
+                                                        value: 'A'
+                                                    },
+                                                    {
+                                                        label: 'B반',
+                                                        value: 'B'
+                                                    }
+                                                ]}
+                                            />
+                                        ) : (
+                                            ''
+                                        )}
+                                    </Space>
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
@@ -1854,6 +2103,87 @@ export const Studentinformation = () => {
                 </div>
             </Modal>
             {/* 수료증 Print End */}
+
+            {/* 교육생 Excel Start */}
+            <Modal
+                title="교육생 Excel 업로드"
+                closable={true}
+                open={exceluploadModal}
+                onCancel={upload_handleCancel}
+                width={700}
+                height={802}
+                style={{
+                    top: 90,
+                    left: 130,
+                    zIndex: 999
+                }}
+                footer={null}
+            >
+                {/* <Spin loading={excelloading}> */}
+                <Row gutter={[100, 24]}>
+                    <Col span={12}>
+                        <Space direction="vertical">
+                            <Upload maxCount={1} customRequest={({ file }) => handle_upload(file)} showUploadList={false}>
+                                <Button
+                                    accept=".xlsx, .xls"
+                                    type="text"
+                                    style={{
+                                        width: '320px',
+                                        height: '40px',
+                                        padding: '10px',
+                                        backgroundColor: '#f0f0f0',
+                                        marginBottom: '10px'
+                                    }}
+                                    icon={<UploadOutlined />}
+                                >
+                                    교육생 Excel 찾기...
+                                </Button>
+                            </Upload>
+                            {excelfile_base === null ? (
+                                ''
+                            ) : (
+                                <>
+                                    <Space
+                                        style={{
+                                            width: '100%',
+                                            justifyContent: 'space-between',
+                                            border: '1px solid #f39898',
+                                            padding: '3px 5px'
+                                        }}
+                                    >
+                                        <span>{fileVale?.name}</span>
+                                        <Button onClick={FrontRemove} type="text">
+                                            <DeleteFilled />
+                                            삭제
+                                        </Button>
+                                    </Space>
+                                </>
+                            )}
+                        </Space>
+                    </Col>
+                    <Col span={12}>
+                        {excelfile_base === null ? (
+                            ''
+                        ) : (
+                            <Button
+                                type="primary"
+                                style={{
+                                    width: '250px',
+                                    height: '100px',
+                                    padding: '10px',
+                                    marginBottom: '10px'
+                                }}
+                                icon={<UploadOutlined />}
+                                onClick={() => handel_InsertStudentExcel_Api()}
+                            >
+                                Excel Upload
+                            </Button>
+                        )}
+                    </Col>
+                </Row>
+                {/* </Spin> */}
+            </Modal>
+            {/* 교육생 Excel End */}
         </>
     );
 };
