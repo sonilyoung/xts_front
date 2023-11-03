@@ -848,7 +848,7 @@ export const Teacherstudent = () => {
                         <Col span={8}>
                             <div style={{ display: 'flex', justifyContent: 'flex-start', fontSize: '14px' }}>
                                 <Input.Search
-                                    placeholder="※ 통합 검색 (차수명, 교육생ID, 교육생명, 교육구분, 기관)"
+                                    placeholder="※ 통합 검색 (차수명, 교육생ID, 교육생명, 교육구분, 기관, 교육일)"
                                     style={{ width: 483 }}
                                     onSearch={onSearch}
                                     allowClear
@@ -935,27 +935,6 @@ export const Teacherstudent = () => {
                                             >
                                                 <img src={excel} alt="Excel Icon" style={{ marginRight: '8px', width: '35px' }} />
                                                 교육생 평가표 다운로드 [평가완료]
-                                            </Button>
-                                        </Tooltip>
-                                        <Tooltip title="추가">
-                                            <Button
-                                                type="success"
-                                                // onClick={handleAdd}
-                                                style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
-                                                icon={<PlusOutlined />}
-                                            >
-                                                추가
-                                            </Button>
-                                        </Tooltip>
-                                        <Tooltip title="삭제">
-                                            <Button
-                                                type="primary"
-                                                danger
-                                                // onClick={handleDel}
-                                                style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
-                                                icon={<DeleteFilled />}
-                                            >
-                                                삭제
                                             </Button>
                                         </Tooltip>
                                     </>
