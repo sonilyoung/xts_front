@@ -81,7 +81,9 @@ export const ImagesManagement = () => {
     const [realImgEdit, setRealImgEdit] = useState(true);
     const [frontImgEdit, setFrontImgEdit] = useState(true);
     const [sideImgEdit, setSideImgEdit] = useState(true);
+    const [threedImgEdit, setSThreedImgEdit] = useState(true);
 
+    
     const [threedImg, setThreedImg] = useState(null);
 
     const [fileReal, setFileReal] = useState(null);
@@ -228,13 +230,14 @@ export const ImagesManagement = () => {
             languageCode: languageCode,
             unitId: e
         });
-        // console.log('이미지가져오기:', response.data.RET_DATA);
+        //console.log('이미지가져오기:', response.data.RET_DATA);
         setUnitParams(response.data.RET_DATA);
         //params = response.data.RET_DATA;
 
         setRealImgEdit(true);
         setFrontImgEdit(true);
         setSideImgEdit(true);
+        setSThreedImgEdit(true);
     };
 
     // 물품 수정 버튼
@@ -255,6 +258,7 @@ export const ImagesManagement = () => {
         setRealImgEdit(true);
         setFrontImgEdit(true);
         setSideImgEdit(true);
+        setSThreedImgEdit(true);
     };
 
     // 추가 취소
@@ -533,6 +537,7 @@ export const ImagesManagement = () => {
         setRealImgEdit(false);
         setFrontImgEdit(false);
         setSideImgEdit(false);
+        setSThreedImgEdit(false);
 
         Modal.success({
             content: '추가 완료',
@@ -741,7 +746,7 @@ export const ImagesManagement = () => {
                                                 {realImgEdit === true ? (
                                                     <img
                                                         src={
-                                                            unitParams?.realImg !== null
+                                                            unitParams?.Threed !== null
                                                                 ? 'data:image/png;base64,' + unitParams?.realImg
                                                                 : noImage
                                                         }
@@ -777,12 +782,21 @@ export const ImagesManagement = () => {
                                                     </Button>
                                                 </Card>
                                             </Space>
-                                            {lodingflag === true ? (
-                                                <Space direction="vertical" style={{ marginTop: '110px' }}>
-                                                    <img src={fileThreed ? fileThreed : noImage} width={100} height={100} alt="3D image" />
-                                                </Space>
-                                            ) : (
-                                                <Space direction="vertical" style={{ marginTop: '20px' }}>
+
+                                            <Space direction="vertical" style={{ marginTop: '20px' }}>
+                                                {threedImgEdit === true ? (
+                                                    <img
+                                                        src={
+                                                            unitParams?.threedImg !== null
+                                                                ? 'data:image/png;base64,' + unitParams?.threedImg
+                                                                : noImage
+                                                        }
+                                                        width={260}
+                                                        height={260}
+                                                        alt="3D image"
+                                                        style={{ borderRadius: '3%' }}
+                                                    />
+                                                ) : (
                                                     <img
                                                         src={fileThreed ? fileThreed : noImage}
                                                         style={{ borderRadius: '3%' }}
@@ -790,8 +804,8 @@ export const ImagesManagement = () => {
                                                         height={260}
                                                         alt="3D image"
                                                     />
-                                                </Space>
-                                            )}
+                                                )}
+                                            </Space>
                                         </Form.Item>
                                     </Col>
                                 </Row>
