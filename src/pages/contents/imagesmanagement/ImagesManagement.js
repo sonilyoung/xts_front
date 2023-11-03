@@ -222,10 +222,21 @@ export const ImagesManagement = () => {
 
     // 이미지가져오기
     const getUnitImgList = async (e, u, g) => {
+        setLoading(true); // 로딩 호출
+
+        setRealImgEdit(false);
+        setFrontImgEdit(false);
+        setSideImgEdit(false);
+        setSThreedImgEdit(false);
+
+        setFileReal(loadingImg);
+        setFileFront(loadingImg);
+        setFileSide(loadingImg);
+        setFileThreed(loadingImg);
+        
         setUnitScanId(e);
         setUnitId(u);
         setUnitScanThreed(g);
-        setFileThreed(null);
         const response = await unitDetail({
             languageCode: languageCode,
             unitId: e
@@ -238,6 +249,8 @@ export const ImagesManagement = () => {
         setFrontImgEdit(true);
         setSideImgEdit(true);
         setSThreedImgEdit(true);
+
+        setLoading(false); 
     };
 
     // 물품 수정 버튼
@@ -714,7 +727,7 @@ export const ImagesManagement = () => {
                                 </Row>
 
                                 <Row gutter={[16, 16]}>
-                                    <Col span={12}>
+                                    <Col span={12} >
                                         <Form.Item name="FileR">
                                             <Space direction="vertical">
                                                 <Card
