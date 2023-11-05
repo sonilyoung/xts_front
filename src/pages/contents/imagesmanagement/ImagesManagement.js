@@ -759,7 +759,7 @@ export const ImagesManagement = () => {
                                                 {realImgEdit === true ? (
                                                     <img
                                                         src={
-                                                            unitParams?.Threed !== null
+                                                            unitParams?.realImg !== null
                                                                 ? 'data:image/png;base64,' + unitParams?.realImg
                                                                 : noImage
                                                         }
