@@ -183,7 +183,7 @@ const Register = () => {
     const handleDOBChange = (date, dateString) => {
         setItemContainer((prevValues) => ({
             ...prevValues,
-            birthDay: dateString,
+            birthDay: dateString.format('YYYY-MM-DD'),
             age: calculateAge(dateString).toString()
         }));
     };
@@ -267,7 +267,7 @@ const Register = () => {
                                         <DatePicker
                                             name="writeDate"
                                             onChange={(date) => {
-                                                setItemContainer({ ...itemContainer, writeDate: date });
+                                                setItemContainer({ ...itemContainer, writeDate: date.format('YYYY-MM-DD') });
                                             }}
                                             placeholder="입교신청일"
                                             style={{

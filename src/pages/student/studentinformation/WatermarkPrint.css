@@ -1,24 +1,110 @@
 /* WatermarkPrint.css */
 
+@font-face {
+    font-family: 'KoPubWorldBatangLight';
+    src: url('assets/fonts/KoPubWorld Batang Light.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'KoPubWorldBatangMedium';
+    src: url('assets/fonts/KoPubWorld Batang Medium.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'KoPubWorldBatangProBold';
+    src: url('assets/fonts/KoPubWorld Batang_Pro Bold.otf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'KoPubWorldBatangProLight';
+    src: url('assets/fonts/KoPubWorld Batang_Pro Light.otf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'KoPubWorldBatangProMedium';
+    src: url('assets/fonts/KoPubWorld Batang_Pro Medium.otf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'KoPubWorldDotumBold';
+    src: url('assets/fonts/KoPubWorld Dotum Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'KoPubWorldDotumLight';
+    src: url('assets/fonts/KoPubWorld Dotum Light.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'KoPubWorldDotumMedium';
+    src: url('assets/fonts/KoPubWorld Dotum Medium.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'KoPubWorldDotumProBold';
+    src: url('assets/fonts/KoPubWorld Dotum_Pro Bold.otf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'KoPubWorldDotumProLight';
+    src: url('assets/fonts/KoPubWorld Dotum_Pro Light.otf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'KoPubWorldDotumProMedium';
+    src: url('assets/fonts/KoPubWorld Dotum_Pro Medium.otf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'KoPubWorldBatangBold';
+    src: url('assets/fonts/KoPubWorld Batang Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
 .watermark-print {
     position: relative;
-    margin: 20px 30px;
-    width: 90%;
-    height: 90%;
+    margin: 0px auto;
+    top: 0px;
+    width: 86.3%;
+    height: 100%;
+    padding-left: 10px;
 }
 
 .watermark-logo {
     position: absolute;
-    top: 10%;
-    left: 10%;
-    transform: 'translate(-50%, -50%)';
-    width: 80%;
-    height: 80%;
-    background-image: url('../../../assets/images/kssa_logo.png'); /* 로고 이미지 경로를 수정하세요 */
+    top: 19%;
+    left: 15.5%;
+    transform: 'translate(0%, 0%)';
+    width: 69%;
+    height: 69%;
+    background-image: url('../../../assets/images/auth/KakaoTalk_20231106_120921812.png'); /* 로고 이미지 경로를 수정하세요 */
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
-    opacity: 0.2; /* 로고의 투명도를 조정하세요 */
+    opacity: 0.8; /* 로고의 투명도를 조정하세요 */
     z-index: 1; /* Ensure the logo stays behind the content */
 }
 

@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState, useRef } from 'react';
-import { Typography } from '@mui/material';
 import {
     Row,
     Col,
@@ -20,8 +19,11 @@ import {
     Modal,
     Descriptions,
     Upload,
-    Spin
+    Spin,
+    Typography
 } from 'antd';
+const { Title, Paragraph, Text, Link } = Typography;
+
 import locale from 'antd/es/date-picker/locale/ko_KR';
 
 import excel from '../../../assets/xbt_file/File_Excel.png';
@@ -89,10 +91,13 @@ export const Studentinformation = () => {
     const [passResultModal, setPassResultModal] = useState(false); // 합격 여부 modal
     const [certificatesModal, setCertificatesModal] = useState(false); // 수료증(이수증) modal
     const [exceluploadModal, setExceluploadModal] = useState(false); // 엑셀 업로드 modal
+    const [distinct_Modal, setDistinct_Modal] = useState(false); // 엑셀 교육생 중복 modal
 
     const [userId_props, setUserId_props] = useState(null); // 수료증(이수증) props
     const [procCd_props, setProcCd_props] = useState(null); // 수료증(이수증) props
     const [procSeq_props, setProcSeq_props] = useState(null); // 수료증(이수증) props
+
+    const [distinct_student, setDistinct_Student] = useState(null); // 엑셀 업로드 중복 리스트
 
     const [searchval, setSearchval] = useState(null);
     // ===============================
@@ -327,36 +332,59 @@ export const Studentinformation = () => {
         let formData = new FormData();
         const params = {};
         formData.append('params', new Blob([JSON.stringify(params)], { type: 'application/json' }));
-        console.log(excelfile_base);
+        // console.log(excelfile_base);
         formData.append('excelFile', fileVale);
-
         const InsertStudentExcelResponse = await InsertStudentExcelApi(formData);
-
-        InsertStudentExcelResponse?.data?.RET_CODE === '9996'
+        InsertStudentExcelResponse?.data?.RET_CODE === '9996' // 이미 존재하는 아이디
+            ? Modal.success({
+                  content: InsertStudentExcelResponse?.data?.RET_DESC,
+                  onOk() {
+                      setDistinct_Modal(true);
+                      setDistinct_Student([
+                          ...InsertStudentExcelResponse?.data?.RET_DATA.map((d, i) => ({
+                              Distinct_key: d.userNo,
+                              Distinct_userNo: i + 1,
+                              Distinct_userId: d.userId,
+                              Distinct_userNm: d.userNm
+                          }))
+                      ]);
+                      setExceluploadModal(false);
+                  }
+              })
+            : InsertStudentExcelResponse?.data?.RET_CODE === '0100' // 등록 완료
             ? Modal.success({
                   content: InsertStudentExcelResponse?.data?.RET_DESC,
                   onOk() {
                       handle_SelectUserList_Api();
                   }
               })
-            : InsertStudentExcelResponse?.data?.RET_CODE === '0100'
-            ? Modal.success({
-                  content: InsertStudentExcelResponse?.data?.RET_DESC,
-                  onOk() {
-                      handle_SelectUserList_Api();
-                  }
-              })
-            : Modal.error({
+            : InsertStudentExcelResponse?.data?.RET_CODE === '0800' // 등록 에러
+            ? Modal.error({
                   content: '삭제 오류',
                   onOk() {}
-              });
+              })
+            : '';
 
-        console.log(InsertStudentExcelResponse);
+        // console.log(InsertStudentExcelResponse);
         setExcelloading(false);
     };
-
     // Api 호출 End
     // ===============================
+    const distinct_columns = [
+        {
+            title: 'No',
+            dataIndex: 'Distinct_userNo'
+        },
+        {
+            title: '아이디',
+            dataIndex: 'Distinct_userId'
+        },
+        {
+            title: '이름',
+            dataIndex: 'Distinct_userNm'
+        }
+    ];
+
     const columns = [
         {
             width: '70px',
@@ -386,18 +414,6 @@ export const Studentinformation = () => {
             dataIndex: 'company',
             align: 'center'
         },
-        // {
-        //     width: '110px',
-        //     title: '부서',
-        //     dataIndex: 'dept',
-        //     align: 'center'
-        // },
-        // {
-        //     width: '110px',
-        //     title: '직위',
-        //     dataIndex: 'position',
-        //     align: 'center'
-        // },
         {
             width: '250px',
             title: '교육 구분',
@@ -474,12 +490,12 @@ export const Studentinformation = () => {
     ];
 
     const onChange = (pagination, filters, sorter, extra) => {
-        console.log('params', pagination, filters, sorter, extra);
+        // console.log('params', pagination, filters, sorter, extra);
     };
 
     //체크 박스 이벤트
     const onSelectChange = (newSelectedRowKeys) => {
-        console.log('selectedRowKeys changed: ', newSelectedRowKeys);
+        // console.log('selectedRowKeys changed: ', newSelectedRowKeys);
         setSelectedRowKeys(newSelectedRowKeys);
     };
 
@@ -571,53 +587,17 @@ export const Studentinformation = () => {
         setCertificatesModal(true);
     };
 
-    const handlePrint = () => {
-        const content = contentRef.current;
-        if (content) {
-            const printWindow = window.open('', '_blank');
-            printWindow.document.write(`
-              <html>
-                <head>
-                  <title>Print</title>
-                  <style>
-                    @media print {
-                      @page {
-                        size: A4;
-                      }
-                    }
-                  </style>
-                </head>
-                <body>
-                ${content.innerHTML}
-                  <script>
-                    window.onload = function() {
-                      window.print();
-                    };
-      
-                    window.onafterprint = function() {
-                      window.close();
-                    };
-      
-                    window.onbeforeunload = function() {
-                      if (printWindow && !printWindow.closed) {
-                        printWindow.close();
-                      }
-                    };
-                  </script>
-                </body>
-              </html>
-            `);
-            printWindow.document.title = '이수증명서(' + userNmValue + ').pdf';
-            printWindow.document.close();
-        }
-    };
-
     // 이수증명서 Modal Close
     const certificatesModal_handleCancel = () => {
         setUserId_props(null);
         setProcCd_props(null);
         setProcSeq_props(null);
         setCertificatesModal(false);
+    };
+
+    // 엑셀 업로드 교육생 중복 Modal Close
+    const distinct_handleCancel = () => {
+        setDistinct_Modal(false);
     };
 
     const onSearch = (value) => {
@@ -689,9 +669,7 @@ export const Studentinformation = () => {
         // header 데이터 Css적용
         for (let i = 0; i < headers.length; i++) {
             const cellAddress = XLSX.utils.encode_cell({ r: 0, c: i });
-
             worksheet['!rows'] = [{ hpx: 30 }];
-
             worksheet['!cols'] = [];
             worksheet['!cols'][1] = { wpx: 80 };
             worksheet['!cols'][2] = { wpx: 80 };
@@ -785,18 +763,6 @@ export const Studentinformation = () => {
     useEffect(() => {
         setLoading(true);
         handle_SelectUserList_Api();
-
-        const handleUnload = () => {
-            if (printWindow && !printWindow.closed) {
-                printWindow.close();
-            }
-        };
-
-        window.addEventListener('beforeunload', handleUnload);
-
-        return () => {
-            window.removeEventListener('beforeunload', handleUnload);
-        };
     }, [searchval]);
 
     return (
@@ -1112,7 +1078,7 @@ export const Studentinformation = () => {
                                         locale={locale}
                                         name="writeDate"
                                         onChange={(date) => {
-                                            setItemContainer({ ...itemContainer, writeDate: date });
+                                            setItemContainer({ ...itemContainer, writeDate: date.format('YYYY-MM-DD') });
                                         }}
                                         placeholder="입교신청일"
                                         style={{
@@ -1337,7 +1303,7 @@ export const Studentinformation = () => {
                                         onChange={(date) => {
                                             setItemContainer({
                                                 ...itemContainer,
-                                                birthDay: date
+                                                birthDay: date.format('YYYY-MM-DD')
                                             });
                                         }}
                                         value={itemContainer?.birthDay ? dayjs(itemContainer.birthDay) : dayjs(new Date())}
@@ -2083,19 +2049,20 @@ export const Studentinformation = () => {
                 closable={true}
                 open={certificatesModal}
                 onCancel={certificatesModal_handleCancel}
-                width={700}
-                height={802}
+                width={600}
+                height={600}
                 style={{
                     top: 90,
                     left: 130,
                     zIndex: 999
                 }}
                 footer={
-                    <div style={{ textAlign: 'right', marginTop: '20px' }}>
-                        <Button type="primary" style={{ width: '160px', height: ' 60px', lineHeight: '30px' }} onClick={handlePrint}>
-                            이수 증명서 출력
-                        </Button>
-                    </div>
+                    null
+                    // <div style={{ textAlign: 'right', marginTop: '20px' }}>
+                    //     <Button type="primary" style={{ width: '160px', height: ' 60px', lineHeight: '30px' }} onClick={handlePrint}>
+                    //         이수 증명서 출력
+                    //     </Button>
+                    // </div>
                 }
             >
                 <div ref={contentRef}>
@@ -2184,6 +2151,30 @@ export const Studentinformation = () => {
                 {/* </Spin> */}
             </Modal>
             {/* 교육생 Excel End */}
+
+            {/* Excel 업로드 교육생 중복 리스트 Start */}
+            <Modal
+                title="교육생 중복 리스트"
+                closable={true}
+                open={distinct_Modal}
+                onCancel={distinct_handleCancel}
+                width={700}
+                height={802}
+                style={{
+                    top: 90,
+                    left: 130,
+                    zIndex: 999
+                }}
+                footer={null}
+            >
+                <Paragraph>
+                    <pre>
+                        ※ 중복된 교육생은 <Text strong>"수정"</Text> 에서 <Text strong>"교육과정명"</Text>을 변경하시기 바랍니다.
+                    </pre>
+                </Paragraph>
+                {distinct_Modal ? <Table columns={distinct_columns} dataSource={distinct_student} size="middle" /> : ''}
+            </Modal>
+            {/* Excel 업로드 교육생 중복 리스트 End */}
         </>
     );
 };
