@@ -150,6 +150,15 @@ export const studentsManagement = createApi({
             })
         }),
 
+        // 이수증 등록
+        insertCertNumber: builder.mutation({
+            query: (body) => ({
+                url: 'adm/userMgr/insertCertNumber.do',
+                method: 'POST',
+                body: body
+            })
+        }),
+
         // 교육생 엑셀 업로드
         insertStudentExcel: builder.mutation({
             query: (body) => ({
@@ -176,5 +185,6 @@ export const {
     useSelectStuUserCheckMutation,
     useSelectCertificationUserListMutation,
     useSelectCertificationUserMutation,
+    useInsertCertNumberMutation,
     useInsertStudentExcelMutation
 } = studentsManagement;

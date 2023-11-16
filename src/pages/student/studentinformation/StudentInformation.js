@@ -89,13 +89,13 @@ export const Studentinformation = () => {
     const [itemContainer, setItemContainer] = useState({}); // 항목 컨테이너
 
     const [passResultModal, setPassResultModal] = useState(false); // 합격 여부 modal
-    const [certificatesModal, setCertificatesModal] = useState(false); // 수료증(이수증) modal
+    const [certificatesModal, setCertificatesModal] = useState(false); // 수료증(이수증) 개인 modal
+    // const [certificates_corps_Modal, setCertificates_corps_Modal] = useState(false); // 수료증(이수증) 단체 modal
     const [exceluploadModal, setExceluploadModal] = useState(false); // 엑셀 업로드 modal
     const [distinct_Modal, setDistinct_Modal] = useState(false); // 엑셀 교육생 중복 modal
 
+    const [propsItem, setPropsItem] = useState(null); // 수료증(이수증) props
     const [userId_props, setUserId_props] = useState(null); // 수료증(이수증) props
-    const [procCd_props, setProcCd_props] = useState(null); // 수료증(이수증) props
-    const [procSeq_props, setProcSeq_props] = useState(null); // 수료증(이수증) props
 
     const [distinct_student, setDistinct_Student] = useState(null); // 엑셀 업로드 중복 리스트
 
@@ -110,7 +110,12 @@ export const Studentinformation = () => {
         });
         setDataSource([
             ...SelectUserListresponse?.data?.RET_DATA.map((d, i) => ({
-                key: d.userId,
+                key: {
+                    userId: d.userId,
+                    procCd: d.procCd,
+                    procSeq: d.procSeq,
+                    eduCode: d.eduCode
+                },
                 userNo: i + 1,
                 userId: d.userId,
                 userNm: d.userNm,
@@ -301,7 +306,7 @@ export const Studentinformation = () => {
     const [DeleteUserApi] = useDeleteUserMutation(); // 삭제 hooks api호출
     const handel_DeleteUser_Api = async (userIdList) => {
         const DeleteUserresponse = await DeleteUserApi({
-            userIdList: userIdList
+            userIdList: userIdList.map((row) => row[0])
         });
         DeleteUserresponse?.data?.RET_CODE === '0300'
             ? Modal.success({
@@ -445,22 +450,34 @@ export const Studentinformation = () => {
             )
         },
         {
-            title: '학격여부',
+            title: '안면인식',
             align: 'center',
             render: (_, { userId, userNm }) => (
                 <>
-                    <Tooltip title="학격여부" color="#108ee9">
+                    <Tooltip title="안면인식" color="#108ee9">
+                        안면인식
+                    </Tooltip>
+                </>
+            )
+        },
+        {
+            title: '이수증 출력 [개인]',
+            align: 'center',
+            render: (_, { userId, userNm }) => (
+                <>
+                    <Tooltip title="이수증 출력 [개인]" color="#108ee9">
                         <Button
                             type="primary"
                             onClick={() => passResultModal_handleOpen(userId, userNm)}
                             style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
                             icon={<FileProtectOutlined />}
                         >
-                            학격여부
+                            이수증 출력 [개인]
                         </Button>
                     </Tooltip>
                 </>
-            )
+            ),
+            width: '160px'
         },
         {
             width: '110px',
@@ -495,7 +512,7 @@ export const Studentinformation = () => {
 
     //체크 박스 이벤트
     const onSelectChange = (newSelectedRowKeys) => {
-        // console.log('selectedRowKeys changed: ', newSelectedRowKeys);
+        console.log('selectedRowKeys changed: ', newSelectedRowKeys);
         setSelectedRowKeys(newSelectedRowKeys);
     };
 
@@ -579,19 +596,30 @@ export const Studentinformation = () => {
         setPassResultModal(false);
     };
 
-    // 이수증명서 Modal Opem
-    const Certificates_Print = (userId, procCd, procSeq) => {
-        setUserId_props(userId);
-        setProcCd_props(procCd);
-        setProcSeq_props(procSeq);
+    // 이수증명서 Modal Opem (단체)
+    const Certificates_Print_Corps = () => {
+        if (selectedRowKeys == '') {
+            Modal.error({
+                content: '출력할 항목을 선택해주세요.'
+            });
+        } else {
+            setPropsItem(selectedRowKeys);
+            setPassResultModal(false);
+            setCertificatesModal(true);
+        }
+    };
+
+    // 이수증명서 Modal Opem (개인)
+    const Certificates_Print = (userId, procCd, procSeq, eduCode) => {
+        setPropsItem([{ userId: userId, procCd: procCd, procSeq: procSeq, eduCode: eduCode }]);
+        setPassResultModal(false);
         setCertificatesModal(true);
     };
 
     // 이수증명서 Modal Close
     const certificatesModal_handleCancel = () => {
         setUserId_props(null);
-        setProcCd_props(null);
-        setProcSeq_props(null);
+        setPropsItem('');
         setCertificatesModal(false);
     };
 
@@ -770,7 +798,7 @@ export const Studentinformation = () => {
             <MainCard title="교육생 정보조회">
                 <Typography variant="body1">
                     <Row gutter={[8, 8]} style={{ marginBottom: 16 }}>
-                        <Col span={12}>
+                        <Col span={10}>
                             <div style={{ display: 'flex', justifyContent: 'flex-start', fontSize: '14px' }}>
                                 <Input.Search
                                     placeholder="※ 통합 검색 (교육생ID, 교육생명, 기관, 부서, 직위, 교육구분, 입교신청일)"
@@ -783,7 +811,7 @@ export const Studentinformation = () => {
                                 />
                             </div>
                         </Col>
-                        <Col span={12} style={{ textAlign: 'right' }}>
+                        <Col span={14} style={{ textAlign: 'right' }}>
                             <Space>
                                 {window.localStorage.getItem('authCd') === '0000' ? (
                                     <>
@@ -890,7 +918,21 @@ export const Studentinformation = () => {
                             </Space>
                         </Col>
                     </Row>
-                    {/* userId */}
+                    <Row gutter={[8, 8]} style={{ marginBottom: 20 }}>
+                        <Col></Col>
+                        <Col span={24} style={{ textAlign: 'right' }}>
+                            <Tooltip title="이수증 출력(선택된 교육생)">
+                                <Button
+                                    type="primary"
+                                    onClick={() => Certificates_Print_Corps()}
+                                    style={{ borderRadius: '5px', padding: '0px 20px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                    icon={<FileProtectOutlined />}
+                                >
+                                    이수증 출력(선택된 교육생)
+                                </Button>
+                            </Tooltip>
+                        </Col>
+                    </Row>
                     <Table
                         columns={columns}
                         dataSource={dataSource}
@@ -2024,7 +2066,7 @@ export const Studentinformation = () => {
                                     <Button
                                         type="primary"
                                         danger
-                                        onClick={() => Certificates_Print(d.userId, d.procCd, d.procSeq)}
+                                        onClick={() => Certificates_Print(d.userId, d.procCd, d.procSeq, d.eduCode)}
                                         style={{ width: '160px', borderRadius: '12px', marginLeft: '10px', height: '85px' }}
                                     >
                                         이수 증명서
@@ -2056,17 +2098,28 @@ export const Studentinformation = () => {
                     left: 130,
                     zIndex: 999
                 }}
-                footer={
-                    null
-                    // <div style={{ textAlign: 'right', marginTop: '20px' }}>
-                    //     <Button type="primary" style={{ width: '160px', height: ' 60px', lineHeight: '30px' }} onClick={handlePrint}>
-                    //         이수 증명서 출력
-                    //     </Button>
-                    // </div>
-                }
+                // footer={[
+                //     <div style={{ textAlign: 'right', marginTop: '20px' }}>
+                //         <Button
+                //             type="primary"
+                //             style={{ width: '160px', height: ' 60px', lineHeight: '30px' }}
+                //             // onClick={handlePrint}
+                //         >
+                //             이수 증명서 출력
+                //         </Button>
+                //     </div>
+                // ]}
+                footer={''}
             >
-                <div ref={contentRef}>
-                    <CertificatesPrint userId_props={userId_props} procCd_props={procCd_props} procSeq_props={procSeq_props} />
+                <div
+                    ref={contentRef}
+                    style={{
+                        maxWidth: window.innerWidth,
+                        maxHeight: window.innerHeight - 200, // 원하는 최대 높이로 설정
+                        overflowY: 'auto' // 수직 스크롤바 추가
+                    }}
+                >
+                    <CertificatesPrint Corps_props={propsItem} />
                 </div>
             </Modal>
             {/* 수료증 Print End */}

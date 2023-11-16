@@ -157,6 +157,7 @@ export const Teacherstudent = () => {
             align: 'center'
         },
         {
+            width: '250px',
             title: '교육 구분',
             dataIndex: 'eduName',
             sorter: (a, b) => a.userNm.localeCompare(b.eduName, 'ko', { sensitivity: 'base' }),
