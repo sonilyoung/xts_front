@@ -141,6 +141,7 @@ export const Studentinformation = () => {
                 pwUpdate: d.pwUpdate,
                 pwPeriod: d.pwPeriod,
                 useYn: d.useYn,
+                faceType: d.faceType,
                 insertId: d.insertId,
                 insertDate: d.insertDate,
                 updateId: d.updateId,
@@ -154,6 +155,8 @@ export const Studentinformation = () => {
     const [InsertUserApi] = useInsertUserMutation(); // 교육생 정보 hooks api호출
     const handle_InsertUser_Api = async () => {
         const InsertUserresponse = await InsertUserApi({
+            useYn: itemContainer.useYn,
+            faceType: itemContainer.faceType,
             eduName: itemContainer.eduName, //                      교육과정명
             classType: itemContainer.classType, //                  반
             writeDate: itemContainer.writeDate, //                  입교신청일
@@ -244,6 +247,7 @@ export const Studentinformation = () => {
     const handel_UpdateUser_Api = async () => {
         const UpdateUserresponse = await UpdateUserApi({
             useYn: itemContainer.useYn, //                          사용여부
+            faceType: itemContainer.faceType, //                    안면인식사용여부
             eduName: itemContainer.eduName, //                      교육과정명
             classType: itemContainer.classType, //                  반
             writeDate: itemContainer.writeDate, //                  입교신청일
@@ -452,11 +456,17 @@ export const Studentinformation = () => {
         {
             title: '안면인식',
             align: 'center',
-            render: (_, { userId, userNm }) => (
+            render: (_, { faceType }) => (
                 <>
-                    <Tooltip title="안면인식" color="#108ee9">
-                        안면인식
-                    </Tooltip>
+                    {faceType === 'Y' ? (
+                        <Tag color={'green'} key={faceType}>
+                            사용
+                        </Tag>
+                    ) : (
+                        <Tag color={'volcano'} key={faceType}>
+                            미사용
+                        </Tag>
+                    )}
                 </>
             )
         },
@@ -990,40 +1000,64 @@ export const Studentinformation = () => {
             >
                 <Form layout="vertical" form={form}>
                     <Card>
-                        {idChk ? (
-                            <Row gutter={24}>
-                                <Col span={24}>
-                                    <Form.Item
-                                        label="사용여부"
-                                        rules={[
-                                            {
-                                                required: true,
-                                                message: '사용여부'
-                                            }
-                                        ]}
-                                        initialValue={itemContainer?.useYn}
+                        {/* {idChk ? ( */}
+                        <Row gutter={24}>
+                            <Col span={12}>
+                                <Form.Item
+                                    label="사용여부"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: '사용여부'
+                                        }
+                                    ]}
+                                    initialValue={itemContainer?.useYn}
+                                >
+                                    <Radio.Group
+                                        name="useYn"
+                                        onChange={(e) => setItemContainer({ ...itemContainer, useYn: e.target.value })}
+                                        buttonStyle="solid"
+                                        value={itemContainer?.useYn === 'Y' ? 'Y' : 'N'}
                                     >
-                                        <Radio.Group
-                                            name="useYn"
-                                            onChange={(e) => setItemContainer({ ...itemContainer, useYn: e.target.value })}
-                                            buttonStyle="solid"
-                                            value={itemContainer?.useYn}
-                                        >
-                                            <Radio.Button value="Y">
-                                                <span style={{ padding: '0 15px' }}>사용</span>
-                                            </Radio.Button>
-                                            <span style={{ padding: '0 10px' }}></span>
-                                            <Radio.Button value="N">
-                                                <span style={{ padding: '0 15px' }}>미사용</span>
-                                            </Radio.Button>
-                                        </Radio.Group>
-                                    </Form.Item>
-                                </Col>
-                            </Row>
-                        ) : (
-                            ''
-                        )}
-
+                                        <Radio.Button value="Y">
+                                            <span style={{ padding: '0 15px' }}>사용</span>
+                                        </Radio.Button>
+                                        <span style={{ padding: '0 10px' }}></span>
+                                        <Radio.Button value="N">
+                                            <span style={{ padding: '0 15px' }}>미사용</span>
+                                        </Radio.Button>
+                                    </Radio.Group>
+                                </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                                <Form.Item
+                                    label="안면인식 사용여부"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: '안면인식 사용여부'
+                                        }
+                                    ]}
+                                    initialValue={itemContainer?.faceType}
+                                >
+                                    <Radio.Group
+                                        name="faceType"
+                                        onChange={(e) => setItemContainer({ ...itemContainer, faceType: e.target.value })}
+                                        buttonStyle="solid"
+                                        value={itemContainer?.faceType === 'Y' ? 'Y' : 'N'}
+                                    >
+                                        <Radio.Button value="Y">
+                                            <span style={{ padding: '0 15px' }}>사용</span>
+                                        </Radio.Button>
+                                        <span style={{ padding: '0 10px' }}></span>
+                                        <Radio.Button value="N">
+                                            <span style={{ padding: '0 15px' }}>미사용</span>
+                                        </Radio.Button>
+                                    </Radio.Group>
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                        {/* ) : ( '' )} */}
                         <Row gutter={24}>
                             <Col span={12}>
                                 <Form.Item
