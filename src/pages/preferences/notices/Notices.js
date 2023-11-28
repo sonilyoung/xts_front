@@ -18,7 +18,8 @@ import localeData from 'dayjs/plugin/localeData';
 
 //test
 import { NoticeEditor } from './NoticeEditor';
-
+import { Viewer } from '@toast-ui/react-editor';
+import '@toast-ui/editor/dist/toastui-editor-viewer.css';
 const { RangePicker } = DatePicker;
 
 export const Notices = () => {
@@ -46,7 +47,7 @@ export const Notices = () => {
     const [loading, setLoading] = useState(false); // 로딩 초기값
     const [loadingView, setLoadingView] = useState(false); // 로딩 초기값
     const [open, setOpen] = useState(false); // Drawer 추가 우측폼 상태
-
+    const [viewValue, SetViewValue] = useState('');
     //Editor
     const editor = useRef(null);
     const [uploadedFiles, setUploadedFiles] = useState([]); // 파일 업로드 값
@@ -55,7 +56,7 @@ export const Notices = () => {
     const handleCall = async () => {
         const GetNoticeList = await getNoticeList({});
         setDataSource([
-            ...GetNoticeList?.data?.RET_DATA.map((noticeData, noticeIndex) => ({
+            ...GetNoticeList?.data?.RET_DATA?.map((noticeData, noticeIndex) => ({
                 key: noticeData.noticeId, //갱신, 삭제 등에 필요한 데이터
                 rowdata0: noticeIndex + 1, //index값
                 rowdata1: noticeData.title, // 제목
@@ -98,6 +99,7 @@ export const Notices = () => {
                         setLoadingView(true);
                         setIsModalOpen(true);
                         // setNoticeId(rowdata0);
+                        SetViewValue(key);
                         handleCallView(key);
                     }}
                 >
@@ -216,8 +218,9 @@ export const Notices = () => {
         const UpdateModulResponse = await UpdateNotice({
             noticeId: noticeId,
             title: itemContainer.title,
-            contents: itemContainer.contents
-            // useYn: itemContainer.useYn
+            contents: itemContainer.contents,
+            useYn: itemContainer.useYn,
+            insertDate: itemContainer.insertDate
         });
 
         UpdateModulResponse?.data?.RET_CODE === '0100'
@@ -432,7 +435,7 @@ export const Notices = () => {
                                             <DatePicker
                                                 name="insertDate"
                                                 onChange={(date) => {
-                                                    setItemContainer({ ...itemContainer, insertDate: date });
+                                                    setItemContainer({ ...itemContainer, insertDate: date.format('YYYY-MM-DD') });
                                                 }}
                                                 placeholder="공지일자"
                                                 style={{
@@ -574,9 +577,7 @@ export const Notices = () => {
                 <Descriptions bordered style={{ marginTop: '-1px' }}>
                     <Descriptions.Item label="내용" style={{ textAlign: 'center', width: '150px' }}>
                         <div style={{ textAlign: 'left' }}>
-                            {itemContainer?.contents?.split('/\n/g').map((line) => {
-                                return <div style={{ whiteSpace: 'pre-wrap' }}>{line}</div>;
-                            })}
+                            <Viewer key={viewValue} style={{ fontFamily: 'SUIT' }} initialValue={itemContainer?.contents} />
                         </div>
                     </Descriptions.Item>
                 </Descriptions>
