@@ -45,7 +45,8 @@ import {
     useDeleteUserMutation,
     useSelectUserCheckMutation,
     useSelectCertificationUserListMutation,
-    useInsertStudentExcelMutation
+    useInsertStudentExcelMutation,
+    useRemoveFaceApiMutation
 } from '../../../hooks/api/StudentsManagement/StudentsManagement';
 
 import {
@@ -142,6 +143,7 @@ export const Studentinformation = () => {
                 pwPeriod: d.pwPeriod,
                 useYn: d.useYn,
                 faceType: d.faceType,
+                faceYn: d.faceYn,
                 insertId: d.insertId,
                 insertDate: d.insertDate,
                 updateId: d.updateId,
@@ -454,7 +456,7 @@ export const Studentinformation = () => {
             )
         },
         {
-            title: '안면인식',
+            title: '안면인식 사용여부',
             align: 'center',
             render: (_, { faceType }) => (
                 <>
@@ -466,6 +468,32 @@ export const Studentinformation = () => {
                         <Tag color={'volcano'} key={faceType}>
                             미사용
                         </Tag>
+                    )}
+                </>
+            )
+        },
+        {
+            title: '안면인식 등록여부',
+            align: 'center',
+            render: (_, { faceYn, userId }) => (
+                <>
+                    {faceYn === 'Y' ? (
+                        <Tooltip title="안면인식 등록_삭제" color="#108ee9">
+                            <Tag
+                                color={'#108ee9'}
+                                key={faceYn}
+                                onClick={() => FaceImageRemove(userId)}
+                                style={{ padding: '5px 10px', cursor: 'pointer' }}
+                            >
+                                등록_삭제
+                            </Tag>
+                        </Tooltip>
+                    ) : (
+                        <Tooltip title="안면인식 미등록" color={'volcano'}>
+                            <Tag color={'volcano'} key={faceYn} style={{ padding: '5px 10px' }}>
+                                미등록
+                            </Tag>
+                        </Tooltip>
                     )}
                 </>
             )
@@ -515,6 +543,22 @@ export const Studentinformation = () => {
             align: 'center'
         }
     ];
+
+    // 안면인식 이미지 삭제
+    const [RemoveFaceApi] = useRemoveFaceApiMutation();
+    const FaceImageRemove = async (userId) => {
+        const RemoveFaceApiResponse = await RemoveFaceApi({
+            userId: userId
+        });
+        // console.log('얼굴삭제 : ', RemoveFaceApiResponse?.data);
+        if (RemoveFaceApiResponse?.data?.RET_CODE === '0000') {
+            handle_SelectUserList_Api();
+        } else {
+            Modal.error({
+                content: '오류가 발생했습니다.'
+            });
+        }
+    };
 
     const onChange = (pagination, filters, sorter, extra) => {
         // console.log('params', pagination, filters, sorter, extra);

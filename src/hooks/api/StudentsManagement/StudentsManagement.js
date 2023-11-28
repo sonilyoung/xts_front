@@ -166,6 +166,15 @@ export const studentsManagement = createApi({
                 method: 'POST',
                 body: body
             })
+        }),
+
+        // 안면인식 얼굴 삭제
+        removeFaceApi: builder.mutation({
+            query: (body) => ({
+                url: 'api/removeFaceApi.do',
+                method: 'POST',
+                body: body
+            })
         })
     })
 });
@@ -186,5 +195,6 @@ export const {
     useSelectCertificationUserListMutation,
     useSelectCertificationUserMutation,
     useInsertCertNumberMutation,
-    useInsertStudentExcelMutation
+    useInsertStudentExcelMutation,
+    useRemoveFaceApiMutation
 } = studentsManagement;
