@@ -1,7 +1,7 @@
 /* eslint-disable*/
 import React, { useEffect, useState } from 'react';
 import { Typography } from '@mui/material';
-import { Row, Col, Table, Button, Select, Form, Modal, Divider, Transfer, Tooltip, Popover } from 'antd';
+import { Row, Col, Table, Button, Select, Form, Modal, Divider, Transfer, Tooltip, Popover, Input, Space } from 'antd';
 import difference from 'lodash/difference';
 // 학습모듈 관리 - 랜덤추출, 물품팝업조회, 모듈에 등록된 문제목록 가져오기
 import {
@@ -25,13 +25,16 @@ export const XrayInformation = (props) => {
     const [mockData, setMockData] = useState([]);
     const [tooltipImg, setTooltipImg] = useState();
 
+    const [bagLists, setBagLists] = useState('');
     const [randemLevel, setRandemLevel] = useState(0); // 난이도 레벨
     const [randemlimit, setRandemlimit] = useState(5); // 출제 문항수
 
     // 물품팝업조회 ======================================================
     const [selectModuleXrayPopListApi] = useSelectModuleXrayPopListMutation(); // 물품팝업조회 hooks api호출
     const handle_SelectModuleXrayPopList_Api = async () => {
-        const selectModuleXrayPopListresponse = await selectModuleXrayPopListApi({});
+        const selectModuleXrayPopListresponse = await selectModuleXrayPopListApi({
+            bagLists: bagLists
+        });
         setMockData([
             ...selectModuleXrayPopListresponse?.data?.RET_DATA.map((d, i) => ({
                 key: d.bagScanId,
@@ -98,49 +101,68 @@ export const XrayInformation = (props) => {
         setTooltipImg(null);
     };
 
+    const handleChange = (e) => {
+        // 모든 공백 제거
+        const newValue = e.target.value.replace(/\s+/g, '');
+        setBagLists(newValue);
+    };
+
     const TableTransfer = ({ leftColumns, rightColumns, ...restProps }) => (
-        <Transfer {...restProps}>
-            {({ direction, filteredItems, onItemSelectAll, onItemSelect, selectedKeys: listSelectedKeys, disabled: listDisabled }) => {
-                const columns = direction === 'left' ? leftColumns : rightColumns;
-                const rowSelection = {
-                    getCheckboxProps: (item) => ({
-                        disabled: listDisabled || item.disabled
-                    }),
-                    onSelectAll(selected, selectedRows) {
-                        const treeSelectedKeys = selectedRows.filter((item) => !item.disabled).map(({ key }) => key);
-                        const diffKeys = selected
-                            ? difference(treeSelectedKeys, listSelectedKeys)
-                            : difference(listSelectedKeys, treeSelectedKeys);
-                        onItemSelectAll(diffKeys, selected);
-                    },
-                    onSelect({ key }, selected) {
-                        onItemSelect(key, selected);
-                    },
-                    selectedRowKeys: listSelectedKeys
-                };
-                return (
-                    <>
-                        <Table
-                            rowSelection={rowSelection}
-                            columns={columns}
-                            dataSource={filteredItems}
-                            size="middle"
-                            style={{
-                                marginBottom: '10px',
-                                padding: '0 10px',
-                                pointerEvents: listDisabled ? 'none' : undefined
-                            }}
-                            onRow={({ key, disabled: itemDisabled }) => ({
-                                onClick: () => {
-                                    if (itemDisabled || listDisabled) return;
-                                    onItemSelect(key, !listSelectedKeys.includes(key));
-                                }
-                            })}
-                        />
-                    </>
-                );
-            }}
-        </Transfer>
+        <>
+            <Space.Compact
+                style={{
+                    width: '48.5%',
+                    padding: '10px 0'
+                }}
+            >
+                <Input placeholder="가방ID 다중검색" onChange={handleChange} value={bagLists} style={{ fontSize: '13px' }} />
+                <Button type="primary" onClick={() => handle_SelectModuleXrayPopList_Api()}>
+                    가방ID 다중검색
+                </Button>
+            </Space.Compact>
+            <Transfer {...restProps}>
+                {({ direction, filteredItems, onItemSelectAll, onItemSelect, selectedKeys: listSelectedKeys, disabled: listDisabled }) => {
+                    const columns = direction === 'left' ? leftColumns : rightColumns;
+                    const rowSelection = {
+                        getCheckboxProps: (item) => ({
+                            disabled: listDisabled || item.disabled
+                        }),
+                        onSelectAll(selected, selectedRows) {
+                            const treeSelectedKeys = selectedRows.filter((item) => !item.disabled).map(({ key }) => key);
+                            const diffKeys = selected
+                                ? difference(treeSelectedKeys, listSelectedKeys)
+                                : difference(listSelectedKeys, treeSelectedKeys);
+                            onItemSelectAll(diffKeys, selected);
+                        },
+                        onSelect({ key }, selected) {
+                            onItemSelect(key, selected);
+                        },
+                        selectedRowKeys: listSelectedKeys
+                    };
+                    return (
+                        <>
+                            <Table
+                                rowSelection={rowSelection}
+                                columns={columns}
+                                dataSource={filteredItems}
+                                size="middle"
+                                style={{
+                                    marginBottom: '10px',
+                                    padding: '0 10px',
+                                    pointerEvents: listDisabled ? 'none' : undefined
+                                }}
+                                onRow={({ key, disabled: itemDisabled }) => ({
+                                    onClick: () => {
+                                        if (itemDisabled || listDisabled) return;
+                                        onItemSelect(key, !listSelectedKeys.includes(key));
+                                    }
+                                })}
+                            />
+                        </>
+                    );
+                }}
+            </Transfer>
+        </>
     );
 
     const leftTableColumns = [
@@ -148,17 +170,6 @@ export const XrayInformation = (props) => {
             title: '가방촬영ID',
             dataIndex: 'rowdata1',
             align: 'center'
-            // render: (_, { rowdata1 }) => (
-            //     <>
-            //         <Popover
-            //             content={tooltipImg ? <img src={'data:image/png;base64,' + tooltipImg} alt="" style={{ width: '550px' }} /> : ''}
-            //             title=""
-            //             placement="bottomLeft"
-            //         >
-            //         {rowdata1}
-            //         </Popover>
-            //     </>
-            // )
         },
         {
             title: '정답물품',

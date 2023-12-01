@@ -111,7 +111,7 @@ export const CertificatesPrint = (props) => {
                                         fontFamily: 'Verdana',
                                         fontFamily: 'KoPubWorldDotumProBold',
                                         letterSpacing: '0.03em',
-                                        paddingTop: '50px'
+                                        paddingTop: '60px'
                                     }}
                                 >
                                     Certificate Number : {d.certificationId}
@@ -142,28 +142,30 @@ export const CertificatesPrint = (props) => {
                                 <Row>
                                     <Col span={7}>
                                         <Row>
-                                            <Col style={{ fontSize: '18px', width: '60px', fontFamily: 'KoPubWorldBatangProMedium' }}>
+                                            <Col style={{ fontSize: '16px', width: '60px', fontFamily: 'KoPubWorldBatangProLight' }}>
                                                 성명 :{' '}
                                             </Col>
-                                            <Col style={{ fontSize: '18px', fontFamily: 'KoPubWorldBatangProMedium' }}>{d.userNm}</Col>
+                                            <Col style={{ fontSize: '16px', fontFamily: 'KoPubWorldBatangProLight' }}>{d.userNm}</Col>
                                         </Row>
                                         <Row>
-                                            <Col style={{ fontSize: '13px', width: '60px', fontFamily: 'KoPubWorldBatangRight' }}>Name</Col>
-                                            <Col style={{ fontSize: '13px', fontFamily: 'KoPubWorldDotumProMedium' }}>{d.userNmEn}</Col>
+                                            <Col style={{ fontSize: '13px', width: '60px', fontFamily: 'KoPubWorldDotumProLight' }}>
+                                                Name
+                                            </Col>
+                                            <Col style={{ fontSize: '13px', fontFamily: 'KoPubWorldDotumProLight' }}>{d.userNmEn}</Col>
                                         </Row>
                                     </Col>
                                     <Col span={10} offset={7}>
                                         <Row>
-                                            <Col style={{ fontSize: '18px', width: '90px', fontFamily: 'KoPubWorldBatangProMedium' }}>
+                                            <Col style={{ fontSize: '16px', width: '90px', fontFamily: 'KoPubWorldBatangProLight' }}>
                                                 생년월일 :{' '}
                                             </Col>
-                                            <Col style={{ fontSize: '18px', fontFamily: 'KoPubWorldBatangProMedium' }}>{d.birthDay}</Col>
+                                            <Col style={{ fontSize: '16px', fontFamily: 'KoPubWorldBatangProLight' }}>{d.birthDay}</Col>
                                         </Row>
                                         <Row>
-                                            <Col style={{ fontSize: '13px', width: '90px', fontFamily: 'KoPubWorldDotumProMedium' }}>
+                                            <Col style={{ fontSize: '13px', width: '90px', fontFamily: 'KoPubWorldDotumProLight' }}>
                                                 Date of Birth
                                             </Col>
-                                            <Col style={{ fontSize: '13px', fontFamily: 'KoPubWorldDotumProMedium' }}>
+                                            <Col style={{ fontSize: '13px', fontFamily: 'KoPubWorldDotumProLight' }}>
                                                 {new Date(d.birthDay).toLocaleDateString('en-US', {
                                                     year: 'numeric',
                                                     month: 'long',
@@ -178,16 +180,16 @@ export const CertificatesPrint = (props) => {
                                 <Row>
                                     <Col span={24}>
                                         <Row>
-                                            <Col style={{ fontSize: '18px', width: '60px', fontFamily: 'KoPubWorldBatangProMedium' }}>
+                                            <Col style={{ fontSize: '16px', width: '60px', fontFamily: 'KoPubWorldBatangProLight' }}>
                                                 주소 :{' '}
                                             </Col>
-                                            <Col style={{ fontSize: '18px', fontFamily: 'KoPubWorldBatangProMedium' }}>{d.address}</Col>
+                                            <Col style={{ fontSize: '16px', fontFamily: 'KoPubWorldBatangProLight' }}>{d.address}</Col>
                                         </Row>
                                         <Row>
-                                            <Col style={{ fontSize: '13px', width: '60px', fontFamily: 'KoPubWorldDotumProMedium' }}>
+                                            <Col style={{ fontSize: '13px', width: '60px', fontFamily: 'KoPubWorldDotumProLight' }}>
                                                 Address
                                             </Col>
-                                            <Col style={{ fontSize: '13px', fontFamily: 'KoPubWorldDotumProMedium' }}>{d.addressEn}</Col>
+                                            <Col style={{ fontSize: '13px', fontFamily: 'KoPubWorldDotumProLight' }}>{d.addressEn}</Col>
                                         </Row>
                                     </Col>
                                 </Row>
@@ -195,13 +197,13 @@ export const CertificatesPrint = (props) => {
                                 <Row>
                                     <Col span={24}>
                                         <Row>
-                                            <Col style={{ fontSize: '17px', fontFamily: 'KoPubWorldBatangProMedium' }}>
+                                            <Col style={{ fontSize: '19.5px', fontFamily: 'KoPubWorldBatangProMedium' }}>
                                                 위 사람은 『항공보안법』 제28조, 같은 법 시행규칙 제15조 및 국가민간항공보안 교육훈련지침에
-                                                따른 교육과정을 이수하였음을 증명합니다.
+                                                따른 교육과정을 <br /> 이수하였음을 증명합니다.
                                             </Col>
                                         </Row>
                                         <Row>
-                                            <Col style={{ fontSize: '12.2px', fontFamily: 'KoPubWorldDotumProLight' }}>
+                                            <Col style={{ fontSize: '13px', fontFamily: 'KoPubWorldDotumProLight' }}>
                                                 The person named above has successfully completed all the required training course in
                                                 accordance with the article 28 of Aviation Security Act, Article 15 of the Enforcement Rules
                                                 and National Civil Aviation Security Education and Training Guideline.
@@ -313,8 +315,8 @@ export const CertificatesPrint = (props) => {
                                                         backgroundPosition: 'center',
                                                         backgroundSize: 'contain',
                                                         top: '-35px',
-                                                        left: '123px',
-                                                        width: '100%',
+                                                        left: '313px',
+                                                        width: '100px',
                                                         height: '80px',
                                                         zIndex: 100
                                                     }}
