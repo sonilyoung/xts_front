@@ -335,27 +335,28 @@ export const XrayPoint = () => {
             align: 'center'
         },
         {
-            title: 'Action구분',
+            title: 'Action 구분',
             dataIndex: 'rowdata7',
-            align: 'center'
+            align: 'center',
+            render: (_, { rowdata6, rowdata7 }) => `${rowdata7} - ${rowdata6}`
         },
         {
-            title: '금지물품점수',
+            title: '금지물품점수 (Prohibit)',
             dataIndex: 'rowdata8',
             align: 'center'
         },
         {
-            title: '제한물품점수',
+            title: '제한물품점수 (Restrict)',
             dataIndex: 'rowdata9',
             align: 'center'
         },
         {
-            title: '의심물품점수',
+            title: '의심물품점수 (Open)',
             dataIndex: 'rowdata10',
             align: 'center'
         },
         {
-            title: '통과물품점수',
+            title: '통과물품점수 (Pass)',
             dataIndex: 'rowdata11',
             align: 'center'
         }
@@ -753,12 +754,12 @@ export const XrayPoint = () => {
             >
                 <MainCard>
                     <Form layout="vertical" form={form}>
-                        <Card title="개봉/금지" size="small" type="inner">
+                        <Card title="개봉/금지 [0]" size="small" type="inner">
                             <Row gutter={24} style={{ marginBottom: '-20px' }}>
                                 <Col span={6}>
                                     <Form.Item
                                         name="Score1"
-                                        label="금지물품점수"
+                                        label="금지물품 (Prohibit)"
                                         rules={setRules}
                                         initialValue={itemContainerSub?.actionDiv0?.banUnitScore}
                                     >
@@ -766,7 +767,7 @@ export const XrayPoint = () => {
                                             <Col>
                                                 <Input
                                                     name="banUnitScore"
-                                                    placeholder="# 금지물품점수"
+                                                    placeholder="# 금지물품 (Prohibit)"
                                                     onChange={(e) =>
                                                         setItemContainerSub({
                                                             ...itemContainerSub,
@@ -786,7 +787,7 @@ export const XrayPoint = () => {
                                 <Col span={6}>
                                     <Form.Item
                                         name="Score2"
-                                        label="제한물품점수"
+                                        label="제한물품 (Restrict)"
                                         rules={setRules}
                                         initialValue={itemContainerSub?.actionDiv0?.limitUnitScore}
                                     >
@@ -794,7 +795,7 @@ export const XrayPoint = () => {
                                             <Col>
                                                 <Input
                                                     name="limitUnitScore"
-                                                    placeholder="# 제한물품점수"
+                                                    placeholder="# 제한물품 (Restrict)"
                                                     onChange={(e) =>
                                                         setItemContainerSub({
                                                             ...itemContainerSub,
@@ -814,7 +815,7 @@ export const XrayPoint = () => {
                                 <Col span={6}>
                                     <Form.Item
                                         name="Score3"
-                                        label="의심물품점수"
+                                        label="의심물품 (Open)"
                                         rules={setRules}
                                         initialValue={itemContainerSub?.actionDiv0?.questionUnitScore}
                                     >
@@ -822,7 +823,7 @@ export const XrayPoint = () => {
                                             <Col>
                                                 <Input
                                                     name="questionUnitScore"
-                                                    placeholder="# 의심물품점수"
+                                                    placeholder="# 의심물품 (Open)"
                                                     onChange={(e) =>
                                                         setItemContainerSub({
                                                             ...itemContainerSub,
@@ -842,7 +843,7 @@ export const XrayPoint = () => {
                                 <Col span={6}>
                                     <Form.Item
                                         name="Score4"
-                                        label="통과물품점수"
+                                        label="통과물품 (Pass)"
                                         rules={setRules}
                                         initialValue={itemContainerSub?.actionDiv0?.passUnitScore}
                                     >
@@ -850,7 +851,7 @@ export const XrayPoint = () => {
                                             <Col>
                                                 <Input
                                                     name="passUnitScore"
-                                                    placeholder="# 통과물품점수"
+                                                    placeholder="# 통과물품 (Pass)"
                                                     onChange={(e) =>
                                                         setItemContainerSub({
                                                             ...itemContainerSub,
@@ -870,12 +871,12 @@ export const XrayPoint = () => {
                             </Row>
                         </Card>
                         <Divider style={{ margin: '10px 0' }} />
-                        <Card title="미개봉/금지" size="small" type="inner">
+                        <Card title="미개봉/금지 [1]" size="small" type="inner">
                             <Row gutter={24} style={{ marginBottom: '-20px' }}>
                                 <Col span={6}>
                                     <Form.Item
                                         name="Score5"
-                                        label="금지물품점수"
+                                        label="금지물품 (Prohibit)"
                                         rules={setRules}
                                         initialValue={itemContainerSub?.actionDiv1?.banUnitScore}
                                     >
@@ -883,7 +884,7 @@ export const XrayPoint = () => {
                                             <Col>
                                                 <Input
                                                     name="banUnitScore"
-                                                    placeholder="# 금지물품점수"
+                                                    placeholder="# 금지물품 (Prohibit)"
                                                     onChange={(e) =>
                                                         setItemContainerSub({
                                                             ...itemContainerSub,
@@ -903,7 +904,7 @@ export const XrayPoint = () => {
                                 <Col span={6}>
                                     <Form.Item
                                         name="Score6"
-                                        label="제한물품점수"
+                                        label="제한물품 (Restrict)"
                                         rules={setRules}
                                         initialValue={itemContainerSub?.actionDiv1?.limitUnitScore}
                                     >
@@ -911,7 +912,7 @@ export const XrayPoint = () => {
                                             <Col>
                                                 <Input
                                                     name="limitUnitScore"
-                                                    placeholder="# 제한물품점수"
+                                                    placeholder="# 제한물품 (Restrict)"
                                                     onChange={(e) =>
                                                         setItemContainerSub({
                                                             ...itemContainerSub,
@@ -931,7 +932,7 @@ export const XrayPoint = () => {
                                 <Col span={6}>
                                     <Form.Item
                                         name="Score7"
-                                        label="의심물품점수"
+                                        label="의심물품 (Open)"
                                         rules={setRules}
                                         initialValue={itemContainerSub?.actionDiv1?.questionUnitScore}
                                     >
@@ -939,7 +940,7 @@ export const XrayPoint = () => {
                                             <Col>
                                                 <Input
                                                     name="questionUnitScore"
-                                                    placeholder="# 의심물품점수"
+                                                    placeholder="# 의심물품 (Open)"
                                                     onChange={(e) =>
                                                         setItemContainerSub({
                                                             ...itemContainerSub,
@@ -959,7 +960,7 @@ export const XrayPoint = () => {
                                 <Col span={6}>
                                     <Form.Item
                                         name="Score8"
-                                        label="통과물품점수"
+                                        label="통과물품 (Pass)"
                                         rules={setRules}
                                         initialValue={itemContainerSub?.actionDiv1?.passUnitScore}
                                     >
@@ -967,7 +968,7 @@ export const XrayPoint = () => {
                                             <Col>
                                                 <Input
                                                     name="passUnitScore"
-                                                    placeholder="# 통과물품점수"
+                                                    placeholder="# 통과물품 (pass)"
                                                     onChange={(e) =>
                                                         setItemContainerSub({
                                                             ...itemContainerSub,
@@ -987,12 +988,12 @@ export const XrayPoint = () => {
                             </Row>
                         </Card>
                         <Divider style={{ margin: '10px 0' }} />
-                        <Card title="개봉/제한" size="small" type="inner">
+                        <Card title="개봉/제한 [2]" size="small" type="inner">
                             <Row gutter={24} style={{ marginBottom: '-20px' }}>
                                 <Col span={6}>
                                     <Form.Item
                                         name="Score9"
-                                        label="금지물품점수"
+                                        label="금지물품 (Prohibit)"
                                         rules={setRules}
                                         initialValue={itemContainerSub?.actionDiv2?.banUnitScore}
                                     >
@@ -1000,7 +1001,7 @@ export const XrayPoint = () => {
                                             <Col>
                                                 <Input
                                                     name="banUnitScore"
-                                                    placeholder="# 금지물품점수"
+                                                    placeholder="# 금지물품 (Prohibit)"
                                                     onChange={(e) =>
                                                         setItemContainerSub({
                                                             ...itemContainerSub,
@@ -1020,7 +1021,7 @@ export const XrayPoint = () => {
                                 <Col span={6}>
                                     <Form.Item
                                         name="Score10"
-                                        label="제한물품점수"
+                                        label="제한물품 (Restrict)"
                                         rules={setRules}
                                         initialValue={itemContainerSub?.actionDiv2?.limitUnitScore}
                                     >
@@ -1028,7 +1029,7 @@ export const XrayPoint = () => {
                                             <Col>
                                                 <Input
                                                     name="limitUnitScore"
-                                                    placeholder="# 제한물품점수"
+                                                    placeholder="# 제한물품 (Restrict)"
                                                     onChange={(e) =>
                                                         setItemContainerSub({
                                                             ...itemContainerSub,
@@ -1048,7 +1049,7 @@ export const XrayPoint = () => {
                                 <Col span={6}>
                                     <Form.Item
                                         name="Score11"
-                                        label="의심물품점수"
+                                        label="의심물품 (Open)"
                                         rules={setRules}
                                         initialValue={itemContainerSub?.actionDiv2?.questionUnitScore}
                                     >
@@ -1056,7 +1057,7 @@ export const XrayPoint = () => {
                                             <Col>
                                                 <Input
                                                     name="questionUnitScore"
-                                                    placeholder="# 의심물품점수"
+                                                    placeholder="# 의심물품 (Open)"
                                                     onChange={(e) =>
                                                         setItemContainerSub({
                                                             ...itemContainerSub,
@@ -1076,7 +1077,7 @@ export const XrayPoint = () => {
                                 <Col span={6}>
                                     <Form.Item
                                         name="Score12"
-                                        label="통과물품점수"
+                                        label="통과물품 (Pass)"
                                         rules={setRules}
                                         initialValue={itemContainerSub?.actionDiv2?.passUnitScore}
                                     >
@@ -1084,7 +1085,7 @@ export const XrayPoint = () => {
                                             <Col>
                                                 <Input
                                                     name="passUnitScore"
-                                                    placeholder="# 통과물품점수"
+                                                    placeholder="# 통과물품 (Pass)"
                                                     onChange={(e) =>
                                                         setItemContainerSub({
                                                             ...itemContainerSub,
@@ -1104,12 +1105,12 @@ export const XrayPoint = () => {
                             </Row>
                         </Card>
                         <Divider style={{ margin: '10px 0' }} />
-                        <Card title="개봉/통과" size="small" type="inner">
+                        <Card title="개봉/통과 [3]" size="small" type="inner">
                             <Row gutter={24} style={{ marginBottom: '-20px' }}>
                                 <Col span={6}>
                                     <Form.Item
                                         name="Score13"
-                                        label="금지물품점수"
+                                        label="금지물품 (Prohibit)"
                                         rules={setRules}
                                         initialValue={itemContainerSub?.actionDiv3?.banUnitScore}
                                     >
@@ -1117,7 +1118,7 @@ export const XrayPoint = () => {
                                             <Col>
                                                 <Input
                                                     name="banUnitScore"
-                                                    placeholder="# 금지물품점수"
+                                                    placeholder="# 금지물품 (Prohibit)"
                                                     onChange={(e) =>
                                                         setItemContainerSub({
                                                             ...itemContainerSub,
@@ -1137,7 +1138,7 @@ export const XrayPoint = () => {
                                 <Col span={6}>
                                     <Form.Item
                                         name="Score14"
-                                        label="제한물품점수"
+                                        label="제한물품 (Restrict)"
                                         rules={setRules}
                                         initialValue={itemContainerSub?.actionDiv3?.limitUnitScore}
                                     >
@@ -1145,7 +1146,7 @@ export const XrayPoint = () => {
                                             <Col>
                                                 <Input
                                                     name="limitUnitScore"
-                                                    placeholder="# 제한물품점수"
+                                                    placeholder="# 제한물품 (Restrict)"
                                                     onChange={(e) =>
                                                         setItemContainerSub({
                                                             ...itemContainerSub,
@@ -1165,7 +1166,7 @@ export const XrayPoint = () => {
                                 <Col span={6}>
                                     <Form.Item
                                         name="Score15"
-                                        label="의심물품점수"
+                                        label="의심물품 (Open)"
                                         rules={setRules}
                                         initialValue={itemContainerSub?.actionDiv3?.questionUnitScore}
                                     >
@@ -1173,7 +1174,7 @@ export const XrayPoint = () => {
                                             <Col>
                                                 <Input
                                                     name="questionUnitScore"
-                                                    placeholder="# 의심물품점수"
+                                                    placeholder="# 의심물품 (Open)"
                                                     onChange={(e) =>
                                                         setItemContainerSub({
                                                             ...itemContainerSub,
@@ -1193,7 +1194,7 @@ export const XrayPoint = () => {
                                 <Col span={6}>
                                     <Form.Item
                                         name="Score16"
-                                        label="통과물품점수"
+                                        label="통과물품 (Pass)"
                                         rules={setRules}
                                         initialValue={itemContainerSub?.actionDiv3?.passUnitScore}
                                     >
@@ -1201,7 +1202,7 @@ export const XrayPoint = () => {
                                             <Col>
                                                 <Input
                                                     name="passUnitScore"
-                                                    placeholder="# 통과물품점수"
+                                                    placeholder="# 통과물품 (Pass)"
                                                     onChange={(e) =>
                                                         setItemContainerSub({
                                                             ...itemContainerSub,
@@ -1221,12 +1222,12 @@ export const XrayPoint = () => {
                             </Row>
                         </Card>
                         <Divider style={{ margin: '10px 0' }} />
-                        <Card title="미개봉/통과" size="small" type="inner">
+                        <Card title="미개봉/통과 [4]" size="small" type="inner">
                             <Row gutter={24} style={{ marginBottom: '-20px' }}>
                                 <Col span={6}>
                                     <Form.Item
                                         name="Score17"
-                                        label="금지물품점수"
+                                        label="금지물품 (Prohibit)"
                                         rules={setRules}
                                         initialValue={itemContainerSub?.actionDiv4?.banUnitScore}
                                     >
@@ -1234,7 +1235,7 @@ export const XrayPoint = () => {
                                             <Col>
                                                 <Input
                                                     name="banUnitScore"
-                                                    placeholder="# 금지물품점수"
+                                                    placeholder="# 금지물품 (Prohibit)"
                                                     onChange={(e) =>
                                                         setItemContainerSub({
                                                             ...itemContainerSub,
@@ -1254,7 +1255,7 @@ export const XrayPoint = () => {
                                 <Col span={6}>
                                     <Form.Item
                                         name="Score18"
-                                        label="제한물품점수"
+                                        label="제한물품 (Restrict)"
                                         rules={setRules}
                                         initialValue={itemContainerSub?.actionDiv4?.limitUnitScore}
                                     >
@@ -1262,7 +1263,7 @@ export const XrayPoint = () => {
                                             <Col>
                                                 <Input
                                                     name="limitUnitScore"
-                                                    placeholder="# 제한물품점수"
+                                                    placeholder="# 제한물품 (Restrict)"
                                                     onChange={(e) =>
                                                         setItemContainerSub({
                                                             ...itemContainerSub,
@@ -1282,7 +1283,7 @@ export const XrayPoint = () => {
                                 <Col span={6}>
                                     <Form.Item
                                         name="Score19"
-                                        label="의심물품점수"
+                                        label="의심물품 (Open)"
                                         rules={setRules}
                                         initialValue={itemContainerSub?.actionDiv4?.questionUnitScore}
                                     >
@@ -1290,7 +1291,7 @@ export const XrayPoint = () => {
                                             <Col>
                                                 <Input
                                                     name="questionUnitScore"
-                                                    placeholder="# 의심물품점수"
+                                                    placeholder="# 의심물품 (Open)"
                                                     onChange={(e) =>
                                                         setItemContainerSub({
                                                             ...itemContainerSub,
@@ -1310,7 +1311,7 @@ export const XrayPoint = () => {
                                 <Col span={6}>
                                     <Form.Item
                                         name="Score20"
-                                        label="통과물품점수"
+                                        label="통과물품 (Pass)"
                                         rules={setRules}
                                         initialValue={itemContainerSub?.actionDiv4?.passUnitScore}
                                     >
@@ -1318,7 +1319,7 @@ export const XrayPoint = () => {
                                             <Col>
                                                 <Input
                                                     name="passUnitScore"
-                                                    placeholder="# 통과물품점수"
+                                                    placeholder="# 통과물품 (Pass)"
                                                     onChange={(e) =>
                                                         setItemContainerSub({
                                                             ...itemContainerSub,

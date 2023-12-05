@@ -90,7 +90,11 @@ export const TheoryInfo = () => {
                 rowdata12: d.choice4, //선택지문4
                 rowdata13: d.actionDiv, //정답
                 rowdata14: d.usinsertId, // 등록아이디
-                rowdata15: d.insertDate // 등록일자
+                rowdata15: d.insertDate, // 등록일자
+
+                rowdata16: d.lageGroupNm, //대그룹명
+                rowdata17: d.middleGroupNm, //중그룹명
+                rowdata18: d.smallGroupNm //소그룹명
             }))
         ]);
         setLoading(false);
@@ -454,7 +458,6 @@ export const TheoryInfo = () => {
             align: 'center',
             render: (_, { rowdata3 }) => (
                 <>
-                    {' '}
                     {rowdata3 === 'A'
                         ? '사지선다'
                         : rowdata3 === 'B'
@@ -468,6 +471,12 @@ export const TheoryInfo = () => {
             )
         },
         {
+            title: '그룹',
+            align: 'center',
+            render: (_, { rowdata5, rowdata6, rowdata7, rowdata16, rowdata17, rowdata18 }) =>
+                `${rowdata5 ? `${rowdata16}${rowdata6 ? ` / ${rowdata17}` : ''}` : ''}${rowdata7 ? ` / ${rowdata18}` : ''}`
+        },
+        {
             width: '90px',
             title: '학습레벨',
             dataIndex: 'rowdata2',
@@ -475,16 +484,17 @@ export const TheoryInfo = () => {
             render: (_, { rowdata2 }) => <> {rowdata2 + 'Lv'} </>
         },
         {
+            width: '30%',
             title: '질문',
             dataIndex: 'rowdata8',
             align: 'center'
         },
-        {
-            width: '90px',
-            title: '출제자',
-            dataIndex: 'rowdata14',
-            align: 'center'
-        },
+        // {
+        //     width: '90px',
+        //     title: '출제자',
+        //     dataIndex: 'rowdata14',
+        //     align: 'center'
+        // },
         {
             width: '80px',
             title: '사용여부',
@@ -628,10 +638,15 @@ export const TheoryInfo = () => {
 
     useEffect(() => {
         handle_L_TheoryGroup_Api(); // 대분류 Api
-        handle_M_TheoryGroup_Api(itemContainer?.lageGroupCd); // 대분류 Api
-        handle_S_TheoryGroup_Api(itemContainer?.middleGroupCd); // 대분류 Api
+        if (itemContainer?.lageGroupCd === undefined) {
+        } else {
+            handle_M_TheoryGroup_Api(itemContainer?.lageGroupCd); // 중분류 Api
+        }
+        if (itemContainer?.middleGroupCd === undefined) {
+        } else {
+            handle_S_TheoryGroup_Api(itemContainer?.middleGroupCd); // 소분류 Api
+        }
     }, [questionIdKey]);
-
     return (
         <>
             <MainCard title="교육 관리">

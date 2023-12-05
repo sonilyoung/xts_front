@@ -1236,7 +1236,11 @@ export const Studentinformation = () => {
                                         style={{
                                             width: '100%'
                                         }}
-                                        value={itemContainer?.writeDate ? dayjs(itemContainer.writeDate) : dayjs(new Date())}
+                                        value={
+                                            itemContainer?.writeDate
+                                                ? dayjs(itemContainer.writeDate)
+                                                : setItemContainer({ ...itemContainer, writeDate: dayjs(new Date()).format('YYYY-MM-DD') })
+                                        }
                                     />
                                 </Form.Item>
                             </Col>
