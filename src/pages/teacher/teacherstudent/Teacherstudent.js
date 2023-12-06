@@ -4,7 +4,8 @@ import { Typography, Table, Tag, Tooltip, Button, Descriptions, Modal, Input, Sp
 import {
     useSelectBaselineUserListMutation,
     useSelectBaselineUserMutation,
-    useUpdateBaselineUserMutation
+    useUpdateBaselineUserMutation,
+    useDeleteEvaluationDataMutation
 } from '../../../hooks/api/StudentsManagement/StudentsManagement';
 import excel from '../../../assets/xbt_file/File_Excel.png';
 import { PlusOutlined, DeleteFilled, FileProtectOutlined, AudioOutlined } from '@ant-design/icons';
@@ -35,6 +36,7 @@ export const Teacherstudent = () => {
     const [procCdChk, setProcCdChk] = useState(''); // 차수 코드
     const [userIdChk, setUserIdChk] = useState(''); // 교육생 아이디
     const [eduCd, setEduCd] = useState(''); // 교육 코드
+    const [selectedRowKeys, setSelectedRowKeys] = useState([]); //셀렉트 박스 option Selected 값
 
     const [evalOpen, setEvalOpen] = useState(false);
     const [searchval, setSearchval] = useState();
@@ -64,7 +66,8 @@ export const Teacherstudent = () => {
                 eduName: d.eduName,
                 eduStartDate: d.eduStartDate, //교육시작일
                 eduEndDate: d.eduEndDate, //교육종료일
-                endingYn: d.endingYn //완료여부 (Y 완료 N 미완료 ING 진행중)
+                endingYn: d.endingYn, //완료여부 (Y 완료 N 미완료 ING 진행중)
+                evaluationYn: d.evaluationYn // 평가 진행여부
             }))
         ]);
         setLoading(false);
@@ -112,11 +115,56 @@ export const Teacherstudent = () => {
         }
     };
 
+    // 교육생 재평가 (다중)
+    const [DeleteEvaluationDataApi] = useDeleteEvaluationDataMutation(); // 교육생 정보 hooks api호출
+    const handle_DeleteEvaluationData_O_Api = async () => {
+        if (selectedRowKeys.length === 0) {
+            Modal.error({
+                content: '재평가할 교육생을 선택하세요.',
+                onOk() {}
+            });
+        }
+        const DeleteEvaluationData_O_Response = await DeleteEvaluationDataApi(
+            selectedRowKeys.map((key) => ({ procCd: key.procCd, userId: key.userId }))
+        );
+        if (DeleteEvaluationData_O_Response?.data?.RET_CODE === '0000') {
+            Modal.success({
+                content: '평가 초기화 완료',
+                onOk() {
+                    handle_SelectBaselineUserList_Api();
+                }
+            });
+        } else if (DeleteEvaluationData_O_Response?.data?.RET_CODE === '1000') {
+            Modal.error({
+                content: '평가 초기화에 실패하였습니다.',
+                onOk() {}
+            });
+        }
+    };
+
+    // 교육생 재평가 (개인)
+    const handle_DeleteEvaluationData_G_Api = async (flag1, flag2) => {
+        const DeleteEvaluationData_G_Response = await DeleteEvaluationDataApi([{ procCd: flag1, userId: flag2 }]);
+        if (DeleteEvaluationData_G_Response?.data?.RET_CODE === '0000') {
+            Modal.success({
+                content: '평가 초기화 완료',
+                onOk() {
+                    handle_SelectBaselineUserList_Api();
+                }
+            });
+        } else if (DeleteEvaluationData_G_Response?.data?.RET_CODE === '1000') {
+            Modal.error({
+                content: '평가 초기화에 실패하였습니다.',
+                onOk() {}
+            });
+        }
+    };
+
     // Api 호출 End
     // ===============================
     const columns = [
         {
-            width: '70px',
+            width: '65px',
             title: 'No',
             dataIndex: 'userNo',
             sorter: (a, b) => a.userNo - b.userNo,
@@ -149,7 +197,7 @@ export const Teacherstudent = () => {
             align: 'center'
         },
         {
-            width: '120px',
+            width: '100px',
             title: '교육생 명',
             dataIndex: 'userNm',
             sorter: (a, b) => a.userNm.localeCompare(b.userNm, 'ko', { sensitivity: 'base' }),
@@ -171,7 +219,7 @@ export const Teacherstudent = () => {
             align: 'center'
         },
         {
-            width: '100px',
+            width: '95px',
             title: '평가 가중치',
             dataIndex: 'gainScore',
             align: 'center',
@@ -193,10 +241,10 @@ export const Teacherstudent = () => {
             )
         },
         {
-            width: '100px',
+            width: '190px',
             title: '학격여부',
             align: 'center',
-            render: (_, { passYn }) => (
+            render: (_, { passYn, procCd, userId, evaluationYn }) => (
                 <>
                     {passYn === 'Y' ? (
                         <Tag color="#2db7f5" style={{ padding: '5px 12px', borderRadius: '5px' }}>
@@ -213,11 +261,25 @@ export const Teacherstudent = () => {
                     ) : (
                         <Tag>-</Tag>
                     )}
+                    {evaluationYn === 'Y' ? (
+                        <Button
+                            type="primary"
+                            style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                            icon={<FileProtectOutlined />}
+                            onClick={() => {
+                                handle_ReEvaluation(procCd, userId);
+                            }}
+                        >
+                            재평가
+                        </Button>
+                    ) : (
+                        ''
+                    )}
                 </>
             )
         },
         {
-            width: '200px',
+            width: '190px',
             title: '교육일',
             align: 'center',
             dataIndex: 'eduStartDate',
@@ -228,7 +290,7 @@ export const Teacherstudent = () => {
             )
         },
         {
-            width: '110px',
+            width: '105px',
             title: '교육완료여부',
             dataIndex: 'useYn',
             align: 'center',
@@ -254,6 +316,27 @@ export const Teacherstudent = () => {
         }
     ];
 
+    //체크 박스 이벤트
+    const onSelectChange = (newSelectedRowKeys, newSelectedRow) => {
+        const selectedUserIds = newSelectedRow.map((row) => ({
+            userId: row.userId,
+            procCd: row.procCd
+        }));
+        setSelectedRowKeys(selectedUserIds);
+    };
+
+    //체크 박스 선택
+    const rowSelection = {
+        // selectedRowKeys,
+
+        // (proCd, userId)
+        onChange: onSelectChange
+    };
+
+    // 개인 재평가
+    const handle_ReEvaluation = (procCd, userId) => {
+        handle_DeleteEvaluationData_G_Api(procCd, userId);
+    };
     const handle_Score = (procCd, userId, eduCode) => {
         setProcCdChk(procCd);
         setUserIdChk(userId);
@@ -863,6 +946,16 @@ export const Teacherstudent = () => {
                             <Space>
                                 {window.localStorage.getItem('authCd') === '0000' ? (
                                     <>
+                                        <Tooltip title="다중 재평가">
+                                            <Button
+                                                type="primary"
+                                                style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                                icon={<FileProtectOutlined />}
+                                                onClick={() => handle_DeleteEvaluationData_O_Api()}
+                                            >
+                                                다중 재평가
+                                            </Button>
+                                        </Tooltip>
                                         <Tooltip title="인증평가표 다운로드(검색조건)">
                                             <Button
                                                 type="default"
@@ -952,6 +1045,7 @@ export const Teacherstudent = () => {
                         }}
                         columns={columns}
                         dataSource={dataSource}
+                        rowSelection={{ ...rowSelection }}
                         bordered={true}
                         onChange={onChange}
                         loading={loading}
@@ -1012,6 +1106,48 @@ export const Teacherstudent = () => {
                             <Descriptions layout="vertical" bordered style={{ marginLeft: '20px' }}>
                                 <Descriptions.Item style={{ textAlign: 'center', fontWeight: 'bold' }} label="XBT평가 최종점수">
                                     <space style={{ color: '#108ee9' }}>{evaluationInfoData?.gainScore || '-'}</space>
+                                </Descriptions.Item>
+                            </Descriptions>
+                        </Space>
+                    </Card>
+                    <br />
+                    <br />
+                    <Card style={{ width: '100%' }} title={<span style={{ fontSize: '15px' }}>※ 공항위험물 평가</span>}>
+                        <Space>
+                            <Descriptions layout="vertical" bordered column={5}>
+                                <Descriptions.Item style={{ textAlign: 'center', width: '240px' }} label="평가명">
+                                    {theoryInfoData?.procNm || '-'}
+                                </Descriptions.Item>
+                                <Descriptions.Item style={{ textAlign: 'center' }} label="문항수">
+                                    {theoryInfoData?.questionCnt || '-'}
+                                </Descriptions.Item>
+                                <Descriptions.Item style={{ textAlign: 'center' }} label="정답">
+                                    {theoryInfoData?.rightCnt || '-'}
+                                </Descriptions.Item>
+                                <Descriptions.Item style={{ textAlign: 'center' }} label="오답">
+                                    {theoryInfoData?.wrongCnt || '-'}
+                                </Descriptions.Item>
+                                <Descriptions.Item style={{ textAlign: 'center', fontWeight: 'bold' }} label="평점">
+                                    {theoryInfoData?.theoryScore || '-'}
+                                </Descriptions.Item>
+                            </Descriptions>
+                            {/* <Title level={2} style={{ marginLeft: '20px' }}>
+                                X
+                            </Title>
+                            <Descriptions layout="vertical" bordered style={{ marginLeft: '20px' }}>
+                                <Descriptions.Item style={{ textAlign: 'center', fontWeight: 'bold' }} label="이론평가 비중율(%) ">
+                                    {theoryInfoData?.theoryTotalScore || '0'}%
+                                </Descriptions.Item>
+                            </Descriptions> */}
+                            <Title level={2} style={{ marginLeft: '20px' }}>
+                                =
+                            </Title>
+                            <Descriptions layout="vertical" bordered style={{ marginLeft: '20px' }}>
+                                <Descriptions.Item
+                                    style={{ width: '365px', textAlign: 'center', fontWeight: 'bold' }}
+                                    label="공항위험물 최종점수"
+                                >
+                                    <space style={{ color: '#108ee9' }}>{theoryInfoData?.gainScore || '-'}</space>
                                 </Descriptions.Item>
                             </Descriptions>
                         </Space>

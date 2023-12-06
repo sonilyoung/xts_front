@@ -229,6 +229,8 @@ export const StudySch = (props) => {
                                     </Space.Compact>
                                 </Col>
                                 {/* 메뉴 설정 */}
+                                {console.log(SelectMenuListData)}
+
                                 <Col span={12}>
                                     <Space.Compact size="large">
                                         <Select
@@ -254,9 +256,7 @@ export const StudySch = (props) => {
                                             }}
                                             options={SelectMenuListData.map((d) => ({
                                                 value: d.menuCd,
-                                                label:
-                                                    d.menuName +
-                                                    (d.moduleType === 'c' ? ' [Cut] ' : d.moduleType === 's' ? ' [Slide] ' : '')
+                                                label: d.menuName
                                             }))}
                                         />
                                     </Space.Compact>

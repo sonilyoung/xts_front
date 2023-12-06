@@ -175,6 +175,15 @@ export const studentsManagement = createApi({
                 method: 'POST',
                 body: body
             })
+        }),
+
+        // 교육생 평가 재시험
+        deleteEvaluationData: builder.mutation({
+            query: (body) => ({
+                url: 'adm/userMgr/deleteEvaluationData.do',
+                method: 'POST',
+                body: body
+            })
         })
     })
 });
@@ -196,5 +205,6 @@ export const {
     useSelectCertificationUserMutation,
     useInsertCertNumberMutation,
     useInsertStudentExcelMutation,
-    useRemoveFaceApiMutation
+    useRemoveFaceApiMutation,
+    useDeleteEvaluationDataMutation
 } = studentsManagement;

@@ -1023,10 +1023,46 @@ export const EduProcAdd = () => {
                                 </Button>
                             </Col>
                         </Row>
+
                         <Row gutter={24}>
                             <Col span={24}>
                                 <Form.Item
                                     name="form05"
+                                    label="항공위험물 기준점수"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: '※ 항공위험물 기준점수 선택'
+                                        }
+                                    ]}
+                                >
+                                    <Row>
+                                        <Col>
+                                            <Select
+                                                name="airdangerScore"
+                                                style={{
+                                                    width: '490px'
+                                                }}
+                                                options={Scoreoptions}
+                                                onChange={(e) => setItemContainer({ ...itemContainer, airdangerScore: e })}
+                                                value={
+                                                    itemContainer?.airdangerScore === undefined || itemContainer?.airdangerScore === null
+                                                        ? {
+                                                              value: 80,
+                                                              label: '80'
+                                                          }
+                                                        : itemContainer?.airdangerScore
+                                                }
+                                            />
+                                        </Col>
+                                    </Row>
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                        <Row gutter={24}>
+                            <Col span={24}>
+                                <Form.Item
+                                    name="form06"
                                     label="수료 기준점수"
                                     rules={[
                                         {
@@ -1061,7 +1097,7 @@ export const EduProcAdd = () => {
                         <Row gutter={24}>
                             <Col span={12}>
                                 <Form.Item
-                                    name="form06"
+                                    name="form07"
                                     label="이론평가 과락점수"
                                     rules={[
                                         {
@@ -1093,7 +1129,7 @@ export const EduProcAdd = () => {
                             </Col>
                             <Col span={12}>
                                 <Form.Item
-                                    name="form06"
+                                    name="form08"
                                     label="이론평가 비중율(%)"
                                     rules={[
                                         {
@@ -1128,7 +1164,7 @@ export const EduProcAdd = () => {
                         <Row gutter={24}>
                             <Col span={12}>
                                 <Form.Item
-                                    name="form07"
+                                    name="form09"
                                     label="실기평가 과락점수"
                                     rules={[
                                         {
@@ -1161,7 +1197,7 @@ export const EduProcAdd = () => {
                             </Col>
                             <Col span={12}>
                                 <Form.Item
-                                    name="form07"
+                                    name="form10"
                                     label="실기평가 비중율(%)"
                                     rules={[
                                         {
@@ -1196,7 +1232,7 @@ export const EduProcAdd = () => {
                         <Row gutter={24}>
                             <Col span={12}>
                                 <Form.Item
-                                    name="form08"
+                                    name="form11"
                                     label="XBT 평가 과락점수"
                                     rules={[
                                         {
@@ -1228,7 +1264,7 @@ export const EduProcAdd = () => {
                             </Col>
                             <Col span={12}>
                                 <Form.Item
-                                    name="form08"
+                                    name="form102"
                                     label="XBT 평가 비중율(%)"
                                     rules={[
                                         {
