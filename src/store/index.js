@@ -11,7 +11,7 @@ import { preferencesManagement } from '../hooks/api/PreferencesManagement/Prefer
 import { curriculumManagement } from '../hooks/api/CurriculumManagement/CurriculumManagement';
 import { teacherManagement } from '../hooks/api/TeacherManagement/TeacherManagement';
 import { theoryGroupManagement } from '../hooks/api/TheoryGroupManagement/TheoryGroupManagement';
-
+import { statisticsManagement } from '../hooks/api/StatisticsManagement/StatisticsManagement';
 // ==============================|| REDUX TOOLKIT - MAIN STORE ||============================== //
 
 export const store = configureStore({
@@ -25,7 +25,8 @@ export const store = configureStore({
         [preferencesManagement.reducerPath]: preferencesManagement.reducer,
         [curriculumManagement.reducerPath]: curriculumManagement.reducer,
         [teacherManagement.reducerPath]: teacherManagement.reducer,
-        [theoryGroupManagement.reducerPath]: theoryGroupManagement.reducer
+        [theoryGroupManagement.reducerPath]: theoryGroupManagement.reducer,
+        [statisticsManagement.reducerPath]: statisticsManagement.reducer
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware()
@@ -39,6 +40,7 @@ export const store = configureStore({
             .concat(curriculumManagement.middleware)
             .concat(teacherManagement.middleware)
             .concat(theoryGroupManagement.middleware)
+            .concat(statisticsManagement.middleware)
 });
 
 setupListeners(store.dispatch);

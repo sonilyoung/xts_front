@@ -856,7 +856,7 @@ export const Studentinformation = () => {
                             <div style={{ display: 'flex', justifyContent: 'flex-start', fontSize: '14px' }}>
                                 <Input.Search
                                     placeholder="※ 통합 검색 (교육생ID, 교육생명, 기관, 부서, 직위, 교육구분, 입교신청일)"
-                                    style={{ width: 483 }}
+                                    style={{ width: 536 }}
                                     onSearch={onSearch}
                                     allowClear
                                     enterButton

@@ -103,11 +103,9 @@ export const {
     useSelectStatisticsLearningMutation,
     useSelectStatisticsLearningDetailMutation,
     useSelectStatisticsLearningGroupListMutation,
-
     useSelectStatisticsEvaluationListMutation,
     useSelectStatisticsEvaluationMutation,
     useSelectStatisticsEvaluationGroupListMutation,
-
     useSelectStatisticsTheoryListMutation,
     useSelectStatisticsTheoryMutation
 } = statisticsManagement;

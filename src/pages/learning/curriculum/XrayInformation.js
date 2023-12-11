@@ -19,7 +19,7 @@ export const XrayInformation = (props) => {
     const { confirm } = Modal;
     const [form] = Form.useForm();
     const [randemBoxOpen, setRandemBoxOpen] = useState(false);
-    const [targetKeys, setTargetKeys] = useState();
+    const [targetKeys, setTargetKeys] = useState(0);
     const [disabled, setDisabled] = useState(false);
     const [loading, setLoading] = useState(false);
     const [mockData, setMockData] = useState([]);
@@ -269,9 +269,10 @@ export const XrayInformation = (props) => {
 
     useEffect(() => {
         setLoading(true); // 로딩 호출
-        setTargetKeys(props.BagList === undefined ? '' : props.BagList);
+        setTargetKeys(props.BagList === null ? '' : props.BagList);
         handle_SelectModuleXrayPopList_Api(); // 그룹 api 호출
     }, [props.BagList]);
+    setTargetKeys(0);
     return (
         <>
             <TableTransfer

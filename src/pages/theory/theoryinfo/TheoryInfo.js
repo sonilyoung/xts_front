@@ -92,9 +92,9 @@ export const TheoryInfo = () => {
                 rowdata14: d.usinsertId, // 등록아이디
                 rowdata15: d.insertDate, // 등록일자
 
-                rowdata16: d.lageGroupNm, //대그룹명
-                rowdata17: d.middleGroupNm, //중그룹명
-                rowdata18: d.smallGroupNm //소그룹명
+                rowdata16: d.largeGroupNm === null ? '' : d.largeGroupNm, //대그룹명
+                rowdata17: d.middleGroupNm === null ? '' : d.middleGroupNm, //중그룹명
+                rowdata18: d.smallGroupNm === null ? '' : d.smallGroupNm //소그룹명
             }))
         ]);
         setLoading(false);
@@ -452,7 +452,7 @@ export const TheoryInfo = () => {
             align: 'center'
         },
         {
-            width: '90px',
+            width: '110px',
             title: '문제타입',
             dataIndex: 'rowdata3',
             align: 'center',
@@ -471,7 +471,7 @@ export const TheoryInfo = () => {
             )
         },
         {
-            title: '그룹',
+            title: '그룹 [대분류/중분류/소분류]',
             align: 'center',
             render: (_, { rowdata5, rowdata6, rowdata7, rowdata16, rowdata17, rowdata18 }) =>
                 `${rowdata5 ? `${rowdata16}${rowdata6 ? ` / ${rowdata17}` : ''}` : ''}${rowdata7 ? ` / ${rowdata18}` : ''}`

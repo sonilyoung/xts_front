@@ -384,7 +384,11 @@ export const EduProcAdd = () => {
                   }
               })
             : Modal.error({
-                  content: '등록 오류',
+                  content: (
+                      <div>
+                          등록오류 <br /> : {InsertBaselineresponse?.data?.RET_DESC}
+                      </div>
+                  ),
                   onOk() {}
               });
     };

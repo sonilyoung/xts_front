@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
 import { Typography } from '@mui/material';
-import { Table, Tag, Col, Row, Button } from 'antd';
+import { Table, Tag, Col, Row, Button, Input } from 'antd';
 import { useSelectUserListPopMutation } from '../../../hooks/api/StudentsManagement/StudentsManagement';
 
 // project import
@@ -12,6 +12,8 @@ export const StudentSch = (props) => {
     const [loading, setLoading] = useState(false);
     const [selectedRowKeys, setSelectedRowKeys] = useState(); //셀렉트 박스 option Selected 값
 
+    const [searchval, setSearchval] = useState(null);
+
     // ===============================
     // Api 호출 Start
     // 조회 ======================================================
@@ -20,6 +22,7 @@ export const StudentSch = (props) => {
 
     const handle_SelectUserListPop_Api = async () => {
         const SelectUserListPopresponse = await SelectUserListPopApi({
+            // searchval: searchval,
             procCd: props.ProcCdValue
         });
 
@@ -100,7 +103,7 @@ export const StudentSch = (props) => {
             align: 'center'
         },
         {
-            width: '170px',
+            width: '220px',
             title: '교육 구분',
             dataIndex: 'eduName',
             align: 'center'
@@ -139,6 +142,10 @@ export const StudentSch = (props) => {
         props.StudentsCnt(selectedRowKeys);
     };
 
+    const onSearch = (value) => {
+        setSearchval(value);
+    };
+
     useEffect(() => {
         setSelectedRowKeys(props.StudentValue);
         setLoading(true);
@@ -149,6 +156,22 @@ export const StudentSch = (props) => {
         <>
             <MainCard title="교육생 정보조회">
                 <Typography variant="body1">
+                    <Row gutter={[8, 8]} style={{ marginBottom: 16 }}>
+                        <Col span={10}>
+                            <div style={{ display: 'flex', justifyContent: 'flex-start', fontSize: '14px' }}>
+                                <Input.Search
+                                    placeholder="※ 통합 검색 (교육생ID, 교육생명, 기관, 부서, 직위, 교육구분, 입교신청일)"
+                                    style={{ width: 483 }}
+                                    onSearch={onSearch}
+                                    allowClear
+                                    enterButton
+                                    size="middle"
+                                    className="custom-search-input"
+                                />
+                            </div>
+                        </Col>
+                        <Col span={14} style={{ textAlign: 'right' }}></Col>
+                    </Row>
                     <Table
                         columns={columns}
                         dataSource={dataSource}

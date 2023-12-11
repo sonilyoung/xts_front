@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
-import { Typography, Table, Tag, Tooltip, Button, Descriptions, Modal, Input, Space, Row, Col, Card } from 'antd';
+import { Typography, Table, Tag, Tooltip, Button, Descriptions, Modal, Input, Space, Row, Col, Card, Select, Divider } from 'antd';
 import {
     useSelectBaselineUserListMutation,
     useSelectBaselineUserMutation,
@@ -930,22 +930,60 @@ export const Teacherstudent = () => {
                 <Typography variant="body1">
                     <Row gutter={[8, 8]} style={{ marginBottom: 16 }}>
                         <Col span={8}>
-                            <div style={{ display: 'flex', justifyContent: 'flex-start', fontSize: '14px' }}>
+                            {/* <div style={{ display: 'flex', justifyContent: 'flex-start', fontSize: '14px' }}>
+                                
+                            </div> */}
+                            <Space size="small" split={<Divider />}>
+                                <Select
+                                    showSearch
+                                    placeholder="차수명"
+                                    options={[
+                                        {
+                                            value: 'jack',
+                                            label: 'Jack'
+                                        },
+                                        {
+                                            value: 'lucy',
+                                            label: 'Lucy'
+                                        }
+                                    ]}
+                                    style={{
+                                        width: '150px'
+                                    }}
+                                />
+                                <Select
+                                    showSearch
+                                    placeholder="차수"
+                                    options={null}
+                                    style={{
+                                        width: '80px'
+                                    }}
+                                />
                                 <Input.Search
                                     placeholder="※ 통합 검색 (차수명, 교육생ID, 교육생명, 교육구분, 기관, 교육일)"
-                                    style={{ width: 483 }}
+                                    style={{ width: 400 }}
                                     onSearch={onSearch}
                                     allowClear
                                     enterButton
                                     size="middle"
                                     className="custom-search-input"
                                 />
-                            </div>
+                            </Space>
                         </Col>
                         <Col span={16} style={{ textAlign: 'right' }}>
-                            <Space>
+                            <Space size="small" split={<Divider />}>
                                 {window.localStorage.getItem('authCd') === '0000' ? (
                                     <>
+                                        <Tooltip title="점수 집계">
+                                            <Button
+                                                type="primary"
+                                                style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                                icon={<FileProtectOutlined />}
+                                                // onClick={() => handle_DeleteEvaluationData_O_Api()}
+                                            >
+                                                점수 집계
+                                            </Button>
+                                        </Tooltip>
                                         <Tooltip title="다중 재평가">
                                             <Button
                                                 type="primary"
@@ -1147,7 +1185,7 @@ export const Teacherstudent = () => {
                                     style={{ width: '365px', textAlign: 'center', fontWeight: 'bold' }}
                                     label="공항위험물 최종점수"
                                 >
-                                    <space style={{ color: '#108ee9' }}>{theoryInfoData?.gainScore || '-'}</space>
+                                    <Space style={{ color: '#108ee9' }}>{theoryInfoData?.gainScore || '-'}</Space>
                                 </Descriptions.Item>
                             </Descriptions>
                         </Space>
@@ -1186,7 +1224,7 @@ export const Teacherstudent = () => {
                             </Title>
                             <Descriptions layout="vertical" bordered style={{ marginLeft: '20px' }}>
                                 <Descriptions.Item style={{ textAlign: 'center', fontWeight: 'bold' }} label="이론평가 최종점수">
-                                    <space style={{ color: '#108ee9' }}>{theoryInfoData?.gainScore || '-'}</space>
+                                    <Space style={{ color: '#108ee9' }}>{theoryInfoData?.gainScore || '-'}</Space>
                                 </Descriptions.Item>
                             </Descriptions>
                         </Space>
@@ -1235,7 +1273,7 @@ export const Teacherstudent = () => {
                             </Title>
                             <Descriptions layout="vertical" bordered style={{ marginLeft: '20px' }}>
                                 <Descriptions.Item style={{ textAlign: 'center', fontWeight: 'bold' }} label="실습평가 최종점수">
-                                    <space style={{ color: '#108ee9' }}>{practiceInfoData?.gainScore || '-'}</space>
+                                    <Space style={{ color: '#108ee9' }}>{practiceInfoData?.gainScore || '-'}</Space>
                                 </Descriptions.Item>
                             </Descriptions>
                         </Space>
