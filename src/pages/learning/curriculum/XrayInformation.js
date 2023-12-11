@@ -19,13 +19,13 @@ export const XrayInformation = (props) => {
     const { confirm } = Modal;
     const [form] = Form.useForm();
     const [randemBoxOpen, setRandemBoxOpen] = useState(false);
-    const [targetKeys, setTargetKeys] = useState(0);
+    const [targetKeys, setTargetKeys] = useState([]);
     const [disabled, setDisabled] = useState(false);
     const [loading, setLoading] = useState(false);
     const [mockData, setMockData] = useState([]);
     const [tooltipImg, setTooltipImg] = useState();
 
-    const [bagLists, setBagLists] = useState('');
+    const [bagLists, setBagLists] = useState(null);
     const [randemLevel, setRandemLevel] = useState(0); // 난이도 레벨
     const [randemlimit, setRandemlimit] = useState(5); // 출제 문항수
 
@@ -264,7 +264,9 @@ export const XrayInformation = (props) => {
     // 출제 문제항 Arr End
 
     const onChange = (nextTargetKeys) => {
-        setTargetKeys(nextTargetKeys);
+        // console.log('nextTargetKeys', nextTargetKeys);
+        const filtered = nextTargetKeys.filter((key) => key !== null);
+        setTargetKeys(filtered);
     };
 
     useEffect(() => {
@@ -272,7 +274,6 @@ export const XrayInformation = (props) => {
         setTargetKeys(props.BagList === null ? '' : props.BagList);
         handle_SelectModuleXrayPopList_Api(); // 그룹 api 호출
     }, [props.BagList]);
-    setTargetKeys(0);
     return (
         <>
             <TableTransfer
@@ -330,11 +331,10 @@ export const XrayInformation = (props) => {
                         onClick={QuestionsOk}
                         style={{ marginLeft: '20px', width: '100px', borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
                     >
-                        선택 완료 [{targetKeys?.length}]
+                        선택 완료[{targetKeys[0] === null ? 0 : targetKeys.length}]
                     </Button>
                 </Col>
             </Row>
-
             {/* 랜덤박스 Modal Start */}
             <Modal
                 open={randemBoxOpen}
