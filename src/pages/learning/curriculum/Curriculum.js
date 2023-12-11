@@ -82,6 +82,7 @@ export const Curriculum = () => {
                 rowdata8: d.useYn, // 사용여부
                 rowdata9: d.insertDate, // 등록일자
                 rowdata10: d.moduleDesc // 모듈설명
+                // rowdata11: d.applyStudentCnt
             }))
         ]);
         setSelectModuleListLoading(false);
@@ -986,7 +987,6 @@ export const Curriculum = () => {
                 ]}
             >
                 <XrayInformation QuestionCnt={Questions_handleOk} BagList={bagList} />
-                {console.log(bagList)}
             </Modal>
             {/* 출제 문항 검색 Modal End */}
 

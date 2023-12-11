@@ -264,7 +264,6 @@ export const XrayInformation = (props) => {
     // 출제 문제항 Arr End
 
     const onChange = (nextTargetKeys) => {
-        // console.log('nextTargetKeys', nextTargetKeys);
         const filtered = nextTargetKeys.filter((key) => key !== null);
         setTargetKeys(filtered);
     };
