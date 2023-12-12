@@ -52,17 +52,22 @@ export const CertificatesPrint = (props) => {
     // 프린트 버튼 클릭 시 HTML을 이미지로 변환하고 저장
     const handlePrint = () => {
         const content = contentRef.current;
-        html2canvas(content, { useCORS: true }).then((canvas) => {
+        const scale = 2; // 조정 가능한 해상도 스케일 값
+        html2canvas(content, { useCORS: true, scale: scale }).then((canvas) => {
             canvas.toBlob((blob) => {
                 const imgURL = URL.createObjectURL(blob);
                 const img = new Image();
                 img.src = imgURL;
                 img.onload = () => {
                     const uniqueWindowName = 'printWindow' + Date.now();
-                    const printWindow = window.open('', uniqueWindowName, 'width=' + window.innerWidth + ',height=' + window.innerHeight);
+                    const printWindow = window.open(
+                        '',
+                        uniqueWindowName,
+                        'width=' + window.innerWidth + 'auto ,height=' + window.innerHeight
+                    );
                     printWindow.document.open();
                     printWindow.document.write('<html><body>');
-                    printWindow.document.write('<img src="' + imgURL + '" style="margin-left:40px"/>');
+                    printWindow.document.write('<img src="' + imgURL + '" style="width: 100%" ');
                     printWindow.document.write('</body></html>');
                     printWindow.document.close();
                     printWindow.onload = () => {
@@ -89,14 +94,16 @@ export const CertificatesPrint = (props) => {
                 style={{
                     position: 'fixed',
                     top: '100px',
-                    left: '58%',
-                    transform: 'translateX(-50%)'
+                    margin: '0px auto',
+                    height: '120px'
+                    // transform: 'translateX(-150%)'
                 }}
             >
-                <Button type="primary" style={{ width: '150px', height: ' 30px', lineHeight: '15px' }} onClick={handlePrint}>
+                <Button type="primary" style={{ width: '180px', height: ' 40px' }} onClick={handlePrint}>
                     이수 증명서 출력
                 </Button>
             </div>
+            <br />
             <div ref={contentRef}>
                 {certificationUserDetail?.map((d, i) => (
                     <>
@@ -111,7 +118,7 @@ export const CertificatesPrint = (props) => {
                                         fontFamily: 'Verdana',
                                         fontFamily: 'KoPubWorldDotumProBold',
                                         letterSpacing: '0.03em',
-                                        paddingTop: '60px'
+                                        paddingTop: '40px'
                                     }}
                                 >
                                     Certificate Number : {d.certificationId}
@@ -138,7 +145,7 @@ export const CertificatesPrint = (props) => {
                                 >
                                     Certificate of Completion
                                 </div>
-                                <p style={{ margin: '40px 0px' }}></p>
+                                <p style={{ margin: '30px 0px' }}></p>
                                 <Row>
                                     <Col span={7}>
                                         <Row>
@@ -193,11 +200,11 @@ export const CertificatesPrint = (props) => {
                                         </Row>
                                     </Col>
                                 </Row>
-                                <p style={{ margin: '30px 0px' }}></p>
+                                <p style={{ margin: '25px 0px' }}></p>
                                 <Row>
                                     <Col span={24}>
                                         <Row>
-                                            <Col style={{ fontSize: '19.5px', fontFamily: 'KoPubWorldBatangProMedium' }}>
+                                            <Col style={{ fontSize: '19px', fontFamily: 'KoPubWorldBatangProMedium' }}>
                                                 위 사람은 『항공보안법』 제28조, 같은 법 시행규칙 제15조 및 국가민간항공보안 교육훈련지침에
                                                 따른 교육과정을 <br /> 이수하였음을 증명합니다.
                                             </Col>
@@ -211,7 +218,7 @@ export const CertificatesPrint = (props) => {
                                         </Row>
                                     </Col>
                                 </Row>
-                                <p style={{ margin: '30px 0px' }}></p>
+                                <p style={{ margin: '25px 0px' }}></p>
                                 <Row>
                                     <Col span={24}>
                                         <Row>
@@ -274,7 +281,7 @@ export const CertificatesPrint = (props) => {
                                     </Col>
                                 </Row>
 
-                                <p style={{ margin: '30px 0px' }}></p>
+                                <p style={{ margin: '25px 0px' }}></p>
                                 <Row>
                                     <Col span={24}>
                                         <Row>
@@ -291,7 +298,7 @@ export const CertificatesPrint = (props) => {
                                         </Row>
                                     </Col>
                                 </Row>
-                                <p style={{ margin: '30px 0px' }}></p>
+                                <p style={{ margin: '25px 0px' }}></p>
                                 <Row>
                                     <Col span={24}>
                                         <Row>
@@ -304,23 +311,23 @@ export const CertificatesPrint = (props) => {
                                                     position: 'relative'
                                                 }}
                                             >
-                                                <text style={{ fontFamily: 'KoPubWorldBatangBold', zIndex: 101 }}>
-                                                    한국보안인재개발원장
-                                                </text>
                                                 <div
                                                     style={{
-                                                        backgroundImage: `url(${require('../../../assets/images/auth/KakaoTalk_20231106_120921812_01.png')}`,
+                                                        backgroundImage: `url(${require('../../../assets/images/auth/kssa_stamp.png')}`,
+                                                        backgroundSize: '65%',
                                                         position: 'absolute',
                                                         backgroundRepeat: 'no-repeat',
                                                         backgroundPosition: 'center',
-                                                        backgroundSize: 'contain',
-                                                        top: '-35px',
-                                                        left: '313px',
+                                                        top: '-40px',
+                                                        left: '333px',
                                                         width: '100px',
                                                         height: '80px',
-                                                        zIndex: 100
+                                                        zIndex: 90
                                                     }}
                                                 ></div>
+                                                <div style={{ fontSize: '25px', fontFamily: 'KoPubWorldBatangBold', zIndex: 100 }}>
+                                                    한국보안인재개발원장
+                                                </div>
                                             </Col>
                                         </Row>
                                     </Col>

@@ -2206,7 +2206,7 @@ export const Studentinformation = () => {
                 open={certificatesModal}
                 onCancel={certificatesModal_handleCancel}
                 width={600}
-                height={600}
+                height={800}
                 style={{
                     top: 90,
                     left: 130,
@@ -2229,7 +2229,7 @@ export const Studentinformation = () => {
                     ref={contentRef}
                     style={{
                         maxWidth: window.innerWidth,
-                        maxHeight: window.innerHeight - 200, // 원하는 최대 높이로 설정
+                        maxHeight: window.innerHeight - 100, // 원하는 최대 높이로 설정
                         overflowY: 'auto' // 수직 스크롤바 추가
                     }}
                 >
