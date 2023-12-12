@@ -1502,7 +1502,7 @@ export const EduProcAdd = () => {
                 open={eduDayModalOpen}
                 onOk={EduDay_handleOk}
                 onCancel={EduDay_handleCancel}
-                width={1250}
+                width={1350}
                 style={{
                     left: 130,
                     zIndex: 999

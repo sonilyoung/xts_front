@@ -20,17 +20,23 @@ export const StudySch = (props) => {
     const { RangePicker } = DatePicker;
 
     const [menuListSet, setMenuListSet] = useState();
-    const [moduleListSet, setModuleListSet] = useState();
+    const [moduleListSet1, setModuleListSet1] = useState();
+    const [moduleListSet2, setModuleListSet2] = useState();
     const [totStudyDateList, setTotStudyDateList] = useState({ eduStartDate: null, eduEndDate: null });
+
+    const [hoveredCol, setHoveredCol] = useState(null);
+
     // ===============================
     // Api 호출 Start
 
     // 모듈 목록 조회 ======================================================
     const [SelectModuleListApi] = useSelectModuleListMutation(); // 조회 hooks api호출
-    const [SelectModuleListData, setSelectModuleListData] = useState([]); // 조회 Data 값
+    const [SelectModuleListData1, setSelectModuleListData1] = useState([]); // 조회 Data 값
+    const [SelectModuleListData2, setSelectModuleListData2] = useState([]); // 조회 Data 값
+
     const handel_selectModuleList_Api = async () => {
         const SelectModuleListresponse = await SelectModuleListApi({});
-        setSelectModuleListData(SelectModuleListresponse?.data?.RET_DATA);
+        setSelectModuleListData1(SelectModuleListresponse?.data?.RET_DATA);
     };
 
     // 메뉴 목록 조회 ======================================================
@@ -45,8 +51,16 @@ export const StudySch = (props) => {
     // ===============================
 
     const handel_Add = () => {
-        const updatedModuleListSet = moduleListSet.map((item) => (item === undefined ? 0 : item));
-        props.StudySet(totStudyDateList, menuListSet, updatedModuleListSet);
+        const updatedModuleListSet1 = moduleListSet1.map((item) => (item === undefined ? 0 : item));
+        props.StudySet(totStudyDateList, menuListSet, updatedModuleListSet1);
+    };
+
+    const handleMouseOver = (colName) => {
+        setHoveredCol(colName);
+    };
+
+    const handleMouseLeave = () => {
+        setHoveredCol(null);
     };
 
     useEffect(() => {
@@ -69,7 +83,7 @@ export const StudySch = (props) => {
             setTotStudyDateList(initialTotStudyDateList);
         }
 
-        setModuleListSet(props.SetModuleList !== null ? props.SetModuleList : Array(props.TotStudyDate).fill(0));
+        setModuleListSet1(props.SetModuleList !== null ? props.SetModuleList : Array(props.TotStudyDate).fill(0));
 
         setMenuListSet(props.SetMenuList);
     }, [props.SetScheduleList, props.TotStudyDate, props.SetModuleList, props.SetMenuList]);
@@ -77,8 +91,8 @@ export const StudySch = (props) => {
         <>
             <MainCard title="학습 일정별 학습과정 설정" style={{ marginTop: 30 }}>
                 <Form layout="horizontal" form={form}>
-                    <Row gutter={24} style={{ marginBottom: 14 }}>
-                        <Col span={20} offset={20}>
+                    <Row justify="end" style={{ marginBottom: 14 }}>
+                        <Col span={12} style={{ textAlign: 'right' }}>
                             <Space>
                                 <Tooltip title="저장">
                                     <Tag
@@ -86,20 +100,21 @@ export const StudySch = (props) => {
                                         style={{
                                             float: 'right',
                                             cursor: 'pointer',
-                                            padding: '11px 40px',
+                                            padding: '15px 45px',
                                             borderRadius: '5px',
-                                            fontSize: '14px'
+                                            fontSize: '14px',
+                                            fontWeight: '800'
                                         }}
                                         onClick={handel_Add}
                                     >
-                                        학습과정 적용
+                                        학습 과정 적용
                                     </Tag>
                                 </Tooltip>
                             </Space>
                         </Col>
                     </Row>
-                    <Row gutter={[24, 8]}>
-                        <Col span={6}>
+                    <Row gutter={[16, 8]}>
+                        <Col span={5}>
                             <Card
                                 style={{
                                     width: '100%',
@@ -110,13 +125,14 @@ export const StudySch = (props) => {
                                     justifyContent: 'center',
                                     textAlign: 'center',
                                     background: '#a7a9ad',
-                                    color: '#ffffff'
+                                    color: '#ffffff',
+                                    backgroundColor: hoveredCol === '0' ? '#ff4d4f' : '#a7a9ad'
                                 }}
                             >
-                                일자 설정
+                                <div style={{ fontSize: '14px' }}>일자 설정</div>
                             </Card>
                         </Col>
-                        <Col span={6}>
+                        <Col span={4}>
                             <Card
                                 style={{
                                     width: '100%',
@@ -127,13 +143,14 @@ export const StudySch = (props) => {
                                     justifyContent: 'center',
                                     textAlign: 'center',
                                     background: '#a7a9ad',
-                                    color: '#ffffff'
+                                    color: '#ffffff',
+                                    backgroundColor: hoveredCol === '1' ? '#ff4d4f' : '#a7a9ad'
                                 }}
                             >
-                                모듈 설정
+                                <div style={{ fontSize: '14px' }}>학습 모듈 설정</div>
                             </Card>
                         </Col>
-                        <Col span={12}>
+                        <Col span={4}>
                             <Card
                                 style={{
                                     width: '100%',
@@ -144,20 +161,40 @@ export const StudySch = (props) => {
                                     justifyContent: 'center',
                                     textAlign: 'center',
                                     background: '#a7a9ad',
-                                    color: '#ffffff'
+                                    color: '#ffffff',
+                                    backgroundColor: hoveredCol === '2' ? '#ff4d4f' : '#a7a9ad'
                                 }}
                             >
-                                메뉴 설정
+                                <div style={{ fontSize: '14px' }}>평가 모듈 설정</div>
+                            </Card>
+                        </Col>
+                        <Col span={11}>
+                            <Card
+                                style={{
+                                    width: '100%',
+                                    height: '50px',
+                                    marginBottom: '5px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    textAlign: 'center',
+                                    background: '#a7a9ad',
+                                    color: '#ffffff',
+
+                                    backgroundColor: hoveredCol === '3' ? '#ff4d4f' : '#a7a9ad'
+                                }}
+                            >
+                                <div style={{ fontSize: '14px' }}>메뉴 설정</div>
                             </Card>
                         </Col>
                     </Row>
                     {Array.from(totStudyDateList, (_, index) => (
                         // {/* {Array.from({ length: props.TotStudyDate }, (_, index) => ( */}
                         <div key={index}>
-                            <Divider style={{ margin: '10px 0' }} />
-                            <Row gutter={[24, 8]} key={index}>
+                            <Divider style={{ margin: '15px 0', borderColor: '#d7d8d9', borderWidth: '2px' }} />
+                            <Row gutter={[16, 8]} key={index}>
                                 {/* 일자 설정 */}
-                                <Col span={6}>
+                                <Col span={5} onMouseOver={() => handleMouseOver('0')} onMouseLeave={handleMouseLeave}>
                                     <RangePicker
                                         style={{ height: '38px' }}
                                         name={`Day ${index + 1}`}
@@ -192,24 +229,24 @@ export const StudySch = (props) => {
                                     />
                                 </Col>
 
-                                {/* 모듈 설정 */}
-                                <Col span={6}>
-                                    <Space.Compact size="large">
+                                {/* 학습 모듈 설정 */}
+                                <Col span={4} onMouseOver={() => handleMouseOver('1')} onMouseLeave={handleMouseLeave}>
+                                    <Space.Compact size="large" wrap>
                                         <Select
-                                            name="moduleList"
+                                            name="moduleList1"
                                             showArrow
-                                            placeholder="# 모듈 선택"
+                                            placeholder="# 학습 모듈 선택"
                                             style={{
-                                                width: '272px',
+                                                width: '195px',
                                                 fontSize: '16px'
                                             }}
                                             value={
-                                                moduleListSet === null || moduleListSet === undefined || moduleListSet === ''
+                                                moduleListSet1 === null || moduleListSet1 === undefined || moduleListSet1 === ''
                                                     ? ''
-                                                    : moduleListSet[index]
+                                                    : moduleListSet1[index]
                                             }
                                             onChange={(value) => {
-                                                setModuleListSet((prevList) => {
+                                                setModuleListSet1((prevList) => {
                                                     const newModuleList = [...prevList];
                                                     newModuleList[index] = value;
                                                     return newModuleList;
@@ -218,9 +255,46 @@ export const StudySch = (props) => {
                                             options={[
                                                 {
                                                     value: '0', // Empty value
-                                                    label: '# 모듈 선택' // Placeholder label
+                                                    label: '# 학습 모듈 선택' // Placeholder label
                                                 },
-                                                ...SelectModuleListData.map((d) => ({
+                                                ...SelectModuleListData1.map((d) => ({
+                                                    value: d.moduleId,
+                                                    label: d.moduleNm
+                                                }))
+                                            ]}
+                                        />
+                                    </Space.Compact>
+                                </Col>
+
+                                {/* 평가 모듈 설정 */}
+                                <Col span={4} onMouseOver={() => handleMouseOver('2')} onMouseLeave={handleMouseLeave}>
+                                    <Space.Compact size="large" wrap>
+                                        <Select
+                                            name="moduleList2"
+                                            showArrow
+                                            placeholder="# 평가 모듈 선택"
+                                            style={{
+                                                width: '195px',
+                                                fontSize: '16px'
+                                            }}
+                                            value={
+                                                moduleListSet2 === null || moduleListSet2 === undefined || moduleListSet2 === ''
+                                                    ? ''
+                                                    : moduleListSet2[index]
+                                            }
+                                            onChange={(value) => {
+                                                setModuleListSet2((prevList) => {
+                                                    const newModuleList = [...prevList];
+                                                    newModuleList[index] = value;
+                                                    return newModuleList;
+                                                });
+                                            }}
+                                            options={[
+                                                {
+                                                    value: '0', // Empty value
+                                                    label: '# 평가 모듈 선택' // Placeholder label
+                                                },
+                                                ...SelectModuleListData2.map((d) => ({
                                                     value: d.moduleId,
                                                     label: d.moduleNm
                                                 }))
@@ -231,7 +305,7 @@ export const StudySch = (props) => {
                                 {/* 메뉴 설정 */}
                                 {console.log(SelectMenuListData)}
 
-                                <Col span={12}>
+                                <Col span={11} onMouseOver={() => handleMouseOver('3')} onMouseLeave={handleMouseLeave}>
                                     <Space.Compact size="large">
                                         <Select
                                             name="menuList"
@@ -244,7 +318,7 @@ export const StudySch = (props) => {
                                                     : menuListSet[index]
                                             }
                                             style={{
-                                                width: '567px',
+                                                width: '570px',
                                                 fontSize: '16px'
                                             }}
                                             onChange={(e) => {
