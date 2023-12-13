@@ -20,8 +20,8 @@ export const StudySch = (props) => {
     const { RangePicker } = DatePicker;
 
     const [menuListSet, setMenuListSet] = useState();
-    const [moduleListSet1, setModuleListSet1] = useState();
-    const [moduleListSet2, setModuleListSet2] = useState();
+    const [moduleListSet, setmoduleListSet] = useState();
+    const [evaluationModulesListSet, setevaluationModulesListSet] = useState();
     const [totStudyDateList, setTotStudyDateList] = useState({ eduStartDate: null, eduEndDate: null });
 
     const [hoveredCol, setHoveredCol] = useState(null);
@@ -31,12 +31,13 @@ export const StudySch = (props) => {
 
     // 모듈 목록 조회 ======================================================
     const [SelectModuleListApi] = useSelectModuleListMutation(); // 조회 hooks api호출
-    const [SelectModuleListData1, setSelectModuleListData1] = useState([]); // 조회 Data 값
-    const [SelectModuleListData2, setSelectModuleListData2] = useState([]); // 조회 Data 값
+    const [SelectModuleListData1, setSelectModuleListData1] = useState([]); // 학습 조회 Data 값
+    const [SelectModuleListData2, setSelectModuleListData2] = useState([]); // 평가 조회 Data 값
 
     const handel_selectModuleList_Api = async () => {
         const SelectModuleListresponse = await SelectModuleListApi({});
-        setSelectModuleListData1(SelectModuleListresponse?.data?.RET_DATA);
+        setSelectModuleListData1(SelectModuleListresponse?.data?.RET_DATA.moduleList);
+        setSelectModuleListData2(SelectModuleListresponse?.data?.RET_DATA.evaluationList);
     };
 
     // 메뉴 목록 조회 ======================================================
@@ -51,8 +52,9 @@ export const StudySch = (props) => {
     // ===============================
 
     const handel_Add = () => {
-        const updatedModuleListSet1 = moduleListSet1.map((item) => (item === undefined ? 0 : item));
-        props.StudySet(totStudyDateList, menuListSet, updatedModuleListSet1);
+        const updatedmoduleListSet1 = moduleListSet.map((item) => (item === undefined ? 0 : item));
+        const updatedmoduleListSet2 = evaluationModulesListSet.map((item) => (item === undefined ? 0 : item));
+        props.StudySet(totStudyDateList, menuListSet, updatedmoduleListSet1, updatedmoduleListSet2);
     };
 
     const handleMouseOver = (colName) => {
@@ -69,24 +71,48 @@ export const StudySch = (props) => {
     }, []);
 
     useEffect(() => {
+        //일정 기본값 설정
+
+        // if (props.SetScheduleList === null) {
+        //     const initialTotStudyDateList = Array.from({ length: props.TotStudyDate }, () => ({
+        //         eduStartDate: props.EduStartDate,
+        //         eduEndDate: props.EduEndDate
+        //     }));
+        //     setTotStudyDateList(initialTotStudyDateList);
+        // } else {
+        //     const initialTotStudyDateList = Array.from({ length: props.TotStudyDate }, (_, index) => ({
+        //         eduStartDate: props.SetScheduleList[index] === undefined ? props.EduStartDate : props.SetScheduleList[index].eduStartDate,
+        //         eduEndDate: props.SetScheduleList[index] === undefined ? props.EduEndDate : props.SetScheduleList[index].eduEndDate
+        //     }));
+        //     setTotStudyDateList(initialTotStudyDateList);
+        // }
+
         if (props.SetScheduleList === null) {
-            const initialTotStudyDateList = Array.from({ length: props.TotStudyDate }, () => ({
-                eduStartDate: props.EduStartDate,
-                eduEndDate: props.EduEndDate
+            const initialTotStudyDateList = Array.from({ length: props.TotStudyDate }, (_, index) => ({
+                eduStartDate: dayjs(props.EduStartDate).add(index, 'day').format('YYYY-MM-DD'),
+                eduEndDate: dayjs(props.EduStartDate).add(index, 'day').format('YYYY-MM-DD')
             }));
             setTotStudyDateList(initialTotStudyDateList);
         } else {
             const initialTotStudyDateList = Array.from({ length: props.TotStudyDate }, (_, index) => ({
-                eduStartDate: props.SetScheduleList[index] === undefined ? props.EduStartDate : props.SetScheduleList[index].eduStartDate,
-                eduEndDate: props.SetScheduleList[index] === undefined ? props.EduEndDate : props.SetScheduleList[index].eduEndDate
+                eduStartDate:
+                    props.SetScheduleList[index]?.eduStartDate || dayjs(props.EduStartDate).add(index, 'day').format('YYYY-MM-DD'),
+                eduEndDate: props.SetScheduleList[index]?.eduEndDate || dayjs(props.EduStartDate).add(index, 'day').format('YYYY-MM-DD')
             }));
             setTotStudyDateList(initialTotStudyDateList);
         }
 
-        setModuleListSet1(props.SetModuleList !== null ? props.SetModuleList : Array(props.TotStudyDate).fill(0));
+        //학습 모듈 기본값 설정
+        setmoduleListSet(props.SetModuleList !== null ? props.SetModuleList : Array(props.TotStudyDate).fill(null));
 
+        //평가 모듈 기본값 설정
+        setevaluationModulesListSet(
+            props.EvaluationModulesList !== null ? props.EvaluationModulesList : Array(props.TotStudyDate).fill(null)
+        );
+
+        //메뉴 기본값 설정
         setMenuListSet(props.SetMenuList);
-    }, [props.SetScheduleList, props.TotStudyDate, props.SetModuleList, props.SetMenuList]);
+    }, [props.SetScheduleList, props.TotStudyDate, props.SetModuleList, props.EvaluationModulesList, props.SetMenuList]);
     return (
         <>
             <MainCard title="학습 일정별 학습과정 설정" style={{ marginTop: 30 }}>
@@ -194,7 +220,12 @@ export const StudySch = (props) => {
                             <Divider style={{ margin: '15px 0', borderColor: '#d7d8d9', borderWidth: '2px' }} />
                             <Row gutter={[16, 8]} key={index}>
                                 {/* 일자 설정 */}
-                                <Col span={5} onMouseOver={() => handleMouseOver('0')} onMouseLeave={handleMouseLeave}>
+                                <Col
+                                    span={5}
+                                    onMouseOver={() => handleMouseOver('0')}
+                                    onMouseLeave={handleMouseLeave}
+                                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}
+                                >
                                     <RangePicker
                                         style={{ height: '38px' }}
                                         name={`Day ${index + 1}`}
@@ -230,7 +261,12 @@ export const StudySch = (props) => {
                                 </Col>
 
                                 {/* 학습 모듈 설정 */}
-                                <Col span={4} onMouseOver={() => handleMouseOver('1')} onMouseLeave={handleMouseLeave}>
+                                <Col
+                                    span={4}
+                                    onMouseOver={() => handleMouseOver('1')}
+                                    onMouseLeave={handleMouseLeave}
+                                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}
+                                >
                                     <Space.Compact size="large" wrap>
                                         <Select
                                             name="moduleList1"
@@ -241,15 +277,15 @@ export const StudySch = (props) => {
                                                 fontSize: '16px'
                                             }}
                                             value={
-                                                moduleListSet1 === null || moduleListSet1 === undefined || moduleListSet1 === ''
+                                                moduleListSet === null || moduleListSet === undefined || moduleListSet === ''
                                                     ? ''
-                                                    : moduleListSet1[index]
+                                                    : moduleListSet[index]
                                             }
                                             onChange={(value) => {
-                                                setModuleListSet1((prevList) => {
-                                                    const newModuleList = [...prevList];
-                                                    newModuleList[index] = value;
-                                                    return newModuleList;
+                                                setmoduleListSet((prevList1) => {
+                                                    const newModuleList1 = [...prevList1];
+                                                    newModuleList1[index] = value;
+                                                    return newModuleList1;
                                                 });
                                             }}
                                             options={[
@@ -267,7 +303,12 @@ export const StudySch = (props) => {
                                 </Col>
 
                                 {/* 평가 모듈 설정 */}
-                                <Col span={4} onMouseOver={() => handleMouseOver('2')} onMouseLeave={handleMouseLeave}>
+                                <Col
+                                    span={4}
+                                    onMouseOver={() => handleMouseOver('2')}
+                                    onMouseLeave={handleMouseLeave}
+                                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}
+                                >
                                     <Space.Compact size="large" wrap>
                                         <Select
                                             name="moduleList2"
@@ -278,15 +319,17 @@ export const StudySch = (props) => {
                                                 fontSize: '16px'
                                             }}
                                             value={
-                                                moduleListSet2 === null || moduleListSet2 === undefined || moduleListSet2 === ''
+                                                evaluationModulesListSet === null ||
+                                                evaluationModulesListSet === undefined ||
+                                                evaluationModulesListSet === ''
                                                     ? ''
-                                                    : moduleListSet2[index]
+                                                    : evaluationModulesListSet[index]
                                             }
                                             onChange={(value) => {
-                                                setModuleListSet2((prevList) => {
-                                                    const newModuleList = [...prevList];
-                                                    newModuleList[index] = value;
-                                                    return newModuleList;
+                                                setevaluationModulesListSet((prevList2) => {
+                                                    const newModuleList2 = [...prevList2];
+                                                    newModuleList2[index] = value;
+                                                    return newModuleList2;
                                                 });
                                             }}
                                             options={[
@@ -303,9 +346,12 @@ export const StudySch = (props) => {
                                     </Space.Compact>
                                 </Col>
                                 {/* 메뉴 설정 */}
-                                {console.log(SelectMenuListData)}
-
-                                <Col span={11} onMouseOver={() => handleMouseOver('3')} onMouseLeave={handleMouseLeave}>
+                                <Col
+                                    span={11}
+                                    onMouseOver={() => handleMouseOver('3')}
+                                    onMouseLeave={handleMouseLeave}
+                                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}
+                                >
                                     <Space.Compact size="large">
                                         <Select
                                             name="menuList"

@@ -928,15 +928,12 @@ export const Teacherstudent = () => {
         <>
             <MainCard title="교육생 정보조회">
                 <Typography variant="body1">
-                    <Row gutter={[8, 8]} style={{ marginBottom: 16 }}>
+                    <Row gutter={[8, 8]} style={{ marginBottom: 5 }}>
                         <Col span={8}>
-                            {/* <div style={{ display: 'flex', justifyContent: 'flex-start', fontSize: '14px' }}>
-                                
-                            </div> */}
                             <Space size="small" split={<Divider />}>
                                 <Select
                                     showSearch
-                                    placeholder="차수명"
+                                    placeholder="교육과정명"
                                     options={[
                                         {
                                             value: 'jack',
@@ -948,7 +945,7 @@ export const Teacherstudent = () => {
                                         }
                                     ]}
                                     style={{
-                                        width: '150px'
+                                        width: '225px'
                                     }}
                                 />
                                 <Select
@@ -956,34 +953,41 @@ export const Teacherstudent = () => {
                                     placeholder="차수"
                                     options={null}
                                     style={{
-                                        width: '80px'
+                                        width: '90px'
                                     }}
                                 />
-                                <Input.Search
-                                    placeholder="※ 통합 검색 (차수명, 교육생ID, 교육생명, 교육구분, 기관, 교육일)"
-                                    style={{ width: 400 }}
-                                    onSearch={onSearch}
-                                    allowClear
-                                    enterButton
-                                    size="middle"
-                                    className="custom-search-input"
-                                />
+                                <Tooltip title="점수 집계">
+                                    <Button
+                                        type="primary"
+                                        style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
+                                        icon={<FileProtectOutlined />}
+                                        // onClick={() => handle_DeleteEvaluationData_O_Api()}
+                                    >
+                                        점수 집계
+                                    </Button>
+                                </Tooltip>
                             </Space>
+                        </Col>
+                        <Col span={16} style={{ textAlign: 'right' }}>
+                            {''}
+                        </Col>
+                    </Row>
+                    <Row gutter={[8, 8]} style={{ marginBottom: 5 }}>
+                        <Col span={8}>
+                            <Input.Search
+                                placeholder="※ 통합 검색 (차수명, 교육생ID, 교육생명, 교육구분, 기관, 교육일)"
+                                style={{ width: 450 }}
+                                onSearch={onSearch}
+                                allowClear
+                                enterButton
+                                size="middle"
+                                className="custom-search-input"
+                            />
                         </Col>
                         <Col span={16} style={{ textAlign: 'right' }}>
                             <Space size="small" split={<Divider />}>
                                 {window.localStorage.getItem('authCd') === '0000' ? (
                                     <>
-                                        <Tooltip title="점수 집계">
-                                            <Button
-                                                type="primary"
-                                                style={{ borderRadius: '5px', boxShadow: '2px 3px 0px 0px #dbdbdb' }}
-                                                icon={<FileProtectOutlined />}
-                                                // onClick={() => handle_DeleteEvaluationData_O_Api()}
-                                            >
-                                                점수 집계
-                                            </Button>
-                                        </Tooltip>
                                         <Tooltip title="다중 재평가">
                                             <Button
                                                 type="primary"
@@ -1076,7 +1080,8 @@ export const Teacherstudent = () => {
                             </Space>
                         </Col>
                     </Row>
-                    <Descriptions style={{ marginTop: '20px' }}></Descriptions>
+
+                    <Descriptions style={{ marginTop: '10px' }}></Descriptions>
                     <Table
                         rowClassName={(record) => {
                             return record.userId === userIdChk ? `table-row-lightblue` : '';

@@ -169,18 +169,29 @@ export const StudySchDetail = (props) => {
                     </Row>
                     {selectBaselineEduDateListData?.map((d, i) => (
                         <>
+                            <Divider style={{ margin: '15px 0', borderColor: '#d7d8d9', borderWidth: '2px' }} />
                             <Row gutter={[16, 8]} style={{ lineHeight: '56px' }} key={i}>
                                 {/* 일정 */}
-                                <Col span={4} onMouseOver={() => handleMouseOver('0')} onMouseLeave={handleMouseLeave}>
+                                <Col
+                                    span={4}
+                                    onMouseOver={() => handleMouseOver('0')}
+                                    onMouseLeave={handleMouseLeave}
+                                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}
+                                >
                                     <Tag
                                         icon={<ClockCircleOutlined />}
-                                        style={{ padding: '10px 0', textAlign: 'center', width: '190px', borderRadius: '5px' }}
+                                        style={{ padding: '10px 0', textAlign: 'center', width: '210px', borderRadius: '5px' }}
                                     >
                                         {d.eduStartDate} ~ {d.eduEndDate}
                                     </Tag>
                                 </Col>
                                 {/* 학습 모듈 */}
-                                <Col span={4} onMouseOver={() => handleMouseOver('1')} onMouseLeave={handleMouseLeave}>
+                                <Col
+                                    span={4}
+                                    onMouseOver={() => handleMouseOver('1')}
+                                    onMouseLeave={handleMouseLeave}
+                                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}
+                                >
                                     <Tag
                                         icon={<ClockCircleOutlined />}
                                         style={{ padding: '10px 0', textAlign: 'center', width: '190px', borderRadius: '5px' }}
@@ -189,7 +200,12 @@ export const StudySchDetail = (props) => {
                                     </Tag>
                                 </Col>
                                 {/* 평가 모듈 */}
-                                <Col span={4} onMouseOver={() => handleMouseOver('2')} onMouseLeave={handleMouseLeave}>
+                                <Col
+                                    span={4}
+                                    onMouseOver={() => handleMouseOver('2')}
+                                    onMouseLeave={handleMouseLeave}
+                                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}
+                                >
                                     <Tag
                                         icon={<ClockCircleOutlined />}
                                         style={{ padding: '10px 0', textAlign: 'center', width: '190px', borderRadius: '5px' }}
@@ -211,7 +227,12 @@ export const StudySchDetail = (props) => {
                                     ))}
                                 </Col>
                                 {/* 교육상태 */}
-                                <Col span={3} onMouseOver={() => handleMouseOver('4')} onMouseLeave={handleMouseLeave}>
+                                <Col
+                                    span={3}
+                                    onMouseOver={() => handleMouseOver('4')}
+                                    onMouseLeave={handleMouseLeave}
+                                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}
+                                >
                                     {d.learnYn === 'true' ? (
                                         <Tooltip title={`${d.eduStartDate} ~ ${d.eduEndDate} 교육진행 기간 중`}>
                                             <Tag
@@ -248,7 +269,6 @@ export const StudySchDetail = (props) => {
                                     )}
                                 </Col>
                             </Row>
-                            <Divider style={{ margin: '10px 0' }} />
                         </>
                     ))}
                 </Form>

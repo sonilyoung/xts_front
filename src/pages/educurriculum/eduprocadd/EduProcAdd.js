@@ -84,7 +84,9 @@ export const EduProcAdd = () => {
     const [copyProcNm, setCopyProcNm] = useState(); // 복사 차수 명
     const [studyDayArry, setStudyDayArry] = useState(); // 학습일수 배열
     const [menuArry, setMenuArry] = useState(); //  메뉴 배열
-    const [moduleArry, setModuleArry] = useState(); //  모듈 배열
+    const [moduleArry, setModuleArry] = useState(); //  모듈(학습) 배열
+    const [evaluationArry, setEvaluationArry] = useState(); //  모듈(평가) 배열
+    evaluationArry;
     const [stuList, setStuList] = useState(); // 상세 - 교육생 배열 정보
     const [searchval, setSearchval] = useState(null);
     // Data source End
@@ -368,6 +370,7 @@ export const EduProcAdd = () => {
             scheduleList: studyDayArry,
             menuList: menuArry,
             moduleList: moduleArry,
+            evaluationModulesList: evaluationArry,
             userList: stuList,
             userId: localStorage.getItem('LoginId'),
             teacherId: itemContainer.teacherId
@@ -405,6 +408,7 @@ export const EduProcAdd = () => {
         setStudyDayArry(SelectBaselineresponse?.data?.RET_DATA?.scheduleList);
         setMenuArry(SelectBaselineresponse?.data?.RET_DATA?.menuList);
         setModuleArry(SelectBaselineresponse?.data?.RET_DATA?.modulesList);
+        setEvaluationArry(SelectBaselineresponse?.data?.RET_DATA?.evaluationModulesList);
         setStuList(SelectBaselineresponse?.data?.RET_DATA?.userList);
     };
     // 차수 관리 수정 ======================================================
@@ -436,6 +440,7 @@ export const EduProcAdd = () => {
             scheduleList: studyDayArry,
             menuList: menuArry,
             moduleList: moduleArry,
+            evaluationModulesList: evaluationArry,
             userList: stuList,
             teacherId: itemContainer.teacherId
         });
@@ -588,6 +593,7 @@ export const EduProcAdd = () => {
         setStudyDayArry(null);
         setMenuArry(null);
         setModuleArry(null);
+        setEvaluationArry(null);
         setStuList(null);
         setOpen(true);
         setDataEdit(false);
@@ -721,10 +727,13 @@ export const EduProcAdd = () => {
     };
 
     // 학습일 설정 (일자, 모듈, 메뉴) 값
-    const handel_Study_Set = (totStudyDateList, menuListSet, moduleListSet) => {
+    const handel_Study_Set = (totStudyDateList, menuListSet, moduleListSet, evaluationModulesListSet) => {
+        console.log('학습', moduleListSet);
+        console.log('평가', evaluationModulesListSet);
         setStudyDayArry(totStudyDateList);
         setMenuArry(menuListSet);
         setModuleArry(moduleListSet);
+        setEvaluationArry(evaluationModulesListSet);
         setEduDayModalOpen(false);
     };
 
@@ -1526,6 +1535,7 @@ export const EduProcAdd = () => {
                     SetScheduleList={studyDayArry}
                     SetMenuList={menuArry}
                     SetModuleList={moduleArry}
+                    EvaluationModulesList={evaluationArry}
                 />
             </Modal>
             {/* 학습일자 설정 Modal End */}
